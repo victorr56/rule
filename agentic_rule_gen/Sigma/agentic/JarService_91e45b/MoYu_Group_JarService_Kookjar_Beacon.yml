@@ -1,0 +1,23 @@
+title: MoYu Group JarService Kookjar Beacon
+id: a9740032-488f-4318-87a3-5c3b17163f53
+status: experimental
+description: Detects a specific C2 beacon pattern to kookjar.com used by MoYu Group's JarService malware.
+references:
+    - https://securelist.com/android-head-unit-malware/121106/
+author: ioc-yara-daily (agentic)
+date: 2024-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname|endswith: 'kookjar.com'
+        Url|contains|all:
+            - '/sayhi?'
+            - 'channel=daihai'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

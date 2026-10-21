@@ -1,0 +1,25 @@
+title: Webworm Persistence Via Scheduled Task
+id: 740cf5b6-75ec-4581-8255-a0cd1c015b67
+status: experimental
+description: Detects the creation of a scheduled task named "MicrosoftSSHUpdate", a specific persistence mechanism used by the Webworm APT group for its EchoCreep backdoor.
+references:
+  - https://www.welivesecurity.com/en/eset-research/webworm-new-burrowing-techniques/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.persistence
+  - attack.t1053.005
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\schtasks.exe'
+    CommandLine|contains|all:
+      - '/create'
+      - '/tn'
+      - 'MicrosoftSSHUpdate'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high

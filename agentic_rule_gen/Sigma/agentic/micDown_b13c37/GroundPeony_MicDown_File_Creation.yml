@@ -1,0 +1,24 @@
+title: GroundPeony MicDown Payload Or Config File Creation
+id: 9a78a70c-2673-4560-9111-a83626e27926
+status: experimental
+description: Detects the creation of GroundPeony's micDown malware components (mic.doc, mic.ver) in the specific staging directory 'C:\ProgramData\mic\'.
+references:
+    - http://nao-sec.org/2023/08/groundpeony-crawling-with-malice.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1027
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\ProgramData\mic\'
+        TargetFilename|endswith:
+            - '\mic.doc'
+            - '\mic.ver'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

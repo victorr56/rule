@@ -1,0 +1,26 @@
+title: Potemkin Loader C2 Communication
+id: 3c5187e5-1a74-42f0-94f4-5f5379b1df09
+status: experimental
+description: Detects HTTP requests to URI paths known to be used by the Potemkin loader for C2 communications, especially when combined with its characteristic user-agent string.
+references:
+    - https://www.huntress.com/blog/potemkin-loader-rmmproject-clickfix-attack
+author: ioc-yara-daily (agentic)
+date: 2024-02-14
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url.Path|endswith:
+            - '/api/client_hello'
+            - '/api/client/new'
+            - '/tasks/get_worker'
+            - '/tasks/collect'
+            - '/avast_update'
+        Http.UserAgent: 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)'
+    condition: selection
+falsepositives:
+    - Legitimate applications that use both these specific URI paths and this outdated User-Agent string.
+level: high

@@ -1,0 +1,537 @@
+{
+  "malware_family": "OTTERCOOKIE",
+  "threat_actor": "Contagious Interview (DPRK-aligned, campaign tracked as REF9403)",
+  "platforms": [
+    "windows",
+    "macos",
+    "linux"
+  ],
+  "summary": "DPRK-aligned Contagious Interview actors target developers with fake job interviews and trojanized Next.js e-commerce take-home projects whose malicious code is hidden as Base64 fragments inside SVG flag images and reassembled via eval() on server start. The four-stage, OTTERCOOKIE-aligned payload steals browser credentials, crypto-wallet LevelDB stores, developer files and clipboard data, and installs a Socket.IO backdoor with a Windows PE dropper. All C2, upload and download activity is hosted under the rightwidth[.]dev domain family.",
+  "mitre_techniques": [
+    "T1071.001",
+    "T1115",
+    "T1555",
+    "T1005",
+    "T1027.003",
+    "T1041",
+    "T1083",
+    "T1082"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "assets/flags/",
+      "context": "Directory of SVG flag images carrying Base64 fragments in HTML comments",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AE.svg",
+      "context": "Flag SVG with injected Base64 comment block used as payload carrier",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AF.svg",
+      "context": "Flag SVG with injected Base64 comment block used as payload carrier",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "serverValidation.js",
+      "context": "Reassembles Base64 chunks from SVGs then eval()s decoded payload",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "server/index.js",
+      "context": "Calls runServerValidation() after middleware setup on every server start",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/<!--\\s*([\\s\\S]*?)\\s*-->/",
+      "context": "Regex extracting the Base64 payload from each SVG comment",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Check(validation())",
+      "context": "Custom Base64 decoder invoked under eval() to avoid atob/Buffer.from detection",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "while (!![])",
+      "context": "obfuscator.io infinite-loop anti-tampering toolmark",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "npm-cache",
+      "context": "Process title set by browser/wallet stealer module to masquerade as npm cache",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\jim\\.npm\\vhost.ctl",
+      "context": "PID lock file enforcing a single RAT instance",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wmic logicaldisk get name",
+      "context": "Drive enumeration before file stealer sweep",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wmic computersystem get model,manufacturer",
+      "context": "Windows VM/sandbox detection, strings checked: vmware, virtualbox, qemu, microsoft corporation",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "system_profiler SPHardwareDataType",
+      "context": "macOS VM/sandbox detection",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/proc/cpuinfo",
+      "context": "Linux VM/sandbox detection source (hypervisor, kvm, xen, bochs checks)",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -NoProfile -NonInteractive Get-Clipboard",
+      "context": "Spawned every 500ms by node.exe to read clipboard on Windows",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "node.exe -> cmd.exe -> powershell.exe",
+      "context": "Clipboard stealer process tree observed by Elastic Defend",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "pbpaste",
+      "context": "macOS clipboard retrieval via execSync",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\jim\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Login Data",
+      "context": "Chrome credential SQLite database exfiltrated to /upload",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\jim\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Local Extension Settings\\bfnaelmomeimhlpmgjnjophhpkkoljpa\\ldb",
+      "context": "Phantom wallet LevelDB store posted to /cldbs",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "hostService.exe",
+      "context": "Second-stage PE renamed from hostService.txt and executed",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "printSvc.exe",
+      "context": "Second-stage PE renamed from printSvc.txt and executed",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dhcpSvc.exe",
+      "context": "Second-stage PE renamed from dhcpSvc.txt and executed",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "nkbihfbeogaeaoehlefnkodbefgpgknn",
+      "context": "Targeted crypto wallet extension ID: MetaMask Wallet",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "acmacodkjbdgmoleebolmdjonilkdbch",
+      "context": "Targeted crypto wallet extension ID: Rabby Wallet",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "bfnaelmomeimhlpmgjnjophhpkkoljpa",
+      "context": "Targeted crypto wallet extension ID: Phantom Wallet",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "dmkamcknogkgcdfhhbddcghachkejeap",
+      "context": "Targeted crypto wallet extension ID: Keplr",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ppbibelpcjmhbdihakflkdcoccbgbkpo",
+      "context": "Targeted crypto wallet extension ID: UniSat Wallet",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "egjidjbpglichdcondbcbdnbeeppgdph",
+      "context": "Targeted crypto wallet extension ID: Trust Wallet",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ibnejdfjmmkpcnlpebklmnkoeoihofec",
+      "context": "Targeted crypto wallet extension ID: TronLink Wallet",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "bhhhlbepdkbapadjdnnojkbgioiodbic",
+      "context": "Targeted crypto wallet extension ID: Solflare Wallet",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "mcohilncbfahbmgdjkbpemcciiolgcge",
+      "context": "Targeted crypto wallet extension ID: OKX Wallet",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "rightwidth.dev",
+      "context": "OTTERCOOKIE C2 root domain used for clipboard exfiltration logs",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ldb.rightwidth.dev",
+      "context": "Browser credential and crypto wallet stealer C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "upload.rightwidth.dev",
+      "context": "File stealer upload C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "controller.rightwidth.dev",
+      "context": "Socket.IO RAT/backdoor C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "file.rightwidth.dev",
+      "context": "Windows second-stage download host",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "195.26.248.212",
+      "context": "OTTERCOOKIE C2 server IPv4",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "188.40.64.61",
+      "context": "OTTERCOOKIE C2 server IPv4",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/upload",
+      "context": "Multipart POST carrying browser Login Data, Web Data and stolen files",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cldbs",
+      "context": "POST of crypto wallet extension LevelDB stores",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/service/makelog",
+      "context": "RAT logging channel and clipboard exfiltration endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/service/process/<uid>",
+      "context": "Socket.IO registration beacon with host information",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/download/hostService.txt",
+      "context": "Second-stage download disguised as .txt",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/download/printSvc.txt",
+      "context": "Second-stage download disguised as .txt",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/download/dhcpSvc.txt",
+      "context": "Second-stage download disguised as .txt",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/socket.io/?EIO=4&transport=polling",
+      "context": "Socket.IO C2 channel over HTTPS (command/message events)",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "axios/1.18.1",
+      "context": "Used by browser, wallet and file stealer POST requests",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "axios/1.16.1",
+      "context": "Used by RAT registration and logging requests",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "node-XMLHttpRequest",
+      "context": "Used for Socket.IO polling requests to controller.rightwidth.dev",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "userkey: 101",
+      "context": "Custom header on stealer upload POST requests",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Server: Werkzeug/3.1.8 Python/3.13.5",
+      "context": "C2 server response header on /cldbs replies",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "8e571d58794b9b44ae53c2c67bedef72c500e8adbb80aab7a5c263adcba55b1e",
+      "description": "Trojanized repository ecommerce-main.zip"
+    },
+    {
+      "sha256": "3e6360f83a95540aa2176d279ca4694513afb1e5116a7ffe591c6b5bcf3b9c3c",
+      "description": "Trojanized repository next-ecommerce-private-main.zip"
+    },
+    {
+      "sha256": "4e7639045b4a64de60bfb6312951a5c3dffbd3fb04b84837663242ed27f09864",
+      "description": "Trojanized repository shopping-platform-main.zip"
+    },
+    {
+      "sha256": "54bf36910d81ab516037cb3d69d7c85190f90aa0da9e58617799c1fc738dc5a9",
+      "description": "Trojanized repository ecommerce-platform.zip"
+    },
+    {
+      "sha256": "96357529d17c4690826d5d4c74deac51743a5388733b3f04004d898f0635ef20",
+      "description": "Trojanized repository shop-main.zip"
+    },
+    {
+      "sha256": "9df01d242ef46adfedf8c35cb7cc67b1d27d7dc4a1ce74ab32e984090d579886",
+      "description": "Trojanized repository ecommerce-platform-main.zip"
+    },
+    {
+      "sha256": "c5aed4c063d4970a03250778da8041da9e0c83d8f22d2f1994da0ad72567ebd9",
+      "description": "Trojanized repository shopping-platform.rar"
+    },
+    {
+      "sha256": "cc97517f80f567977300450de11e9a0be53f52657525a20b1091c99fe9e45730",
+      "description": "Trojanized repository shopping-platform.rar"
+    },
+    {
+      "sha256": "fb94b2caee2c40635448a98ba0118421e19a400e74ccff73315f8fa42351f53f",
+      "description": "Trojanized repository shop-main.zip"
+    }
+  ],
+  "file_types": [
+    "script",
+    "archive",
+    "pe"
+  ]
+}

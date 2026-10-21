@@ -1,0 +1,23 @@
+title: Midnight Blizzard ChocoShell C2 Beaconing via Proxy
+id: c18d4512-4217-4852-8700-9ef9cd75704a
+status: experimental
+description: Detects the characteristic C2 beaconing pattern of the ChocoShell PowerShell stager used by a Midnight Blizzard-linked cluster.
+references:
+    - https://www.reversinglabs.com/blog/how-rl-mapped-a-midnight-blizzard-linked-campaign-from-two-hashes
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        UserAgent: 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'
+        Url|contains|all:
+            - '/t/pixel.gif'
+            - '?m=stage'
+    condition: selection
+falsepositives:
+    - Legitimate traffic using the same User-Agent and a URL that happens to contain the same path and parameter strings.
+level: high

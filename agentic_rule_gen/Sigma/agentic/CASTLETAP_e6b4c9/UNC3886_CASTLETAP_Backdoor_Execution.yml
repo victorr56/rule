@@ -1,0 +1,23 @@
+title: UNC3886 CASTLETAP Backdoor Execution
+id: 569300ed-7193-42e7-a9a7-e7d667c1bb1a
+status: experimental
+description: Detects the execution of the CASTLETAP backdoor implant, '/bin/fgfm', on a compromised FortiGate device as observed in UNC3886 intrusions.
+references:
+    - https://www.wiz.io/blog/agentless-threat-hunting-fortigate
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.persistence
+    - attack.t1543.002
+    - attack.command_and_control
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/bin/fgfm'
+        CommandLine: '/bin/fgfm'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

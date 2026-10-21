@@ -1,0 +1,28 @@
+title: Aoki Infostealer Accessing Claude AI Assistant Configuration
+id: 8d1f9c2a-5e4b-4f6d-8c1a-3e2a9c4d8b0e
+status: experimental
+description: Detects a process running from a user directory accessing the `.claude.json` file, which is targeted by the Aoki infostealer to harvest AI assistant credentials.
+references:
+    - https://www.security.com/threat-intelligence/aoki-infostealer-ai-targeting
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.credential_access
+    - attack.t1552.001
+    - attack.collection
+    - attack.t1560
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\.claude.json'
+        Image|startswith: 'C:\Users\'
+    filter_legit_claude:
+        # The legitimate path for the Claude application is not standardized.
+        # This filter is a placeholder for a known-good path if one is identified.
+        Image|startswith: 'C:\Users\REPLACE_WITH_KNOWN_GOOD_PATH\'
+    condition: selection and not filter_legit_claude
+falsepositives:
+    - Legitimate Claude desktop application access, if it is installed in or runs from an unexpected user directory path. The filter may need to be adapted to the environment.
+level: high

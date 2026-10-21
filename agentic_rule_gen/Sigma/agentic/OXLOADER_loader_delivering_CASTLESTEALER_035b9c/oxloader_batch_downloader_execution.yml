@@ -1,0 +1,26 @@
+title: OXLOADER Batch Downloader Script Execution
+id: c1b0b5e2-6323-455b-ab79-ff23f15de026
+status: experimental
+description: |
+  Detects the execution of the initial OXLOADER batch downloader script, which uses a
+  highly specific name like "BATPackageBuilderSetup.bat" or a variant with a typo.
+references:
+  - https://www.elastic.co/security-labs/threat-command/oxloader-malware-loader-infostealer
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+  - attack.execution
+  - attack.t1059.003
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\cmd.exe'
+    CommandLine|contains:
+      - 'BATPackageBuilderSetup.bat'
+      - 'BATPackageBulderSetup.bat'
+  condition: selection
+falsepositives:
+  - Unlikely due to the specificity of the batch file names.
+level: high

@@ -1,0 +1,27 @@
+title: SILENTCONNECT ScreenConnect MSI Installation via PowerShell
+id: d76d8b9d-426a-4977-96b6-a675f28c46de
+status: experimental
+description: Detects the silent installation of the ScreenConnect remote access tool via msiexec spawned from PowerShell, a technique used by SILENTCONNECT.
+references:
+    - https://www.elastic.co/security-labs/threat-command/silentconnect-delivers-screenconnect
+author: ioc-yara-daily (agentic)
+date: 2024-07-01
+tags:
+    - attack.execution
+    - attack.t1219
+    - attack.t1059.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\powershell.exe'
+        Image|endswith: '\msiexec.exe'
+        CommandLine|contains|all:
+            - '/i'
+            - 'ScreenConnect.ClientSetup.msi'
+            - '/quiet'
+    condition: selection
+falsepositives:
+    - Legitimate scripted installation of ScreenConnect by administrators.
+level: high

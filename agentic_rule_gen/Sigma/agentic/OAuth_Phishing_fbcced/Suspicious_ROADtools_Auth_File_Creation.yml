@@ -1,0 +1,27 @@
+title: ROADtools Authentication File Creation
+id: f45f8e5f-149b-4402-9e90-281ef546c59b
+status: experimental
+description: |
+    Detects the creation of the '.roadtool_auth' file, which is used by the ROADtools framework to store authentication tokens for Azure AD reconnaissance and exploitation.
+references:
+    - https://www.elastic.co/security-labs/blog/entra-id-oauth-phishing-detection
+    - https://github.com/dirkjanm/ROADtools
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.credential_access
+    - attack.t1552.001
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\python.exe'
+            - '\python3.exe'
+        TargetFilename|endswith: '.roadtool_auth'
+    condition: selection
+falsepositives:
+    - Legitimate use of ROADtools by security teams or administrators for testing or reconnaissance purposes.
+level: medium

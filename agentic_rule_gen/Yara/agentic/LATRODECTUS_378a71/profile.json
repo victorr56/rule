@@ -1,0 +1,363 @@
+{
+  "malware_family": "LATRODECTUS",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "LATRODECTUS is a lightweight malware loader, considered a potential replacement for ICEDID, that is gaining adoption in financially-motivated campaigns. It uses a small set of command handlers for system enumeration and payload execution, persists via a scheduled task, and uses RC4-encrypted C2 communications. It also contains functionality to download and execute ICEDID itself.",
+  "mitre_techniques": [
+    "T1059.007",
+    "T1027",
+    "T1047",
+    "T1218.007",
+    "T1218.011",
+    "T1055",
+    "T1053.005",
+    "T1070.004",
+    "T1059.003"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "mutex",
+      "value": "runnung",
+      "context": "Mutex created to prevent re-infection, likely a typo.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x19660D",
+      "context": "Hard-coded constant multiplied with volume serial number for hardware ID generation.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Littlehw",
+      "context": "Decrypted campaign name used as a seed for an FNV hash.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Custom_update",
+      "context": "Hard-coded directory name created in AppData for persistence.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Update_",
+      "context": "Hard-coded prefix for the malware's filename on disk.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Custom_update\\Update_*.dll",
+      "context": "Path where the malware copies itself for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "update_data.dat",
+      "context": "Configuration or data file checked for in the Custom_update directory.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "Updater",
+      "context": "Hardcoded scheduled task name used for persistence.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ":wtfbbq",
+      "context": "String present in the binary related to the self-deletion technique.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "delete-self-poc",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "12345",
+      "context": "Hardcoded RC4 password for C2 communication encryption.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "desklinks",
+      "context": "Internal name for the desktop file listing command (ID 2).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "proclist",
+      "context": "Internal name for the process ancestry collection command (ID 3).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\System32\\cmd.exe /c ipconfig /all",
+      "context": "System information gathering (Command ID 4).",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\System32\\cmd.exe /c systeminfo",
+      "context": "System information gathering (Command ID 4).",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\System32\\cmd.exe /c nltest /domain_trusts",
+      "context": "System information gathering (Command ID 4).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\System32\\cmd.exe /c net group \"Domain Admins\" /domain",
+      "context": "System information gathering (Command ID 4).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\System32\\wbem\\wmic.exe /Node:localhost /Namespace:\\\\root\\SecurityCenter2 Path AntiVirusProduct Get * /Format:List",
+      "context": "System information gathering (Command ID 4).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\System32\\cmd.exe /c wmic.exe /node:localhost /namespace:\\\\root\\SecurityCenter2 path AntiVirusProduct Get DisplayName | findstr /V /B /C:displayName || echo No Antivirus installed",
+      "context": "System information gathering (Command ID 4).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rundll32.exe C:\\Users\\REM\\AppData\\Roaming\\-632116337\\-456638727.dll,init -zzzz=\"-632116337\\1431684209.dat\"",
+      "context": "Execution of ICEDID loader and payload (Command ID 18).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "init -zzzz=",
+      "context": "Argument format for launching the ICEDID loader DLL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 83 BC 24 D8 01 00 00 12 74 36 83 BC 24 D8 01 00 00 0E 74 2C 83 BC 24 D8 01 00 00 0C 74 22 83 BC 24 D8 01 00 00 0D 74 18 83 BC 24 D8 01 00 00 0F 74 0E 83 BC 24 D8 01 00 00 04 0F 85 44 02 00 00 }",
+      "context": "YARA string $handler_check for command dispatching.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 89 4C 24 08 48 8B 44 24 08 69 00 0D 66 19 00 48 8B 4C 24 08 89 01 48 8B 44 24 08 8B 00 C3 }",
+      "context": "YARA string $hwid_calc for hardware ID calculation.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 03 C8 48 8B C1 48 39 44 24 08 73 1E 48 8B 44 24 08 0F BE 00 8B 0C 24 33 C8 8B C1 89 04 24 69 04 24 93 01 00 01 89 04 24 EB BE }",
+      "context": "YARA string $campaign_fnv for campaign ID FNV hash calculation.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "kernel32.dll",
+      "context": "Module resolved at runtime via CRC32 hashing.",
+      "specificity": "low",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "CRC32",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "ntdll.dll",
+      "context": "Module resolved at runtime via CRC32 hashing.",
+      "specificity": "low",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "CRC32",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Tob 1.1)",
+      "context": "Hardcoded User-Agent string for C2 communications.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "aytobusesre.com",
+      "context": "LATRODECTUS C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "scifimond.com",
+      "context": "LATRODECTUS C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/live/",
+      "context": "URI path used for C2 beaconing.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/files/bp.dat",
+      "context": "Hard-coded URI used to download the ICEDID payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "ver=1.1",
+      "context": "Parameter in C2 beacon indicating malware version.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "CLEARURL",
+      "context": "C2 command object type to delete configured domains.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "URLS",
+      "context": "C2 command object type to swap to a new C2 URL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "COMMAND",
+      "context": "C2 command object type to pass main event handlers.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "ERROR",
+      "context": "Unused C2 command object type.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "aee22a35cbdac3f16c3ed742c0b1bfe9739a13469cf43b36fb2c63565111028c",
+      "description": "LATRODECTUS DLL sample (TRUFOS.DLL)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

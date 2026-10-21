@@ -1,0 +1,21 @@
+title: Lazarus RemotePE Masquerading DLL Side-Loading
+id: c71a8157-1ccb-4d43-9b93-57a66f77ab5e
+status: experimental
+description: Detects the side-loading of 'Iassvc.dll' by 'spoolsv.exe'. This DLL is the DPAPILoader component of the RemotePE toolset and masquerades as the legitimate 'iassvcs.dll'.
+references:
+    - https://blog.fox-it.com/2022/05/19/remotepe-the-lazarus-rat-that-lives-in-memory/
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\spoolsv.exe'
+        ImageLoaded|endswith: '\Windows\System32\Iassvc.dll'
+    condition: selection
+falsepositives:
+    - Unlikely. The legitimate Microsoft Internet Authentication Service (IAS) DLL is named 'iassvcs.dll'. 'Iassvc.dll' is not a standard Windows file and is not loaded by the Print Spooler service by default.
+level: high

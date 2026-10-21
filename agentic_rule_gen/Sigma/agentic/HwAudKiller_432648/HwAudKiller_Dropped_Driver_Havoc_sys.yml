@@ -1,0 +1,22 @@
+title: HwAudKiller Dropped Driver 'Havoc.sys'
+id: e691350a-a9da-4a57-8178-8d07acb3fd73
+status: experimental
+description: Detects the creation of "Havoc.sys" in a temporary directory. This is the filename the HwAudKiller malware uses for the vulnerable Huawei driver it abuses.
+references:
+    - https://www.huntress.com/blog/w2-malvertising-to-kernel-mode-edr-kill
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\Havoc.sys'
+        TargetFilename|contains: '\Temp\'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

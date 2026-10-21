@@ -1,0 +1,359 @@
+{
+  "malware_family": "Bird Agent (mqtt-bird-agent / matrix-bird-agent)",
+  "threat_actor": "Toy Ghouls (aka Bearlyfy, Laboo.boo, Feral Wolf)",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Toy Ghouls deployed two custom 'bird' backdoors delivered over WinRM: mqtt-bird-agent (using the public HiveMQ MQTT broker as C2, dropped as cplsupport.exe) and matrix-bird-agent (using an attacker-run Element/Matrix server, dropped as wtass.exe). Both install as Windows services, seal their config.toml with ChaCha20-Poly1305 keyed to MachineGuid, and execute received commands via PowerShell or cmd.",
+  "mitre_techniques": [
+    "T1021.006",
+    "T1059.001",
+    "T1059.003",
+    "T1071",
+    "T1112",
+    "T1543.003"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "cplsupport.exe",
+      "context": "HiveMQ version backdoor binary; masquerades as Problem Reports Control Panel",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wtass.exe",
+      "context": "Element version backdoor binary; service wtas poses as telemetry service",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "config.toml",
+      "context": "Backdoor config file, first looked up in executable directory",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%PROGRAMDATA%\\cplsupport\\config.toml",
+      "context": "Fallback config path for HiveMQ version",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%PROGRAMDATA%\\SynapseAgent\\config.toml",
+      "context": "Fallback config path for Element version",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\Software\\synapse\\Config\\SealedConfig",
+      "context": "Element version writes sealed config here; config file deleted after first run",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\Software\\SynapseAgent\\metrics_interval",
+      "context": "Element version stores new metrics interval (5-3600s) here",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "cplsupport",
+      "context": "Windows service installed by HiveMQ version (Problem Reports Control Panel)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "wtas",
+      "context": "Windows service installed by Element version (Windows Telemetry Aggregator Service)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Bird Agent - MQTT server monitor",
+      "context": "Banner in HiveMQ version help output",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Matrix monitoring agent",
+      "context": "Banner in Element version help output",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "# Sealed by cplsupport — sensitive fields are encrypted",
+      "context": "Header comment of sealed HiveMQ config file",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "# This config only works on the machine it was sealed on",
+      "context": "Comment in sealed HiveMQ config file",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "mqtt-bird-agent 0.1.0",
+      "context": "Name/version of the HiveMQ backdoor version",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "matrix-bird-agent 0.1.0",
+      "context": "Name/version of the Element backdoor version",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\cplsupport.exe -h",
+      "context": "Help invocation of HiveMQ backdoor; parent process not stated",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\wtass.exe -h",
+      "context": "Help invocation of Element backdoor; parent process not stated",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "--install",
+      "context": "Argument that installs backdoor as Windows service (Element version subcommand: install)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "PowerShell.exe -NonInteractive -NoProfile -Command",
+      "context": "HiveMQ version runs received commands hidden via PowerShell",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "broker.hivemq.com",
+      "context": "Public HiveMQ MQTT broker abused as C2 server (port 8883)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "meet.element.tw",
+      "context": "Attacker-controlled Element/Matrix C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ip-api.com",
+      "context": "Legitimate geolocation service queried for public IP/country",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://ip-api.com/json",
+      "context": "Startup GET request by both backdoor versions",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://meet.element.tw",
+      "context": "Matrix homeserver value in decrypted Element config",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/[cluster_id]/status",
+      "context": "POST path carrying system status to HiveMQ C2",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/[cluster_id]/metrics3",
+      "context": "POST path carrying CPU/memory metrics to HiveMQ C2",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/[cluster_id]/cmd/req",
+      "context": "GET path used to retrieve commands from HiveMQ C2",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/[cluster_id]/cmd/res",
+      "context": "POST path returning command execution results",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "m.bird.status",
+      "context": "Element version status message sent after connecting",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "m.bird.metrics",
+      "context": "Element version periodic metrics message",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "m.bird.cmd_response",
+      "context": "Element version command output message",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "config:set_interval",
+      "context": "Message prefix to change metrics interval (5-3600s)",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "cmd:",
+      "context": "Message prefix marking a command to execute",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "!HcJjf788te3T8MW72EpeHPms8_6Dcjz7YEsixglUbm4",
+      "context": "Matrix room_id used for C2 in decrypted Element config",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "panel-bot",
+      "context": "Element account name used by attackers to send commands",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "synapse-hostname",
+      "context": "Matrix username format synapse-<hostname> in decrypted Element config",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "BFADBEEE63A4F0BF19EC9DEB8FA58F58",
+      "description": "cplsupport.exe — HiveMQ (mqtt-bird-agent) version backdoor (report lists MD5, not SHA-256)"
+    },
+    {
+      "sha256": "7916C33688385525078BEE504C90F359",
+      "description": "wtass.exe — Element/Matrix (matrix-bird-agent) version backdoor (report lists MD5, not SHA-256)"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

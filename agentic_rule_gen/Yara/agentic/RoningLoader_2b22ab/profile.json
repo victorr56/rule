@@ -1,0 +1,421 @@
+{
+  "malware_family": "RoningLoader",
+  "threat_actor": "DragonBreath",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "RoningLoader is a multi-stage loader attributed to DragonBreath that deploys a modified gh0st RAT. It employs various defense evasion techniques, including using a legitimately signed driver, custom WDAC policies, and PPL abuse to terminate EDR products, particularly Microsoft Defender. The final payload communicates over raw TCP and includes keylogging and clipboard hijacking capabilities.",
+  "mitre_techniques": [
+    "T1059.003",
+    "T1569.002",
+    "T1543.003",
+    "T1548.002",
+    "T1134",
+    "T1562.001",
+    "T1562.004",
+    "T1070.001",
+    "T1574.002",
+    "T1055",
+    "T1036.005",
+    "T1112",
+    "T1553.006",
+    "T1056.001",
+    "T1115",
+    "T1057",
+    "T1082",
+    "T1033",
+    "T1518.001",
+    "T1095",
+    "T1573.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "ollama.sys",
+      "context": "Signed driver used for antivirus process termination.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "Kunming Wuqi E-commerce Co., Ltd.",
+      "context": "Signer name for the ollama.sys driver.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "JemmyLoveJenny",
+      "context": "Artifact in older signed drivers, indicating HookSignTool usage.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "HookSignTool",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "D:\\VS_Project\\加解密\\MyDriver1\\x64\\Release\\MyDriver1.pdb",
+      "context": "PDB string artifact from the ollama.sys driver.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\\\\.\\Ollama",
+      "context": "Device name for the driver injected into vssvc.exe.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files\\Snieoatwtregoable\\",
+      "context": "Installation directory created by the malicious installer.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tp.png",
+      "context": "Encrypted file containing the Stage 2 shellcode payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "kxemain.exe",
+      "context": "Kingsoft Internet Security process targeted for termination.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\windows\\system32\\drivers\\1912763.temp",
+      "context": "Hardcoded path for the driver dropped for VSS injection.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "xererre1",
+      "context": "Service created to load the temporary driver (1912763.temp).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x222000",
+      "context": "IOCTL ID handled by the driver to kill a process by PID.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 4B 44 01 00 }",
+      "context": "Magic bytes for the custom archive format (e.g., hjk.txt).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Roning",
+      "context": "Directory created to store stage 3 and final payload components.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\Wow64\\Wow64Log.dll",
+      "context": "Path used for phantom DLL side-loading to terminate AV processes.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\System32\\ClipUp.exe -ppl C:\\ProgramData\\roming\\MsMpEng.exe",
+      "context": "Command executing PPL abuse to corrupt MsMpEng.exe.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "EDR-Freeze",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\\\Windows\\\\System32\\\\CodeIntegrity\\\\CiPolicies\\\\Active\\\\{31351756-3F24-4963-8380-4E7602335AAE}.cip",
+      "context": "Path where the malicious WDAC policy is written.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Enabled:Unsigned System Integrity Policy",
+      "context": "Rule option allowing the unsigned WDAC policy to be loaded.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "360rp.exe",
+      "context": "Qihoo 360 file explicitly blocked by the malicious WDAC policy.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "A229D2722BC6091D73B1D979B81088C977CB028A6F7CBF264BB81D5CC8F099F87D7C296E48BF09D7EBE275F5498661A4",
+      "context": "TBS hash of Huorong certificate blocked by WDAC policy.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "MicrosoftSoftware2ShadowCop4yProvider",
+      "context": "Service created for persistence and execution of stage 3.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "regsvr32.exe /S \"C:\\ProgramData\\Roning\\goldendays.dll",
+      "context": "Command to execute the stage 3 DLL.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "elevation_service.exe",
+      "context": "Microsoft Edge service targeted for payload injection.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Global\\DHGGlobalMutex",
+      "context": "Mutex created by the final gh0st RAT payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "MyUniqueMutexName",
+      "context": "Mutex from dead code in the final payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%ProgramData%\\microsoft.dotnet.common.log",
+      "context": "Log file for captured keystrokes and clipboard data.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKEY_CURRENT_USER\\offlinekey\\open",
+      "context": "Registry key to enable (1) or disable (0) the logger.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[剪切板:]",
+      "context": "Prefix string for logged clipboard content.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "狐狸系列",
+      "context": "String in beacon data, refers to MetaMask ('Fox series').",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ClipboardListener_Class_Toggle",
+      "context": "Window class name for the clipboard hijacking monitor.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Base64Encode(XOR(C2_domain_and_port, 0x5))",
+      "context": "Encryption scheme for updated C2 info in 'CopyC' registry key.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "qaqkongtiao.com",
+      "context": "C2 domain for the final gh0st RAT payload.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://www.baidu.com/",
+      "context": "Hardcoded URL used in dead code, likely for a connectivity check.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko",
+      "context": "Hardcoded User-Agent string associated with dead code.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xC8",
+      "context": "Message type ID (200) for the initial victim beacon.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "gh0st"
+    },
+    {
+      "kind": "other",
+      "value": "243",
+      "context": "C2 command ID to configure the clipboard hijacker.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "gh0st"
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "da2c58308e860e57df4c46465fd1cfc68d41e8699b4871e9a9be3c434283d50b",
+      "description": "Initial MSI installer (klklznuah.msi)."
+    },
+    {
+      "sha256": "82794015e2b40cc6e02d3c1d50241465c0cf2c2e4f0a7a2a8f880edaee203724",
+      "description": "Malicious installer unpacked from initial installer (Snieoatwtregoable.exe)."
+    },
+    {
+      "sha256": "c65170be2bf4f0bd71b9044592c063eaa82f3d43fcbd8a81e30a959bcaad8ae5",
+      "description": "Stage 1 loader DLL (Snieoatwtregoable.dll)."
+    },
+    {
+      "sha256": "2515b546125d20013237aeadec5873e6438ada611347035358059a77a32c54f5",
+      "description": "Stage 2 driver for process termination (ollama.sys)."
+    },
+    {
+      "sha256": "1613a913d0384cbb958e9a8d6b00fffaf77c27d348ebc7886d6c563a6f22f2b7",
+      "description": "Stage 2 encrypted core payload (tp.png)."
+    },
+    {
+      "sha256": "96f401b80d3319f8285fa2bb7f0d66ca9055d349c044b78c27e339bcfb07cdf0",
+      "description": "Stage 2 WDAC policy ({31351756-3F24-4963-8380-4E7602335AAE}.cip)."
+    },
+    {
+      "sha256": "33b494eaaa6d7ed75eec74f8c8c866b6c42f59ca72b8517b3d4752c3313e617c",
+      "description": "Stage 3 entry point (goldendays.dll)."
+    },
+    {
+      "sha256": "fc63f5dfc93f2358f4cba18cbdf99578fff5dac4cdd2de193a21f6041a0e01bc",
+      "description": "Stage 3 loader for Enpug.bin (trustinstaller.bin)."
+    },
+    {
+      "sha256": "fd4dd9904549c6655465331921a28330ad2b9ff1c99eb993edf2252001f1d107",
+      "description": "Stage 3 loader for final payload (Enpug.bin)."
+    },
+    {
+      "sha256": "3dd470e85fe77cd847ca59d1d08ec8ccebe9bd73fd2cf074c29d87ca2fd24e33",
+      "description": "Stage 4 final payload (6uf9i.exe)."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

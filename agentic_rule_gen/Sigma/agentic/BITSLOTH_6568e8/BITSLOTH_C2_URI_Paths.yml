@@ -1,0 +1,23 @@
+title: BITSLOTH C2 URI Paths
+id: 11c62f27-f470-43d9-93e1-38e534065651
+status: experimental
+description: Detects HTTP POST requests with URI paths characteristic of BITSLOTH C2 communications.
+references:
+    - https://www.elastic.co/security-labs/threat-command/bits-and-bytes-analyzing-bitsloth
+author: ioc-yara-daily (agentic)
+date: 2023-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        cs_method: 'POST'
+        Url|endswith:
+            - '/IF/I.bin'
+            - '/IF/P.bin'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

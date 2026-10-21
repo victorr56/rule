@@ -1,0 +1,22 @@
+title: MATCHBOIL Persistence via Run Key
+id: 593ca472-88f6-4d7a-b50a-e8d0e7043812
+status: experimental
+description: Detects MATCHBOIL persistence by creating a 'DeviceMonitor' value in the Run registry key, pointing to its installation directory.
+references:
+    - https://www.welivesecurity.com/en/eset-research/matchboil-new-tricks-same-old-evil-intentions/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Microsoft\Windows\CurrentVersion\Run\DeviceMonitor'
+        Details|contains: '\AppData\Local\DeviceMonitor\'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

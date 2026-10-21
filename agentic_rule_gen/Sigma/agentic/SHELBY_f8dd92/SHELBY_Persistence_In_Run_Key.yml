@@ -1,0 +1,24 @@
+title: SHELBY Malware Persistence In Run Key
+id: 61fa70b4-c36b-4e08-9dfc-9b50e38a2bb5
+status: experimental
+description: Detects the creation of a persistence registry key by SHELBY malware, which points to its executable in a specific AppData path.
+references:
+    - https://www.elastic.co/security-labs/threat-command/the-shelby-strategy
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
+        Details|contains|all:
+            - '\AppData\Local\Microsoft\HTTPApi\'
+            - '.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

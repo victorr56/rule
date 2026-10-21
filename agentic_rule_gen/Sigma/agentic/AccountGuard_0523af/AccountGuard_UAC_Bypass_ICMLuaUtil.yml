@@ -1,0 +1,26 @@
+title: AccountGuard PowerShell UAC Bypass Using ICMLuaUtil
+id: 593b45a9-46f2-4e4b-bb1e-5884b25656ca
+status: experimental
+description: Detects the use of the 'ICMLuaUtil' COM object in PowerShell, a technique used by AccountGuard malware to bypass User Account Control (UAC).
+references:
+    - https://www.huntress.com/blog/bank-spam-rmm
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1548.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'New-Object'
+            - '-ComObject'
+            - 'ICMLuaUtil'
+    condition: selection
+falsepositives:
+    - Legitimate administrative or penetration testing scripts that use this specific UAC bypass method.
+level: high

@@ -1,0 +1,24 @@
+title: Linux Codex Botnet Initial Dropper Execution
+id: f23e64f7-7b89-4d6d-88ab-75d1f692a87a
+status: experimental
+description: Detects the initial payload download and execution command line used by the Linux Codex Botnet campaign.
+references:
+    - https://www.huntress.com/blog/codex-part-two
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.execution
+    - attack.t1059.004
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/curl'
+        CommandLine|contains: 'http://162.55.234.175:4082/workersh'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

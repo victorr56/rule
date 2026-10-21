@@ -1,0 +1,24 @@
+title: Out-of-Band Application Security Testing (OAST) Domain Query
+id: 5971b305-fd0d-4074-b586-21f45610d703
+status: experimental
+description: Detects DNS queries for common Out-of-Band Application Security Testing (OAST) domains. Such domains are used by security researchers and threat actors (including UNC5221) to test for and confirm vulnerabilities.
+references:
+    - https://www.darktrace.com/blog/tracking-cve-2025-31324-darktraces-detection-of-sap-netweaver-exploitation-before-and-after-disclosure
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.reconnaissance
+    - attack.t1210
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.oast.online'
+            - '.oast.pro'
+    condition: selection
+falsepositives:
+    - Legitimate penetration testing or vulnerability scanning activity.
+level: medium

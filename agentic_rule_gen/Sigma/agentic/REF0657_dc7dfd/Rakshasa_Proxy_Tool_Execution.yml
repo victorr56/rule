@@ -1,0 +1,23 @@
+title: Rakshasa Proxy Tool Execution
+id: ab332a68-52c6-4767-85d9-43c2c4d6215f
+status: experimental
+description: Detects the execution of the Rakshasa proxy tool, specifically the 'ra.exe' binary running from a common downloads folder with a characteristic command-line argument.
+references:
+    - https://www.elastic.co/security-labs/threat-command/unmasking-financial-services-intrusion-ref0657
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1090.002
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\Users\Public\Downloads\ra.exe'
+        CommandLine|contains: ' -d '
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

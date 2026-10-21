@@ -1,0 +1,24 @@
+title: Lazarus RustyAttr C2 URI Pattern
+id: 57973274-1296-419b-a0ca-a96c64188f57
+status: experimental
+description: Detects HTTP requests to Lazarus RustyAttr C2 servers with specific URI patterns.
+references:
+    - https://www.group-ib.com/blog/stealthy-attributes-of-apt-lazarus/
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection_1:
+        DestinationHostname|endswith: 'support.cloudstore.business'
+        Url|endswith: '/256977/check'
+    selection_2:
+        DestinationHostname|endswith: 'support.docsend.site'
+        Url|endswith: '/519529/check'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

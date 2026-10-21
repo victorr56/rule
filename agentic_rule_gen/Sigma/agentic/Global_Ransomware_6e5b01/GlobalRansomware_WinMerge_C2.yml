@@ -1,0 +1,28 @@
+title: Global Ransomware Execution via WinMerge C2 Communication
+id: 59a1f597-2936-4d04-ac0b-5353e6805175
+status: experimental
+description: |
+    Detects the legitimate WinMerge utility, abused by Global Group ransomware, making network connections to known command and control (C2) domains.
+references:
+    - https://cofense.com/blog/from-payment-plan-to-ransomware-inside-a-global-group-attack
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.t1486
+    - attack.command_and_control
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\WinMerge.exe'
+            - '\WinMergeU.exe'
+        DestinationHostname|endswith:
+            - '.driverupdate.sbs'
+            - '.globalsupportupdate.top'
+            - '.playmounthdom.top'
+    condition: selection
+falsepositives:
+    - 'WinMerge has an update check feature, but it should not connect to these specific domains.'
+level: critical

@@ -1,0 +1,24 @@
+title: PIKABOT C2 User-Agent
+id: 5e6f7a8b-9c0d-4b3a-8f1e-3a2b1c0d9e8f
+status: experimental
+description: Detects the hardcoded User-Agent string used by PIKABOT for C2 communications. This rule is designed to be precise by requiring that the process making the request is not the legitimate Outlook application and that the request is made to the root path, which is characteristic of PIKABOT C2.
+references:
+    - https://www.elastic.co/security-labs/threat-command/pikabot-i-choose-you
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1573.001
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        UserAgent: 'Microsoft Office/14.0 (Windows NT 6.1; Microsoft Outlook 14.0.7166; Pro)'
+        UrlPath: '/'
+    filter:
+        Image|endswith: '\OUTLOOK.EXE'
+    condition: selection and not filter
+falsepositives:
+    - Legitimate applications other than Outlook that might be configured to use this specific User-Agent and make requests to a web server's root path.
+level: high

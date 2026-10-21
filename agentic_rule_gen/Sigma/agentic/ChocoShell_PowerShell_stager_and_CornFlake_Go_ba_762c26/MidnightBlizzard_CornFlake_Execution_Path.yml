@@ -1,0 +1,24 @@
+title: Midnight Blizzard CornFlake Execution From Masquerading Path
+id: b894d350-9d0b-46a4-9494-1a3b5c3ff9ad
+status: experimental
+description: Detects the execution of the CornFlake backdoor (svchost32.exe) with the '/S' argument from a specific masquerading path used by a Midnight Blizzard-linked cluster.
+references:
+    - https://www.reversinglabs.com/blog/how-rl-mapped-a-midnight-blizzard-linked-campaign-from-two-hashes
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.defense_evasion
+    - attack.t1059.001
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\AppData\Local\Microsoft\svchost32\svchost32.exe'
+        CommandLine|endswith: ' /S'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

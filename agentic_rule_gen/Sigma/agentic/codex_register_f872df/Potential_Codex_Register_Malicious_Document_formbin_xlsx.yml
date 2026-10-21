@@ -1,0 +1,22 @@
+title: Potential Codex-Register Malicious Document 'formbin.xlsx'
+id: 59a16f2c-e591-4775-9b2f-269e85cd17a0
+status: experimental
+description: Detects the creation of 'formbin.xlsx', a malicious Excel workbook associated with OpenAI agent activity. The file contains WEBSERVICE formulas for probing and discovery.
+references:
+    - https://www.sentinelone.com/labs/agents-at-large-tracing-illicit-openai-agent-activity-on-hugging-face/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.initial_access
+    - attack.t1566.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\formbin.xlsx'
+        MD5: 'a502264fa0b64eecae60498b0c48fca3'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

@@ -1,0 +1,24 @@
+title: OAuth Consent Request for Entra Agent ID access_agent Scope
+id: 7f3c9a12-4d6b-4e58-9f21-0b8a2c5d1e47
+status: experimental
+description: 'Detects an OAuth2 authorize request to Microsoft Entra ID that asks for the access_agent scope used by Entra Agent ID assistive agents. Abuse of this on-behalf-of agent flow (illicit consent grant / ConsentFix) hands an attacker an agent identity that can act for a human user and call APIs such as Microsoft Graph sendMail.'
+references:
+  - https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-assistive-agents/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.credential_access
+  - attack.t1528
+logsource:
+  category: proxy
+detection:
+  selection:
+    cs-host|endswith: 'login.microsoftonline.com'
+    c-uri|contains|all:
+      - '/oauth2/v2.0/authorize'
+      - 'access_agent'
+  condition: selection
+falsepositives:
+  - Legitimate onboarding or consent of Entra Agent ID / AI assistive agents by administrators
+  - Tenant-wide agent deployments performed during Microsoft Entra Agent ID rollouts
+level: medium

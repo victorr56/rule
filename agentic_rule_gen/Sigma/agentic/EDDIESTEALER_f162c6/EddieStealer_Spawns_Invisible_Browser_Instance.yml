@@ -1,0 +1,27 @@
+title: EDDIESTEALER Spawns Invisible Browser Instance
+id: f48b111e-256d-4009-842c-7b19685e13a4
+status: experimental
+description: Detects the creation of a browser process with a window position set far off-screen, a technique used by EDDIESTEALER to launch an invisible browser for in-memory operations.
+references:
+    - https://www.elastic.co/security-labs/threat-command/eddiestealer
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.credential_access
+    - attack.t1555
+detection:
+    selection:
+        Image|endswith:
+            - '\chrome.exe'
+            - '\msedge.exe'
+            - '\firefox.exe'
+            - '\brave.exe'
+            - '\opera.exe'
+        CommandLine|contains: '--window-position=-3000,-3000'
+    condition: selection
+logsource:
+    category: process_creation
+    product: windows
+falsepositives:
+    - Unlikely
+level: high

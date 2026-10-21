@@ -1,0 +1,24 @@
+title: SimpleHelp RMM Network Activity
+id: 9a6f1d0b-7e5c-43f9-8664-44ed55c2759e
+status: experimental
+description: |
+    Detects a specific URI path and User-Agent combination associated with the SimpleHelp RMM client during its operation.
+    This can be used to identify SimpleHelp C2 activity on the network.
+references:
+    - https://redcanary.com/blog/security-operations/rmm-detection/
+author: ioc-yara-daily (agentic)
+date: 2024-07-24
+tags:
+    - attack.command_and_control
+    - attack.t1219
+    - attack.t1102
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|contains: '/access/JWrapper-Remote%20Access-version.txt'
+        UserAgent|startswith: 'Java/'
+    condition: selection
+falsepositives:
+    - Legitimate use of SimpleHelp RMM within the environment.
+level: high

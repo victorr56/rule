@@ -1,0 +1,21 @@
+title: Lazarus RustyAttr Decoy Download from FileDN
+id: fe7ec729-16a2-4a0b-9cf2-4c28f3bbca06
+status: experimental
+description: Detects HTTP requests to a specific FileDN path used by Lazarus to host decoy documents for the RustyAttr malware.
+references:
+    - https://www.group-ib.com/blog/stealthy-attributes-of-apt-lazarus/
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|contains: '/lY24cv0IfefboNEIN0I9gqR/'
+        DestinationHostname|endswith: 'filedn.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

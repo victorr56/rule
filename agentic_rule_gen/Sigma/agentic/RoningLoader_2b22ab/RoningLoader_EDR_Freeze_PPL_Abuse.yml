@@ -1,0 +1,25 @@
+title: RoningLoader/EDR-Freeze PPL Abuse with ClipUp.exe
+id: 5c91b5b8-d227-4402-990a-e37452d119aa
+status: experimental
+description: Detects the use of ClipUp.exe to abuse the Protected Process Light (PPL) model by attempting to access a malicious copy of MsMpEng.exe, a technique used by RoningLoader and the EDR-Freeze tool to tamper with security products.
+references:
+    - https://www.elastic.co/security-labs/threat-command/roningloader
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1548.002
+    - attack.t1562.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\ClipUp.exe'
+        CommandLine|contains|all:
+            - '-ppl'
+            - '\ProgramData\roming\MsMpEng.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

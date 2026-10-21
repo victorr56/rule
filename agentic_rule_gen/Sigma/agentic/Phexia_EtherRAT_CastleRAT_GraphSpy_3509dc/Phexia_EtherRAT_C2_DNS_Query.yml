@@ -1,0 +1,22 @@
+title: Phexia and EtherRAT C2 DNS Query
+id: 8b0a44f9-715a-493a-86a0-4a8e223ecf03
+status: experimental
+description: Detects DNS queries for domains associated with Phexia and EtherRAT malware families.
+references:
+  - https://redcanary.com/blog/threat-intelligence/intelligence-insights-august-2026/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.command_and_control
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    QueryName|endswith:
+      - 'gl1nto.spiintforge.ru'
+      - 'reeemso.forwardbox.co.uk'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high

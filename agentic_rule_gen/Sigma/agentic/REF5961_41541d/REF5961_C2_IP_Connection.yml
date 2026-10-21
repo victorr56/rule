@@ -1,0 +1,25 @@
+title: REF5961 C2 IP Connection
+id: 4ef6334a-9e1e-450f-a9a7-96155ed0362f
+status: experimental
+description: Detects network connections to IP addresses known to be used as C2 servers by the REF5961 intrusion set.
+references:
+    - https://www.elastic.co/security-labs/threat-command/introducing-the-ref5961-intrusion-set
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '185.82.217.164'
+            - '195.123.245.79'
+            - '45.90.58.103'
+            - '185.195.237.123'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,22 @@
+title: BlueNorOff RUSTBUCKET Persistence LaunchAgent Creation
+id: 59a16f3d-5cf7-494b-9721-dd41a995779c
+status: experimental
+description: Detects the creation of a malicious LaunchAgent plist file named 'com.apple.systemupdate.plist' used by a new variant of the RUSTBUCKET malware to establish persistence.
+references:
+    - https://www.elastic.co/security-labs/threat-command/DPRK-strikes-using-a-new-variant-of-rustbucket
+author: ioc-yara-daily (agentic)
+date: 2023-10-18
+tags:
+    - attack.persistence
+    - attack.t1543.001
+logsource:
+    category: file_event
+    product: macos
+detection:
+    selection:
+        Image|endswith: '/Contents/MacOS/applet'
+        TargetFilename|endswith: '/Library/LaunchAgents/com.apple.systemupdate.plist'
+    condition: selection
+falsepositives:
+    - Legitimate AppleScript applications that create a LaunchAgent with this specific name.
+level: high

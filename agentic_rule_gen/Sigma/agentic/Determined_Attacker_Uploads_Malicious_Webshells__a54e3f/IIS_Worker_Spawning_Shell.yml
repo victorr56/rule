@@ -1,0 +1,27 @@
+title: IIS Worker Process Spawning Shell
+id: 593740e2-632b-4d43-9828-4422e11e3b6a
+status: experimental
+description: Detects an IIS worker process (w3wp.exe) spawning a command shell (cmd.exe) or PowerShell. This is a common technique used by attackers after compromising a web application to execute commands on the server.
+references:
+    - https://www.huntress.com/blog/parks-recreation-platform-webshell-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1059.003
+    - attack.initial_access
+    - attack.t1190
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\w3wp.exe'
+        Image|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+    condition: selection
+falsepositives:
+    - Some legacy or bespoke web applications may legitimately spawn shell processes to perform tasks. These should be investigated and, if legitimate, excluded.
+level: high

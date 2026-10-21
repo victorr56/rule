@@ -1,0 +1,22 @@
+title: React2Shell C2 Network Connection
+id: a73f4b61-2603-49aa-971c-3b91a7d1887e
+status: experimental
+description: |
+  Detects outbound network connections to an IP address hardcoded in a Node.js exfiltration script used in React2Shell post-exploitation.
+references:
+  - https://www.wiz.io/blog/nextjs-cve-2025-55182-react2shell-deep-dive
+author: ioc-yara-daily (agentic)
+date: 2024-10-18
+tags:
+  - attack.command_and_control
+  - attack.t1071
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationIp: '144.91.87.221'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: critical

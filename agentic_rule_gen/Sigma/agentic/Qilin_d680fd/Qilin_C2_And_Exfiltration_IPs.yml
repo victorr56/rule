@@ -1,0 +1,29 @@
+title: Qilin C2 And Exfiltration IPs
+id: e4b2d354-972c-47fc-8f77-50567f2b3e8c
+status: experimental
+description: Detects network connections to command and control (C2) or data exfiltration servers associated with Qilin ransomware operations.
+references:
+    - https://www.darktrace.com/blog/a-busy-agenda-darktraces-detection-of-qilin-ransomware-as-a-service-operator
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071
+    - attack.exfiltration
+    - attack.t1048
+detection:
+    selection:
+        DestinationIp:
+            - '93.115.25.139'
+            - '194.165.16.13'
+            - '91.238.181.230'
+            - '184.168.123.220'
+            - '184.168.123.219'
+            - '184.168.123.236'
+    condition: selection
+falsepositives:
+    - Unlikely, but IP addresses can be reassigned.
+level: high
+logsource:
+    category: network_connection
+    product: windows

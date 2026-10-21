@@ -1,0 +1,25 @@
+title: MacSync RAT Payload Drop
+id: eac0dd3d-f215-46aa-ac9b-75a7c207b0de
+status: experimental
+description: Detects the creation of the Mach-O RAT payload used by MacSync. The malware drops its payload in the user's hidden '.local' directory with a specific naming scheme.
+references:
+    - https://www.huntress.com/blog/macsync-stealer-rat-reverse-engineering
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1036
+    - attack.execution
+logsource:
+    category: file_event
+    product: macos
+detection:
+    selection:
+        Image|endswith: '/tmp/sync'
+        TargetFilename|contains|all:
+            - '/.local/com.apple.'
+            - '.hcpi'
+    condition: selection
+falsepositives:
+    - Legitimate applications named 'sync' running from /tmp and writing files that match this pattern (considered very unlikely).
+level: high

@@ -1,0 +1,24 @@
+title: Potential Lazarus Group FRP Execution
+id: f64421b8-eb33-4f9e-a8ba-93cfcf030b42
+status: experimental
+description: Detects the execution of 'fp.exe' with a specific configuration file 'fpc.dat', a pattern associated with a Lazarus subgroup's use of a customized Fast Reverse Proxy (FRP) client.
+references:
+    - https://blog.fox-it.com/2025/09/01/three-lazarus-rats-coming-for-your-cheese/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1090.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\fp.exe'
+        CommandLine|contains|all:
+            - '-c'
+            - 'fpc.dat'
+    condition: selection
+falsepositives:
+    - Legitimate use of Fast Reverse Proxy (FRP) with the same filenames.
+level: medium

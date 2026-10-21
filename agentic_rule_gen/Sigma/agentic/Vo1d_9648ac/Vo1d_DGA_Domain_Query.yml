@@ -1,0 +1,29 @@
+title: Vo1d Botnet DGA Domain Query
+id: 569d6c70-36a5-48b8-b86a-74d1a499388c
+status: experimental
+description: Detects DNS queries for domains matching the DGA patterns and known C2 domains used by the Vo1d botnet.
+references:
+    - https://www.darktrace.com/blog/unmasking-vo1d-inside-darktraces-botnet-detection
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1568.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection_seeds:
+        QueryName|endswith:
+            - '60b33d7929a.com'
+            - 'fc975904fc9.top'
+            - 'fc975904fc9.com'
+            - 'fc975904fc9.net'
+    selection_static:
+        QueryName:
+            - 'g.sxim.me'
+            - 'snakeers.com'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely.
+level: high

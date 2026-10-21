@@ -1,0 +1,24 @@
+title: Mini Shai Hulud Dropper Creation in VSCode Directory
+id: 6a8d11c8-2b87-4340-9e90-2e40003b41d2
+status: experimental
+description: Detects the creation of the `setup.mjs` dropper script within a `.vscode` directory. This file is used as a persistence and execution mechanism within the VS Code IDE.
+references:
+    - https://www.wiz.io/blog/mini-shai-hulud-supply-chain-sap-npm
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.persistence
+    - attack.t1546
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        Image|endswith: '\node.exe'
+        TargetFilename|endswith:
+            - '\.vscode\setup.mjs'
+            - '/.vscode/setup.mjs'
+    condition: selection
+falsepositives:
+    - A developer might create a file with this name and path for a legitimate automation task, but this is not a standard practice.
+level: high

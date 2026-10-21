@@ -1,0 +1,28 @@
+title: CikaBika Initial Access PowerShell Stager
+id: ca3f7df9-6938-4228-a401-443b74965251
+status: experimental
+description: Detects the execution of the CikaBika payload, which is dropped and run by a PowerShell stager. The stager writes a payload to a specific temporary file ('IfyuUapz.txt') and executes it using cmd.exe, with powershell.exe as the parent process.
+references:
+  - https://www.darktrace.com/blog/hiding-in-plain-sight-uncovering-a-multi-stage-ransomware-attack-through-behavioral-detection
+author: ioc-yara-daily (agentic)
+date: 2024-05-31
+tags:
+  - attack.execution
+  - attack.t1059.001
+  - attack.t1059.003
+  - attack.defense_evasion
+  - attack.t1027
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    ParentImage|endswith: '\powershell.exe'
+    Image|endswith: '\cmd.exe'
+    CommandLine|contains|all:
+      - '/c'
+      - 'IfyuUapz.txt'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high

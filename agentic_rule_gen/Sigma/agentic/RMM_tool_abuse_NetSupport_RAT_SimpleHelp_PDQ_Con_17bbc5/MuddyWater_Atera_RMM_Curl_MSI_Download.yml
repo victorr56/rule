@@ -1,0 +1,27 @@
+title: Atera RMM Agent Downloading MSI with Curl
+id: e8a7e3d1-5a9f-4d2c-80a0-07018d9633e7
+status: experimental
+description: |
+    Detects the Atera RMM agent spawning a command prompt to download an MSI file using curl.exe.
+    This behavior was observed being used to download and install a second RMM tool (ScreenConnect).
+references:
+    - https://redcanary.com/blog/security-operations/rmm-detection/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\AteraAgent.exe'
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - 'curl.exe'
+            - '.msi'
+    condition: selection
+falsepositives:
+    - Unlikely, but a legitimate administrative script run via Atera could perform this action.
+level: high

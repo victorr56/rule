@@ -1,0 +1,382 @@
+{
+  "malware_family": "BITSLOTH",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "BITSLOTH is a Windows backdoor that abuses the Background Intelligent Transfer Service (BITS) for command and control. First observed in an intrusion in the LATAM region, it features numerous handlers for discovery, execution, and data collection, including keylogging and screen capturing. Analysis of embedded strings suggests the developers may be native Chinese speakers.",
+  "mitre_techniques": [
+    "T1197",
+    "T1082",
+    "T1574.002",
+    "T1113",
+    "T1056.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "pdb_path",
+      "value": "D:\\SourceCode\\VS_Project\\Slaver_v4.2\\x64\\Release\\Slaver.pdb",
+      "context": "PDB path found in a BITSLOTH sample, referring to it as 'Slaver'.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Global\\d5ffff77ff77adad657658",
+      "context": "Hardcoded mutex to ensure only one instance runs.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "注意:已有程序正在运行,请勿重复运行...",
+      "context": "Simplified Chinese wide-character string for 'program already running'.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "rrrr_url",
+      "context": "String used to identify and key the embedded C2 configuration.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "WU Client Download",
+      "context": "Display name for a BITS job the malware cancels and later uses.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "WU Client Upload",
+      "context": "Display name for a BITS job the malware cancels and later uses.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "WU Client Upload R",
+      "context": "Display name for a BITS job the malware cancels on startup.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Microsoft Windows",
+      "context": "BITS job name used for persistence.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "flengine.dll",
+      "context": "Malicious DLL side-loaded by fl.exe.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "c:\\programdata\\pl studio\\flengine.dll",
+      "context": "Observed path of the malicious DLL in the call stack.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Media\\setup_wm.exe",
+      "context": "The command line executed by the BITS persistence job.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GET_DESKDOP",
+      "context": "Custom operator parameter to target CSIDL_DESKTOPDIRECTORY for file listing.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GET_BITBUCKET",
+      "context": "Custom operator parameter to target CSIDL_BITBUCKET (Recycle Bin) for file listing.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GET_PERSONAl",
+      "context": "Custom operator parameter to target CSIDL_MYDOCUMENTS for file listing.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "aghzyxklg",
+      "context": "Temporary filename for storing the output of the 'tree' command.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ciakfjoab",
+      "context": "Hardcoded name for BMP files created by the screenshot function.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "||",
+      "context": "Separator used in operator-provided parameters for the screenshot function.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wm",
+      "context": "Prefix for temporary files used to hold data for BITS transfers.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Slaver",
+      "context": "Internal name for the client-side malware component.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x2",
+      "context": "Single-byte XOR key used to obfuscate incoming C2 instructions.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "systeminfo",
+      "context": "Executed to gather system information (Command ID 2).",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "msinfo32",
+      "context": "Executed to retrieve additional system information (Command ID 29).",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "tree",
+      "context": "Executed to collect directory/file listings (Command ID 23).",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 81 3D ?? ?? ?? ?? F9 03 00 00 B9 AC 0F 00 00 0F 46 C1 }",
+      "context": "YARA sequence 'seq_global_protocol_check' for protocol check.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 59 85 C0 0F 84 ?? ?? ?? ?? E9 ?? ?? ?? ?? 6A 02 EB ?? 56 EB }",
+      "context": "YARA sequence 'seq_exit_windows' related to ExitWindows API call.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "216.238.121.132:8443",
+      "context": "Embedded C2 server address.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.116.13.178:443",
+      "context": "Embedded C2 server address.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.168.1.125:8443",
+      "context": "Embedded C2 server address (internal range).",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.168.1.124:8443",
+      "context": "Embedded C2 server address (internal range).",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "15.235.132.67:8443",
+      "context": "Pivoted C2 server with same port and SSL certificate.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://updater.microsoft.com/index.aspx",
+      "context": "Masquerade URL set in the BITS persistence job.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/%s/wu.htm",
+      "context": "Format string for C2 instruction request URL, from YARA rule. %s is MAC.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/IF/P.bin",
+      "context": "Exfiltration URI path for collected process information.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/IF/S.bin",
+      "context": "Exfiltration URI path for collected service information.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/%s/index.htm?RspID=%d",
+      "context": "Format string for C2 URL, from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/%s/%08x.rpl",
+      "context": "Format string for C2 URL, from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "4a4356faad620bf12ff53bcfac62e12eb67783bd22e66bf00a19a4c404bf45df",
+      "description": "BITSLOTH sample (s.dll)"
+    },
+    {
+      "sha256": "dfb76bcf5a3e29225559ebbdae8bdd24f69262492eca2f99f7a9525628006d88",
+      "description": "BITSLOTH sample (125.exe)"
+    },
+    {
+      "sha256": "4fb6dd11e723209d12b2d503a9fcf94d8fed6084aceca390ac0b7e7da1874f50",
+      "description": "BITSLOTH sample (setup_wm.exe)"
+    },
+    {
+      "sha256": "0944b17a4330e1c97600f62717d6bae7e4a4260604043f2390a14c8d76ef1507",
+      "description": "BITSLOTH sample (1242.exe)"
+    },
+    {
+      "sha256": "0f9c0d9b77678d7360e492e00a7fa00af9b78331dc926b0747b07299b4e64afd",
+      "description": "BITSLOTH sample, VMProtect packed (setup_wm.exe)"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

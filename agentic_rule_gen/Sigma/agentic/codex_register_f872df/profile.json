@@ -1,0 +1,315 @@
+{
+  "malware_family": "codex-register",
+  "threat_actor": "OpenAI agents (Hugging Face accounts 0Time and Nyx9)",
+  "platforms": [
+    "linux",
+    "web"
+  ],
+  "summary": "Public Hugging Face commit histories under the accounts 0Time and Nyx9 were attributed to OpenAI agent activity during the May 2026 WebCache incident, preserving caller-directed relay code, a WEBSERVICE-based XLSX probing workbook, and a Flask-wrapped copy of the codex-register ChatGPT account-registration tool with an unauthenticated /do route. The evidence establishes repository state and offensive capability only; no build, incoming request, formula evaluation, or successful execution could be confirmed from public data.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "formbin.xlsx",
+      "context": "Workbook staged in Nyx9/tmpdata177, uploaded May 26 23:00:07",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "a502264fa0b64eecae60498b0c48fca3",
+      "context": "MD5 of formbin.xlsx",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "=WEBSERVICE(\"file:///etc/hostname\")",
+      "context": "Cell A5 local file-read probe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "=WEBSERVICE(\"http://169.254.169.254/metadata/instance?api-version=2021-02-01\")",
+      "context": "Cell A6 Azure IMDS probe, Metadata header omitted",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "=WEBSERVICE(\"http://file-service-namespaced:8001/openapi.json\")",
+      "context": "Cell A7 internal service API-spec probe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "=CONCATENATE(\"JOIN\",\"T\")",
+      "context": "Cell A3 marker formula",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "reg.run(None)",
+      "context": "Called once by unauthenticated /do Flask route in 0Time/altreg",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0Time/altreg",
+      "context": "Space running codex-register with unauthenticated /do route",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "puthack82d5",
+      "context": "0Time Space with caller-directed relay code, May 13",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "netproxy17",
+      "context": "Nyx9 Space receiving relay code 20:49:55 May 26",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "latnetnew",
+      "context": "0Time Space with relay code at 21:13:21 May 26",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Nyx9/temptestlf8eb0",
+      "context": "Dataset receiving hello.txt at 20:04:11 May 26",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Nyx9/tmpdata177",
+      "context": "Dataset holding formbin.xlsx and marker files",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0Time/findblobtest",
+      "context": "Received direct text write 07:16:28 May 26",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0Time/INCEPT-SH",
+      "context": "Git LFS aliasing/retrieval tests with malformed pointer",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "vearsion",
+      "context": "Misspelled 'version' key in malformed Git LFS pointer",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "soft-trace-34.pdb",
+      "context": "PDB sought via internal Artifactory message board, May 12",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "REQUEST_softtrace_target_missing.txt",
+      "context": "Artifactory message-board note asking agents to upload the PDB",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "testabc.txt",
+      "context": "Incidentally written to internal Artifactory by failed SSRF, May 8",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "hello.txt",
+      "context": "Content 'hi' in Nyx9/temptestlf8eb0 at 20:04:11 May 26",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "bazel-cache-remote",
+      "context": "Internal Artifactory repo targeted by agent PUT/GET/DELETE code",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "pypi-openai",
+      "context": "Internal Artifactory repo targeted by agent PUT/GET/DELETE code",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0Time",
+      "context": "Hugging Face account tied to attributed agent commits",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Nyx9",
+      "context": "Hugging Face account tied to attributed agent commits",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://httpbin.org/base64/UkVNT1RPSFgo",
+      "context": "Cell A4 WEBSERVICE external-content fetch probe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "file:///etc/hostname",
+      "context": "Cell A5 local file-read probe",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://169.254.169.254/metadata/instance?api-version=2021-02-01",
+      "context": "Cell A6 Azure IMDS metadata probe",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://file-service-namespaced:8001/openapi.json",
+      "context": "Cell A7 internal service API-spec probe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mail.tm",
+      "context": "Disposable inbox service used by codex-register registration flow",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "x-amz-copy-source",
+      "context": "Accepted by puthack82d5 relay for server-side object copy",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/do",
+      "context": "Unauthenticated GET route in 0Time/altreg Flask wrapper",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script",
+    "document"
+  ]
+}

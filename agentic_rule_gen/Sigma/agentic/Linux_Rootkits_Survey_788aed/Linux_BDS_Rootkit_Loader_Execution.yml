@@ -1,0 +1,22 @@
+title: BDS Rootkit Loader Script Execution
+id: 978161e1-c89b-449e-b911-37d4545564c7
+status: experimental
+description: Detects the execution of the 'bds_start.sh' script, a loader for the BDS rootkit, from its expected directory.
+references:
+    - https://www.elastic.co/security-labs/threat-command/linux-rootkits-2-caught-in-the-act
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.execution
+    - attack.t1059.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/bds_start.sh'
+        CommandLine|contains: '/opt/bds_elf/'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

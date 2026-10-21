@@ -1,0 +1,24 @@
+title: REF1695/CNB Bot Persistence Creation Via Scheduled Task
+id: 546f04d8-c626-4444-a957-3f367e9ab137
+status: experimental
+description: Detects the creation of a scheduled task named "HostDataProcess", which is used by CNB Bot for persistence.
+references:
+    - https://www.elastic.co/security-labs/threat-command/fake-installers-to-monero
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.persistence
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn HostDataProcess'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

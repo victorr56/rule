@@ -1,0 +1,25 @@
+title: UAT-11587 Antino PowerShell Execution via sdiagnhost.exe
+id: 7e7a83d7-27e1-4560-a292-69f20e408d6c
+status: experimental
+description: Detects the creation of 'result.ps1' in a temporary diagnostics folder by sdiagnhost.exe, a technique used by UAT-11587's Antino backdoor to execute PowerShell for persistence.
+references:
+    - https://blog.talosintelligence.com/china-nexus-uat-11587-targets-government-and-policy-organizations-across-asia-with-antino-backdoor/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1218.005
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\sdiagnhost.exe'
+        TargetFilename|contains|all:
+            - 'C:\Windows\Temp\SDIAG_'
+            - '\result.ps1'
+    condition: selection
+falsepositives:
+    - Legitimate but very rare use of scripted diagnostics that creates a file named result.ps1.
+level: medium

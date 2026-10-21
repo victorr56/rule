@@ -1,0 +1,913 @@
+{
+  "malware_family": "Vultur",
+  "threat_actor": "",
+  "platforms": [
+    "android"
+  ],
+  "summary": "Vultur is an Android banking trojan delivered by the Brunhilda dropper, a trojanised McAfee Security app that decrypts and installs three payloads (two APKs and one DEX) via native code. It abuses Android Accessibility Services and Firebase Cloud Messaging for remote control and communicates AES-encrypted, Base64-encoded JSON-RPC 2.0 over HTTPS while retaining AlphaVNC/ngrok remote access.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "78a01b34-2439-41c2-8ab7-d97f3ec158c6",
+      "context": "Encrypted first Vultur payload in dropper app assets directory",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "data",
+      "context": "Encrypted APK for Vultur payload #2 in app assets directory",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "a.int",
+      "context": "Encrypted DEX (Vultur payload #3) decrypted with AES/CFB/NoPadding",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IPIjf4QWNMWkVQN21ucmNiUDZaVw==",
+      "context": "Argument to native decrypt routine; key taken from index 6-22",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "QWNMWkVQN21ucmNi",
+      "context": "AES/ECB/PKCS5Padding key decrypting dropper's first payload",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DXMgKBY29QYnRPR1k1STRBNTZNUw==",
+      "context": "Base64 string from which payload #2 decryption key is derived",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Y29QYnRPR1k1STRB",
+      "context": "AES key decrypting second Vultur payload APK",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SBhXcwoAiLTNIyLK",
+      "context": "AES/CFB/NoPadding key decrypting payload #3, reused across samples",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "9bd25f13-c3f8-4503-ab34-4bbd63004b6e",
+      "context": "SharedPreferences key holding dropper C2 registration result",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "f9078181-3126-4ff5-906e-a38051505098",
+      "context": "SharedPreferences key storing encrypted C2 token in payload #1",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "bbd1e64e-eba3-463c-95f3-c3bbb35b5907",
+      "context": "SharedPreferences key storing installer.config HTML for accessibility prompt",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "1590d3a3-1d8e-4ee9-afde-fcc174964db4",
+      "context": "SharedPreferences key set true when accessibility warning shown",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "dffa98fe-8bf6-4ed7-8d80-bb1a83c91fbb",
+      "context": "SharedPreferences key holding payload #3 decryption key",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "946b7e8e",
+      "context": "SharedPreferences key holding HTML for WebView FCM commands",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "c0ee5ba1-83dd-49c8-8212-4cfd79e479c0",
+      "context": "SharedPreferences key set by FCM 3263f7d4 for power menu/back handling",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "blocked_package_template",
+      "context": "SharedPreferences key storing blocked packages and HTML templates",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Temporarily Unavailable",
+      "context": "Default message shown after backing out of a blocked app",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Your system not safe, service McAfee Master Protection turned off. For using full device protection turn it on.",
+      "context": "Warning shown to convince user to enable Accessibility Service",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "McAfee Master Protection",
+      "context": "Value substituted for ${APP_NAME} in the accessibility HTML WebView",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Command: %s",
+      "context": "Format string in payload #3 file manager decompilation",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "35ee36da-fa2b-4c84-8c92-2f0cbb56de1b",
+      "context": "Literal in file-manager related decompilation of payload #3",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "com.google.android.marvin.talkback.TalkBackService",
+      "context": "Malicious Accessibility Service declared with legitimate suite name",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "com.google.android.marvin.talkback",
+      "context": "Official Android Accessibility Suite package name abused by the service",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "com.wsandroid.suite",
+      "context": "Official McAfee Security package name sent by trojanised dropper",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "109b0e16",
+      "context": "FCM command ID: presses back button (performGlobalAction(1))",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "18cb31d4",
+      "context": "FCM command ID: presses home button (performGlobalAction(2))",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "811c5170",
+      "context": "FCM command ID: shows overview of recently opened apps",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "7f289af9",
+      "context": "FCM command ID: shows WebView with HTML from SharedPreference 946b7e8e",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "d6f665bf",
+      "context": "FCM command ID: starts an app specified by the payload",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1b05d6ee",
+      "context": "FCM command ID: shows a black view",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1b05d6da",
+      "context": "FCM command ID: shows black view from payload #2 layout resources",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ed346347",
+      "context": "FCM command ID: performs a click",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "5c900684",
+      "context": "FCM command ID: scrolls forward",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "d98179a8",
+      "context": "FCM command ID: scrolls backward",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "7994ceca",
+      "context": "FCM command ID: sets text of a specified element ID",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "feba1943",
+      "context": "FCM command ID: swipes up",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "d403ad43",
+      "context": "FCM command ID: swipes down",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "4510a904",
+      "context": "FCM command ID: swipes left",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "753c4fa0",
+      "context": "FCM command ID: swipes right",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "b183a400",
+      "context": "FCM command ID: stroke pattern on a 3x3 grid",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "81d9d725",
+      "context": "FCM command ID: stroke pattern based on coordinates and duration",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "b79c4b56",
+      "context": "FCM command ID: press-and-hold 3 times near bottom middle",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1a7493e7",
+      "context": "FCM command ID: starts screen recording",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "6fa8a395",
+      "context": "FCM command ID: sets keyboard ShowMode to 0",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "9b22cbb1",
+      "context": "FCM command ID: sets keyboard ShowMode to 1",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "98c97da9",
+      "context": "FCM command ID: requests external storage read/write permissions",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "7b230a3b",
+      "context": "FCM command ID: requests install-from-unknown-sources permission",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "cc8397d4",
+      "context": "FCM command ID: opens the long-press power menu",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "3263f7d4",
+      "context": "FCM command ID: sets SharedPreference c0ee5ba1 value from payload",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "5283d36d-e3aa-45ed-a6fb-2abacf43d29c",
+      "context": "FCM command: sends POST with vnc.config and stores malware config",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "09defc05-701a-4aa3-bdd2-e74684a61624",
+      "context": "FCM command: hides keyboard/keyguard, mutes audio, shows black view",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "fc7a0ee7-6604-495d-ba6c-f9c2b55de688",
+      "context": "FCM command: same, but shows WebView from pref 946b7e8e",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "8eac269d-2e7e-4f0d-b9ab-6559d401308d",
+      "context": "FCM command: hides keyboard, wake lock, disables keyguard, mutes audio",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "e7289335-7b80-4d83-863a-5b881fd0543d",
+      "context": "FCM command: enables keyboard/unmutes audio and sends vnc.snapshot",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "544a9f82-c267-44f8-bff5-0726068f349d",
+      "context": "FCM command: retrieves C2 command, payload and UUID for execution",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "a7bfcfaf-de77-4f88-8bc8-da634dfb1d5a",
+      "context": "FCM command: creates custom notification in status bar",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "444c0a8a-6041-4264-959b-1a97d6a92b86",
+      "context": "FCM command: fetches blocked packages via vnc.blocked.packages",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "a1f2e3c6-9cf8-4a7e-b1e0-2c5a342f92d6",
+      "context": "FCM command: executes file manager sub-commands",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "91b4a535-1a78-4655-90d1-a3dcb0f6388a",
+      "context": "File manager command ID: downloads a file",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "cf2f3a6e-31fc-4479-bb70-78ceeec0a9f8",
+      "context": "File manager command ID: uploads a file",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1ce26f13-fba4-48b6-be24-ddc683910da3",
+      "context": "File manager command ID: deletes a file",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "952c83bd-5dfb-44f6-a034-167901990824",
+      "context": "File manager command ID: installs a file",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "787e662d-cb6a-4e64-a76a-ccaf29b9d7ac",
+      "context": "File manager command ID: finds files matching a pattern",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "safetyfactor.online",
+      "context": "Vultur C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cloudmiracle.store",
+      "context": "Vultur C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "flandria171.appspot.com",
+      "context": "Firebase Cloud Messaging endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "newyan-1e09d.appspot.com",
+      "context": "Firebase Cloud Messaging endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/ejr/",
+      "context": "C2 endpoint for JSON-RPC 2.0 communication (replaces older /rpc/)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/upload/",
+      "context": "Endpoint for uploading files such as screen recording results",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/version/app/?filename=ngrok&arch={DEVICE_ARCH}",
+      "context": "Endpoint for downloading the matching ngrok version",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/version/app/?filename={FILENAME}",
+      "context": "Endpoint for downloading a file specified by the payload (file manager)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/rpc/",
+      "context": "Endpoint used by older Vultur versions for C2 communication",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Dalvik/2.1.0 (Linux; U; Android 10; Lenovo Build/PI)",
+      "context": "User-Agent in bot registration POST to /ejr/",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Content-Type: application/json; utf-8",
+      "context": "Header of AES-encrypted Base64 C2 request",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mcafee.960232.com",
+      "context": "Brunhilda dropper distribution URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mcafee.353934.com",
+      "context": "Brunhilda dropper distribution URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mcafee.908713.com",
+      "context": "Brunhilda dropper distribution URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mcafee.784503.com",
+      "context": "Brunhilda dropper distribution URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mcafee.053105.com",
+      "context": "Brunhilda dropper distribution URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mcafee.092877.com",
+      "context": "Brunhilda dropper distribution URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mcafee.582630.com",
+      "context": "Brunhilda dropper distribution URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mcafee.581574.com",
+      "context": "Brunhilda dropper distribution URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mcafee.582342.com",
+      "context": "Brunhilda dropper distribution URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mcafee.593942.com",
+      "context": "Brunhilda dropper distribution URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mcafee.930204.com",
+      "context": "Brunhilda dropper distribution URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cloudmarcie.store",
+      "context": "Host header in captured /ejr/ registration request",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "edef007f1ca60fdf75a7d5c5ffe09f1fc3fb560153633ec18c5ddb46cc75ea21",
+      "description": "Brunhilda dropper"
+    },
+    {
+      "sha256": "89625cf2caed9028b41121c4589d9e35fa7981a2381aa293d4979b36cf5c8ff2",
+      "description": "Vultur payload #1"
+    },
+    {
+      "sha256": "1fc81b03703d64339d1417a079720bf0480fece3d017c303d88d18c70c7aabc3",
+      "description": "Vultur payload #2"
+    },
+    {
+      "sha256": "4fed4a42aadea8b3e937856318f9fbd056e2f46c19a6316df0660921dd5ba6c5",
+      "description": "Vultur payload #3 (DEX)"
+    },
+    {
+      "sha256": "001fd4af41df8883957c515703e9b6b08e36fde3fd1d127b283ee75a32d575fc",
+      "description": "Brunhilda dropper"
+    },
+    {
+      "sha256": "fc8c69bddd40a24d6d28fbf0c0d43a1a57067b19e6c3cc07e2664ef4879c221b",
+      "description": "Vultur payload #1"
+    },
+    {
+      "sha256": "7337a79d832a57531b20b09c2fc17b4257a6d4e93fcaeb961eb7c6a95b071a06",
+      "description": "Vultur payload #2"
+    },
+    {
+      "sha256": "7f1a344d8141e75c69a3c5cf61197f1d4b5038053fd777a68589ecdb29168e0c",
+      "description": "Vultur payload #3 (DEX)"
+    },
+    {
+      "sha256": "26f9e19c2a82d2ed4d940c2ec535ff2aba8583ae3867502899a7790fe3628400",
+      "description": "Brunhilda dropper (older two-payload variant)"
+    },
+    {
+      "sha256": "2a97ed20f1ae2ea5ef2b162d61279b2f9b68eba7cf27920e2a82a115fd68e31f",
+      "description": "Vultur payload #1"
+    },
+    {
+      "sha256": "c0f3cb3d837d39aa3abccada0b4ecdb840621a8539519c104b27e2a646d7d50d",
+      "description": "Vultur payload #2"
+    },
+    {
+      "sha256": "f5ce27a49eaf59292f11af07851383e7d721a4d60019f3aceb8ca914259056af",
+      "description": "Brunhilda dropper"
+    },
+    {
+      "sha256": "5d86c9afd1d33e4affa9ba61225aded26ecaeb01755eeb861bb4db9bbb39191c",
+      "description": "Vultur payload #1"
+    },
+    {
+      "sha256": "5724589c46f3e469dc9f048e1e2601b8d7d1bafcc54e3d9460bc0adeeada022d",
+      "description": "Vultur payload #2"
+    },
+    {
+      "sha256": "fd3b36455e58ba3531e8cce0326cce782723cc5d1cc0998b775e07e6c2622160",
+      "description": "Brunhilda dropper (also submitted to VirusTotal as McAfee Security.apk)"
+    },
+    {
+      "sha256": "819044d01e8726a47fc5970efc80ceddea0ac9bf7c1c5d08b293f0ae571369a9",
+      "description": "Vultur payload #1"
+    },
+    {
+      "sha256": "0f2f8adce0f1e1971cba5851e383846b68e5504679d916d7dad10133cc965851",
+      "description": "Vultur payload #2"
+    },
+    {
+      "sha256": "fb1e68ee3509993d0fe767b0372752d2fec8f5b0bf03d5c10a30b042a830ae1a",
+      "description": "Vultur payload #3 (DEX)"
+    },
+    {
+      "sha256": "d3dc4e22611ed20d700b6dd292ffddbc595c42453f18879f2ae4693a4d4d925a",
+      "description": "Brunhilda dropper (old variant)"
+    },
+    {
+      "sha256": "f4d7e9ec4eda034c29b8d73d479084658858f56e67909c2ffedf9223d7ca9bd2",
+      "description": "Vultur (old variant)"
+    }
+  ],
+  "file_types": [
+    "apk",
+    "elf"
+  ]
+}

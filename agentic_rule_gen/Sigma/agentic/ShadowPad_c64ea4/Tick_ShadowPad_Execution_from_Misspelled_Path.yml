@@ -1,0 +1,22 @@
+title: Tick ShadowPad Execution from Misspelled Path
+id: 2d3c90e6-a81d-4009-8088-29a399f11667
+status: experimental
+description: Detects the execution of AppLaunch.exe from a non-standard, misspelled path used by a ShadowPad variant deployed by the Tick threat actor.
+references:
+    - http://nao-sec.org/2024/06/building-caspers-shadow.html
+author: ioc-yara-daily (agentic)
+date: 2024-06-21
+tags:
+    - attack.execution
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|startswith: 'C:\ProgramData\'
+        Image|endswith: '\MicroSoft.NET\AppLaunch.exe' # Note typo in 'MicroSoft'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

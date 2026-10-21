@@ -1,0 +1,142 @@
+{
+  "malware_family": "CHOSEN BRICK",
+  "threat_actor": "Iranian state cyber actors",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "CHOSEN BRICK is a Windows malware family used by Iranian state cyber actors since at least 2025 to target dissidents, activists and journalists in the UK, US, Netherlands and elsewhere. It is delivered through social-engineering on messaging platforms using lures disguised as legitimate applications, persists via the HKCU Run key, and uses per-victim Telegram bots plus cloud object stores for command and control and exfiltration. The malware supports process and system discovery, screen and microphone capture, Telegram/WhatsApp and email theft, additional payload downloads and data wiping.",
+  "mitre_techniques": [
+    "T1589",
+    "T1566.003",
+    "T1204.002",
+    "T1547.001",
+    "T1480.002",
+    "T1685",
+    "T1057",
+    "T1082",
+    "T1113",
+    "T1123",
+    "T1005",
+    "T1485",
+    "T1114.001",
+    "T1041",
+    "T1567.002",
+    "T1090.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "context": "Persistence location used by CHOSEN BRICK to survive reboot and run at user logon",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "SMQDService = C:\\ProgramData\\SMQDServicePackages\\...\\smdqservice.exe",
+      "context": "Example malicious Run key entry previously observed associated with CHOSEN BRICK",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "winappx = C:\\Users\\All Users\\MicrosoftDistribution\\sysmain\\winappx.exe",
+      "context": "Example malicious Run key entry previously observed associated with CHOSEN BRICK",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "ytyjyujyu",
+      "context": "Mutex most commonly registered by CHOSEN BRICK (execution guardrails / mutual exclusion)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "noi672pp434awkc12f",
+      "context": "Mutex most commonly registered by CHOSEN BRICK (execution guardrails / mutual exclusion)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows \\SysWOW64",
+      "context": "Most common observed disk location for downloaded additional malware; note space after Windows makes it non-standard",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "api.telegram.org",
+      "context": "Telegram bot command-and-control channel; each victim device uses a unique Bot ID",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "vultrobjects.com",
+      "context": "Cloud object store used for exfiltration of files and collected data",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "storjshare.io",
+      "context": "Cloud object store used for exfiltration of files and collected data",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "backblazeb2.com",
+      "context": "Cloud storage domain listed for unexpected-traffic investigation",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "iproyal.com",
+      "context": "Proxy service used in recent variants to obscure Telegram bot traffic",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "lightningproxies.net",
+      "context": "Proxy service used in recent variants to obscure Telegram bot traffic",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

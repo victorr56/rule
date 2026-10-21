@@ -1,0 +1,22 @@
+title: GroundPeony MicDown DLL Side-Loading
+id: d7d91e6b-a274-4b47-ab17-380d0d5d6764
+status: experimental
+description: Detects the execution of a legitimate executable "mic.exe" from a non-standard path which side-loads a malicious "version.dll" as part of the GroundPeony micDown infection chain.
+references:
+    - http://nao-sec.org/2023/08/groundpeony-crawling-with-malice.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1574.002
+logsource:
+    product: windows
+    category: image_load
+detection:
+    selection:
+        Image: 'C:\ProgramData\mic\mic.exe'
+        ImageLoaded|endswith: '\version.dll'
+    condition: selection
+falsepositives:
+    - Legitimate Micro Focus software might use mic.exe, but it is highly unlikely to be executed from 'C:\ProgramData\mic\' and load a version.dll from the same directory.
+level: high

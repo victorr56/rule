@@ -1,0 +1,21 @@
+title: Mini Shai-Hulud Python Payload Download
+id: e47b4e9f-7a5d-4f05-aa50-fdde65a7ffc3
+status: experimental
+description: Detects the download of the 'transformers.pyz' payload from the Mini Shai-Hulud C2 server.
+references:
+    - https://www.wiz.io/blog/mini-shai-hulud-strikes-again-tanstack-more-npm-packages-compromised
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname: 'git-tanstack.com'
+        Url|endswith: '/tmp/transformers.pyz'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

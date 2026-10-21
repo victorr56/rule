@@ -1,0 +1,22 @@
+title: Sliver C2 JA3 Hash d6828e30ab66774a91a96ae93be4ae4c
+id: 288e147e-a169-42b7-a367-27e1f41ed52d
+status: experimental
+description: Detects a JA3 hash 'd6828e30ab66774a91a96ae93be4ae4c', associated with the Sliver C2 framework, communicating with C2 domains observed in a ransomware attack campaign.
+references:
+  - https://www.darktrace.com/blog/hiding-in-plain-sight-uncovering-a-multi-stage-ransomware-attack-through-behavioral-detection
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+  - attack.command_and_control
+  - attack.t1071.001
+logsource:
+  category: network_connection
+  product: zeek
+detection:
+  selection:
+    ja3: 'd6828e30ab66774a91a96ae93be4ae4c'
+    DestinationHostname|endswith: '.infosteal.com'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high

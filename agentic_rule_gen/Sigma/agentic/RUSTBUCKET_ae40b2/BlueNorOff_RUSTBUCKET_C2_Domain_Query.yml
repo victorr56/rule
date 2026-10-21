@@ -1,0 +1,27 @@
+title: BlueNorOff RUSTBUCKET C2 Domain Query
+id: 579e0a0a-0158-4560-8027-4a0b677a83d4
+status: experimental
+description: Detects DNS queries for domains known to be used by the RUSTBUCKET malware for command and control.
+references:
+    - https://www.elastic.co/security-labs/threat-command/DPRK-strikes-using-a-new-variant-of-rustbucket
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'webhostwatto.work.gd'
+            - 'crypto.hondchain.com'
+            - 'starbucls.xyz'
+            - 'jaicvc.com'
+            - 'docsend.linkpc.net'
+            - 'companydeck.online'
+    condition: selection
+falsepositives:
+    - Unlikely, but domains can be sinkholed or re-allocated.
+level: critical

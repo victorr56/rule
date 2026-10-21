@@ -1,0 +1,24 @@
+title: Skynox7 SSH Directory Creation
+id: 5699479b-0081-4da2-9b2f-3d6d5ca0d2f1
+status: experimental
+description: Detects the simultaneous creation of SSH directories for both 'root' and 'ubnt' users, a specific behavior observed in the skynox7 campaign to prepare for SSH key persistence.
+references:
+    - https://www.greynoise.io/blog/proxyjacking-edge-devices-residential-proxies
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1098.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/mkdir'
+        CommandLine|contains|all:
+            - '/root/.ssh'
+            - '/home/ubnt/.ssh'
+    condition: selection
+falsepositives:
+    - Highly unusual system administration scripts might perform this action.
+level: high

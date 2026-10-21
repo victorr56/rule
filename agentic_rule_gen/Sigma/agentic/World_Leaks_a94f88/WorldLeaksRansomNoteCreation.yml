@@ -1,0 +1,22 @@
+title: World Leaks Ransom Note Creation
+id: c43e86f8-47e9-4e1b-b78b-d729c6693a1c
+status: experimental
+description: Detects the creation of World Leaks ransom notes by a malicious 'svchost.exe' process located in a non-standard public directory. The ransom note has a specific filename pattern consisting of a nine-character randomized string followed by '.README.txt'.
+references:
+    - https://www.darktrace.com/blog/when-reality-diverges-from-the-playbook-darktrace-identifies-encryption-in-a-world-leaks-ransomware-attack
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.impact
+    - attack.t1486
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\Users\Public\svchost.exe'
+        TargetFilename|re: '[A-Z][a-z]{3}[A-Z][a-z][A-Z]{3}\.README\.txt'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

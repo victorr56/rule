@@ -1,0 +1,23 @@
+title: XMRig Campaign DNS Queries
+id: 9cf23769-930b-4654-a690-348fca8c3127
+status: experimental
+description: Detects DNS queries for domains associated with an XMRig campaign's payload delivery and mining pool infrastructure.
+references:
+    - https://www.huntress.com/blog/ahsaycbs-flaws-exploit
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1105
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'imagefiles-backup.oss-ap-southeast-7.aliyuncs.com'
+            - 'xmr.kryptex.network'
+    condition: selection
+falsepositives:
+    - Legitimate use of the Kryptex mining pool, which may be a policy violation but not necessarily malicious activity.
+level: high

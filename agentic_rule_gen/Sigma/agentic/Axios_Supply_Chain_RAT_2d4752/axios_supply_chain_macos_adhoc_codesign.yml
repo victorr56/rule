@@ -1,0 +1,26 @@
+title: Axios Supply-Chain RAT macOS Ad-Hoc Code Signing
+id: a206b02a-0a75-43a5-b1a7-f4e9549f3e49
+status: experimental
+description: Detects the use of `codesign` to perform an ad-hoc signing of a file in the /private/tmp directory. This technique is used by the Axios supply-chain RAT to bypass Gatekeeper for downloaded payloads.
+references:
+    - https://www.elastic.co/security-labs/blog/axios-supply-chain-compromise-detections
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.defense_evasion
+    - attack.t1553.002
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image|endswith: '/codesign'
+        CommandLine|contains|all:
+            - '--force'
+            - '--deep'
+            - '--sign -'
+            - '/private/tmp/'
+    condition: selection
+falsepositives:
+    - Legitimate developer or administrative activity involving ad-hoc signing of temporary files.
+level: medium

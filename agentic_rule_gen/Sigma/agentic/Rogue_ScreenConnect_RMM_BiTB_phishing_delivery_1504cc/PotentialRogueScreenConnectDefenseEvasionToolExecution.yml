@@ -1,0 +1,27 @@
+title: Potential Rogue ScreenConnect Defense Evasion Tool Execution
+id: c4602c34-f728-444a-a309-847242131926
+status: experimental
+description: Detects the execution of known defense evasion tools 'HideCursor.exe' or 'HideUL.exe' likely spawned from a rogue ScreenConnect RMM session.
+references:
+    - https://www.huntress.com/blog/phishing-bitb-rmm-attacks
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1562
+    - attack.t1219
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith:
+            - '\ScreenConnect.Client.exe'
+            - '\ScreenConnect.WindowsClient.exe'
+        Image|endswith:
+            - '\HideCursor.exe'
+            - '\HideUL.exe'
+    condition: selection
+falsepositives:
+    - Unlikely, but a legitimate administrator could use similarly named tools.
+level: high

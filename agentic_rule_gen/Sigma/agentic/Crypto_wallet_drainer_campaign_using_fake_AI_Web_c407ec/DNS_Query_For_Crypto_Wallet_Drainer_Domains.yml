@@ -1,0 +1,55 @@
+title: DNS Query For Crypto Wallet Drainer Domains
+id: 5698b67b-2bd9-4a00-9831-2947137f8eb2
+status: experimental
+description: Detects DNS queries for domains associated with a crypto wallet drainer campaign involving fake AI/Web3 startups.
+references:
+    - https://www.darktrace.com/blog/crypto-wallets-continue-to-be-drained-in-elaborate-social-media-scam
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1567
+    - attack.t1041
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'mrajhhosdoahjsd.com'
+            - 'mrajhhoshoahjsd.com'
+            - 'isnimitz.com'
+            - 'manboon.com'
+            - 'gaetanorealty.com'
+            - 'troveur.com'
+            - 'bigpinellas.com'
+            - 'dsandbox.com'
+            - 'conceptwo.com'
+            - 'aceartist.com'
+            - 'turismoelcasco.com'
+            - 'ekodirect.com'
+            - 'pollens.app'
+            - 'pollens.io'
+            - 'pollens.tech'
+            - 'buzzu.app'
+            - 'buzzu.us'
+            - 'buzzu.me'
+            - 'buzzu.space'
+            - 'swox.io'
+            - 'swox.app'
+            - 'swox.cc'
+            - 'swoxai.com'
+            - 'swox.us'
+            - 'wasper.pro'
+            - 'wasper.app'
+            - 'lunelior.net'
+            - 'lunelior.app'
+            - 'beesync.ai'
+            - 'beesync.cc'
+            - 'eternal-decay.xyz'
+            - 'dexis.app'
+            - 'solune.io'
+            - 'yonda.us'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

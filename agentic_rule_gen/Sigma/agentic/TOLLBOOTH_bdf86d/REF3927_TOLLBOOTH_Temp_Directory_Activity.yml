@@ -1,0 +1,21 @@
+title: REF3927 TOLLBOOTH Temp Directory Activity
+id: 2855f75e-c029-4592-88eb-11c58c9735a2
+status: experimental
+description: Detects file creation events in a hardcoded temporary directory used by the TOLLBOOTH malware for its configuration and cache files.
+references:
+    - https://www.elastic.co/security-labs/threat-command/tollbooth
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.t1505.004
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|startswith: 'C:\ProgramData\'
+        TargetFilename|startswith: 'C:\Windows\Temp\_FAB234CD3-09434-8898D-BFFC-4E23123DF2C\'
+    condition: selection
+falsepositives:
+    - Legitimate software installed to 'C:\ProgramData' that for unknown reasons uses this uniquely named temporary directory.
+level: high

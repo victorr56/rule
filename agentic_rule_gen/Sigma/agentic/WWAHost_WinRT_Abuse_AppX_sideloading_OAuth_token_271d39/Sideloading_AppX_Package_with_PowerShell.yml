@@ -1,0 +1,24 @@
+title: Sideloading AppX Package with PowerShell
+id: d7d07d12-6f2c-471a-b003-242981514757
+status: experimental
+description: Detects the use of the 'Add-AppxPackage' cmdlet to register an 'AppxManifest.xml' file. This is a common method for sideloading AppX packages, which can be abused by attackers to install malicious applications.
+references:
+    - https://www.huntress.com/blog/stealing-oauth-tokens-through-microsofts-front-door
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.t1528
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'Add-AppxPackage'
+            - '-Register'
+            - 'AppxManifest.xml'
+    condition: selection
+falsepositives:
+    - Software developers or system administrators legitimately sideloading applications for testing or deployment.
+level: high

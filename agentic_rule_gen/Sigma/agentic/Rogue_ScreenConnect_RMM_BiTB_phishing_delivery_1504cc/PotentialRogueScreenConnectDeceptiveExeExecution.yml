@@ -1,0 +1,26 @@
+title: Potential Rogue ScreenConnect Deceptive EXE Execution
+id: d04d60c4-ed34-4530-9b48-12502693898f
+status: experimental
+description: Detects the execution of an executable with a filename designed to impersonate an Adobe Acrobat Reader update, as seen in rogue ScreenConnect campaigns.
+references:
+    - https://www.huntress.com/blog/phishing-bitb-rmm-attacks
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\Adobe-AcrobatReader-edge16.exe'
+        ParentImage|endswith:
+            - '\explorer.exe'
+            - '\chrome.exe'
+            - '\msedge.exe'
+            - '\firefox.exe'
+    condition: selection
+falsepositives:
+    - Unlikely due to the specific and unusual filename.
+level: high

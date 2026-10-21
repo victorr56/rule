@@ -1,0 +1,26 @@
+title: Webworm EchoCreep VBS Test Script Execution
+id: c032a11b-6d8c-4f7f-8e4a-55b6c31a7b0f
+status: experimental
+description: Detects the execution of a VBScript from a specific path ('C:\tools\se\win64\test.vbs'), consistent with early testing of the EchoCreep backdoor by the Webworm APT group.
+references:
+  - https://www.welivesecurity.com/en/eset-research/webworm-new-burrowing-techniques/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.execution
+  - attack.t1059.003
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - '\wscript.exe'
+      - '\cscript.exe'
+    CommandLine|contains|all:
+      - 'C:\tools\se\win64\'
+      - 'test.vbs'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high

@@ -1,0 +1,23 @@
+title: Tycoon 2FA AiTM DRS Abuse For Persistence
+id: 09d2a6a1-9a74-4b5b-8cd7-1f481c7e9976
+status: experimental
+description: Detects connection to the Device Registration Service (DRS) enrollment endpoint, a technique used by Tycoon 2FA AiTM to register a rogue device and gain persistent access via a primaryRefreshToken.
+references:
+    - https://www.elastic.co/security-labs/threat-command/tycoon-2fa-aitm-detection-engineering
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1550.001
+    - attack.t1098.005
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname: 'enterpriseregistration.windows.net'
+        Url.Path|startswith: '/EnrollmentServer/device/'
+        HttpMethod: 'POST'
+    condition: selection
+falsepositives:
+    - Legitimate device enrollments, but these are typically part of standard device management workflows and should not appear from unusual sources or outside of expected processes.
+level: high

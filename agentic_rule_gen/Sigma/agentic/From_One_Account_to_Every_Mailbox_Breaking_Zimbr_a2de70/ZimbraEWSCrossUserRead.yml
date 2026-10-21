@@ -1,0 +1,28 @@
+title: Potential Zimbra EWS Cross-User Mailbox Read (CVE-2026-10631)
+id: 3f9b2d88-b223-41c3-8f0a-73d09a7a92c1
+status: experimental
+description: |
+  Detects Zimbra EWS FindItem requests where the FolderId has a composite format of '{uuid}_{numeric_id}'.
+  This indicates a potential attempt to read another user's mailbox items by exploiting CVE-2026-10631.
+references:
+  - https://www.rapid7.com/blog/post/ve-breaking-zimbra-identity-boundaries-part-1
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.collection
+  - attack.t1114.002
+logsource:
+  category: proxy
+detection:
+  selection:
+    Url|endswith:
+      - '/service/extension/zimbraews'
+      - '/EWS/Exchange.asmx'
+    Http.Request.Method: 'POST'
+    Http.RequestBody|contains: '<m:FindItem'
+    # Detects the vulnerable FolderId format, e.g., Id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_2"
+    Http.RequestBody|re: 'FolderId\s+Id="[0-9a-fA-F\-]{36}_[0-9]+"'
+  condition: selection
+falsepositives:
+  - Legitimate custom EWS clients for Zimbra that use a similar composite Folder ID format, though this is considered non-standard and highly unlikely.
+level: high

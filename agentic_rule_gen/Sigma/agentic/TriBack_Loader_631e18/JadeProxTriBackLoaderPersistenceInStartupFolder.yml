@@ -1,0 +1,22 @@
+title: JadeProx TriBack Loader Persistence In Startup Folder
+id: 79f24304-436f-4796-af34-453d5a5789b7
+status: experimental
+description: Detects the creation of the encrypted TriBack loader payload 'NOVUpdate.exe.dat' in the Windows Startup folder for persistence by a screensaver-based loader.
+references:
+    - https://www.group-ib.com/blog/jadeprox-china-nexus-triback-loader/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '.scr'
+        TargetFilename|endswith: '\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\NOVUpdate.exe.dat'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

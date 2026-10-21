@@ -1,0 +1,24 @@
+title: NOVABLIGHT - Lock File with ICACLS
+id: 97b973ef-5a3d-4c3e-86e0-94e803d19119
+status: experimental
+description: Detects the use of 'icacls.exe' to set a deny rule that prevents a file from being deleted, a technique used by NOVABLIGHT to protect its components.
+references:
+    - https://www.elastic.co/security-labs/threat-command/maas-appeal-an-infostealer-rises-from-the-ashes
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1222.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\icacls.exe'
+        CommandLine|contains|all:
+            - '/deny'
+            - ':(DE,DC)'
+    condition: selection
+falsepositives:
+    - Legitimate use by administrators for locking critical system files, but the specific combination of '/deny' and ':(DE,DC)' is highly unusual.
+level: high

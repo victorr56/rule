@@ -1,0 +1,22 @@
+title: SparroWocky Persistence Run Key
+id: 593720e1-a080-4966-88e9-ab8942a17be1
+status: experimental
+description: Detects the creation of the 'SnapCart' registry value in a Run key, used by the SparroWocky backdoor for persistence.
+references:
+    - https://www.welivesecurity.com/en/eset-research/beware-sparrowock-backdoor-bites-commands-catch/
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Microsoft\Windows\CurrentVersion\Run\SnapCart'
+        Details|contains: '\Snap\cart.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

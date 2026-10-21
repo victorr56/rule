@@ -1,0 +1,26 @@
+title: IcePeony C2 Domain Query
+id: 7aa163ed-5bd2-4933-8750-716b5a3e1476
+status: experimental
+description: Detects DNS queries for domains known to be used by IcePeony for command and control.
+references:
+    - http://nao-sec.org/2024/10/IcePeony-with-the-996-work-culture.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'd45qomwkl.online'
+            - 'k9ccin.com'
+            - 'k8ccyn.com'
+            - '88k8cc.com'
+            - 'googlesvn.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

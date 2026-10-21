@@ -1,0 +1,27 @@
+title: Contagious Interview (OTTERCOOKIE) Clipboard Stealing via PowerShell
+id: 597143e1-7e80-4ecb-9901-ecb7b4da12b9
+status: experimental
+description: Detects the OTTERCOOKIE malware, used by Contagious Interview actors, spawning PowerShell from Node.js to steal clipboard contents.
+references:
+    - https://www.elastic.co/security-labs/threat-command/contagious-interview-malware-svg-steganography
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.collection
+    - attack.t1115
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\node.exe'
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - '-NoProfile'
+            - '-NonInteractive'
+            - 'Get-Clipboard'
+    condition: selection
+falsepositives:
+    - Legitimate developer scripts using a similar method to interact with the clipboard.
+level: high

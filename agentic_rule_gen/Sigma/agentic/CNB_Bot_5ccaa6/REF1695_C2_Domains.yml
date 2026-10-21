@@ -1,0 +1,30 @@
+title: REF1695/Malware C2 Domain Communication
+id: 54a8818e-4286-444a-a63e-63cc73336d37
+status: experimental
+description: Detects DNS queries to domains known to be used by REF1695 for C2 communications for CNB Bot, PureRAT, and other malware.
+references:
+    - https://www.elastic.co/security-labs/threat-command/fake-installers-to-monero
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.autoupdatewinsystem.top'
+            - '.rapidfilesdatabaze.top'
+            - '.tabbysbakescodes.ws'
+            - '.tommysbakescodes.ws'
+            - '.unlockcontent.net'
+            - '.win64autoupdates.top'
+            - '.winautordr.itemdb.com'
+            - '.windirautoupdates.top'
+            - '.wndlogon.hopto.org'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

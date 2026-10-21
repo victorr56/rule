@@ -1,0 +1,25 @@
+title: FINALDRAFT Module Session.x64.dll Load
+id: e5a8f4c2-01d6-444a-a035-7798b31a89c9
+status: experimental
+description: Detects the loading of Session.x64.dll, a module associated with older FINALDRAFT samples, by common system processes.
+references:
+    - https://www.elastic.co/security-labs/threat-command/finaldraft
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.t1055
+    - attack.defense_evasion
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection_rundll32:
+        Image|endswith: '\rundll32.exe'
+        ImageLoaded|endswith: '\Session.x64.dll'
+    selection_svchost:
+        Image|endswith: '\svchost.exe'
+        ImageLoaded|endswith: '\Session.x64.dll'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate software using a DLL named 'Session.x64.dll' loaded by rundll32.exe or svchost.exe, which is unlikely.
+level: high

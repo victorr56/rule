@@ -1,0 +1,24 @@
+title: MacSync C2 Network Connection
+id: fd671f54-bd12-4c28-98e3-0d6eb6a13d7c
+status: experimental
+description: Detects network connections to IP addresses known to be used by MacSync for command and control and operator panels.
+references:
+    - https://www.huntress.com/blog/macsync-stealer-rat-reverse-engineering
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection_ip_only:
+        DestinationIp: '103.216.221.95'
+    selection_ip_port:
+        DestinationIp: '85.206.161.241'
+        DestinationPort: 8443
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

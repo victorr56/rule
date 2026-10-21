@@ -1,0 +1,20 @@
+title: REF6598 PHANTOMPULSE Staging Server Connection
+id: 597a7e3d-741c-43f1-9c3f-c60f4ebccb7e
+status: experimental
+description: Detects network connections to a known staging server IP address used by REF6598 to host malware components.
+references:
+    - https://www.elastic.co/security-labs/threat-command/phantom-in-the-vault
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '195.3.222.251'
+    condition: selection
+falsepositives:
+    - This IP address may be reallocated in the future.
+level: high

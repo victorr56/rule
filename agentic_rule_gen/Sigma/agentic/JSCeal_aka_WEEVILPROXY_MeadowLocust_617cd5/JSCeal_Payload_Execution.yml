@@ -1,0 +1,25 @@
+title: JSCeal Stealer Payload Execution
+id: 549dd120-d3a9-4674-8b65-deeb8a6198f8
+status: experimental
+description: Detects the execution of the JSCeal stealer payload, which uses a specific Node.js command line to load a Brotli-compressed V8 bytecode file.
+references:
+    - https://research.checkpoint.com/2026/breaking-the-seal-static-deobfuscation-of-jsceals-compiled-v8-bytecode/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.007
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\node.exe'
+        CommandLine|contains|all:
+            - '-r'
+            - 'preflight.js'
+            - 'app.jsc'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

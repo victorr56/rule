@@ -1,0 +1,204 @@
+{
+  "malware_family": "ShadowSyndicate",
+  "threat_actor": "ShadowSyndicate",
+  "platforms": [
+    "multi"
+  ],
+  "summary": "ShadowSyndicate is a malicious infrastructure cluster, likely an IAB or bulletproof hosting service, linked to multiple ransomware campaigns. The actor uses shared SSH fingerprints to manage C2 servers for tools like Cobalt Strike, Havoc, and Sliver, and has been observed rotating keys and reusing servers across clusters.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "1ca4cbac895fc3bd12417b77fc6ed31d",
+      "context": "Infamous SSH fingerprint linked to ShadowSyndicate",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "081d96a941fa72747b5cfca5e6b2f1b9",
+      "context": "SSH fingerprint attributed to ShadowSyndicate",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "55c658703c07d6344e325ea26cf96c3b",
+      "context": "Newly confirmed ShadowSyndicate SSH fingerprint",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ddd9ca54c1309cde578062cba965571e",
+      "context": "Newly confirmed ShadowSyndicate SSH fingerprint",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "fortiveme.net",
+      "context": "Linked to Black Basta, resolved to C2 IP 88.214.25.253",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "194.165.16.64",
+      "context": "Cobalt Strike C2, linked to ALPHV, BlackCat, Ryuk",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "194.135.24.245",
+      "context": "Cobalt Strike & Sliver C2, linked to Malsmoke",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Sliver"
+    },
+    {
+      "kind": "ip",
+      "value": "147.45.112.220",
+      "context": "Metasploit & Cobalt Strike C2",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "MetaSploit"
+    },
+    {
+      "kind": "ip",
+      "value": "78.128.112.209",
+      "context": "Havoc C2",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Havoc"
+    },
+    {
+      "kind": "ip",
+      "value": "88.214.25.253",
+      "context": "Mythic C2, linked to Black Basta",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Mythic"
+    },
+    {
+      "kind": "ip",
+      "value": "5.188.87.37",
+      "context": "AsyncRAT C2",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "AsyncRAT"
+    },
+    {
+      "kind": "ip",
+      "value": "179.60.149.222",
+      "context": "MeshAgent C2",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "MeshAgent"
+    },
+    {
+      "kind": "ip",
+      "value": "193.24.211.238",
+      "context": "Brute Ratel C2",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "200.107.207.26",
+      "context": "Cl0p/Truebot C2",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.182.189.71",
+      "context": "Cl0p/Truebot C2",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "194.135.24.250",
+      "context": "Malsmoke C2, also Cobalt Strike",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "46.161.27.151",
+      "context": "Black Basta & Metasploit C2",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "81.19.136.234",
+      "context": "Black Basta C2",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.227.255.34",
+      "context": "Server with SSH fingerprint ddd9ca54c1309cde578062cba965571e",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "88.214.27.170",
+      "context": "Server with SSH fingerprint ddd9ca54c1309cde578062cba965571e",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "147.78.46.29",
+      "context": "Server with SSH fingerprint 55c658703c07d6344e325ea26cf96c3b",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.182.189.181",
+      "context": "Server with SSH fingerprint 55c658703c07d6344e325ea26cf96c3b",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "elf",
+    "macho",
+    "dotnet"
+  ]
+}

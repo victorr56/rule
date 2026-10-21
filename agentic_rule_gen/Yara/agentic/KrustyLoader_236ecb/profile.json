@@ -1,0 +1,291 @@
+{
+  "malware_family": "KrustyLoader",
+  "threat_actor": "UNC5221",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "Exploitation of the chained Ivanti Endpoint Manager Mobile vulnerabilities CVE-2025-4427 and CVE-2025-4428 gives unauthenticated attackers remote code execution and was observed delivering KrustyLoader ELF payloads, activity that suggests the suspected China-nexus espionage actor UNC5221. Post-exploitation behaviour included OAST-based exploit validation, payload hosting on AWS S3 bucket endpoints, retrieval of a randomly named .sh payload from an IP linked to SAP NetWeaver CVE-2025-31324 infrastructure, and connections to pastebin[.]com and dpaste[.]com for dynamic payload retrieval.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "NVGAoZDmEe",
+      "context": "Randomly generated filename of ELF payload downloaded from AWS S3",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mnQDqysNrlg",
+      "context": "ELF downloaded via Wget/1.14 from fconnect.s3.amazonaws.com, identified as KrustyLoader",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "/dfuJ8t1uhG",
+      "context": "ELF downloaded from tnegadge.s3.amazonaws.com, identified as KrustyLoader",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "4l4md4r.sh",
+      "context": "Randomly named script payload retrieved from 15.188.246.198 via cURL user agent",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "1dec9191606f8fc86e4ae4fdf07f09822f8a94f2",
+      "context": "SHA1 of mnQDqysNrlg ELF, linked to KrustyLoader via VirusTotal",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "SHA1",
+      "hash_value": "1dec9191606f8fc86e4ae4fdf07f09822f8a94f2"
+    },
+    {
+      "kind": "other",
+      "value": "c47abdb1651f9f6d96d34313872e68fb132f39f5",
+      "context": "SHA1 of /dfuJ8t1uhG ELF, linked to KrustyLoader via VirusTotal",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "SHA1",
+      "hash_value": "c47abdb1651f9f6d96d34313872e68fb132f39f5"
+    },
+    {
+      "kind": "other",
+      "value": "4abfaeadcd5ab5f2c3acfac6454d1176",
+      "context": "MD5 file hash of payload per Darktrace IoC appendix",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "MD5",
+      "hash_value": "4abfaeadcd5ab5f2c3acfac6454d1176"
+    },
+    {
+      "kind": "other",
+      "value": "d8d6fe1a268374088fb6a5dc7e5cbb54",
+      "context": "MD5 file hash of payload per Darktrace IoC appendix",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "MD5",
+      "hash_value": "d8d6fe1a268374088fb6a5dc7e5cbb54"
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "trkbucket.s3.amazonaws.com",
+      "context": "AWS S3 bucket C2 endpoint hosting payload",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "trkbucket.s3.amazonaws.com/NVGAoZDmEe",
+      "context": "Payload download URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tnegadge.s3.amazonaws.com",
+      "context": "AWS S3 bucket C2 endpoint serving KrustyLoader ELF",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "tnegadge.s3.amazonaws.com/dfuJ8t1uhG",
+      "context": "KrustyLoader ELF payload download URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "fconnect.s3.amazonaws.com",
+      "context": "AWS S3 bucket C2 endpoint serving KrustyLoader ELF",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "fconnect.s3.amazonaws.com/mnQDqysNrlg",
+      "context": "KrustyLoader ELF payload download URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "15.188.246.198",
+      "context": "C2 endpoint also linked to SAP NetWeaver CVE-2025-31324 infrastructure",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "15.188.246.198/4l4md4r.sh?grep",
+      "context": "Later-stage .sh payload retrieved via cURL user agent",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.193.125.65",
+      "context": "C2 endpoint per Darktrace IoC appendix",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "185.193.125.65/c4qDsztEW6/TIGHT_UNIVERSITY",
+      "context": "C2 endpoint URL per Darktrace IoC appendix",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "64.52.80.21",
+      "context": "C2 endpoint per Darktrace IoC appendix",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "0d8da2d1.digimg.store",
+      "context": "C2 endpoint hostname per Darktrace IoC appendix",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "134.209.107.209",
+      "context": "C2 endpoint per Darktrace IoC appendix",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Wget/1.14 (linux-gnu)",
+      "context": "User agent used for ELF payload downloads from AWS S3",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "curl",
+      "context": "cURL-associated user agent seen in OAST callbacks and .sh payload retrieval",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dpaste.com",
+      "context": "Paste site used for dynamic retrieval of malicious commands/payloads",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pastebin.com",
+      "context": "Paste site used to host or share malicious payloads/instructions",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "*.oast.live",
+      "context": "Random-subdomain OAST hostname used for exploit validation callbacks",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "*.oast.pro",
+      "context": "Random-subdomain OAST hostname used for exploit validation callbacks",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "*.oast.fun",
+      "context": "Random-subdomain OAST hostname used for exploit validation callbacks",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "*.oast.site",
+      "context": "Random-subdomain OAST hostname used for exploit validation callbacks",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "*.oast.online",
+      "context": "Random-subdomain OAST hostname used for exploit validation callbacks",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "*.oast.me",
+      "context": "Random-subdomain OAST hostname used for exploit validation callbacks",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "ac91c2c777c9e8638ec1628a199e396907fbb7dcf9c430ca712ec64a6f1fcbc9",
+      "description": "KrustyLoader ELF payload (mnQDqysNrlg / SHA1 1dec9191606f8fc86e4ae4fdf07f09822f8a94f2) downloaded from fconnect.s3.amazonaws.com"
+    },
+    {
+      "sha256": "f3e0147d359f217e2aa0a3060d166f12e68314da84a4ecb5cb205bd711c71998",
+      "description": "KrustyLoader ELF payload (/dfuJ8t1uhG / SHA1 c47abdb1651f9f6d96d34313872e68fb132f39f5) downloaded from tnegadge.s3.amazonaws.com"
+    }
+  ],
+  "file_types": [
+    "elf",
+    "script"
+  ]
+}

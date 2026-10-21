@@ -1,0 +1,495 @@
+{
+  "malware_family": "TOLLBOOTH",
+  "threat_actor": "REF3927",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "REF3927 compromises misconfigured IIS servers by exploiting publicly exposed ASP.NET machine keys. The actor deploys TOLLBOOTH, a malicious IIS module with SEO cloaking and webshell capabilities, alongside a Godzilla-based webshell and a custom rootkit called HIDDENDRIVER. The main objective appears to be monetizing access via traffic redirection and SEO fraud.",
+  "mitre_techniques": [
+    "T1190",
+    "T1505.004",
+    "T1003",
+    "T1564.001",
+    "T1005",
+    "T1014",
+    "T1078"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\_FAB234CD3-09434-8898D-BFFC-4E23123DF2C\\",
+      "context": "Hardcoded path for native TOLLBOOTH config and cache files.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\AcpLogs\\",
+      "context": "Path for managed TOLLBOOTH encrypted config and cache files.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "YourSecretKey123",
+      "context": "AES key for managed TOLLBOOTH config encryption.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0123456789ABCDEF",
+      "context": "AES IV for managed TOLLBOOTH config encryption.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "hack123456!",
+      "context": "Hardcoded password for the TOLLBOOTH webshell.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "HijackDriverManager",
+      "context": "Userland application for HIDDENDRIVER rootkit.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "WingtbCLI.exe",
+      "context": "File name for HIDDENCLI, userland tool for HIDDENDRIVER.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Winkbj.sys",
+      "context": "File name for HIDDENDRIVER rootkit.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "caches.dll",
+      "context": "File name for TOLLBOOTH IIS module.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "scripts.dll",
+      "context": "File name for TOLLBOOTH IIS module.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "CustomIISModule.dll",
+      "context": "File name for TOLLBOOTH IIS module.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "hidden",
+      "context": "String found within the compilation path of HIDDENDRIVER.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Hidden",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Kbj_WinkbjFsDirs",
+      "context": "HIDDENDRIVER config to specify directory paths to hide.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Hidden",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Kbj_WinkbjFsFiles",
+      "context": "HIDDENDRIVER config to specify file paths to hide.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Hidden",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Kbj_WinkbjRegKeys",
+      "context": "HIDDENDRIVER config to specify registry keys to hide.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Hidden",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Kbj_WinkbjRegValues",
+      "context": "HIDDENDRIVER config to specify registry values to hide.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Hidden",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Kbj_FangxingImages",
+      "context": "HIDDENDRIVER config to specify whitelisted process images.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Hidden",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Kbj_BaohuImages",
+      "context": "HIDDENDRIVER config to specify protected process images.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Hidden",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Kbj_WinkbjImages",
+      "context": "HIDDENDRIVER config to specify hidden process images.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Hidden",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Kbj_YinshenMode",
+      "context": "HIDDENDRIVER config flag to conceal rootkit artifacts.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Hidden",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "HID_IOCTL_SET_DRIVER_STATE",
+      "context": "IOCTL command to enable/disable HIDDENDRIVER.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Hidden",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "HID_IOCTL_ADD_HIDDEN_OBJECT",
+      "context": "IOCTL command to add a new rule to hide an object.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Hidden",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PspCidTable",
+      "context": "Kernel structure name located to enable process hiding.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ActiveProcessLinks",
+      "context": "_EPROCESS structure field name manipulated to hide processes.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "SYNCHRONIZE | PROCESS_QUERY_LIMITED_INFORMATION",
+      "context": "Symbolic access rights for handles to protected processes.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Hijackbot",
+      "context": "User agent for TOLLBOOTH management channel access.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "gooqlebot",
+      "context": "User agent for TOLLBOOTH management channel access.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Binqbot",
+      "context": "User agent for TOLLBOOTH management channel access.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "c.cseo99.com",
+      "context": "TOLLBOOTH configuration server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "f.fseo99.com",
+      "context": "TOLLBOOTH SEO farming configuration server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.aseo99.com",
+      "context": "TOLLBOOTH crawler reporting and page redirector API.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mlxya.oss-accelerate.aliyuncs.com",
+      "context": "TOLLBOOTH page hijacker payload hosting server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "asf-sikkeiyjga.cn-shenzhen.fcapp.run",
+      "context": "TOLLBOOTH page hijacker content-fetching server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ask-bdtj-selohjszlw.cn-shenzhen.fcapp.run",
+      "context": "TOLLBOOTH page hijacker content-fetching server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://c.cseo99.com/config/127.0.0.1.json",
+      "context": "TOLLBOOTH sample configuration file.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://api.aseo99.com/client/landpage",
+      "context": "TOLLBOOTH endpoint for visitor fingerprinting and redirection.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/mywebdll",
+      "context": "TOLLBOOTH webshell access path.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/scjg",
+      "context": "TOLLBOOTH webshell form submission endpoint.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/health",
+      "context": "TOLLBOOTH management channel endpoint.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/debug",
+      "context": "TOLLBOOTH management channel endpoint.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/conf",
+      "context": "TOLLBOOTH management channel endpoint to access parsed config.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/clean",
+      "context": "TOLLBOOTH management channel endpoint to clear config/cache.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "stock",
+      "context": "TOLLBOOTH SEO page URL path prefix from config.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "invest",
+      "context": "TOLLBOOTH SEO page URL path prefix from config.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "market-outlook",
+      "context": "TOLLBOOTH SEO page URL path prefix from config.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "xlb",
+      "context": "Substring in URI path that triggers TOLLBOOTH page hijacker.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.13) Gecko/20101213 Opera/9.80 (Windows NT 6.1; U; zh-tw) Presto/2.7.62 Version/11.01 Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+      "context": "User-Agent observed during exploitation via IIS ViewState injection.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "913431f1d36ee843886bb052bfc89c0e5db903c673b5e6894c49aabc19f1e2fc",
+      "description": "WingtbCLI.exe (HIDDENCLI)"
+    },
+    {
+      "sha256": "f9dd0b57a5c133ca0c4cab3cca1ac8debdc4a798b452167a1e5af78653af00c1",
+      "description": "Winkbj.sys (HIDDENDRIVER)"
+    },
+    {
+      "sha256": "c1ca053e3c346513bac332b5740848ed9c496895201abc734f2de131ec1b9fb2",
+      "description": "caches.dll (TOLLBOOTH)"
+    },
+    {
+      "sha256": "c348996e27fc14e3dce8a2a476d22e52c6b97bf24dd9ed165890caf88154edd2",
+      "description": "scripts.dll (TOLLBOOTH)"
+    },
+    {
+      "sha256": "82b7f077021df9dc2cf1db802ed48e0dec8f6fa39a34e3f2ade2f0b63a1b5788",
+      "description": "scripts.dll (TOLLBOOTH)"
+    },
+    {
+      "sha256": "bd2de6ca6c561cec1c1c525e7853f6f73bf6f2406198cd104ecb2ad00859f7d3",
+      "description": "caches.dll (TOLLBOOTH)"
+    },
+    {
+      "sha256": "915441b7d7ddb7d885ecfe75b11eed512079b49875fc288cd65b023ce1e05964",
+      "description": "CustomIISModule.dll (TOLLBOOTH)"
+    },
+    {
+      "sha256": "bae5a7722814948fbba197e9b0f8ec5a6fe8328c7078c3adcca0022a533a84fe",
+      "description": "1.aspx (Godzilla-forked webshell)"
+    },
+    {
+      "sha256": "230b84398e873938bbcc7e4a1a358bde4345385d58eb45c1726cee22028026e9",
+      "description": "GotoHTTP.exe"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet"
+  ]
+}

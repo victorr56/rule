@@ -1,0 +1,101 @@
+{
+  "malware_family": "",
+  "threat_actor": "",
+  "platforms": [
+    "web"
+  ],
+  "summary": "Malicious SVG files abuse the format's embedded JavaScript support to act as redirectors, self-contained phishing pages, or DOM/XSS script abuse, while appearing to be harmless images. Observed samples masquerade as fake voicemail attachments in spear-phishing campaigns and hide target emails (often base64-encoded) and redirect domains inside obfuscated markup. Because mail and web gateways treat SVG as an image, the format is an overlooked delivery and credential-harvesting vector.",
+  "mitre_techniques": [
+    "T1566.001",
+    "T1189",
+    "T1059.007"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "base64-encoded email address embedded in SVG",
+      "context": "Redirector SVGs masquerade as voicemail attachments; target emails sometimes base64 encoded, sometimes plaintext",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "comments indicating use of image generators (Libre Office, Inkscape)",
+      "context": "Some SVG samples carry generator comments; other samples show excessive commenting indicative of AI-generated code",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "SVG containing only malicious JavaScript utility, no image-creation markup",
+      "context": "Most observed files contain no drawing elements, only the malicious script",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "JavaScript split into fragments and reassembled at runtime",
+      "context": "Attackers use varied encoding/obfuscation to hide redirect domains in the SVG",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "01058telecom.de",
+      "context": "Encoded redirect domain extracted by deobfuscation; contents inaccessible",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "qedhsp.cprltdf.es",
+      "context": "Encoded redirect domain extracted by deobfuscation; contents inaccessible",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wihportal.sbs",
+      "context": "Encoded redirect domain extracted by deobfuscation; contents inaccessible",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "chx.js",
+      "context": "Domain called by SVG JavaScript; hosts Wordpress brute-force script and password list page",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "pinche.php",
+      "context": "Endpoint receiving search-bar inputs exfiltrated by the SVG script",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

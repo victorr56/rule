@@ -1,0 +1,22 @@
+title: Mini Shai-Hulud Lock File Creation
+id: f09efc78-1b6e-4c74-89d5-3b9918663806
+status: experimental
+description: Detects the creation of a specific lock file "/tmp/tmp.dpkg_14527.lock" by a node process, a behavior observed in the Mini Shai-Hulud payload.
+references:
+    - https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2023-10-16
+tags:
+    - attack.execution
+    - attack.t1059.007
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/node'
+        TargetFilename|endswith: '/tmp/tmp.dpkg_14527.lock'
+    condition: selection
+falsepositives:
+    - Legitimate node processes creating a file with this specific name are not expected.
+level: high

@@ -1,0 +1,29 @@
+title: Exodus RAT C2 DNS Queries
+id: 41b18d8e-73c3-4d4b-a7e8-e15266731671
+status: experimental
+description: Detects DNS queries to domains associated with an Exodus RAT campaign.
+references:
+    - https://www.huntress.com/blog/exodus-crypto-wallet-installer-rat
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'lgapistorage123.table.core.windows.net'
+            - 'winapi.table.core.windows.net'
+            - 'us05.org'
+            - 'api.elcaminodesermadre.com'
+            - 'app.micheladafestelpaso.com'
+            - 'auth.SecureSwallow.com'
+            - 'cdn.ShinoZen.com'
+            - 'static.TurboLeadSlab.com'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

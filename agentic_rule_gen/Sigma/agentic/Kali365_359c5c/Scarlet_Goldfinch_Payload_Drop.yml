@@ -1,0 +1,23 @@
+title: Scarlet Goldfinch Payload Drop via Curl
+id: f43513b8-6b83-4a17-b76b-ec954625b181
+status: experimental
+description: Detects the creation of a PDF file, identified as a Scarlet Goldfinch payload, specifically when created by curl.exe in the AppData\Local directory.
+references:
+    - https://redcanary.com/blog/threat-intelligence/intelligence-insights-june-2024/
+author: ioc-yara-daily (agentic)
+date: 2024-06-21
+tags:
+    - attack.execution
+    - attack.t1105
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\curl.exe'
+        TargetFilename|endswith: '\AppData\Local\Voter.pdf'
+    condition: selection
+falsepositives:
+    - Legitimate use of curl to download a file named 'Voter.pdf' into the user's AppData\Local directory is highly unlikely.
+level: medium

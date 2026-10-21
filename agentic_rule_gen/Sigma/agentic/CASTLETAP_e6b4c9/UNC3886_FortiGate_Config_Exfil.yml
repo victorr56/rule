@@ -1,0 +1,26 @@
+title: UNC3886 FortiGate Full Configuration Exfiltration Attempt
+id: fd218fa2-68c1-4c6e-8217-1fd95fcb4142
+status: experimental
+description: Detects the execution of the 'show full-configuration' command, potentially on a FortiGate device, used by UNC3886 to exfiltrate device configuration for credential harvesting.
+references:
+    - https://www.wiz.io/blog/agentless-threat-hunting-fortigate
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.collection
+    - attack.t1005
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+            - 'fgfmd'
+        CommandLine|contains: 'show full-configuration'
+    condition: selection
+falsepositives:
+    - Legitimate administrative activity. This rule should be considered for threat hunting.
+level: medium

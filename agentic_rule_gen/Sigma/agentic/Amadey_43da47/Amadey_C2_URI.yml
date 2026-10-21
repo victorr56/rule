@@ -1,0 +1,21 @@
+title: Amadey C2 Beacon URI
+id: 8568e27c-9b7e-407a-9a00-11116238b9e6
+status: experimental
+description: Detects HTTP requests to a URI path '/ppk/index.php' combined with a specific User-Agent used by Amadey for command and control communications.
+references:
+    - http://nao-sec.org/2019/04/Analyzing-amadey.html
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|contains: '/ppk/index.php'
+        HttpUserAgent: 'Mozilla/4.08 (Charon; Inferno)'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

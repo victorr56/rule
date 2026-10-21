@@ -1,0 +1,26 @@
+title: HwAudKiller Kernel Service Registry Key 'Havoc'
+id: 88713d7e-61c0-432a-b605-e40df5f2d12e
+status: experimental
+description: Detects registry modifications indicative of the HwAudKiller malware creating its "Havoc" kernel service.
+references:
+    - https://www.huntress.com/blog/w2-malvertising-to-kernel-mode-edr-kill
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.persistence
+    - attack.t1543.003
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Services\Havoc'
+        Details|contains:
+            - 'kernel'
+            - 'Havoc.sys'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

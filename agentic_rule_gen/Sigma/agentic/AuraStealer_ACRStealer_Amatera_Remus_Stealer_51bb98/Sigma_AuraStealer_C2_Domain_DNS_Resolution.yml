@@ -1,0 +1,30 @@
+title: AuraStealer C2 Domain Resolution
+id: 8f3c1a92-6b47-4d0e-9c15-2a7e5d4b8f01
+status: experimental
+description: Detects DNS queries for AuraStealer command-and-control domains used by the
+  current MaaS build to receive exfiltrated browser credentials and cryptocurrency wallet data.
+references:
+  - https://www.reversinglabs.com/blog/infostealers-highlight-malware-as-a-service-trend
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.command_and_control
+  - attack.t1071.004
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    QueryName|endswith:
+      - 'aimemtools.cfd'
+      - 'softwareguard.cfd'
+      - 'zkevopenanu.cfd'
+      - 'dev-tools.cfd'
+      - 'sys-tools.cfd'
+      - 'aewaterdelivery.com'
+      - 'secupd.cfd'
+      - 'memaiagent.cfd'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: critical

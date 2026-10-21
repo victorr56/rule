@@ -1,0 +1,452 @@
+{
+  "malware_family": "ValleyRAT",
+  "threat_actor": "Silver Fox",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A signed QN Wallpaper adware installer sideloads a malicious libcef.dll that AES-decrypts and loads the ValleyRAT backdoor, a campaign attributed to Silver Fox and masquerading as adware. ValleyRAT parses a reversed UTF-16LE config, injects into svchost, optionally marks its process critical to trigger a BSOD on termination, and supports keylogging, clipboard capture, screenshotting and module loading via process hollowing.",
+  "mitre_techniques": [
+    "T1574.002",
+    "T1055",
+    "T1055.012",
+    "T1547.001",
+    "T1562.001",
+    "T1056.001",
+    "T1115",
+    "T1113",
+    "T1070.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files\\QNWallpaper\\5.4.0.1662\\<random string of letters and digits>",
+      "context": "Unpack directory for QN Wallpaper modules and malicious components",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "PeLoader",
+      "context": "File containing the AES-encrypted ValleyRAT backdoor payload",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "<random string of letters and digits>Nedca.exe",
+      "context": "Copy of the malicious installer inside the unpack directory",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "FS_SETUP_DD_173.exe",
+      "context": "Installer name suffix DD installs DingTalk as decoy",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "FS_SETUP_GG_173.exe",
+      "context": "Installer name suffix GG installs Google Chrome as decoy",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "FS_SETUP_HY_173.exe",
+      "context": "Installer name suffix HY opens Tencent Meeting download page",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "SOFTWARE\\Policies\\Microsoft\\Windows Defender",
+      "context": "Policy key used to disable Windows Defender",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "DisableAntiSpyware",
+      "context": "Value set under Windows Defender policy key to disable protection",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RunDLL",
+      "context": "Export in malicious libcef.dll that starts mw_entry via CreateThread",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "mw_entry",
+      "context": "Function holding the ValleyRAT payload decryption and loading logic",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IsNTAdmin",
+      "context": "advpack.dll export used to check Administrators group membership",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "advpack.dll",
+      "context": "Library loaded for the admin membership check",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "cef_browser_view_create",
+      "context": "Hooked CEF export that only calls Sleep(0xFFFFFFFF) in malicious libcef.dll",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "QnWallpaper.exe",
+      "context": "Signed adware module that sideloads malicious libcef.dll; payload from PeLoader",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "QnwPlayer.exe",
+      "context": "Second sideload host; payload read from libcef.dll RCData resource",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "QnWallpaper.exe -> QnwPlayer.exe",
+      "context": "QnWallpaper.exe launches QnwPlayer.exe, both load libcef.dll",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "runas",
+      "context": "Used to relaunch the process to obtain administrator privileges",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Documents and Settings\\<username>\\Start Menu\\Programs\\Startup\\",
+      "context": "Persistence: file with associated extension dropped here at startup",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "Windows\\SysWOW64\\svchost.exe",
+      "context": "Target used for process hollowing when payload is shellcode",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "默认:zf|1:1c|1:dd|1:3t|344:3o|81.66.54.301:3p|1:2t|24",
+      "context": "Reversed UTF-16LE config; 81.66.54.301 reversed is C2 103.45.66.18:443",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ApateDNS",
+      "context": "Window title substring checked by DetectAntiMalwareWindow when ll=1",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "TCPEye",
+      "context": "Window title substring checked by DetectAntiMalwareWindow when ll=1",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "TaskExplorer",
+      "context": "Window title substring checked by DetectAntiMalwareWindow when ll=1",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Metascan",
+      "context": "Window title substring checked by DetectAntiMalwareWindow when ll=1",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CurrPorts",
+      "context": "Window title substring checked by DetectAntiMalwareWindow when ll=1",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Capsa",
+      "context": "Window title substring checked by DetectAntiMalwareWindow when ll=1",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "火绒",
+      "context": "Huorong AV window title checked by DetectAntiMalwareWindow",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "任务管理器",
+      "context": "Task Manager window title checked by DetectAntiMalwareWindow",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "资源监视器",
+      "context": "Resource Monitor window title checked by DetectAntiMalwareWindow",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "网络分析",
+      "context": "Network analysis window title checked by DetectAntiMalwareWindow",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "流量",
+      "context": "Traffic-analysis window title checked by DetectAntiMalwareWindow",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "提示符",
+      "context": "Command prompt window title checked by DetectAntiMalwareWindow",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "07ddbbe2c71c45577a7a4fbcdba0df91",
+      "context": "MD5 of malicious libcef.dll",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "c24e99f9437feacaa63766a3cde3fe3d",
+      "context": "MD5 of malicious installer copy",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "8a626d844943da3456b044f38deae3a2",
+      "context": "MD5 listed in IoC section",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "48826d5ca845979d2e6ebd66dc1aae90",
+      "context": "MD5 of PeLoader file holding the encrypted backdoor",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "103.45.66.18:441",
+      "context": "ValleyRAT C2 endpoint from IoC list",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.45.66.18:442",
+      "context": "ValleyRAT C2 endpoint from IoC list",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.45.66.18:443",
+      "context": "ValleyRAT C2 endpoint from IoC list; present reversed in config string",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.253.225.173:6666",
+      "context": "ValleyRAT C2 endpoint from IoC list",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.253.225.173:8888",
+      "context": "ValleyRAT C2 endpoint from IoC list",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://meeting.tencent.com/download/",
+      "context": "Decoy download page opened by FS_SETUP_HY_173.exe",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://qnwallpaper.keansoft.cn/",
+      "context": "Legitimate QN Wallpaper vendor site abused for the signed installer",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "MSIE 6.0",
+      "context": "User-agent passed to InternetOpenW by DownloadPeFile",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "archive"
+  ]
+}

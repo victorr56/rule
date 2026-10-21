@@ -1,0 +1,359 @@
+{
+  "malware_family": "micDown",
+  "threat_actor": "GroundPeony (UNC3347)",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "GroundPeony (UNC3347) is a China-nexus APT active since at least 2021, targeting government, research and telecom organizations in Taiwan and Nepal through spear-phishing and compromised legitimate websites. Its March 2023 chain delivers a ZIP containing fake update EXEs that stage mic.exe alongside a sideloaded version.dll, which decrypts mic.doc/mic.ver and runs the micDown shellcode downloader beamed at a C2 host/port stored in its config. The group was the earliest known exploiter of CVE-2022-30190 (Follina), using it during the vulnerability's zero-day window.",
+  "mitre_techniques": [
+    "T1566.001",
+    "T1203",
+    "T1574.002",
+    "T1027",
+    "T1584.006"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\mic\\",
+      "context": "Staging directory where the four dropped files are copied and renamed",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mic.exe",
+      "context": "Legitimate digitally signed EXE copied to ProgramData\\mic; sideloads version.dll",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "version.dll",
+      "context": "DLL side-loading shellcode launcher that decodes mic.doc",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mic.doc",
+      "context": "Encoded shellcode downloader (micDown) loaded and decrypted by version.dll",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mic.ver",
+      "context": "Config file for micDown holding C2 host and port",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "系統安全補丁.exe",
+      "context": "Dropper EXE inside the ZIP (Kb5002372934), same behaviour as Install.exe",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Install.exe",
+      "context": "Dropper EXE inside the ZIP, same behaviour as 系統安全補丁.exe",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "a.docx",
+      "context": "One of four DOCX-named files in $RECYCLE.BIN (a/b/c/d.docx) that are actually malware",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$RECYCLE.BIN",
+      "context": "Fake Windows recycle bin directory used inside the delivered ZIP",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Kb7102381908",
+      "context": "Fake patch number shown in decoy DOC to lure victim to download URL",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Kb5002372934",
+      "context": "Archive name of the delivered ZIP; mismatched with KB number in lure document",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "5Fh; 61h",
+      "context": "version.dll in-place decode loop constants (sub 0x5F, xor 0x61, add 0x5F)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1Ah; 4Bh",
+      "context": "0x42-byte in-place decoder (add 0x1A, xor 0x4B, sub 0x1A)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "55h; 2Fh",
+      "context": "Shellcode string decode (add 0x55, xor 0x2F, sub 0x55)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "406211263 (0x18364ABF)",
+      "context": "Value sent via send() right after connect() to the C2 socket",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1DA0A3A1h",
+      "context": "API hash matched to RtlDecompressBuffer in shellcode",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": "1DA0A3A1h"
+    },
+    {
+      "kind": "unique_string",
+      "value": "4717A7D0h",
+      "context": "API hash matched to LoadLibraryA in shellcode",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": "4717A7D0h"
+    },
+    {
+      "kind": "unique_string",
+      "value": "8F592CA3h",
+      "context": "API hash matched to VirtualAlloc in shellcode",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": "8F592CA3h"
+    },
+    {
+      "kind": "unique_string",
+      "value": "0B01FF0A0h",
+      "context": "API hash matched to GetProcAddress in shellcode",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": "0B01FF0A0h"
+    },
+    {
+      "kind": "unique_string",
+      "value": "0D7656A4Fh",
+      "context": "API hash matched to memcpy in shellcode",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": "0D7656A4Fh"
+    },
+    {
+      "kind": "config_marker",
+      "value": "mic.ver: 0x40-byte C2 host field + 0x2-byte port field",
+      "context": "Encoded config layout decrypted at runtime; port bytes BB 01 read little-endian as 443",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "VerQueryValueW",
+      "context": "version.dll export whose body decodes and executes mic.doc",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "mic.exe -> version.dll",
+      "context": "Signed mic.exe loads malicious version.dll from the same directory (side-loading)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "103.199.17.184",
+      "context": "C2 IP stored in mic.ver config (host field)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "160.20.145.111",
+      "context": "Campaign IoC from report indicator list",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.93.189.239",
+      "context": "Campaign IoC from report indicator list",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "onedrivo.com",
+      "context": "Wildcard IoC *.onedrivo[.]com; used to host PyInstaller downloader/CobaltStrike",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "app.onedrivo.com",
+      "context": "C2 server used in the April 2022 Nepal attack",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "exchange.oufca.com.au",
+      "context": "Host used in Follina chain to serve payload/CobaltStrike beacon",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cutt.ly",
+      "context": "Legitimate shortener abused to redirect to compromised site hosting ZIP",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.catalog.update.microsoft.com@cutt.ly/c4oJURh",
+      "context": "Decoy DOC URL masquerading as Microsoft update catalog, redirects via Cuttly",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "1992b552bdaf93caeb470f94b4bf91e0157ba4a9bb92fb8430be946c0ddabdeb",
+      "description": "GroundPeony campaign IoC hash (sample role not specified)"
+    },
+    {
+      "sha256": "425630cc8be2a7dc2626ccd927bb45e5d40c1cb606bb5b2a7e8928df010af7c9",
+      "description": "GroundPeony campaign IoC hash (sample role not specified)"
+    },
+    {
+      "sha256": "fa6510a84929a0c49d91b3887189fca5a310129912d8e7d14fed062e9446af7e",
+      "description": "GroundPeony campaign IoC hash (sample role not specified)"
+    },
+    {
+      "sha256": "142a027d78c7ab5b425c2b849b347952196b03618e4ad74452dbe2ed4e3f73cd",
+      "description": "GroundPeony campaign IoC hash (sample role not specified)"
+    },
+    {
+      "sha256": "d1989ca12426ed368816ce00f08975dc1ff1e4f474592523c40f9af344a57b49",
+      "description": "GroundPeony campaign IoC hash (sample role not specified)"
+    },
+    {
+      "sha256": "6e13e5c7fcbafc47df259f2565efaed51bc1d021010c51673a7c455b5d4dad2b",
+      "description": "GroundPeony campaign IoC hash (sample role not specified)"
+    },
+    {
+      "sha256": "ef611e07e9d7e20ed3d215e4f407a7a7ca9f64308905c37e53df39f8a5bcbb3c",
+      "description": "GroundPeony campaign IoC hash (sample role not specified)"
+    },
+    {
+      "sha256": "7b814e43af86a84b9ad16d47f9c74da484ea69903ef0fbe40ec62ba123d83a9a",
+      "description": "GroundPeony campaign IoC hash (sample role not specified)"
+    },
+    {
+      "sha256": "f3e0a3dd3d97ccc23c4cee0fd9c247dbe79fbf39bc9ae9152d4676c96e46e483",
+      "description": "GroundPeony campaign IoC hash (sample role not specified)"
+    },
+    {
+      "sha256": "50182fca4c22c7dde7b8392ceb4c0fef67129f7dc386631e6db39dec73537705",
+      "description": "GroundPeony campaign IoC hash (sample role not specified)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "archive"
+  ]
+}

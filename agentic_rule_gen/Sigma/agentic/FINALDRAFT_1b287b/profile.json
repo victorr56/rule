@@ -1,0 +1,285 @@
+{
+  "malware_family": "FINALDRAFT",
+  "threat_actor": "REF7707",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "FINALDRAFT is a modular post-exploitation toolkit with Windows and Linux variants, attributed to the REF7707 activity cluster. It primarily uses the Microsoft Graph API to communicate via Outlook email drafts for command and control. The malware supports various commands for process injection, file system manipulation, and data proxying, and can load additional modules for network enumeration and pass-the-hash attacks.",
+  "mitre_techniques": [
+    "T1102.003",
+    "T1573.001",
+    "T1036.005",
+    "T1036.003",
+    "T1055.002",
+    "T1620",
+    "T1550.002",
+    "T1046",
+    "T1057",
+    "T1012",
+    "T1567.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "https://poster.checkponit.com:443/nzoMeFYgvjyXK3P;https://support.fortineat.com:443/nzoMeFYgvjyXK3P;*|*",
+      "context": "PATHLOADER decrypted configuration string.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x1000193",
+      "context": "PATHLOADER immediate value for FNV API hashing.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "UpdateTask",
+      "context": "FINALDRAFT entry point function name (varies).",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\UUID\\",
+      "context": "Registry path prefix where MS Graph API token is stored.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 12 34 AB CD FF FF CD AB 34 12 }",
+      "context": "Magic value sent to establish a TCP connection to a target.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "mspaint.exe",
+      "context": "Default target process for injection.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "conhost.exe",
+      "context": "Fallback target process for injection.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "\\\\.\\Pipe\\E340C955-15B6-4ec9-9522-1F526E6FBBF1",
+      "context": "Created by ipconfig.x64.dll module for C2 communication.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "\\\\.\\Pipe\\BD5AE956-0CF5-44b5-8061-208F5D0DBBB2",
+      "context": "Created by Psloader.x64.dll module for C2 communication.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "PowerPick",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "\\\\.\\Pipe\\EAA0BF8D-CA6C-45eb-9751-6269C70813C9",
+      "context": "Created by pnt.x64.dll PTH module for logging.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Aslire597",
+      "context": "Hardcoded password for injected modules (ipconfig.x64.dll, pnt.x64.dll).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "program.exe <password> <domain>\\<account>:<ntlm_hash> <target_process>",
+      "context": "Command line format for pnt.x64.dll pass-the-hash module.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/log/installlog.log.",
+      "context": "FINALDRAFT ELF variant path prefix for storing OAuth token.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/mnt/hgfsdisk.log.",
+      "context": "FINALDRAFT ELF variant fallback path prefix for storing OAuth token.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Session.x64.dll",
+      "context": "File name for an older FINALDRAFT PE sample.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "GoogleProxy",
+      "context": "Exported entrypoint for an older FINALDRAFT PE sample.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "poster.checkponit.com",
+      "context": "C2 domain used by PATHLOADER and older FINALDRAFT.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "support.fortineat.com",
+      "context": "C2 domain used by PATHLOADER and older FINALDRAFT.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "support.vmphere.com",
+      "context": "C2 domain used by FINALDRAFT ELF variant.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "update.hobiter.com",
+      "context": "C2 domain used by FINALDRAFT ELF variant.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/nzoMeFYgvjyXK3P",
+      "context": "PATHLOADER shellcode download path, also used as AES key.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.85 Safari/537.36",
+      "context": "Hardcoded User-Agent in PATHLOADER C2 requests.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://login.microsoftonline.com/common/oauth2/token",
+      "context": "Endpoint used to obtain Microsoft Graph API token.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "p_",
+      "context": "Subject prefix for session/response emails in Outlook drafts.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "r_",
+      "context": "Subject prefix for command request emails in Outlook drafts.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://ip-api.io/json",
+      "context": "Service used for external IP address lookup.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "9a11d6fcf76583f7f70ff55297fb550fed774b61f35ee2edd95cf6f959853bcf",
+      "description": "PATHLOADER loader"
+    },
+    {
+      "sha256": "39e85de1b1121dc38a33eca97c41dbd9210124162c6d669d28480c833e059530",
+      "description": "FINALDRAFT initial sample"
+    },
+    {
+      "sha256": "83406905710e52f6af35b4b3c27549a12c28a628c492429d3a411fdb2d28cc8c",
+      "description": "FINALDRAFT ELF variant"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "elf",
+    "dotnet"
+  ]
+}

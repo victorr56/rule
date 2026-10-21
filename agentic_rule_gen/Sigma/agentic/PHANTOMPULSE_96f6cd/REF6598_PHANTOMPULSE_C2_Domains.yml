@@ -1,0 +1,23 @@
+title: REF6598 PHANTOMPULSE C2 Domains
+id: c46d2f34-11e2-4545-a7b3-2b2dfc8369ef
+status: experimental
+description: Detects DNS queries for domains associated with the PHANTOMPULSE and related malware from threat actor REF6598.
+references:
+    - https://www.elastic.co/security-labs/threat-command/phantom-in-the-vault
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.command_and_control
+    - attack.t1568.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'panel.fefea22134.net'
+            - '0x666.info'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

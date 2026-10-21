@@ -1,0 +1,26 @@
+title: Axios Supply-Chain RAT Windows Persistence
+id: 5937402c-473d-424a-85d7-b8fe458f33df
+status: experimental
+description: Detects the creation of a suspicious 'MicrosoftUpdate' Run key pointing to a batch file in ProgramData, a persistence method used by the Axios supply-chain RAT.
+references:
+    - https://www.elastic.co/security-labs/blog/axios-supply-chain-compromise-detections
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.persistence
+    - attack.t1547.001
+    - attack.execution
+    - attack.t1059.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Microsoft\Windows\CurrentVersion\Run\MicrosoftUpdate'
+        Details|contains|all:
+            - 'C:\ProgramData\'
+            - '\system.bat'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

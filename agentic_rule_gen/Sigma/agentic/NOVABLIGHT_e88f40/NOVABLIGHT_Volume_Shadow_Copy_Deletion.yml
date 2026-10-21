@@ -1,0 +1,25 @@
+title: NOVABLIGHT - Volume Shadow Copy Deletion
+id: c4f23b0d-b4b9-4f7f-8591-6acac3526685
+status: experimental
+description: Detects the deletion of all Volume Shadow Copies using the 'vssadmin' utility, a technique used by NOVABLIGHT to inhibit system recovery.
+references:
+    - https://www.elastic.co/security-labs/threat-command/maas-appeal-an-infostealer-rises-from-the-ashes
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.impact
+    - attack.t1490
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\vssadmin.exe'
+        CommandLine|contains|all:
+            - 'delete'
+            - 'shadows'
+            - '/all'
+    condition: selection
+falsepositives:
+    - Legitimate administrator activity for system cleanup or before system changes. However, using '/all' is drastic and should be investigated.
+level: high

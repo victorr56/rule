@@ -1,0 +1,27 @@
+title: EvilTokens C2 Communication (Railway)
+id: c4a03b5a-1c7d-4b9e-9d2a-7f6c3d8b1e4f
+status: experimental
+description: Detects network connections to IP addresses on the Railway PaaS known to be used as token attack engines in the EvilTokens Phishing-as-a-Service campaign.
+references:
+    - https://www.huntress.com/blog/railway-paas-m365-token-replay-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.credential_access
+    - attack.t1528
+    - attack.initial_access
+    - attack.t1566
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '162.220.234.41'
+            - '162.220.234.66'
+            - '162.220.232.57'
+            - '162.220.232.99'
+    condition: selection
+falsepositives:
+    - The IPs are part of the Railway PaaS. While listed as dedicated to this campaign, other services might be hosted on them in the future or after the campaign concludes.
+level: high

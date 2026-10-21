@@ -1,0 +1,22 @@
+title: Royal Road Persistence via SecurityProfile.lnk
+id: 9a223f00-349f-4318-b2d2-84175ac22a10
+status: experimental
+description: Detects the creation of 'SecurityProfile.lnk' in the Startup folder by the '8.t' payload, a persistence technique used by a component dropped by Royal Road.
+references:
+    - http://nao-sec.org/2021/01/royal-road-redive.html
+author: ioc-yara-daily (agentic)
+date: 2024-07-24
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\8.t'
+        TargetFilename|endswith: '\Start Menu\Programs\Startup\SecurityProfile.lnk'
+    condition: selection
+falsepositives:
+    - This combination of process name and file creation is highly specific and not expected in benign activity.
+level: high

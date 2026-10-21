@@ -1,0 +1,21 @@
+title: SideWinder RTF Lure URL Pattern
+id: 3c570b99-3171-460d-961d-84224c52086e
+status: experimental
+description: Detects a URL pattern used by SideWinder infrastructure to deliver malicious RTF lure documents.
+references:
+    - https://blog.virustotal.com/2025/11/vtpractitioners-acronis.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1203
+    - attack.t1204.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        Http.Request.Method: 'GET'
+        Url|re: '/m/files-[a-f0-9]{8}/[^\s]+\.rtf'
+    condition: selection
+falsepositives:
+    - Legitimate web applications that serve RTF files using a similar URL pattern.
+level: medium

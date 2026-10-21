@@ -1,0 +1,25 @@
+title: NOX Stealer Execution via FTP Banner with Conhost
+id: c431cddc-4a34-4416-833e-11d7e26fc545
+status: experimental
+description: Detects the specific command line pattern used by NOX Stealer operators to execute code retrieved from an FTP server's welcome banner. It uses conhost.exe in headless mode to pipe the output of ftp.exe to powershell.exe.
+references:
+    - https://blog.virustotal.com/2026/10/internet-scanning-in-vt.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\conhost.exe'
+        CommandLine|contains|all:
+            - '--headless'
+            - 'cmd /c'
+            - 'ftp '
+            - '|powershell'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

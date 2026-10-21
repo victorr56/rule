@@ -1,0 +1,24 @@
+title: CikaBika DLL Sideloading via dbghelp.dll in Edge Path
+id: 59a1ca8b-d72b-4720-bdc1-74431e679234
+status: experimental
+description: Detects the creation of "dbghelp.dll" in the Microsoft Edge application directory. This is not a legitimate location for this DLL and is indicative of the CikaBika RAT attempting to sideload its malicious payload.
+references:
+    - https://www.darktrace.com/blog/when-ai-infrastructure-becomes-part-of-the-attack-surface
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1574.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\Microsoft\Edge\Application\dbghelp.dll'
+        Image|endswith: '\cmd.exe'
+    condition: selection
+falsepositives:
+    - Unlikely. The dbghelp.dll file is not part of a standard Microsoft Edge installation.
+level: high

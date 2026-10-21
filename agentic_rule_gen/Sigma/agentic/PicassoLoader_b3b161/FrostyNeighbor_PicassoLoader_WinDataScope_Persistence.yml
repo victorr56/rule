@@ -1,0 +1,28 @@
+title: FrostyNeighbor PicassoLoader Persistence via WinDataScope Run Key
+id: 0e86b245-a745-423c-99f5-4f30a5996849
+status: experimental
+description: |-
+    Detects the creation of a registry Run key value named 'UpdateService' used by an early stage of PicassoLoader to persist.
+    This key is set to execute a malicious JavaScript file ('Update.js') via a typosquatted 'svhost.exe'.
+references:
+    - https://www.welivesecurity.com/en/eset-research/frostyneighbor-fresh-mischief-digital-shenanigans/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1547.001
+    - detection.threat_hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Microsoft\Windows\CurrentVersion\Run\UpdateService'
+        Details|contains|all:
+            - 'svhost.exe'
+            - 'Update.js'
+            - '--force'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

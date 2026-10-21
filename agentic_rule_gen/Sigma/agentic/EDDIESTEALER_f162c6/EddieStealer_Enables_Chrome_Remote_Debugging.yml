@@ -1,0 +1,27 @@
+title: EDDIESTEALER Enables Chrome Remote Debugging
+id: 597977a4-4636-4d57-8979-4d80a187a544
+status: experimental
+description: Detects a browser process started with the remote debugging port enabled. EDDIESTEALER uses this to interact with the browser programmatically for credential theft.
+references:
+    - https://www.elastic.co/security-labs/threat-command/eddiestealer
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.credential_access
+    - attack.t1555.003
+detection:
+    selection:
+        Image|endswith:
+            - '\chrome.exe'
+            - '\msedge.exe'
+            - '\brave.exe'
+            - '\opera.exe'
+        CommandLine|contains: '--remote-debugging-port='
+    condition: selection
+logsource:
+    category: process_creation
+    product: windows
+falsepositives:
+    - Legitimate browser automation and testing frameworks (e.g., Selenium, Puppeteer).
+    - Some developer tools or extensions might enable this.
+level: medium

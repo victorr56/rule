@@ -1,0 +1,23 @@
+title: REF3864/SADBRIDGE Persistence Service Creation
+id: 9a23c7b1-e45f-4d3b-8c6e-1f9a0d8b7c5e
+status: experimental
+description: Detects the creation of the 'DevQueryBrokerServiceSvc' service used by the SADBRIDGE loader for persistence.
+references:
+    - https://www.elastic.co/security-labs/threat-command/under-the-sadbridge-with-gosar
+author: ioc-yara-daily (agentic)
+date: 2024-10-17
+tags:
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.t1543.003
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\SYSTEM\CurrentControlSet\Services\DevQueryBrokerServiceSvc\ImagePath'
+        Details|endswith: '\Lenovo\LenovoService\DevQueryBroker.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

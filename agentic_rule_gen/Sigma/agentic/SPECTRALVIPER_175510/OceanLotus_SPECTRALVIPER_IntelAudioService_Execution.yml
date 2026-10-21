@@ -1,0 +1,27 @@
+title: OceanLotus SPECTRALVIPER IntelAudioService Execution
+id: 843f54d7-4df3-4927-b615-da9434850849
+status: experimental
+description: Detects the execution of "IntelAudioService.exe", a masqueraded side-loader for SPECTRALVIPER, with specific command-line arguments.
+references:
+    - https://www.welivesecurity.com/en/eset-research/oceanlotus-external-espionage-domestic-targeting/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1036
+    - attack.execution
+    - attack.t1574.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\IntelAudio\Service\IntelAudioService.exe'
+        CommandLine|contains|all:
+            - '/appmodel'
+            - '/StateRepository'
+            - '/Service'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

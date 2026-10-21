@@ -1,0 +1,140 @@
+{
+  "malware_family": "RansomHub",
+  "threat_actor": "ScatteredSpider",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "RansomHub is a Go-based Ransomware-as-a-Service (RaaS) platform targeting Windows and Linux systems. Affiliates use double extortion tactics, leveraging legitimate remote access tools like Atera and Splashtop for C2 and exfiltration. Encrypted files are appended with a 6-digit alphanumeric extension, such as .293ac3.",
+  "mitre_techniques": [
+    "T1592.004",
+    "T1595.002",
+    "T1046",
+    "T1083",
+    "T1135",
+    "T1018",
+    "T1190",
+    "T1110",
+    "T1210",
+    "T1001",
+    "T1041",
+    "T1567.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "*.293ac3",
+      "context": "File extension appended to encrypted files.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Curve25519",
+      "context": "Encryption algorithm used to encrypt data.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "SecretServerSecretStealer",
+      "context": "PowerShell script used for password decryption.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "NetScan",
+      "context": "Used to discover and retrieve information about network devices.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "ngrok",
+      "context": "Used for lateral movement and data exfiltration.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Remmina",
+      "context": "Remote desktop client used to access remote services.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "38.244.145.85",
+      "context": "Rare external endpoint used for data exfiltration over port 448.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "agent-api.atera.com",
+      "context": "Domain linked to Atera Remote Monitoring and Management (RMM) tool.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "20.37.139.187",
+      "context": "IP address linked to Atera RMM tool (agent-api.atera.com).",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ps.atera.com",
+      "context": "Domain linked to Atera RMM tool.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "108.157.150.120",
+      "context": "IP address linked to Atera RMM tool (ps.atera.com).",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "st-v3-univ-srs-win-3720.api.splashtop.com",
+      "context": "Domain linked to Splashtop remote access and support software.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "elf"
+  ]
+}

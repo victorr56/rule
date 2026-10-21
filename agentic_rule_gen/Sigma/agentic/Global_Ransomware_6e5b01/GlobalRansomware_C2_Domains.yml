@@ -1,0 +1,23 @@
+title: Global Ransomware C2 DNS Queries
+id: 0e804f51-6062-4b2a-a929-e85df6498c47
+status: experimental
+description: Detects DNS queries for domains associated with Global Group ransomware command and control or payload delivery.
+references:
+    - https://cofense.com/blog/from-payment-plan-to-ransomware-inside-a-global-group-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'driverupdate.sbs'
+            - 'globalsupportupdate.top'
+            - 'playmounthdom.top'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

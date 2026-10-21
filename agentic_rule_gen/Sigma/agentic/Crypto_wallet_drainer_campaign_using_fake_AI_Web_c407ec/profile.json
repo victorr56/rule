@@ -1,0 +1,524 @@
+{
+  "malware_family": "Crypto wallet drainer campaign using fake AI/Web3 startups (Atomic Stealer on macOS)",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "macos"
+  ],
+  "summary": "Evolving social-engineering campaign in which fake AI, gaming and Web3 startup companies contact cryptocurrency users over X, Telegram or Discord with a registration code and direct them to Electron apps (Windows) or DMG installers (macOS). Windows builds profile the host (HWID, MAC, GPU, RAM) and pull remote EXEs/MSIs signed with stolen code-signing certificates, while macOS builds run Atomic Stealer plus a LaunchAgent-persisted InstallerHelper that exfiltrate browser and crypto-wallet data. Stolen data is POSTed to 45.94.47.167/contact and metrics are sent to mrajhhoshoahjsd.com/collect-metrics.",
+  "mitre_techniques": [
+    "T1204.002",
+    "T1027",
+    "T1553.002",
+    "T1543.001",
+    "T1555",
+    "T1074.001",
+    "T1041",
+    "T1567"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "install.sh",
+      "context": "Additional bash script retrieved from 77.73.129.18:80/install.sh after Atomic Stealer run",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "install_dynamic.sh",
+      "context": "Retrieved by install.sh from https://mrajhhosdoahjsd[.]com; downloads InstallerHelper.app",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "InstallerHelper.app",
+      "context": "Objective-C/Swift binary logging app usage and window data, persisted via LaunchAgent",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/out.zip",
+      "context": "Atomic Stealer compresses stolen browser, wallet, cookie and document data here before POST",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".SwoxApp",
+      "context": "Hidden binary moved from mounted DMG 'SwoxApp' to /tmp/ and made executable via AppleScript",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/AppData/Temp",
+      "context": "Python retrieved by the Windows Electron app and stored in /AppData/Temp",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "Jiangyin Fengyuan Electronics Co., Ltd.",
+      "context": "Stolen code-signing certificate used to sign Windows payloads for credibility",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "Paperbucketmdb ApS",
+      "context": "Stolen code-signing certificate used in campaign; revoked as of June 2025",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "RunAtLoad",
+      "context": "LaunchAgent plist key ensuring InstallerHelper starts automatically at login",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "KeepAlive",
+      "context": "LaunchAgent plist key keeping the persisted app running",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "macOS LaunchAgent plist",
+      "context": "Persistence installed by install_dynamic.sh to run InstallerHelper at user login",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "app-launcher://.*token=",
+      "context": "YARA $url_token regex: captcha token extracted from the app-launcher URL",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Get-CimInstance Win32_ComputerSystemProduct).UUID",
+      "context": "YARA $getHWID regex used by Electron app to collect system UUID",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wmic path win32_VideoController get name",
+      "context": "YARA $getGPU regex used by Electron app to profile graphics card",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "msiexec /i.*/quiet /norestart",
+      "context": "YARA $runExe regex: downloaded MSI executed quietly by the Electron app",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "os.cpus()[0].model",
+      "context": "YARA $os_info regex used by Electron app to profile CPU",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "details.mac && details.mac !== '00:00:00:00:00:00'",
+      "context": "YARA $getMAC regex: MAC address collection with zero-MAC filter",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "mrajhhosdoahjsd.com",
+      "context": "Hosts install_dynamic.sh retrieved by install.sh (IoC list)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mrajhhoshoahjsd.com",
+      "context": "Receives InstallerHelper metrics POST at /collect-metrics",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://mrajhhoshoahjsd.com/collect-metrics",
+      "context": "Scheduled metrics exfiltration endpoint of InstallerHelper.app",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.94.47.167",
+      "context": "Atomic Stealer POSTs /tmp/out.zip to 45[.]94[.]47[.]167/contact",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/contact",
+      "context": "C2 upload path receiving stolen macOS data",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "77.73.129.18:80",
+      "context": "Serves additional bash script install.sh over HTTP port 80",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.94.47.112",
+      "context": "Listed in IoC section as http://45[.]94[.]47[.]112/contact",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://isnimitz.com/zxc/app[.]zip",
+      "context": "IoC-listed ZIP download URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "isnimitz.com",
+      "context": "Hosting domain of /zxc/app[.]zip in IoC list",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "Manboon.com",
+      "context": "Listed in IoC section without further detail",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gaetanorealty.com",
+      "context": "Listed in IoC section as https://gaetanorealty[.]com",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "Troveur.com",
+      "context": "Listed in IoC section without further detail",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "Bigpinellas.com",
+      "context": "Listed in IoC section without further detail",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "Dsandbox.com",
+      "context": "Listed in IoC section without further detail",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "Conceptwo.com",
+      "context": "Listed in IoC section without further detail",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "Aceartist.com",
+      "context": "Listed in IoC section without further detail",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "turismoelcasco.com",
+      "context": "Listed in IoC section without further detail",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "Ekodirect.com",
+      "context": "Listed in IoC section without further detail",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pollens.app",
+      "context": "Fake 'Pollens AI' company download site in known-companies list",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pollens.io",
+      "context": "Fake 'Pollens AI' company download site in known-companies list",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pollens.tech",
+      "context": "Fake 'Pollens AI' company download site in known-companies list",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "buzzu.app",
+      "context": "Fake 'Buzzu' company site distributing wallet stealer",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "buzzu.us",
+      "context": "Fake 'Buzzu' company site distributing wallet stealer",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "buzzu.me",
+      "context": "Fake 'Buzzu' company site distributing wallet stealer",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "buzzu.space",
+      "context": "Fake 'Buzzu' company site distributing wallet stealer",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "swox.io",
+      "context": "Fake 'Swox' company site; SwoxApp DMG delivers Atomic Stealer",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "swox.app",
+      "context": "Fake 'Swox' company site; SwoxApp DMG delivers Atomic Stealer",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "swox.cc",
+      "context": "Fake 'Swox' company site; SwoxApp DMG delivers Atomic Stealer",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "swoxAI.com",
+      "context": "Fake 'Swox' company site; SwoxApp DMG delivers Atomic Stealer",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "swox.us",
+      "context": "Fake 'Swox' company site; SwoxApp DMG delivers Atomic Stealer",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wasper.pro",
+      "context": "Fake 'Wasper' company site in known-companies list",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wasper.app",
+      "context": "Fake 'Wasper' company site in known-companies list",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "lunelior.net",
+      "context": "Fake 'Lunelior' company site with Windows and Mac payloads",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "lunelior.app",
+      "context": "Fake 'Lunelior' company site with Windows and Mac payloads",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "beesync.ai",
+      "context": "Fake 'BeeSync' company site, previous alias of Buzzu",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "beesync.cc",
+      "context": "Fake 'BeeSync' company site, previous alias of Buzzu",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "eternal-decay.xyz",
+      "context": "Fake 'Eternal Decay' blockchain game company site",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dexis.app",
+      "context": "Fake 'Dexis' company site, same branding as Swox",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "solune.io",
+      "context": "Fake 'Solune' company site in known-companies list",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "yonda.us",
+      "context": "Fake 'YondaAI' company site in known-companies list",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "81996a20cfa56077a3bb69487cc58405ced79629d0c09c94fb21ba7e5f1a24c9",
+      "description": "Swox macOS payload (SwoxApp / Atomic Stealer infostealer)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "macho",
+    "script"
+  ]
+}

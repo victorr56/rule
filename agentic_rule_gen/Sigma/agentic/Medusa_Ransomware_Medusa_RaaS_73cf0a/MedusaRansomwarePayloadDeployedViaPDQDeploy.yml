@@ -1,0 +1,23 @@
+title: Medusa Ransomware Payload Deployed via PDQ Deploy
+id: 57476834-3151-40e9-b54c-85de41f92e3a
+status: experimental
+description: Detects the creation of Medusa ransomware payloads, such as "gaze.exe", in the specific PDQ Deploy runner execution directory on an administrative share. This indicates the use of PDQ Deploy for lateral movement and ransomware deployment.
+references:
+    - https://www.darktrace.com/blog/under-medusas-gaze-how-darktrace-uncovers-rmm-abuse-in-ransomware-campaigns
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.lateral_movement
+    - attack.t1021.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\svchost.exe'
+        TargetFilename|contains: '\AdminArsenal\PDQDeployRunner\'
+        TargetFilename|endswith: '\gaze.exe'
+    condition: selection
+falsepositives:
+    - Legitimate use of PDQ Deploy to push a tool named 'gaze.exe'.
+level: critical

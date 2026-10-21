@@ -1,0 +1,450 @@
+{
+  "malware_family": "BADIIS",
+  "threat_actor": "REF4033",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "BADIIS is a malicious IIS module used by the Chinese-speaking cybercrime group REF4033 (UAT-8099) in a large-scale SEO poisoning campaign. The malware compromises Windows web servers to manipulate search engine rankings and redirect users to a network of illicit websites, including gambling platforms and cryptocurrency phishing sites. The campaign primarily targets the APAC region but has a global footprint.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "pdb_path",
+      "value": "C:\\Users\\Administrator\\Desktop\\替换配置文件\\w3wpservice-svchost\\x64\\Release\\CbsMsgApi.pdb",
+      "context": "PDB path found in the CbsMsgApi.exe service installer.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "WalletServiceInfo",
+      "context": "Windows service created to load the malicious ServiceDLL.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "CbsMsgApi.exe",
+      "context": "Service installer executable.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "CbsMsgApi.dll",
+      "context": "Malicious ServiceDLL that stages the BADIIS modules.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Microsoft\\Windows\\Ringtones\\CbsMsgApi.dll",
+      "context": "Path for the malicious ServiceDLL.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sc sdset \"WalletServiceInfo\" \"D:(D;;DCLCWPDTSD;;;IU)(D;;DCLCWPDTSD;;;SU)(D;;DCLCWPDTSD;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)S:(AU;FA;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;WD)\"",
+      "context": "Modifies the security descriptor for the created service.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1111111122222222",
+      "context": "SM4 ECB key for decrypting configuration URLs.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "WsmRes64.dll",
+      "context": "File name for the 64-bit BADIIS IIS module.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "WsmRes32.dll",
+      "context": "File name for the 32-bit BADIIS IIS module.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "WsmRes64",
+      "context": "Name of the malicious module in IIS configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<add name=\"WsmRes64\" image=\"C:\\Windows\\Microsoft.NET\\Framework\\WsmRes64.dll\" preCondition=\"bitness64\" />",
+      "context": "Entry added to <globalModules> in IIS configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\drivers\\WUDFPfprot.sys",
+      "context": "Masquerading file containing configuration elements for IIS.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\drivers\\WppRecorderpo.sys",
+      "context": "Masquerading file containing a BADIIS module.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\drivers\\WppRecorderrt.sys",
+      "context": "Masquerading file containing a BADIIS module.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ul_cache.dll",
+      "context": "Filename used for older BADIIS samples.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "G-2FK43E86ZM",
+      "context": "Google Analytics tag used for tracking.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "G-R0KHSLRZ7N",
+      "context": "Google Analytics tag used for tracking.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "b59ff1638e92ab1127b7bc76c7922245",
+      "context": "Baidu Tongji tag used for tracking.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "bing",
+      "context": "Referer header value checked by malware.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "google",
+      "context": "Referer header value checked by malware.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "naver",
+      "context": "Referer header value checked by malware.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "daum",
+      "context": "Referer header value checked by malware.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "bingbot",
+      "context": "User-Agent string for search engine crawlers.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Googlebot",
+      "context": "User-Agent string for search engine crawlers.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Yeti",
+      "context": "User-Agent string for search engine crawlers.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Daum",
+      "context": "User-Agent string for search engine crawlers.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "gotz003.com",
+      "context": "Primary BADIIS config server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "jbtz003.com",
+      "context": "Legacy BADIIS config server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gotz001.com",
+      "context": "Primary BADIIS SEO content and backlinks server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "jbtz001.com",
+      "context": "Legacy BADIIS SEO content and backlinks server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tz123.app",
+      "context": "Older campaign BADIIS config server.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tz789.app",
+      "context": "Older campaign BADIIS config server.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "uupbit.top",
+      "context": "Fraudulent cryptocurrency phishing site impersonating Upbit.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://kr.gotz003.com/krfml/krfmlip.txt",
+      "context": "Config URL for filter subnets list.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://kr.gotz003.com/krfml/krfmltz.txt",
+      "context": "Config URL for user redirection target.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://kr.gotz003.com/krfml/krfmllj.txt",
+      "context": "Config URL for SEO backlinks.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://kr.gotz003.com/krfml/krfmldz.txt",
+      "context": "Config URL for SEO content generator.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cn.gotz001.com/lunlian/index.php",
+      "context": "URL for retrieving SEO backlinks (link farm).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://br.jbtz001.com/lunlian/index.php",
+      "context": "URL for retrieving SEO backlinks (link farm).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/*fmlip.txt",
+      "context": "Filename pattern for config file containing IP filter subnets.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/*fmltz.txt",
+      "context": "Filename pattern for config file containing redirection URL.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/*fmllj.txt",
+      "context": "Filename pattern for config file containing SEO backlinks.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/*fmldz.txt",
+      "context": "Filename pattern for config file containing SEO content generator URL.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/lunlian/index.php",
+      "context": "Path for SEO backlink and content farm.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "055bdcaa0b69a1e205c931547ef863531e9fdfdaac93aaea29fb701c7b468294",
+      "description": "CbsMsgApi.exe service installer."
+    },
+    {
+      "sha256": "2340f152e8cb4cc7d5d15f384517d756a098283aef239f8cbfe3d91f8722800a",
+      "description": "CbsMsgApi.dll ServiceDLL."
+    },
+    {
+      "sha256": "c2ff48cfa38598ad514466673b506e377839d25d5dfb1c3d88908c231112d1b2",
+      "description": "Older, non-protected CbsMsgApi.dll sample."
+    },
+    {
+      "sha256": "7f2987e49211ff265378349ea648498042cd0817e131da41156d4eafee4310ca",
+      "description": "D_Safe_Manage.exe (D-Shield Firewall) used by actor."
+    },
+    {
+      "sha256": "1b723a5f9725b607926e925d1797f7ec9664bb308c9602002345485e18085b72",
+      "description": "64-bit BADIIS module (WsmRes64.idx)."
+    },
+    {
+      "sha256": "1f9e694cac70d089f549d7adf91513f0f7e1d4ef212979aad67a5aea10c6d016",
+      "description": "64-bit BADIIS module (WsmRes64.idx2.sc)."
+    },
+    {
+      "sha256": "c5abe6936fe111bbded1757a90c934a9e18d849edd70e56a451c1547688ff96f",
+      "description": "32-bit BADIIS module (WsmRes32.idx)."
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

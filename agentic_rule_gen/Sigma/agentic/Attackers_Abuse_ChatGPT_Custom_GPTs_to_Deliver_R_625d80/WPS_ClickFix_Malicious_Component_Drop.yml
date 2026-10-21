@@ -1,0 +1,26 @@
+title: ClickFix RAT Malicious Component Drop
+id: 5e6f7a8b-0d1e-4f8a-b1c2-3d4e5f6a7b8c
+status: experimental
+description: Detects the creation of malicious DLLs used by the ClickFix RAT in its specific installation directories, typically created by the MSI installer.
+references:
+    - https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1105
+    - attack.defense_evasion
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\msiexec.exe'
+        TargetFilename|endswith:
+            - '\Programs\Advanced Printer Configuration Reader\ceiinfolog.dll'
+            - '\Programs\Advanced Printer Configuration Reader\rdCore.dll'
+            - '\Programs\Stardock Smart DeElevation Tool\DeElevator64.dll'
+            - '\Programs\Stardock Smart DeElevation Tool\I++u.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

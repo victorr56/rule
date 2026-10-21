@@ -1,0 +1,30 @@
+title: SideWinder and FileFix Associated Domain Access
+id: d17b2b09-2479-450f-a9ac-86227a922883
+status: experimental
+description: Detects DNS queries for domains associated with SideWinder and FileFix malware delivery and C2 infrastructure.
+references:
+    - https://blog.virustotal.com/2025/11/vtpractitioners-acronis.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1203
+    - attack.t1204.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - www-customs-gov-lk.net-co.info
+            - nomination.army-bd.com
+            - pmo-gov-pk.loadpath.info
+            - saarc-sec-org.snagdrive.com
+            - hsia-gov-bd.download-doc.net
+            - caapakistan-gov-pk.download-doc.net
+            - sco.mail163cn.info
+            - transitionpage.info
+            - thanjainatural.com
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

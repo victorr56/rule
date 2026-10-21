@@ -1,0 +1,25 @@
+title: Balonx Sistema C2 and Vishing Backend Connection
+id: c80acb3b-d1e4-4d8e-a9ca-c09a32c2537f
+status: experimental
+description: Detects network connections to IP addresses and ports used by the Balonx Sistema Android RAT C2 and CallFlow vishing backend.
+references:
+    - https://www.group-ib.com/blog/balonx-sistema-mexico-phaas-es/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1598.003
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection_rat:
+        DestinationIp: '196.251.84.11'
+        DestinationPort: 7771
+    selection_vishing:
+        DestinationIp: '85.31.235.109'
+        DestinationPort: 5160
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely.
+level: high

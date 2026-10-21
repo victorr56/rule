@@ -1,0 +1,305 @@
+{
+  "malware_family": "Global Ransomware",
+  "threat_actor": "Global Group",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Global Group is a financially motivated RaaS operation, a rebrand of Black Lock and Mamona, that delivers ransomware via a fake \"Suggested Payment Plan\" email and PDF lure leading to an ISO with an LNK and executable. The executable spawns the legitimate WinMerge loader, which contacts globalsupportupdate.top to pull enc.exe, a Python-based encryptor that drops its toolkit into C:\\Python27.x86, disables security processes, encrypts local, network-share and database data with the .nZASJgT extension and leaves README.nZASJgT.txt. Global Group operates double extortion with a Tor negotiation portal and a staged data-leak threat.",
+  "mitre_techniques": [
+    "T1486",
+    "T1491.001",
+    "T1562.001",
+    "T1204.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "README.nZASJgT.txt",
+      "context": "Ransom note with decryption and negotiation instructions",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": ".nZASJgT",
+      "context": "Encryption extension appended to victim files, e.g. bcufjaqp.nZASIjT",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Python27.x86",
+      "context": "Path where ransomware drops its toolkit and scripts",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "enc.exe",
+      "context": "Encryptor payload downloaded by WinMerge from globalsupportupdate.top",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Preview-9dc7.exe",
+      "context": "Executable inside ISO, spawns WinMerge.exe loader",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Preview-9dc7.pdf.lnk",
+      "context": "LNK shortcut inside ISO pointing to the malicious executable",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Preview-9dc7.iso",
+      "context": "ISO archive downloaded from driverupdate.sbs",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "document_989399.pdf",
+      "context": "Phishing PDF attachment with Download button lure",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ptc1591.exe",
+      "context": "Stage 2 discovered malicious file",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "w9xpoppen.exe",
+      "context": "Executable dropped alongside toolkit in C:\\Python27.x86",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "WinMerge.exe",
+      "context": "Legitimate comparison tool spawned by EXE and abused as encryptor loader",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "WinMerge",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "WinMergeU.exe",
+      "context": "WinMerge process observed in proxy capture connecting to C2 domains",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "WinMerge",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "Preview-9dc7.exe -> WinMerge.exe",
+      "context": "Malicious EXE spawns WinMerge loader process",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!!! YOUR NETWORK HAS BEEN COMPROMISED BY GLOBAL GROUP !!!",
+      "context": "Desktop wallpaper ransom banner",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ">>> CHECK README.nZASJgT.txt FOR DETAILED INSTRUCTIONS <<<",
+      "context": "Ransom wallpaper instruction line",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "This message is not a threat. It is a factual summary of the current state of your environment.",
+      "context": "Ransom note opening line",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Do not contact recovery services - they cannot help.",
+      "context": "Ransom note intimidation line",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "haloffuhodo@hotmail.com",
+      "context": "Sender address of the suggested payment plan email",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://driverupdate.sbs/access.php?t=notes-a408df",
+      "context": "Payload URL reached from PDF Download lure",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://globalsupportupdate.top/enc.exe",
+      "context": "C2 URL serving the encryptor payload to WinMerge.exe",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://playmounthdom.top/",
+      "context": "Command and control URL",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "driverupdate.sbs",
+      "context": "Malicious file download site",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "globalsupportupdate.top",
+      "context": "Payload hosting / C2 domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "playmounthdom.top",
+      "context": "C2 domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "vg6xwkmfyirv3l6qtqus7jyxcuvgx6imegb7shqny2avxccnmqt5m2id.onion",
+      "context": "Global Group data leak / negotiation portal in ransom note",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.67.175.15",
+      "context": "IP for driverupdate.sbs payload host",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.21.92.70",
+      "context": "IP for globalsupportupdate.top C2",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.67.188.157",
+      "context": "IP for playmounthdom.top C2",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "d5004e079cb46db15a7d0b7ecebfa47bb8a1bc19e25749849a017b2a36705260",
+      "description": "Phishing PDF attachment document_989399.pdf with Download lure"
+    },
+    {
+      "sha256": "00F70AE018E71F51060346AAA101209C24E34697BBFAFEC6B3612DB8D8127CB2",
+      "description": "ISO archive Preview-9dc7.iso containing EXE and LNK"
+    },
+    {
+      "sha256": "997CF28771FDE81C6BFC067EED1F19D0AD3554342D63D9469D3ADCDC1CA0FF31",
+      "description": "Executable Preview-9dc7.exe spawning WinMerge loader"
+    },
+    {
+      "sha256": "64388CDBFE48DCFF05EAA455892BCB3BFCAA3D43559EB7C65F6AC772810BE61E",
+      "description": "LNK shortcut Preview-9dc7.pdf.lnk pointing to the malicious executable"
+    },
+    {
+      "sha256": "9fb468a79f88d9a250180749bfae97d4f310c8510f1f98cae359d95c2a62b4af",
+      "description": "Stage 2 malicious executable ptc1591.exe"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "document",
+    "archive"
+  ]
+}

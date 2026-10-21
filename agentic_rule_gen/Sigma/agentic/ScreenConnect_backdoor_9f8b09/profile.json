@@ -1,0 +1,158 @@
+{
+  "malware_family": "ScreenConnect backdoor",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A malicious email impersonating the Social Security Administration delivers a fake SSA statement page (icci-sa.com) that serves a customized ScreenConnect client installer. After execution the installer establishes an outbound ScreenConnect C2 session to its relay instance over TCP 443, giving the operator remote access to the victim host.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "ScreenConnect.ClientSetup.exe",
+      "context": "downloaded customized ScreenConnect client installer",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Your Monthly SSA Electronic Statement is Available for Download",
+      "context": "email subject used as lure",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Your download will start automatically. If it doesn't, click here.",
+      "context": "fake SSA download page text",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Download completed successfully! Your SSA statement file has been downloaded.",
+      "context": "fake SSA page message after exe download",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "allsecured.net",
+      "context": "sender domain in malicious email headers",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "23.227.202.93",
+      "context": "sending IP for allsecured.net in email headers",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Information@allsecured.net",
+      "context": "spoofed SSA sender address",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://t.co/LPz3zzwREa",
+      "context": "link in malicious email to fake SSA page",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "icci-sa.com",
+      "context": "fake Social Security Administration site",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://icci-sa.com/xgov/social_secur1tiy_administr3tion.php?download=exe",
+      "context": "payload download URL",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://icci-sa.com/xgov/social_secur1tiy_administr3tion.php",
+      "context": "fake SSA statement page",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "159.198.35.37",
+      "context": "icci-sa.com HTTPS connection in pcap",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "check.screenconnect.com",
+      "context": "ScreenConnect service check during infection",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "instance-udppxf-relay.screenconnect.com",
+      "context": "relay used by customized ScreenConnect client",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "15.204.43.235",
+      "context": "ScreenConnect relay IP over TCP 443",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "tcp://15.204.43.235:443",
+      "context": "encoded/encrypted ScreenConnect C2 traffic",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "f1d103dd77d09697fa30fa14c4f39e394b0331a33ffd2ef5df2916dbe79e474b",
+      "description": "Customized ScreenConnect client installer (12,828,216 bytes) delivered by fake SSA page; establishes backdoor C2"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

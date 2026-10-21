@@ -1,0 +1,28 @@
+title: CikaBika Data Exfiltration using PowerShell and Ngrok
+id: 59728cf0-2b10-4412-9c3f-98188147814b
+status: experimental
+description: Detects a command line that archives user data using 'Compress-Archive' and then exfiltrates it using 'curl'. This TTP has been observed in CikaBika campaigns using Ngrok as an exfiltration channel.
+references:
+    - https://www.darktrace.com/blog/when-ai-infrastructure-becomes-part-of-the-attack-surface
+author: ioc-yara-daily (agentic)
+date: 2024-05-15
+tags:
+    - attack.exfiltration
+    - attack.t1041
+    - attack.collection
+    - attack.t1560.001
+    - attack.command_and_control
+    - attack.t1567
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'Compress-Archive -Path'
+            - 'curl -X POST'
+    condition: selection
+falsepositives:
+    - Legitimate scripts that archive and upload data using PowerShell and cURL.
+level: medium

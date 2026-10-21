@@ -1,0 +1,29 @@
+title: OXLOADER PowerShell Download from Storj
+id: 5691d1e4-b78f-4315-9923-389f417f54c3
+status: experimental
+description: |
+  Detects a PowerShell command line used to download the OXLOADER payload. The command
+  instantiates a System.Net.WebClient object and downloads a file from "storjshare.io/raw/",
+  which is a pattern observed in this campaign.
+references:
+  - https://www.elastic.co/security-labs/threat-command/oxloader-malware-loader-infostealer
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.command_and_control
+  - attack.t1105
+  - attack.t1059.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\powershell.exe'
+    CommandLine|contains|all:
+      - 'System.Net.WebClient'
+      - 'DownloadFile'
+      - 'storjshare.io/raw/'
+  condition: selection
+falsepositives:
+  - Legitimate scripts downloading files from the Storj decentralised storage platform.
+level: high

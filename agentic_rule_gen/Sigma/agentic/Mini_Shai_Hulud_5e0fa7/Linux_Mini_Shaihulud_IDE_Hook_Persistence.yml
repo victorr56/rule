@@ -1,0 +1,24 @@
+title: Mini Shai-Hulud IDE Hook Persistence
+id: 57790b14-cf95-46aa-ab9d-e4480ef0a9a8
+status: experimental
+description: Detects the creation of "setup.mjs" files in ".claude" or ".vscode" directories, a persistence technique used by the Mini Shai-Hulud malware to hook into developer tools.
+references:
+    - https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.persistence
+    - attack.t1574
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/bin/node'
+        TargetFilename|endswith:
+            - '/.claude/setup.mjs'
+            - '/.vscode/setup.mjs'
+    condition: selection
+falsepositives:
+    - 'Legitimate use of the VSCode or Claude IDE feature that executes setup.mjs on startup. This is rare but possible for developers customizing their environment.'
+level: high

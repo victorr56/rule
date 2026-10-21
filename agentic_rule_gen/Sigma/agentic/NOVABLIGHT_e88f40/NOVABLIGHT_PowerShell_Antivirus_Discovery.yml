@@ -1,0 +1,26 @@
+title: NOVABLIGHT - PowerShell Antivirus Discovery
+id: b44199c0-9993-4a16-953e-f14d84f4fcae
+status: experimental
+description: Detects PowerShell command used to discover installed antivirus products, a technique leveraged by NOVABLIGHT.
+references:
+    - https://www.elastic.co/security-labs/threat-command/maas-appeal-an-infostealer-rises-from-the-ashes
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.discovery
+    - attack.t1518.001
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'Get-CimInstance'
+            - '-Namespace root/SecurityCenter2'
+            - 'AntiVirusProduct'
+    condition: selection
+falsepositives:
+    - Security scripts, system management tools, or compliance checks may use this command to inventory security software.
+level: medium

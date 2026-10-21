@@ -1,0 +1,27 @@
+title: HwAudKiller Kernel Service Creation 'Havoc'
+id: 24cf81c4-1175-430c-ab2f-dd9e28de14f5
+status: experimental
+description: Detects the creation of a kernel service named "Havoc", a specific behavior of the HwAudKiller malware used to load its vulnerable driver for EDR termination.
+references:
+    - https://www.huntress.com/blog/w2-malvertising-to-kernel-mode-edr-kill
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.persistence
+    - attack.t1543.003
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\sc.exe'
+        CommandLine|contains|all:
+            - 'create'
+            - 'Havoc'
+            - 'type= kernel'
+    condition: selection
+falsepositives:
+    - Unlikely, unless an administrator coincidentally creates a kernel service with this name.
+level: high

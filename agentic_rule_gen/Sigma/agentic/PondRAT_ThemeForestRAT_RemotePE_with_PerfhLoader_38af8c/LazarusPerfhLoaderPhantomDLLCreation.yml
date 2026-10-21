@@ -1,0 +1,27 @@
+title: Lazarus PerfhLoader Phantom DLL Load
+id: c0508c90-9512-4091-a64b-240c3ff44f2c
+status: experimental
+description: Detects the loading of phantom DLLs 'tsvipsrv.dll' or 'wlbsctrl.dll' by svchost.exe. These DLLs are loaded by the SessionEnv or IKEEXT services respectively as part of a persistence and privilege escalation technique used by a Lazarus subgroup.
+references:
+    - https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-040a
+    - https://www.vmware.com/content/dam/digitalmarketing/vmware/en/pdf/threat-research/carbon-black/lazarus-group-threat-profile.pdf
+author: ioc-yara-daily (agentic)
+date: 2024-05-22
+tags:
+    - attack.defense_evasion
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\svchost.exe'
+        ImageLoaded|endswith:
+            - '\tsvipsrv.dll'
+            - '\wlbsctrl.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

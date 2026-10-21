@@ -1,0 +1,25 @@
+title: ARECHCLIENT2 C2 IP Connection
+id: 61e149c7-5058-4a5f-b52b-31362e55850e
+status: experimental
+description: Detects network connections to IP addresses associated with ARECHCLIENT2 command and control servers.
+references:
+    - https://www.elastic.co/security-labs/threat-command/a-wretch-client
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1105
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '50.57.243.90'
+            - '144.172.97.2'
+            - '143.110.230.167'
+            - '66.63.187.22'
+            - '45.94.47.164'
+    condition: selection
+falsepositives:
+    - Unlikely, but possible if IPs are reallocated to benign services.
+level: high

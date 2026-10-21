@@ -1,0 +1,23 @@
+title: FishMonger SprySOCKS WIN_PLUS Loader Activity
+id: 61168f20-911e-4ebf-ad69-1c9f0d7e7e59
+status: experimental
+description: Detects the Windows Print Spooler service loading the SprySOCKS WIN_PLUS first-stage loader DLL 'VSPMsg.dll'.
+references:
+    - https://www.welivesecurity.com/en/eset-research/fishmongers-arsenal-upgraded-sprysocks-windows/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1546.012
+    - detection.threat_hunting
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\spoolsv.exe'
+        ImageLoaded|endswith: '\prtprocs\x64\VSPMsg.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

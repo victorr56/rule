@@ -1,0 +1,21 @@
+title: Linux Codex Botnet C2 Domain Query
+id: 4a2d8299-53e7-495c-9c98-d784a6c4f826
+status: experimental
+description: Detects DNS queries for the '0x1x2x3.top' domain, which is used for C2 by a malicious cron job.
+references:
+    - https://www.huntress.com/blog/codex-part-two
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1071.004
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: '0x1x2x3.top'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

@@ -1,0 +1,23 @@
+title: AccountGuard Suspicious MSI Execution
+id: 97f39423-f222-4919-866b-4e650495f2a1
+status: experimental
+description: Detects the installation of 'sc.msi' from a suspicious AppData path, consistent with the AccountGuard infection chain.
+references:
+    - https://www.huntress.com/blog/bank-spam-rmm
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.execution
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\msiexec.exe'
+        CommandLine|contains|all:
+            - '/i'
+            - '\AppData\Local\Microsoft\sc.msi'
+    condition: selection
+falsepositives:
+    - Legitimate installers named 'sc.msi' being executed from this specific user-writable directory.
+level: medium

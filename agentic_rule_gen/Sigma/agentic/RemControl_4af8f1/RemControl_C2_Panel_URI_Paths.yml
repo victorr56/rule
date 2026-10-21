@@ -1,0 +1,30 @@
+title: RemControl C2 Panel URI Paths
+id: 8b067f55-6b5d-4fdd-9f0e-e5d799011746
+status: experimental
+description: Detects HTTP requests to specific URI paths used by the RemControl C2 panel and backend.
+references:
+    - https://www.group-ib.com/blog/remcontrol-android-banking-trojan/
+author: ioc-yara-daily (agentic)
+date: 2023-10-26
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - attack.collection
+logsource:
+    category: proxy
+detection:
+    selection_upload:
+        Url|endswith: '/internal/recordings/upload'
+        cs-method: 'POST'
+    selection_build:
+        Url|endswith: '/admin/builds/new'
+        cs-method: 'POST'
+    selection_submit:
+        Url|contains|all:
+            - '/internal/overlays/'
+            - '/submit'
+        cs-method: 'POST'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate web applications that use the same URI paths and methods, although this is unlikely.
+level: high

@@ -1,0 +1,29 @@
+title: OceanLotus SPECTRALVIPER C2 IPs
+id: 2d14b4de-12e7-4402-a16f-73898f80459c
+status: experimental
+description: Detects network connections to IP addresses known to be used by the SPECTRALVIPER backdoor for C2 communications or staging.
+references:
+    - https://www.welivesecurity.com/en/eset-research/oceanlotus-external-espionage-domestic-targeting/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '38.60.245.37'
+            - '103.119.47.104'
+            - '139.162.11.152'
+            - '139.180.128.42'
+            - '139.99.33.239'
+            - '142.91.98.77'
+            - '166.88.77.186'
+            - '194.68.26.241'
+    condition: selection
+falsepositives:
+    - Unlikely, but IP addresses may be reallocated.
+level: high

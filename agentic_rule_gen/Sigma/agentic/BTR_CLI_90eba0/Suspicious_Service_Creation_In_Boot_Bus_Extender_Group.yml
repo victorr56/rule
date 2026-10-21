@@ -1,0 +1,27 @@
+title: Suspicious Service Creation in Boot Bus Extender Group
+id: 8dbd2c49-0d86-455b-b9d5-716492c6c310
+status: experimental
+description: >-
+    Detects a new Windows service being configured to load in the 'Boot Bus Extender' group.
+    This load order group is normally reserved for inbox drivers that enumerate hardware buses.
+    The BTR_CLI PoC uses this group to ensure its malicious driver loads very early during the boot process, before most security products are active.
+references:
+    - https://research.checkpoint.com/2026/btr-reforged-weaponizing-defenders-remediation-driver-as-a-kernel-operation-primitive/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.privilege_escalation
+    - attack.t1543.003
+    - detection.threat_hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Group'
+        Details: 'Boot Bus Extender'
+    condition: selection
+falsepositives:
+    - Legitimate third-party driver installers, particularly for virtualization software like VirtualBox or VMWare, may create services in this group.
+level: medium

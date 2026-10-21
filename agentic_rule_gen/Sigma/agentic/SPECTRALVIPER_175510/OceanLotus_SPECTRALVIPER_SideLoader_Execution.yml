@@ -1,0 +1,27 @@
+title: OceanLotus SPECTRALVIPER Side-Loader Execution
+id: 5744c680-4bd2-4874-a6ec-e1e3b6107380
+status: experimental
+description: Detects the execution of a renamed legitimate executable, used as a side-loader for SPECTRALVIPER, with the specific command line argument "-uiDll".
+references:
+    - https://www.welivesecurity.com/en/eset-research/oceanlotus-external-espionage-domestic-targeting/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1574.002
+    - attack.execution
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\Genuine.exe'
+            - '\Updater.exe'
+            - '\AutoCAD242.exe'
+        CommandLine|contains: ' -uiDll'
+    condition: selection
+falsepositives:
+    - Legitimate use of these executables with this specific command line, although unlikely.
+level: high

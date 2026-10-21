@@ -1,0 +1,23 @@
+title: SNCF Phishing Scam Infrastructure IP Connection
+id: 57d81a8b-4b95-46b0-9112-eb724497e1b2
+status: experimental
+description: Detects network connections to IP addresses associated with infrastructure used in a phishing scam targeting SNCF customers.
+references:
+    - https://www.group-ib.com/blog/french-railway-two-step-scam/
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1566
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '185.221.19.8'
+            - '185.225.210.8'
+            - '91.215.85.183'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

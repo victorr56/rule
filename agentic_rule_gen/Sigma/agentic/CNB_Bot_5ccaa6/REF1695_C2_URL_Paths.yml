@@ -1,0 +1,35 @@
+title: REF1695/Malware C2 and Payload URL Paths
+id: 4a25925f-c241-4546-b684-0e362b535d8e
+status: experimental
+description: Detects HTTP requests to specific URL paths used for C2 and payload delivery by various malware families deployed by REF1695.
+references:
+    - https://www.elastic.co/security-labs/threat-command/fake-installers-to-monero
+author: ioc-yara-daily (agentic)
+date: 2024-02-27
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - attack.ingress_tool_transfer
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection_http:
+        DestinationPort: 80
+        Url|contains:
+            - '/CNB/gate.php'
+            - '/CNB/l0g1n234.php'
+            - '/MyMNRconfigs/0226.txt'
+            - '/UnamWebPanel7/api/endpoint.php'
+            - '/UWP1/api/endpoint.php'
+            - '/UWP1/cpu.txt'
+            - '/cl/i/me9mn2'
+            - '/files/z872d515ea17b4e6c3abca9752c706242/'
+    selection_https:
+        DestinationPort: 443
+        Url|contains:
+            - '/lebnabar198/Hgh5gM99fe3dG/raw/refs/heads/main/MnrsInstllr_240126.exe'
+    condition: 1 of them
+falsepositives:
+    - Unlikely
+level: high

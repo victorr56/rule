@@ -1,0 +1,21 @@
+title: FileFix Masquerade PDF Creation
+id: 59e19d7d-5369-42b7-a3bc-2d17ac47fce0
+status: experimental
+description: Detects the creation of a specifically named PDF file in an unusual path, a behavior associated with the FileFix malware payload.
+references:
+    - https://blog.virustotal.com/2025/11/vtpractitioners-acronis.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1204.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        TargetFilename|endswith: '\Users\Default\Documents\Meta\Facebook\Shared\Identity.pdf'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

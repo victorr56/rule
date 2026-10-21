@@ -1,0 +1,28 @@
+title: Qilin Actor Miner Masquerading in AI or Dev Tooling Paths
+id: 593ac769-3176-47b2-bd7b-ffde353a71b8
+status: experimental
+description: Detects miner execution from paths designed to masquerade as part of legitimate AI or development tooling.
+references:
+    - https://www.wiz.io/blog/ai-infrastructure-honeypot
+author: ioc-yara-daily (agentic)
+date: 2023-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+    - attack.execution
+    - attack.impact
+    - attack.t1496
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_nodered:
+        Image|endswith: '/xmrig'
+        Image|contains: '/usr/src/node-red/'
+    selection_claude:
+        Image|endswith: '/unicorn'
+        Image|contains: '/app/data/.claude/'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

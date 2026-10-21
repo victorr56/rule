@@ -1,0 +1,24 @@
+title: MIMICRAT C2 DNS Query
+id: de9d604b-324b-4835-9f5b-6f8e79e61239
+status: experimental
+description: Detects DNS queries for known MIMICRAT command and control domains.
+references:
+    - https://www.elastic.co/security-labs/threat-command/mimicrat-custom-rat-mimics-c2-frameworks
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'xmri.network'
+            - 'wexmri.cc'
+            - 'www.ndibstersoft.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

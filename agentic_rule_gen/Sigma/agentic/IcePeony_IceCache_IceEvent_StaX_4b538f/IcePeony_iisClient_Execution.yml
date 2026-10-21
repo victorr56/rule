@@ -1,0 +1,24 @@
+title: IcePeony iisClient Tool Execution
+id: 541cdd46-953e-460d-9b0d-b4f0b094ce79
+status: experimental
+description: Detects the execution of the 'iisClient' tool, used by IcePeony to interact with its IceCache webshell.
+references:
+    - http://nao-sec.org/2024/10/IcePeony-with-the-996-work-culture.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/iisClient'
+        CommandLine|contains|all:
+            - '-u http'
+            - '--list'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

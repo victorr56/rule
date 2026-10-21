@@ -1,0 +1,24 @@
+title: Mini Shai-Hulud Linux Persistence via Systemd User Service
+id: 28f6e8df-f2ad-48b4-82a9-d652f48d1f70
+status: experimental
+description: Detects the activation of the systemd user service 'gh-token-monitor.service' used by the Mini Shai-Hulud malware for persistence.
+references:
+    - https://www.wiz.io/blog/mini-shai-hulud-strikes-again-tanstack-more-npm-packages-compromised
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.persistence
+    - attack.t1543.002
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/systemctl'
+        CommandLine|contains|all:
+            - '--user'
+            - 'gh-token-monitor.service'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

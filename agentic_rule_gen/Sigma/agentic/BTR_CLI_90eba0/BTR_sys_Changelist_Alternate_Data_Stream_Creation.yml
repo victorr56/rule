@@ -1,0 +1,25 @@
+title: BTR.sys :changelist Alternate Data Stream Creation
+id: 052e46b1-094d-4e92-9388-75fd560a69a7
+status: experimental
+description: >-
+    Detects the creation of a specially named Alternate Data Stream (ADS) called ':changelist' on a .sys file.
+    This ADS is used by the BTR_CLI PoC to store an encrypted configuration for the BTR.sys driver.
+references:
+    - https://research.checkpoint.com/2024/btr-reforged-weaponizing-defenders-remediation-driver-as-a-kernel-operation-primitive/
+author: ioc-yara-daily (agentic)
+date: 2024-04-25
+tags:
+    - attack.defense_evasion
+    - attack.privilege_escalation
+    - attack.t1564.004
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: 'BTR_CLI.exe'
+        TargetFilename|endswith: '.sys:changelist'
+    condition: selection
+falsepositives:
+    - This activity is highly specific to the BTR_CLI proof-of-concept tool.
+level: critical

@@ -1,0 +1,23 @@
+title: Royal Road Chinoxy Script Execution 'bss.vbs'
+id: 8b01e3e5-0e62-43f1-b91c-b16cf296c022
+status: experimental
+description: Detects the execution of 'bss.vbs', a script associated with the Chinoxy backdoor delivery chain, which is often initiated by Royal Road.
+references:
+    - http://nao-sec.org/2021/01/royal-road-redive.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1203
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\wscript.exe'
+            - '\cscript.exe'
+        CommandLine|contains: 'bss.vbs'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,506 @@
+{
+  "malware_family": "HwAudKiller",
+  "threat_actor": "Unnamed Russian-speaking operator",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "An operator uses malvertising to deliver rogue ScreenConnect installers for initial access. A multi-stage crypter, 'FatMalloc', allocates 2GB of memory to evade sandboxes before unpacking 'HwAudKiller', a BYOVD tool. HwAudKiller abuses a legitimate, signed Huawei kernel driver to terminate EDR and antivirus processes from kernel mode, enabling credential theft and lateral movement.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "pdb_path",
+      "value": "C:\\Users\\Administrator\\Downloads\\Hwk\\x64\\Release\\HwAudKiller.pdb",
+      "context": "PDB path embedded in the main HwAudKiller payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "C:\\Users\\Administrator\\Downloads\\firskill\\x64\\Release\\HwAudKiller.pdb",
+      "context": "PDB path from a variant named sent.exe with an expanded kill list.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "Havoc",
+      "context": "The kernel service name created for the vulnerable Huawei driver.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Havoc.sys",
+      "context": "The filename the vulnerable Huawei driver is dropped as.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\Havoc.sys",
+      "context": "The vulnerable Huawei driver is written to this path before being loaded.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "crypteds.exe",
+      "context": "The name of the 'FatMalloc' crypter executable.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "sent.exe",
+      "context": "Filename for the HwAudKiller variant with an expanded EDR kill list.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "HWAuidoOs2Ec.sys",
+      "context": "Original filename of the abused Huawei audio driver.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[+] Havoc Process Terminator",
+      "context": "String printed by HwAudKiller upon execution.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[Os2EC] Enter DriverEntry",
+      "context": "Debug string logged by the Huawei driver upon initialization.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "YLocalFree",
+      "context": "Example of an API name string prefixed with 'Y' to evade detection.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Ykernel32",
+      "context": "Example of a module name string prefixed with 'Y' to evade detection.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Файл скачан!",
+      "context": "Russian-language comment in JavaScript ('File downloaded!').",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Ошибка получения геоданных",
+      "context": "Russian-language comment in JavaScript ('Error getting geolocation data').",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "0xFB29FB29",
+      "context": "Value marking the end of the encrypted shellcode stream.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x2248DC",
+      "context": "IOCTL code sent to the Havoc driver to terminate a process.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 41 73 61 40 41 31 61 40 }",
+      "context": "8-byte rolling XOR key used to decrypt the embedded kernel driver.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x0D",
+      "context": "Single-byte XOR key for decrypting the CHOC configuration block.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sc create Havoc binPath= <path> type= kernel start= demand",
+      "context": "Command used to install the vulnerable driver as a service.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rundll32.exe C:\\windows\\System32\\comsvcs.dll, #+000024 %B \\Windows\\Temp\\<random>.log full",
+      "context": "Command line used to dump LSASS process memory.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "MsMpEng.exe",
+      "context": "Microsoft Defender process targeted for termination by HwAudKiller.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "SentinelAgent.exe",
+      "context": "SentinelOne agent process targeted for termination by HwAudKiller.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "kavfs.exe",
+      "context": "Kaspersky process targeted for termination by HwAudKiller.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "fortiedr.exe",
+      "context": "FortiEDR process targeted by a variant of HwAudKiller.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "sentinelstaticenginescanner.exe",
+      "context": "Process name found in a concatenated string due to a bug.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "Huawei Device Co., Ltd.",
+      "context": "The legitimate signer of the abused kernel driver HWAuidoOs2Ec.sys.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "\\\\.\\HWAudioX64",
+      "context": "Device path opened by usermode component to communicate with the driver.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "timeSetEvent",
+      "context": "API used for indirect shellcode execution via a timer callback.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "RtlDecompressBuffer",
+      "context": "API used to decompress the final payload with LZNT1.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "#+000024",
+      "context": "Ordinal for MiniDump function in comsvcs.dll used for LSASS dump.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "anukitax.com",
+      "context": "Malvertising landing page.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bringetax.com",
+      "context": "Rogue ScreenConnect delivery page.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "grinvan.com",
+      "context": "Host for a fake Chrome update page.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gripsmonga.sbs",
+      "context": "Self-hosted ScreenConnect relay.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "instance-*-relay.screenconnect.com",
+      "context": "Pattern for trial ScreenConnect relay hostnames.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "ScreenConnect"
+    },
+    {
+      "kind": "domain",
+      "value": "instance-itsd8c-relay.screenconnect.com",
+      "context": "Trial ScreenConnect relay.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "ScreenConnect"
+    },
+    {
+      "kind": "domain",
+      "value": "instance-sl1mb9-relay.screenconnect.com",
+      "context": "Trial ScreenConnect relay.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "ScreenConnect"
+    },
+    {
+      "kind": "domain",
+      "value": "jcibj.com",
+      "context": "JustCloakIt cloaking infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "JustCloakIt"
+    },
+    {
+      "kind": "domain",
+      "value": "bjtrck.com",
+      "context": "JustCloakIt cloaking infrastructure, linked via TLS cert.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "JustCloakIt"
+    },
+    {
+      "kind": "domain",
+      "value": "rpc.adspect.net",
+      "context": "Adspect cloaking TDS endpoint.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Adspect"
+    },
+    {
+      "kind": "domain",
+      "value": "ipapi.co",
+      "context": "Legitimate service abused for victim geolocation lookup.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/forminw9/",
+      "context": "Path on malvertising redirector anukitax.com.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/humu/",
+      "context": "Path on rogue ScreenConnect delivery page bringetax.com.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/vims/browser/",
+      "context": "Path hosting the fake Chrome update page.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://jcibj.com/pcl.php",
+      "context": "Endpoint for the JustCloakIt PHP cloaking script.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "JustCloakIt"
+    },
+    {
+      "kind": "ip",
+      "value": "192.175.104.189",
+      "context": "Origin server IP for JustCloakIt infrastructure.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "JustCloakIt"
+    },
+    {
+      "kind": "other",
+      "value": "f252d22c-19c3-487b-af3a-3d979b168a6d",
+      "context": "Adspect stream ID for this campaign.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Adspect"
+    },
+    {
+      "kind": "other",
+      "value": "507798",
+      "context": "JustCloakIt Operator ID for this campaign.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "JustCloakIt"
+    },
+    {
+      "kind": "other",
+      "value": "fxv76taie649fg9qffuyg34aj",
+      "context": "JustCloakIt User ID for this campaign.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "JustCloakIt"
+    },
+    {
+      "kind": "other",
+      "value": "y=Guest",
+      "context": "ScreenConnect session parameter indicating a trial/unmanaged instance.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "ScreenConnect"
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "8a4033425d36cd99fe23e6faef9764fbf555f362ebdb5b72379342fbbe4c5531",
+      "description": "FatMalloc crypter (crypteds.exe) delivered via ScreenConnect"
+    },
+    {
+      "sha256": "7509365935fc1bfadba20656698d3a29051031635419043bc2bc45116106e026",
+      "description": "Rogue ScreenConnect installer (form_w9.msi)"
+    },
+    {
+      "sha256": "2b409a265f571dccde6ef4860831c1b03d5418d1951f97925315dc5b0891da04",
+      "description": "XOR-encrypted shellcode blob embedded in crypteds.exe"
+    },
+    {
+      "sha256": "0821661e715fe64bb39f4fece277737a48fd6839edd40ec8a4a39bf04cea8524",
+      "description": "Decoded shellcode PE loader with CHOC config"
+    },
+    {
+      "sha256": "033f42102362a8d8d4bdba870599eb5e0c893d8fd8dd4bc2a4b446cbbeb59b99",
+      "description": "HwAudKiller BYOVD AV/EDR killer"
+    },
+    {
+      "sha256": "5abe477517f51d81061d2e69a9adebdcda80d36667d0afabe103fda4802d33db",
+      "description": "Huawei audio driver (HWAuidoOs2Ec.sys) abused as BYOVD weapon (Havoc.sys)"
+    },
+    {
+      "sha256": "28278b8c85c832417f9860fe8ea3ddbb9ff1d5860317db4813227a3a52b7c7cc",
+      "description": "HwAudKiller variant (sent.exe) with expanded EDR kill list"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

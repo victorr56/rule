@@ -1,0 +1,31 @@
+title: Tool-Based OAST Callback via Default Interactsh Domain
+id: a7f8e8b0-a5e2-4c28-98e3-0d507115cc7b
+status: experimental
+description: >-
+  Detects DNS queries for default Interactsh Out-of-Band Application Security Testing (OAST) domains.
+  These are commonly used by vulnerability scanners like Nuclei to confirm the existence of a vulnerability on a target.
+  While this can indicate successful malicious exploitation, it is also frequently used for legitimate security testing.
+references:
+  - https://www.greynoise.io/blog/christmas-scanning-campaign-fuel-2026-attacks
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.t1190
+  - attack.t1595.002
+  - detection.threat_hunting
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    QueryName|endswith:
+      - '.oast.pro'
+      - '.oast.site'
+      - '.oast.me'
+      - '.oast.online'
+      - '.oast.fun'
+      - '.oast.live'
+  condition: selection
+falsepositives:
+  - Legitimate security testing or vulnerability scanning by internal or authorized external parties.
+level: medium

@@ -1,0 +1,25 @@
+title: SHELLTER Typo'd System DLL Load
+id: 29b0a1a0-569d-4395-af07-ab6d84a7e8f5
+status: experimental
+description: Detects the loading of typo'd system DLLs 'kern3l32.dll' and 'ntll.dll', a technique used by the SHELLTER evasion framework to prepare for unhooking.
+references:
+    - https://www.elastic.co/security-labs/threat-command/taking-shellter
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.defense_evasion
+    - attack.t1027
+    - attack.t1055
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        ImageLoaded|endswith:
+            - '\kern3l32.dll'
+            - '\ntll.dll'
+        Signed: false
+    condition: selection
+falsepositives:
+    - Legitimate software is not expected to use these specific typo'd filenames for DLLs.
+level: high

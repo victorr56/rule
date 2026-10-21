@@ -1,0 +1,23 @@
+title: MovieReaper C2 IP Connections
+id: 9a7b63f2-11c1-4b1a-9f5e-04b38d388c3a
+status: experimental
+description: Detects network connections to IP addresses known to be used as command and control servers by the MovieReaper malware.
+references:
+    - https://securelist.com/moviereaper-malware-torrent-odyssey-solana/121344/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '193.23.118.155'
+            - '208.64.33.90'
+            - '208.94.246.53'
+    condition: selection
+falsepositives:
+    - Unlikely, but IP addresses can be reallocated over time.
+level: high

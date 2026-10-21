@@ -1,0 +1,24 @@
+title: MoYu Group JarService C2 Connection
+id: 57975879-1ca1-4560-af60-64309a4cd8d4
+status: experimental
+description: Detects network connections to IP addresses associated with the MoYu Group's JarService malware C2 infrastructure.
+references:
+    - https://securelist.com/android-head-unit-malware/121106/
+author: ioc-yara-daily (agentic)
+date: 2024-07-16
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '107.151.248.132'
+            - '128.14.210.58'
+            - '144.217.243.201'
+    condition: selection
+falsepositives:
+    - IPs can be reassigned over time, but these are associated with dedicated campaign infrastructure.
+level: high

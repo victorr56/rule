@@ -1,0 +1,26 @@
+title: HwAudKiller Malvertising And C2 Domains
+id: ffcb2f7a-18f1-432d-94ca-139369d71c4c
+status: experimental
+description: Detects DNS queries for domains associated with the HwAudKiller malvertising campaigns and C2 infrastructure.
+references:
+    - https://www.huntress.com/blog/w2-malvertising-to-kernel-mode-edr-kill
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.initial_access
+    - attack.command_and_control
+    - attack.t1566
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - anukitax.com
+            - bringetax.com
+            - grinvan.com
+            - gripsmonga.sbs
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

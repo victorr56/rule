@@ -1,0 +1,26 @@
+title: TELEPUZ C2 and Staging Domains
+id: 541f71a7-2022-4841-8631-01f654b0c265
+status: experimental
+description: Detects DNS queries for domains associated with TELEPUZ C2, staging, and dead-drop resolver infrastructure.
+references:
+    - https://www.elastic.co/security-labs/threat-command/telepuz-maas-malware-clickfix
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'cal.joycedoula.com.br'
+            - 'cal.snehamumbai.org'
+            - 'memshowblob.forum'
+            - 'hurgadatour.shop'
+            - 'zewaplus.club'
+            - 'codebasecode.com'
+    condition: selection
+falsepositives:
+    - Unlikely, unless domains are sinkholed or re-purposed.
+level: high

@@ -1,0 +1,21 @@
+title: Developer Mode Enabled via Registry
+id: e46b8a8b-f4fd-4927-a9a3-5c2182065842
+status: experimental
+description: Detects the enablement of Windows Developer Mode by setting the 'AllowDevelopmentWithoutDevLicense' registry value. This is a prerequisite for sideloading certain types of applications and can be a precursor to an attack.
+references:
+    - https://www.huntress.com/blog/stealing-oauth-tokens-through-microsofts-front-door
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1528
+logsource:
+    product: windows
+    category: registry_set
+detection:
+    selection:
+        TargetObject|endswith: '\Microsoft\Windows\CurrentVersion\AppModelUnlock\AllowDevelopmentWithoutDevLicense'
+        Details: 'DWORD (0x00000001)'
+    condition: selection
+falsepositives:
+    - Software developers or system administrators legitimately enabling Developer Mode.
+level: medium

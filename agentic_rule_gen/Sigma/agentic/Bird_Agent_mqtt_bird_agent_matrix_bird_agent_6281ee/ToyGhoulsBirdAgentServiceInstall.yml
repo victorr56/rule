@@ -1,0 +1,26 @@
+title: Toy Ghouls Bird Agent Service Installation
+id: 59a930fd-5527-448f-8d96-33979bb9550b
+status: experimental
+description: |
+    Detects the installation of the Bird Agent backdoor, masquerading as 'cplsupport.exe' or 'wtass.exe', via the '--install' command line argument.
+references:
+    - https://securelist.com/toy-ghouls-new-hivemq-and-element-backdoors/121270/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1543.003
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\cplsupport.exe'
+            - '\wtass.exe'
+        CommandLine|contains: '--install'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

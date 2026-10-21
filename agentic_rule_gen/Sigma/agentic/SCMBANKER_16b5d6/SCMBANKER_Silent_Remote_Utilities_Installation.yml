@@ -1,0 +1,27 @@
+title: SCMBANKER Silent Remote Utilities Installation
+id: 4f3a2b1c-8e7d-4c6b-9a5f-0d9c8b7a6f5e
+status: experimental
+description: Detects the silent installation of Remote Utilities RAT via an MSI named hosts.msi, launched from a PowerShell script.
+references:
+    - https://www.elastic.co/security-labs/threat-command/mexican-banking-fraud-scmbanker-ref6045
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1219
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\powershell.exe'
+        Image|endswith: '\msiexec.exe'
+        CommandLine|contains|all:
+            - '/i'
+            - 'hosts.msi'
+            - '/quiet'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,23 @@
+title: WWAHost Loading Image From User Profile
+id: f38b90b8-2782-4115-99d9-cc86e74efc58
+status: experimental
+description: Detects WWAHost.exe loading a library from a user's AppData\Local\Packages directory. WWAHost.exe is a system component located in System32, and loading modules from a user profile path is anomalous and may indicate a sideloaded malicious AppX package.
+references:
+    - https://www.huntress.com/blog/stealing-oauth-tokens-through-microsofts-front-door
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1528
+    - detection.threat_hunting
+logsource:
+    product: windows
+    category: image_load
+detection:
+    selection:
+        Image|endswith: '\WWAHost.exe'
+        ImageLoaded|startswith: 'C:\Users\'
+        ImageLoaded|contains: '\AppData\Local\Packages\'
+    condition: selection
+falsepositives:
+    - Legitimate AppX applications installed for the current user may load modules from this path. However, the combination with the system process WWAHost.exe makes it suspicious and worth investigating.
+level: medium

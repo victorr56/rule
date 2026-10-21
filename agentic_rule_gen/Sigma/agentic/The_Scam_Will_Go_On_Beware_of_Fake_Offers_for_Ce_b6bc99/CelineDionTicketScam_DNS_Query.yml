@@ -1,0 +1,53 @@
+title: Celine Dion Ticket Scam DNS Query
+id: 542289c0-681b-4f51-b844-3882776c5f0f
+status: experimental
+description: Detects DNS queries for domains associated with a Celine Dion ticket scam campaign.
+references:
+    - https://www.group-ib.com/blog/fake-concert-ticket-scam-celine-dion/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+detection:
+    selection:
+        QueryName:
+            - 'account.celine-dion-arena.com'
+            - 'account.celinedion-paris-billetterie.com'
+            - 'account.celinedion-parisladefense-arena.com'
+            - 'account.ticketmaster-celinedion.fr'
+            - 'axs-billetterie.com'
+            - 'billeteriecelinedion.com'
+            - 'celine-dion-arena.com'
+            - 'celine-dion-paris.com'
+            - 'celinedion-2026.com'
+            - 'celinedion-billetterie.com'
+            - 'celinedion-fr.com'
+            - 'celinedion-france.com'
+            - 'celinedion-paris-billetterie.com'
+            - 'celinedion-paris.com'
+            - 'celinedion-paris.fr'
+            - 'celinedion-parisladefense-arena.com'
+            - 'celinedion.co'
+            - 'celinedion2026tour.com'
+            - 'celinedionofficial.com'
+            - 'celinedionparistickets.com'
+            - 'celinedionparis.com'
+            - 'celinedionparsifr.com'
+            - 'celinedionviptickets.com'
+            - 'fr-celinedionparis.com'
+            - 'pay.celinedion-parisladefense-arena.com'
+            - 'pay.celinedion-paris.fr'
+            - 'pay.celinedionparistickets.com'
+            - 'pay.celinedionparis.com'
+            - 'pay.ticketmaster-celinedion.com'
+            - 'ticketmaster-celinedion.com'
+            - 'ticketmaster-celinedion.fr'
+            - 'tickets-celinedion.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
+logsource:
+    product: windows
+    category: dns_query

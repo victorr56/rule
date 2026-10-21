@@ -1,0 +1,24 @@
+title: Suspicious High-Numbered Signal via Kill Command
+id: 8b067e7c-87d4-46c0-9d18-32a246a482b8
+status: experimental
+description: Detects the use of the 'kill' command with a high, non-standard signal number (e.g., 64). This is a known technique for triggering hidden functionality in a backdoored process or for covert communication.
+references:
+    - https://www.elastic.co/security-labs/threat-command/linux-rootkits-2-caught-in-the-act
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/bin/kill'
+            - '/usr/bin/kill'
+        CommandLine|re: '\s-64\b'
+    condition: selection
+falsepositives:
+    - Legitimate use of real-time signals for process management by custom applications, although this is rare.
+level: medium

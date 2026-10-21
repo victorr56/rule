@@ -1,0 +1,29 @@
+title: REF7707 C2 Domain Activity
+id: 6a8d11c0-0f2b-42f4-8a7e-46c57f7267e7
+status: experimental
+description: Detects DNS queries to command and control domains associated with the REF7707 threat actor.
+references:
+    - https://www.elastic.co/security-labs/threat-command/fragile-web-ref7707
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1568.002
+detection:
+    selection:
+        QueryName|endswith:
+            - 'poster.checkponit.com'
+            - 'support.fortineat.com'
+            - 'update.hobiter.com'
+            - 'support.vmphere.com'
+            - 'cloud.autodiscovar.com'
+            - 'digert.ictnsc.com'
+            - 'd-links.net'
+            - 'vm-clouds.net'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical
+logsource:
+    category: dns_query
+    product: windows

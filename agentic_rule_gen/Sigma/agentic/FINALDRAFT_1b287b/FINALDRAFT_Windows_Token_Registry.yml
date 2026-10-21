@@ -1,0 +1,23 @@
+title: FINALDRAFT Windows OAuth Token Registry Storage
+id: 7b9c9e0d-9b1e-450f-a4d1-c24734898c62
+status: experimental
+description: Detects FinalDraft.exe creating a registry key to store MS Graph API tokens for C2 communication.
+references:
+    - https://www.elastic.co/security-labs/threat-command/finaldraft
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1567.002
+    - attack.exfiltration
+    - attack.command_and_control
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\FinalDraft.exe'
+        TargetObject|re: 'HK(U|CU).+\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\UUID\\[a-fA-F0-9]{8}-([a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

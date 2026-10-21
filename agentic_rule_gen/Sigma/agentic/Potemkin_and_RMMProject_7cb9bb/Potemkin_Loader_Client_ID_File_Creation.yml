@@ -1,0 +1,22 @@
+title: Potemkin Loader Client ID File Creation
+id: c4f29fc8-e04f-4d3f-bc98-8889154f285f
+status: experimental
+description: Detects the creation of 'hyper-v.ver', a file used by the Potemkin loader to store a C2-assigned client UUID.
+references:
+    - https://www.huntress.com/blog/potemkin-loader-rmmproject-clickfix-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1564.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\hyper-v.ver'
+        TargetFilename|contains: '\AppData\Local\'
+    condition: selection
+falsepositives:
+    - Unlikely, as legitimate Hyper-V files are not stored in user AppData.
+level: high

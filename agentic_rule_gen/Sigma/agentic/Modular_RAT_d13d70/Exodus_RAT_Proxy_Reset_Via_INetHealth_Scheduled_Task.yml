@@ -1,0 +1,27 @@
+title: Exodus RAT Proxy Reset Via INetHealth Scheduled Task
+id: 5764d023-e66b-4e12-84de-c37107297e55
+status: experimental
+description: Detects the creation of a scheduled task named 'INetHealth' which is used by an Exodus RAT variant to periodically reset system proxy settings.
+references:
+    - https://www.huntress.com/blog/exodus-crypto-wallet-installer-rat
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1562.004
+    - attack.persistence
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn INetHealth'
+            - 'netsh winhttp reset proxy'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

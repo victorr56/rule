@@ -1,0 +1,350 @@
+{
+  "malware_family": "Knight Office",
+  "threat_actor": "",
+  "platforms": [
+    "web",
+    "windows"
+  ],
+  "summary": "Knight Office is a Microsoft 365 adversary-in-the-middle phishing kit whose Python Flask operator console is used to monitor captured sessions and replay stolen tokens, sidestepping passwords and MFA. Victims are drawn in via a self-spoofed DocuSign-style lure, a Monday.com open redirect and a compromised Joomla site, then handed a device authentication code for Microsoft's deviceauth flow. Stolen tokens are replayed from data-center and proxy infrastructure using the python-requests/2.34.2 user agent, followed by rogue Entra device registration and a Windows Hello for Business key credential.",
+  "mitre_techniques": [
+    "T1608.005",
+    "T1566.002",
+    "T1204.001",
+    "T1098.005",
+    "T1078.004",
+    "T1684.002",
+    "T1111",
+    "T1557",
+    "T1528",
+    "T1090.003",
+    "T1665"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "python-requests/2.34.2",
+      "context": "Token replay user agent from hosting ranges",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Dsreg/10.0 (Windows 10.0.19044.1826)",
+      "context": "User agent when binding Windows Hello for Business key",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "0x4AAAAAADrkE-VuOnNDfr6W",
+      "context": "Cloudflare Turnstile sitekey on phishing/console page",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Login - KNIGHT OFFICE",
+      "context": "Operator console page title",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Sign in to your KNIGHT OFFICE panel",
+      "context": "Console login form heading",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "INTELLIGENCE • CAPTURE • CONTROL",
+      "context": "Console banner tagline",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Capture & Management from Single place",
+      "context": "Console advertised feature text",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Webmail access & auto-refresh",
+      "context": "Console advertised feature text",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "YOUR VERIFICATION CODE",
+      "context": "Phishing page device-code prompt text",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "OAuth2:Token",
+      "context": "Replay request User-Agent component",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Reminder: Signature Required - Approval Pending Your Review!!! Ref ID-<random>",
+      "context": "DocuSign-style lure email subject line",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "You Missed (2) lmportant VoiceMessage; Please Review Now!!! REF -",
+      "context": "Lure subject variant using lowercase-l typo",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "104.37.188.94",
+      "context": "Phishing control panel host and token replay source",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "154.127.53.78",
+      "context": "Sender IP of lure email in example case",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "idoej.com",
+      "context": "Control panel hostname via reverse IP lookup",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "advancedplacyncement.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "amstardmzsmc.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "arandasoftzfdware.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "avisoretentiunionllc.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "capitalflwxinancialpartners.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "certififiycationedge.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "connectivnqzityltd.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "crrbcearegroup.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "digitaltrafwwrficsystems.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "exceltecbusinessbwpsolutions.vu",
+      "context": "Phishing domain hosting Teams lure page",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "genamewwgdiamarketing.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "globaieflsoftinc.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "globalmixeucbdmodetechnologyinc.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "globalprojectspvtltd.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "joinbusinessmanagementconsdjeulting.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kentmanqhfufacturingcompany.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kleepxrnlinecorporation.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "knsinternacshtional.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "monttmmlrustcompany.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mtprormtductions.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "realestatecotblrp.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "siottxgroup.vu",
+      "context": "Phishing domain used in campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

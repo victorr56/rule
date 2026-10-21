@@ -1,0 +1,25 @@
+title: Lazarus RemotePE Sideloading via ESET Binary
+id: 3c9b4e7e-3b5e-4340-a359-994c5df7f735
+status: experimental
+description: Detects the DLL sideloading of 'sspicli.dll' by the ESET binary 'edp.exe', a technique used by Lazarus to load the DPAPILoader component.
+references:
+    - https://blog.fox-it.com/2026/05/22/remotepe-the-lazarus-rat-that-lives-in-memory/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\edp.exe'
+        ImageLoaded|endswith: '\sspicli.dll'
+    filter_legit_path:
+        ImageLoaded|startswith:
+            - 'C:\Windows\System32\'
+            - 'C:\Windows\SysWOW64\'
+    condition: selection and not filter_legit_path
+falsepositives:
+    - Unlikely. While 'edp.exe' is a legitimate ESET binary, it should load the system's version of sspicli (secur32.dll) from the System32 directory. Loading a 'sspicli.dll' from a non-system directory is highly indicative of DLL search order hijacking.
+level: high

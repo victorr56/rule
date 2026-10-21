@@ -1,0 +1,26 @@
+title: World Leaks C2 Network Connection
+id: 4a25920d-b4b9-478a-a9f4-ef9c9523bb46
+status: experimental
+description: Detects network connections to IP addresses identified as World Leaks C2 infrastructure.
+references:
+    - https://www.darktrace.com/blog/when-reality-diverges-from-the-playbook-darktrace-identifies-encryption-in-a-world-leaks-ransomware-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1571
+    - attack.t1573.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection_ip_1:
+        DestinationIp: '51.15.109.222'
+        DestinationPort: 22
+    selection_ip_2:
+        DestinationIp: '193.161.193.99'
+        DestinationPort: 1194
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

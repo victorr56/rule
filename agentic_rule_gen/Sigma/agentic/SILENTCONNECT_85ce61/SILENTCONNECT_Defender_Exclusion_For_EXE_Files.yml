@@ -1,0 +1,25 @@
+title: SILENTCONNECT Disables Defender For EXE Files
+id: 5691c784-0678-4394-a169-ed8142a78103
+status: experimental
+description: Detects a PowerShell command used by SILENTCONNECT to add a Windows Defender exclusion for all files with the .exe extension.
+references:
+    - https://www.elastic.co/security-labs/threat-command/silentconnect-delivers-screenconnect
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1562.001
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'Add-MpPreference'
+            - '-ExclusionExtension'
+            - '.exe'
+    condition: selection
+falsepositives:
+    - May be used by administrators in specific scenarios, but excluding all executables is highly suspicious and warrants investigation.
+level: high

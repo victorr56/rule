@@ -1,0 +1,27 @@
+title: GHOSTPULSE Archive Extraction and Execution
+id: a7d0246a-7334-45b7-a068-07b14d8721cc
+status: experimental
+description: Detects the PowerShell command line used to extract the 'ComponentStyle.zip' archive and execute the GHOSTPULSE backdoor. This is a high-fidelity indicator of compromise.
+references:
+    - https://www.elastic.co/security-labs/threat-command/a-wretch-client
+author: ioc-yara-daily (agentic)
+date: 2024-06-21
+tags:
+    - attack.execution
+    - attack.t1059.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'Expand-Archive'
+            - 'ComponentStyle.zip'
+            - 'C:\ProgramData\ComponentStyle'
+            - 'Start-Process'
+            - 'ComponentStyle.exe'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

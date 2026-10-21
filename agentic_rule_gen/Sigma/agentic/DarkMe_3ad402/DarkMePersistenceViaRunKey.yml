@@ -1,0 +1,24 @@
+title: DarkMe RAT Persistence via Run Key and 'Locked' Protocol
+id: 5f9888cc-5853-4886-9a2f-ed3a39e0839e
+status: experimental
+description: Detects the creation of a registry Run key value used by the DarkMe RAT. This entry abuses a custom 'Locked://' URL protocol to launch at logon.
+references:
+    - https://www.huntress.com/blog/darkme-rat-abandons-exploits
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Microsoft\Windows\CurrentVersion\Run\Locked'
+        Details|contains|all:
+            - 'explorer.exe'
+            - 'Locked://Newest'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

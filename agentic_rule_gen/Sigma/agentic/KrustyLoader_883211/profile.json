@@ -1,0 +1,171 @@
+{
+  "malware_family": "KrustyLoader",
+  "threat_actor": "UNC5221",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "KrustyLoader is an initial-stage loader associated with the Chinese threat actor UNC5221, often delivered after exploiting vulnerabilities like CVE-2025-31324 in SAP NetWeaver. The malware downloads a second-stage C2 payload, such as Sliver, and then removes itself to evade detection. Attackers have also been observed downloading privilege escalation tools like JuicyPotato as part of the same activity.",
+  "mitre_techniques": [
+    "T1588.001",
+    "T1059.001",
+    "T1189",
+    "T1105",
+    "T1071",
+    "T1210",
+    "T1048.003"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "\\irj\\servlet_jsp\\irj\\",
+      "context": "Upload path for CVE-2025-31324 exploit",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "s.exe",
+      "context": "Downloaded filename for JuicyPotato/SweetPotato",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Microsoft-CryptoAPI/10.0",
+      "context": "JuicyPotato/SweetPotato download connection",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "CertUtil URL Agent",
+      "context": "JuicyPotato/SweetPotato download connection",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/developmentserver/metadatauploader",
+      "context": "CVE-2025-31324 exploit endpoint",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cvvr9gl9namk9u955tsgaxy3upyezhnm6.oast.online",
+      "context": "OAST domain for vulnerability testing",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "aaaaaaaa.d06qqn7pu5a6u25tv9q08p5xhbjzw33ge.oast.online",
+      "context": "OAST domain for exploit validation",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "aaaaaaaaaaa.d07j2htekalm3139uk2gowmxuhapkijtp.oast.pro",
+      "context": "OAST domain for exploit validation",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://23.95.123.5:666/xmrigCCall/s.exe",
+      "context": "Download URL for JuicyPotato/SweetPotato",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "23.95.123.5",
+      "context": "Server hosting JuicyPotato/SweetPotato",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "666",
+      "context": "Unusual HTTP destination port for payload download",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "abode-dashboard-media.s3.ap-south-1.amazonaws.com/nVW2lsYsYnv58",
+      "context": "KrustyLoader-related download URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "applr-malbbal.s3.ap-northeast-2.amazonaws.com/UUTICMm",
+      "context": "KrustyLoader download URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "brandnav-cms-storage.s3.amazonaws.com/3S1kc",
+      "context": "KrustyLoader download URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "bringthenoiseappnew.s3.amazonaws.com/pp79zE",
+      "context": "KrustyLoader download URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "1d26fff4232bc64f9ab3c2b09281d932dd6afb84a24f32d772d3f7bc23d99c60",
+      "description": "KrustyLoader payload"
+    },
+    {
+      "sha256": "1544d9392eedf7ae4205dd45ad54ec67e5ce831d2c61875806ce4c86412a4344",
+      "description": "KrustyLoader payload"
+    },
+    {
+      "sha256": "b8e56de3792dbd0f4239b54cfaad7ece3bd42affa4fbbdd7668492de548b5df8",
+      "description": "KrustyLoader payload"
+    },
+    {
+      "sha256": "3268f269371a81dbdce8c4eedffd8817c1ec2eadec9ba4ab043cb779c2f8a5d2",
+      "description": "JuicyPotato/SweetPotato payload"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

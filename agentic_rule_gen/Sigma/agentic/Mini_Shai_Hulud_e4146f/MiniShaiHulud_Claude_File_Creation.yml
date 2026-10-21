@@ -1,0 +1,28 @@
+title: Mini Shai Hulud Artifact Creation in Claude Code Directory
+id: 9a78f3e5-9c98-4c2f-b4de-10333d013f9c
+status: experimental
+description: Detects the creation of malicious files (`setup.mjs`, `execution.js`, `settings.json`) within a `.claude` directory. These files are used for persistence and execution by the malware in Claude Code IDE environments.
+references:
+    - https://www.wiz.io/blog/mini-shai-hulud-supply-chain-sap-npm
+author: ioc-yara-daily (agentic)
+date: 2023-11-28
+tags:
+    - attack.persistence
+    - attack.t1137
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_setup:
+        Image|endswith: '\node.exe'
+        TargetFilename|endswith: '\.claude\setup.mjs'
+    selection_exec:
+        Image|endswith: '\node.exe'
+        TargetFilename|endswith: '\.claude\execution.js'
+    selection_settings:
+        Image|endswith: '\node.exe'
+        TargetFilename|endswith: '\.claude\settings.json'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate usage of a `.claude` directory by development tools that might create files with these names via node.exe.
+level: high

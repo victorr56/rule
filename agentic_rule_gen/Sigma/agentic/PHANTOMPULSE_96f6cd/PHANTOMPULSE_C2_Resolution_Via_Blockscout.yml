@@ -1,0 +1,27 @@
+title: PHANTOMPULSE C2 Resolution Via Blockscout API
+id: a7f8c050-84c4-42f8-9fa4-7067980bd3f1
+status: experimental
+description: Detects HTTP requests to Blockscout blockchain explorers consistent with the PHANTOMPULSE RAT's C2 resolution mechanism. The malware queries for the latest transaction from a wallet to extract C2 information.
+references:
+    - https://www.elastic.co/security-labs/threat-command/phantom-in-the-vault
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1102
+    - detection.threat_hunting
+logsource:
+    category: proxy
+    product: any
+detection:
+    selection:
+        DestinationHostname|endswith: '.blockscout.com'
+        Uri|contains|all:
+            - '/api'
+            - 'module=account'
+            - 'action=txlist'
+            - 'sort=desc'
+    condition: selection
+falsepositives:
+    - Legitimate use of the Blockscout API, although this specific combination of parameters to get the latest transaction is characteristic of the malware's behavior.
+level: high

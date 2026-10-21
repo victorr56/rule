@@ -1,0 +1,26 @@
+title: KREMLIN DLL Sideloading via SentinelOne
+id: e8a7a977-94e4-411a-85d7-13359d9f583f
+status: experimental
+description: Detects the KREMLIN malware sideloading a malicious "SentinelAgentCore.dll" using the legitimate "SentinelMemoryScanner.exe" binary.
+references:
+    - https://www.elastic.co/security-labs/threat-command/malicious-browser-extension-kremlin-banking-malware
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\SentinelMemoryScanner.exe'
+        ImageLoaded|endswith: '\SentinelAgentCore.dll'
+    filter_legit:
+        ImageLoaded|startswith: 'C:\Program Files\SentinelOne\'
+    condition: selection and not filter_legit
+falsepositives:
+    - Legitimate SentinelOne installations in non-standard directories.
+level: high

@@ -1,0 +1,21 @@
+title: SilentXMRMiner Staging Server Connection
+id: fd21de26-c2fe-43fd-b0e6-58c9735d4692
+status: experimental
+description: Detects network connections to an IP address used for staging malware in a SilentXMRMiner campaign.
+references:
+    - https://www.huntress.com/blog/threat-actor-compiles-cryptominer
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '194.87.89.30'
+    condition: selection
+falsepositives:
+    - This IP could be reassigned in the future and become benign.
+level: high

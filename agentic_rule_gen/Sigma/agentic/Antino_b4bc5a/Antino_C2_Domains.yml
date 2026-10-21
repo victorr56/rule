@@ -1,0 +1,24 @@
+title: UAT-11587 Antino Backdoor C2 DNS Queries
+id: 59379659-1e35-430c-ab2e-5fe95f9ab32e
+status: experimental
+description: Detects DNS queries for domains associated with the UAT-11587 Antino backdoor infrastructure.
+references:
+    - https://blog.talosintelligence.com/china-nexus-uat-11587-targets-government-and-policy-organizations-across-asia-with-antino-backdoor/
+author: ioc-yara-daily (agentic)
+date: 2024-06-26
+tags:
+    - attack.command_and_control
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'microsoft-flash.com'
+            - 'osc-cdn.com'
+            - 'wps-cn.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: medium

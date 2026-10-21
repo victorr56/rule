@@ -1,0 +1,28 @@
+title: SCMBANKER Initial Access via cURL Pipe to Cmd
+id: 3b94b8e8-46c5-449e-8c7c-40f4060b9c3f
+status: experimental
+description: Detects the initial access technique used by SCMBANKER, where a curl-fetched batch script is piped directly into cmd.exe. This is typically initiated by the user from the Windows Run dialog.
+references:
+    - https://www.elastic.co/security-labs/threat-command/mexican-banking-fraud-scmbanker-ref6045
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.003
+    - attack.t1204.001
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - 'curl'
+            - '|'
+            - 'cmd.exe'
+            - 'validation.txt'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

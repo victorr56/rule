@@ -1,0 +1,806 @@
+{
+  "malware_family": "KREMLIN",
+  "threat_actor": "REF9334",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "KREMLIN is a Brazilian banking malware toolkit (REF9334) that chains obfuscated JavaScript loaders, Node.js execution, RunPE/manual mapping or SentinelOne DLL sideloading, and a Chrome/Edge extension installed by regenerating Chromium Secure Preferences HMACs and App-Bound encrypted hashes. The extension steals credentials, cookies, session storage, history, page source and keystrokes and exfiltrates RC4-encrypted ZIP archives over HTTP and WebSocket C2 whose endpoints are resolved through Ethereum smart contracts.",
+  "mitre_techniques": [
+    "T1176",
+    "T1053.005",
+    "T1055",
+    "T1574.002",
+    "T1497.001",
+    "T1056.001",
+    "T1539",
+    "T1555.003",
+    "T1113",
+    "T1071.001",
+    "T1102",
+    "T1027",
+    "T1140"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "ComprovanteSafra_03-08-2026.1147514604.js",
+      "context": "First-stage JavaScript lure following <Theme><Bank>_DD-MM-YYYY.<10digits>.js naming",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "popup_{date}_{random}.js",
+      "context": "Self-deleting helper script showing fake Portuguese error popup via shell.Popup",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "conhost.exe --headless node.exe",
+      "context": "Run from script directory by scheduled task one minute after user logon",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "conhost.exe --headless powershell.exe -c \"",
+      "context": "JavaScript loader spawns decoded third-stage PowerShell through WScript.Shell",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "MicrosoftNodeRuntimeUpdater",
+      "context": "Persistence task running conhost/node.exe, disguised as Node.js updater",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "AcrobatBrowserExtension",
+      "context": "Acrobat campaign task triggered at logon and every 30 minutes",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Node.js V8 Runtime is the JavaScript engine responsible for compiling and executing Node.js applications using Google's high-performance V8 engine.",
+      "context": "Decoy description of the MicrosoftNodeRuntimeUpdater scheduled task",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "SentinelMemoryScanner.exe",
+      "context": "Legitimate signed SentinelOne binary abused to sideload the unsigned payload",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "SentinelAgentCore.dll",
+      "context": "Unsigned KREMLIN installer DLL masquerading as a SentinelOne component",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "ClarinhoQueSim-XEDA2O",
+      "context": "Portuguese mutex string loaded before installation; campaign tracking marker",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "98d8049e-804f-11f1-b79f-ae3a8bb85d01",
+      "context": "Customer ID embedded in installer and sent to extension and C2 endpoints",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "kremlin-moscow-russia",
+      "context": "Marker locating the RC4-encrypted stage inside JPEG carrier",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "kr3ml1n",
+      "context": "RC4 key decrypting the stage carved from the JPEG carrier",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<<@R9t!Zx#Qv",
+      "context": "startMarker used to carve base64 payload from carrier JPEG",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\"!mX7#Lp@^2Kd",
+      "context": "endMarker used to carve base64 payload from carrier JPEG",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "OSCrypt.AppBoundProvider.Decrypt.ResultCode",
+      "context": "String scanned in chrome.dll/msedge.dll .rdata to locate App-Bound key",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "extensions.ui.developer_mode",
+      "context": "Secure Preferences value set true to enable developer mode",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "extensions.settings.<extension_id>",
+      "context": "Secure Preferences entry registering the malicious extension",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "protection.macs / super_mac / super_encrypted_hash",
+      "context": "Chromium integrity values regenerated so the extension loads",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ENDPOINT_DINAMIC",
+      "context": "Misspelled extension config field holding C2 resolver URL or contract",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "ENDCENT",
+      "context": "Framesync extension config field holding C2 domain literal",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "UUIDGEHOST",
+      "context": "Framesync extension config field holding the customer ID",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "DebuggingPort: '42159'",
+      "context": "Extension configuration enabling remote debugging",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ndpbidppejfanjbhfgjlohfanbfbklff",
+      "context": "Extension ID returned by /api/ext/version for the current AVSync extension",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "djodclnjknbpambeaaapadmdfhmbpeog",
+      "context": "Framesync campaign extension ID (FrameSync Driver/Plugin)",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "cdgcjghdeinagopbaobhmaefigoafaaa",
+      "context": "QR-code overlay extension ID used in Cremeb campaign",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "SystemFunction032",
+      "context": "Undocumented RC4 API used to encrypt the exfiltrated ZIP archive",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "keys.json",
+      "context": "Added to exfil archive; contains v10 and v20 OSCrypt keys",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\Local State",
+      "context": "Source of DPAPI-protected legacy OSCrypt key in os_crypt.encrypted_key",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%PROGRAMFILES%\\Google\\Chrome\\Application\\<VERSION>\\resources.pak",
+      "context": "Seed extracted to generate legacy HMACs and encrypted hashes",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Secure Preferences",
+      "context": "Chrome profile file rewritten to register and activate the extension",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CUSTOMER_ID: %s",
+      "context": "Debug log format string printing the campaign customer ID",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SIE: 0x%04X",
+      "context": "Debug log format string in the installer binary",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 0xA7 0xA4 0x90 0x8E }",
+      "context": "Syscall-name hash 0xA7A4908E passed to ctf::GetSyscallNumber",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "X-Log-Token: MichelleMignon171",
+      "context": "Hardcoded header token used when beaconing to log_receiver.php in parallel branch",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "$runPeEntryMethod.Invoke($null, [string] @($nativePayloadBase64))",
+      "context": "PowerShell loader invoking RunPE.Runner VAI method on recovered assembly",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "chrome/<user-profile>/Login Data",
+      "context": "Browser profile artifact added to exfil ZIP archive",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "b: 1",
+      "context": "Extension interception config flag enabling keylogging for a domain",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://connection.upgradeonline.site/api/log_loader?hash=",
+      "context": "First-stage loader beacon passing the campaign ID",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://granderevolucao.store/5c92d3b8734b4f498752f735a1ca0987/{campaignId}",
+      "context": "main-v2 payload URL delivering the extension installer (reversed Base64)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://archive.org/download/hotelmoskva/hotelmoskva.jpg",
+      "context": "sub-module JPEG carrier for the .NET RunPE injection kit",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://ia601808.us.archive.org/5/items/sentinel_20260722_0435/Sentinel.jpg",
+      "context": "sentinel JPEG carrier holding CAB with SentinelOne binary for sideloading",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "volmira.site",
+      "context": "Extension version/registry endpoint and C2; resolved via smart contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://volmira.site/api/ext/version",
+      "context": "Returns extension version and ID JSON",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://volmira.site/api/ext?p=98d8049e-804f-11f1-b79f-ae3a8bb85d01",
+      "context": "ZIP archive download of Chrome extension with customer ID parameter",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://volmira.site//api/savecreds",
+      "context": "C2 endpoint receiving RC4-encrypted ZIP archive and customer ID",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "zaviro.online",
+      "context": "main-v2 value resolved from Ethereum contract, updated 2026-08-13",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://zaviro.online//api/v1/fingerprint",
+      "context": "C2 endpoint receiving exfiltrated encrypted archive",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://graph.checkeligibitily.workers.dev/x01aab878f25420380b3?op=98d8049e-804f-11f1-b79f-ae3a8bb85d01",
+      "context": "Extension C2 resolver endpoint; response [\"luizestrelhashapr.online:443\",\"\"]",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "luizestrelhashapr.online",
+      "context": "WebSocket/HTTP C2 returned by resolver, port 443",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/google_ws/",
+      "context": "WebSocket route polled once per second for commands",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/google_api/",
+      "context": "Polling route for config data masquerading as CSS fetches",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/google_api/81d47cb6.css",
+      "context": "Fetch targeting, keylogging, redirect and HTTP interception rules",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/google_api/a98cb43d.css",
+      "context": "Fetch selector-based automatic redirect rules",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/google_api/108766d0.css",
+      "context": "Upload cookies and storage",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/google_api/41f7b187.css",
+      "context": "Upload tabs",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/google_api/b83fa72d.css",
+      "context": "Upload browser history",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/google_api/0f51ad2f.css",
+      "context": "Upload screenshot",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/google_api/e4cce14e.css",
+      "context": "Upload page source",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/google_api/6c0c92f6.css",
+      "context": "Upload intercepted request (body or headers)",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://www.creamp1eonlyfans.net",
+      "context": "Network canary check domain; valid response triggers deliberate crash at 0x1337",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://codecaudiog.site/generate?domain=codecvideowin.online&payload=991589b0-4cc9-11f0-b9f4-1402ec3d56f0&prefix=NF&prefix_count=10&output=base64",
+      "context": "Codecaudiog A installer download URL",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://codecvideowin.online/af15d5f?p=991589b0-4cc9-11f0-b9f4-1402ec3d56f0",
+      "context": "Extension archive download for Codecaudiog A",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://codecaudiog.site/87b76a60ba7c474dbf8f689df2808e1a?payload=f1d7b074-b81f-11ef-a763-1402ec3d56f0",
+      "context": "Codecaudiog B direct loader next-stage URL",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://acrobat-updater.com/generate",
+      "context": "Acrobat campaign third-stage final payload download",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://acrobat-updater.com/api/v2/acrobat/latest",
+      "context": "Scheduled task downloads and executes JavaScript payload from here",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://ia801003.us.archive.org/24/items/realomadrido2025/tragira.jpg",
+      "context": "Acrobat campaign RunPE JPEG carrier",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "orange-sun-195a.checkeligibitily.workers.dev",
+      "context": "Framesync extension C2 resolver returning WebSocket and HTTP endpoints",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cremeb.com/b216890758c64daa8ad01e251df36f36.jpg",
+      "context": "JPEG carrier with marker kremlin-moscow-russia and RC4 stage",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cremeb.com/qrcode/api/v1/read?domain=${encodeURIComponent(domain)}",
+      "context": "QR extension fetches QR content for web.whatsapp.com or www.sicoob.com.br",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "seguranca.versionnova.site",
+      "context": "Parallel branch infrastructure; /news/connect_api.txt, /nodks/connect_api.txt/, /serve.php?l=",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/serve.php?l=",
+      "context": "Wave C payload retrieval route",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/testar_nova_versao/log_receiver.php",
+      "context": "Wave C C2 beacon route with X-Log-Token header",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.221.23.133",
+      "context": "PULSAR C2, ports 4782 then 443 (Codecaudiog campaigns)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "144.172.112.239",
+      "context": "Acrobat campaign PULSAR C2 port 4782",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.90.13.210",
+      "context": "Acrobat campaign PULSAR C2 port 443",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "37.16.74.100",
+      "context": "Cremeb campaign PULSAR 2.4.5 C2 port 443",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "37.16.74.34",
+      "context": "Cremeb campaign PULSAR 2.4.5 C2 port 443",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "178.92.162.38",
+      "context": "REMCOS RAT C2 port 443",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "0xCD7360A83E5cdbBbbbcEB0e78748babA6740d07b",
+      "context": "Active Ethereum dead-drop contract storing main-v2, sub-module, sentinel",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "0x5C32A09873be70a92fd8bB5A9fED7967dE06BdE6",
+      "context": "Operator wallet deploying malicious contracts and receiving USDT",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x902EDbFECFF38f285Bf26283fB9cEB3700061873",
+      "context": "First smart contract, pointed to Cremeb infrastructure (May 2026)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x64Def0A6099c4DE9C413B108EAae85A3C7457615",
+      "context": "Second smart contract, pointed to granderevolucao.store",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "106eac79396a3ff77b8f375c391260ce422be2ae4d55d3aa75b2635cbdc0fa42",
+      "description": "KREMLIN first-stage obfuscated JavaScript loader (ComprovanteSafra lure)"
+    },
+    {
+      "sha256": "5ece7fd3766b0b7f8aadefa562313cea6c3c94f9398658dd389910e5be44f552",
+      "description": "Additional first-stage JavaScript sample using popup_{date}_{random}.js pattern"
+    },
+    {
+      "sha256": "c8c38634dd44d7c6162c66174a6ee23ee404265125166e8d757681bdd66a4268",
+      "description": "KREMLIN main C++ x64 browser-extension installer binary"
+    },
+    {
+      "sha256": "223be3f8648bf6998c4a58b972522e5fda8d9d0a57b4e163811930de66c3f7ca",
+      "description": "KREMLIN malicious Chrome extension (AVSync) bundle"
+    },
+    {
+      "sha256": "ba80216c960977fa45e317f00dcf31e96acab29904a737cbc0bf86e929c3be5f",
+      "description": "Parallel branch wave A loader, downloads /news/connect_api.txt"
+    },
+    {
+      "sha256": "cb15cbf3f01a92e609e4c2bc26155e667e96c5d04770e83abba66ee07bcecea0",
+      "description": "Parallel branch wave B loader with fake Portuguese error and RAM VM check"
+    },
+    {
+      "sha256": "170dffb37e05f525f735bc9ad84b3908a488f7ce43fcb07739a10e4331e15a2c",
+      "description": "Parallel branch wave C loader beaconing with X-Log-Token MichelleMignon171"
+    },
+    {
+      "sha256": "42a3e2bb135fb46b11b127f45a266b3a4d9dff4aa1cf75433f93fe69ba51a9b9",
+      "description": "PowerShell reimplementation of the native extension installer"
+    }
+  ],
+  "file_types": [
+    "script",
+    "pe",
+    "dotnet"
+  ]
+}

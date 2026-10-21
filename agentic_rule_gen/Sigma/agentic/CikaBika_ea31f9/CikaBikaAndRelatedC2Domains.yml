@@ -1,0 +1,25 @@
+title: CikaBika and Related Threat Activity C2 and Mining Domains
+id: 6e9b88e1-5e92-49da-921c-a0ed12d1b09b
+status: experimental
+description: Detects DNS queries for domains associated with CikaBika C2, related threat actor infrastructure, and cryptomining pools.
+references:
+    - https://www.darktrace.com/blog/when-ai-infrastructure-becomes-part-of-the-attack-surface
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.impact
+    - attack.t1496
+detection:
+    selection:
+        QueryName:
+            - pool.hasvault.pro
+            - onedrive.cv
+            - google.services.ug
+    condition: selection
+falsepositives:
+    - Unlikely
+level: medium
+logsource:
+    category: dns_query
+    product: windows

@@ -1,0 +1,179 @@
+{
+  "malware_family": "",
+  "threat_actor": "",
+  "platforms": [
+    "web"
+  ],
+  "summary": "A multi-organization campaign active from mid-May through early June 2026 in which compromised GitHub Personal Access Tokens were used for repository reconnaissance via the GitHub API, low-volume validation cloning, and highly parallelized mass cloning of private repositories. The actor operated from AWS ca-central-1 infrastructure and a HostPapa IP using the git/2.43.0 and git/2.25.1 user agents, and the source of the leaked PATs was never identified. Detection rests on GitHub audit log events such as git.clone and api.request, anomalous git/Chrome user agents, and the listed source IPs.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "git.clone",
+      "context": "GitHub audit log event used for repo exfiltration across all three campaign phases",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "api.request",
+      "context": "Event only available via GitHub Enterprise Log Streaming, not standard audit logs; used in reconnaissance",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/repositories/{id}/readme",
+      "context": "GitHub API endpoint queried on May 15 for repository reconnaissance",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+      "context": "Phase 1 reconnaissance user agent (May 15)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "git/2.25.1",
+      "context": "Phase 2 low-volume validation cloning user agent (May 29-31)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "git/2.43.0",
+      "context": "Phase 3 mass repository cloning user agent (June 1)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "13.221.167.217",
+      "context": "AWS EC2 us-east-1, single source of May 15 API reconnaissance",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "107.174.201.183",
+      "context": "HostPapa US, source of May 29-31 validation clones",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "16.52.86.223",
+      "context": "AWS ca-central-1 IP used for June 1 mass cloning",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "15.223.74.214",
+      "context": "AWS ca-central-1 IP used for June 1 mass cloning",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "35.183.65.4",
+      "context": "AWS ca-central-1 IP used for June 1 mass cloning",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "15.157.62.127",
+      "context": "AWS ca-central-1 IP used for June 1 mass cloning",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "35.183.112.105",
+      "context": "AWS ca-central-1 IP used for June 1 mass cloning",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "99.79.193.97",
+      "context": "AWS ca-central-1 IP used for June 1 mass cloning",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "52.60.229.238",
+      "context": "AWS ca-central-1 IP used for June 1 mass cloning",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "35.182.157.210",
+      "context": "AWS ca-central-1 IP used for June 1 mass cloning",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "15.223.204.99",
+      "context": "AWS ca-central-1 IP used for June 1 mass cloning",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "3.96.138.214",
+      "context": "AWS ca-central-1 IP used for June 1 mass cloning",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "35.183.106.137",
+      "context": "AWS ca-central-1 IP used for June 1 mass cloning",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "15.223.207.112",
+      "context": "AWS ca-central-1 IP used for June 1 mass cloning",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

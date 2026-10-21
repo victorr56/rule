@@ -1,0 +1,27 @@
+title: ResumeLooters PowerShell Download Cradle
+id: 57d8122d-3751-40e9-b5fe-62a8ab63503d
+status: experimental
+description: Detects a specific PowerShell download cradle command line pattern used by the ResumeLooters group to download and execute secondary payloads.
+references:
+    - https://www.group-ib.com/blog/resumelooters/
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.execution
+    - attack.t1059.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - '-nop'
+            - '-w hidden'
+            - 'IEX ((new-object Net.WebClient).DownloadString('
+            - ';IEX (('
+            - '/CcrN3QqWOeRx'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

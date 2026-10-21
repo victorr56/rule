@@ -1,0 +1,22 @@
+title: Axios Supply Chain Attack Windows Second Stage Script Drop
+id: 9a5b3f2e-1e8c-4a3b-8e1f-7a5d9c3b1a2d
+status: experimental
+description: Detects the creation of the second-stage PowerShell script "6202033.ps1" in the Temp directory, a behavior observed in the Axios supply chain attack.
+references:
+    - https://www.wiz.io/blog/axios-npm-compromised-in-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\node.exe'
+        TargetFilename|endswith: '\AppData\Local\Temp\6202033.ps1'
+    condition: selection
+falsepositives:
+    - 'Legitimate node.js applications are not expected to create a file with this specific name and path.'
+level: high

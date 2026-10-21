@@ -1,0 +1,28 @@
+title: Msiexec Spawning from Microsoft Office to Download Payload
+id: 173b067a-1160-4e08-963d-b4b3922c1d34
+status: experimental
+description: Detects a Microsoft Office application spawning msiexec.exe to download a remote payload, a technique used by TA505 to deliver Amadey.
+references:
+    - http://nao-sec.org/2019/04/Analyzing-amadey.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1218.007
+    - attack.initial_access
+    - attack.t1566.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith:
+            - '\EXCEL.EXE'
+            - '\WINWORD.EXE'
+            - '\POWERPNT.EXE'
+        Image|endswith: '\msiexec.exe'
+        CommandLine|contains: '/i http'
+    condition: selection
+falsepositives:
+    - Legitimate software installations initiated from within Microsoft Office applications, though this is rare.
+level: high

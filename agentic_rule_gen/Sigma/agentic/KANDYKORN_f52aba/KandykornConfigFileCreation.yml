@@ -1,0 +1,22 @@
+title: KANDYKORN Configuration File Creation on macOS
+id: a7e3d11b-3652-475b-80df-8b3874c76b53
+status: experimental
+description: Detects the creation of the encrypted configuration file '/Library/Caches/com.apple.safari.ck' by the KANDYKORN payload '/Users/Shared/db.dat'.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-catches-dprk-passing-out-kandykorn
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.command_and_control
+    - attack.t1036.005
+logsource:
+    category: file_event
+    product: macos
+detection:
+    selection:
+        Image|endswith: '/Users/Shared/db.dat'
+        TargetFilename|endswith: '/Library/Caches/com.apple.safari.ck'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

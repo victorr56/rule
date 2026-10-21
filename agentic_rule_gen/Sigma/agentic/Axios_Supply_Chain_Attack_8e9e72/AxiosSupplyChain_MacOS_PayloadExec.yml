@@ -1,0 +1,26 @@
+title: Axios Supply Chain Attack macOS Payload Execution
+id: f81e9d1a-4c27-4a0b-99f5-79a0ec476d08
+status: experimental
+description: Detects the execution of the macOS second-stage payload "com.apple.act.mond" used in the Axios supply chain attack.
+references:
+    - https://www.wiz.io/blog/axios-npm-compromised-in-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1547.001
+    - attack.persistence
+    - attack.execution
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection_initial:
+        ParentImage|endswith: '/node'
+        Image|endswith: '/Library/Caches/com.apple.act.mond'
+    selection_persistence:
+        ParentImage: '/sbin/launchd'
+        Image|endswith: '/Library/Caches/com.apple.act.mond'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: critical

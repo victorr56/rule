@@ -1,0 +1,31 @@
+title: CikaBika Bot LNK PowerShell Payload
+id: 418ebacb-05b1-4f18-b2ef-3914a2d4807b
+status: experimental
+description: |
+    Detects the execution of a specific PowerShell command associated with the CikaBika Bot.
+    The script reads a decoy file, XOR-decodes an embedded payload, writes it to a temp file, and executes it.
+references:
+    - https://www.darktrace.com/blog/applescript-abuse-unpacking-a-macos-phishing-campaign
+author: ioc-yara-daily (agentic)
+date: 2023-11-29
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - '[IO.File]::ReadAllBytes'
+            - ' -bxor '
+            - '[IO.File]::WriteAllBytes'
+            - '$env:TEMP'
+            - 'IfyuUapz.txt'
+            - 'cmd /c'
+    condition: selection
+falsepositives:
+    - Unlikely, due to the specific combination of file I/O, XOR operation, and execution of a temporary file.
+level: high

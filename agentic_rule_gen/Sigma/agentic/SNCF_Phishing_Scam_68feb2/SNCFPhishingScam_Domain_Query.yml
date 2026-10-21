@@ -1,0 +1,29 @@
+title: SNCF Phishing Scam Domain DNS Query
+id: 5693041a-3e8a-4464-9f75-341e0ff05f3b
+status: experimental
+description: Detects DNS queries for domains associated with a phishing scam targeting SNCF customers.
+references:
+    - https://www.group-ib.com/blog/french-railway-two-step-scam/
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1566
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'avantage-offres.com'
+            - 'T-mail-avantages.com'
+            - 'sncf-connect.net'
+            - 'lesavantagesdesoffres.com'
+            - 'macarteavantage.live'
+            - 'sncf-connect-affiliation.com'
+            - 'carte-avantage-promotion.com'
+            - 'sncfoffre-avantages.com'
+            - 'sncf-pass-avantages.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

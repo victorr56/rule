@@ -1,0 +1,26 @@
+title: Potential Zimbra GraphQL Batch Authentication (CVE-2026-93637)
+id: 81a0b38c-f131-419b-8ca0-6e4f169f45d3
+status: experimental
+description: |
+  Detects POST requests to the Zimbra GraphQL endpoint containing multiple 'authenticate' mutations within a single request.
+  This behavior is indicative of brute-force or credential testing attempts that try to bypass IP-based rate limiting by exploiting CVE-2026-93637.
+  This pattern is notably used by the Metasploit module scanner/http/zimbra_graphql_brute.
+references:
+  - https://www.rapid7.com/blog/post/ve-breaking-zimbra-identity-boundaries-part-1
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.credential_access
+  - attack.t1110.001
+logsource:
+  category: proxy
+detection:
+  selection:
+    cs-method: 'POST'
+    c-uri|endswith: '/service/extension/graphql'
+    # Detects two or more occurrences of 'authenticate' in the request body
+    c-request-body|re: 'authenticate.*?authenticate'
+  condition: selection
+falsepositives:
+  - Legitimate applications that perform batched authentication against the GraphQL endpoint. This behavior is not expected from standard clients like the Zimbra webmail.
+level: high

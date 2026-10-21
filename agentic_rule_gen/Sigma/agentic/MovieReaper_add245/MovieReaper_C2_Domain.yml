@@ -1,0 +1,20 @@
+title: MovieReaper C2 Domain deadhub.org
+id: 3c8e4d25-9c5e-49b8-b80c-0d3f825e771c
+status: experimental
+description: Detects DNS queries for 'deadhub.org', a domain used by the MovieReaper malware as a first-stage command and control server to download shellcode.
+references:
+    - https://securelist.com/moviereaper-malware-torrent-odyssey-solana/121344/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'deadhub.org'
+    condition: selection
+falsepositives:
+    - Unlikely. This domain is specific to the malware infrastructure.
+level: high

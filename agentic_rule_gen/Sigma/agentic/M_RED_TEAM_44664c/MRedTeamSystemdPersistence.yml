@@ -1,0 +1,25 @@
+title: M-RED-TEAM Persistence via Systemd Service 'miasma-monitor.service'
+id: f43513a9-b42d-4c3e-836e-5daae96d744b
+status: experimental
+description: Detects the creation of 'miasma-monitor.service', a systemd user service created by the M-RED-TEAM malware for persistence on Linux systems.
+references:
+    - https://www.wiz.io/blog/m-red-team-asyncapi-supply-chain-compromise-via-github-actions
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1543.002
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/systemctl'
+        CommandLine|contains|all:
+            - '--user'
+            - 'enable'
+            - 'miasma-monitor.service'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

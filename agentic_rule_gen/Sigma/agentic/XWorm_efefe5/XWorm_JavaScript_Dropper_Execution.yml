@@ -1,0 +1,24 @@
+title: XWorm JavaScript Dropper Execution
+id: f3099951-40b9-4a0b-9dfc-5cdd02de5b09
+status: experimental
+description: Detects the execution of a specific JavaScript file used to drop XWorm.
+references:
+    - https://www.malware-traffic-analysis.net/2026/09/08/index.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\wscript.exe'
+            - '\cscript.exe'
+        CommandLine|contains: 'PAGO-ENVIO DOCUMENTOS FACTURA 4558.js'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

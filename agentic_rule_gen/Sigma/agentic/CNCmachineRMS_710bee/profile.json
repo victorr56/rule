@@ -1,0 +1,61 @@
+{
+  "malware_family": "CNCmachineRMS",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Traffic analysis exercise from a Windows host in the NATUREFORCE Active Directory domain (natureforce.com) that received a Windows EXE over unusual TCP port 9000 from 107.175.82.242 and generated CNCmachineRMS RAT C2 traffic to 195.64.128.106:443. The report provides only the pcap context and alert indicators; the infected client's identity and the EXE's SHA-256 are left as analyst questions without stated answers.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "NATUREFORCE",
+      "context": "Active Directory (AD) environment name",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "WIN-LEKBU2OY51N",
+      "context": "AD domain controller host name at 10.10.1.10",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "107.175.82.242",
+      "context": "Sends Windows EXE to client over unusual TCP port 9000",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "195.64.128.106",
+      "context": "CNCmachineRMS RAT C2 traffic over port 443",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "natureforce.com",
+      "context": "Victim AD domain, LAN segment 10.10.1.0/24",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

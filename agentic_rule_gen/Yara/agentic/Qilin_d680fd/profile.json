@@ -1,0 +1,203 @@
+{
+  "malware_family": "Qilin",
+  "threat_actor": "Pistachio Tempest",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "Qilin is a Ransomware-as-a-Service (RaaS) written in Rust and Go, enabling cross-platform attacks. Affiliates, such as Pistachio Tempest, gain initial access via phishing or exploiting exposed services, then move laterally using RDP, WMI, and SCCM. The operators use tools like Cobalt Strike and SystemBC for C2 and exfiltrate data to services like MEGA or via FTP before encrypting files and dropping ransom notes.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "README-RECOVER-*.txt",
+      "context": "Naming convention for ransom notes dropped on the network.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "*-RECOVER-README.txt",
+      "context": "Alternative naming convention for ransom notes referenced in OSINT.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "srvsvc",
+      "context": "Bound by domain controller to enumerate SMB shares on many devices.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "a157496.exe",
+      "context": "Suspicious executable file transferred during internal reconnaissance.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "83b87b2.exe",
+      "context": "Suspicious executable file transferred during internal reconnaissance.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "LSM_API_service",
+      "context": "File written via SMB; an RPC service abused to enumerate users.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "sihost64.dll",
+      "context": "DLL file requested via HTTP GET from a domain controller using PowerShell.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "CN=ne.com,OU=key operations,O=1000,L=,ST=,C=KM",
+      "context": "Self-signed certificate on an IP within the same ASN as C2.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/asdffHTTPS",
+      "context": "Cobalt Strike C2 communication observed in HTTP GET requests.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/asdfgdf",
+      "context": "Cobalt Strike C2 communication observed in HTTP GET requests.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/asdfgHTTP",
+      "context": "Cobalt Strike C2 communication observed in HTTP GET requests.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/download/sihost64.dll",
+      "context": "Cobalt Strike C2 communication observed in HTTP GET requests.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "93.115.25.139",
+      "context": "C2 Server, likely associated with SystemBC.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "SystemBC"
+    },
+    {
+      "kind": "ip",
+      "value": "194.165.16.13",
+      "context": "Probable exfiltration server used for FTP and other connections.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "91.238.181.230",
+      "context": "C2 Server, likely associated with Cobalt Strike.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "ip",
+      "value": "184.168.123.220",
+      "context": "Possible C2 Infrastructure.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "184.168.123.219",
+      "context": "Possible C2 Infrastructure.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "184.168.123.236",
+      "context": "Possible C2 Infrastructure.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ikea0.com",
+      "context": "C2 Server, likely associated with Cobalt Strike.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "domain",
+      "value": "lebondogicoin.com",
+      "context": "C2 Server, likely associated with Cobalt Strike.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "domain",
+      "value": "gfs440n010.userstorage.mega.co.nz",
+      "context": "Possible exfiltration server, associated with MEGA file storage.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "elf"
+  ]
+}

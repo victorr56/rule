@@ -1,0 +1,25 @@
+title: Rogue ScreenConnect Payload Archive Creation
+id: 345c2f30-e8f0-4a88-827d-9273462f8546
+status: experimental
+description: Detects the creation of "sys_cache.zip", the decrypted payload archive, in a specific and unusual directory used by the rogue ScreenConnect loader.
+references:
+    - https://www.huntress.com/blog/rogue-screenconnect-installations
+author: ioc-yara-daily (agentic)
+date: 2023-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1027
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_ps:
+        Image|endswith: '\powershell.exe'
+        TargetFilename|endswith: '\Microsoft\Windows\Templates\Classic\sys_cache.zip'
+    selection_pwsh:
+        Image|endswith: '\pwsh.exe'
+        TargetFilename|endswith: '\Microsoft\Windows\Templates\Classic\sys_cache.zip'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

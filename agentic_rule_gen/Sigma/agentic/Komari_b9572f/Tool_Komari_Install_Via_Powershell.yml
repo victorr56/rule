@@ -1,0 +1,26 @@
+title: Komari Agent Installation Via PowerShell
+id: 5764d88e-c35f-4a0b-8d05-4f3647f5cf53
+status: experimental
+description: Detects the download and execution of the Komari agent installation script from the official GitHub repository.
+references:
+    - https://www.huntress.com/blog/komari-c2-agent-abuse
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'iex'
+            - 'komari-monitor/komari-agent'
+            - 'install.ps1'
+    condition: selection
+falsepositives:
+    - Legitimate installation of the Komari monitoring tool by an administrator.
+level: medium

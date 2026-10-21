@@ -1,0 +1,21 @@
+title: Royal Road Payload Execution via faxprint.dll
+id: 3c5e884f-b44c-473d-9fde-0c33a9c72e27
+status: experimental
+description: Detects the execution of 'faxprint.dll' via rundll32.exe, a known TTP for executing the Chinoxy backdoor, often delivered via Royal Road.
+references:
+    - http://nao-sec.org/2021/01/royal-road-redive.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1203
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains: 'faxprint.dll'
+    condition: selection
+falsepositives:
+    - Unlikely, but a legitimate DLL with this name could exist in a custom application.
+level: high

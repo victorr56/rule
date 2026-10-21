@@ -1,0 +1,39 @@
+title: ShadowSyndicate Associated C2 Server Connection
+id: 593fc3e0-3330-4e5c-9c7f-94d87ac7c6ea
+status: experimental
+description: Detects network connections to IP addresses associated with the ShadowSyndicate infrastructure cluster, which is used by various ransomware and malware operators.
+references:
+  - https://www.group-ib.com/blog/new-shadowsyndicate-infrastructure/
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+  - attack.command_and_control
+  - attack.t1071
+  - detection.threat_hunting
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationIp:
+      - '194.165.16.64'
+      - '194.135.24.245'
+      - '147.45.112.220'
+      - '78.128.112.209'
+      - '88.214.25.253'
+      - '5.188.87.37'
+      - '179.60.149.222'
+      - '193.24.211.238'
+      - '200.107.207.26'
+      - '45.182.189.71'
+      - '194.135.24.250'
+      - '46.161.27.151'
+      - '81.19.136.234'
+      - '45.227.255.34'
+      - '88.214.27.170'
+      - '147.78.46.29'
+      - '45.182.189.181'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high

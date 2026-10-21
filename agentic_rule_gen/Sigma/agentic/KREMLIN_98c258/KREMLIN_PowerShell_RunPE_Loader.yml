@@ -1,0 +1,27 @@
+title: KREMLIN PowerShell RunPE Invocation
+id: 0d7a8e2b-f1a5-4889-8d14-38615e4f50f2
+status: experimental
+description: Detects a specific PowerShell script block used by the KREMLIN malware toolkit to invoke its RunPE loader, often from a file named bootim.ps1.
+references:
+    - https://www.elastic.co/security-labs/threat-command/malicious-browser-extension-kremlin-banking-malware
+author: ioc-yara-daily (agentic)
+date: 2024-06-21
+tags:
+    - attack.defense_evasion
+    - attack.execution
+    - attack.t1027
+    - attack.t1059.001
+    - attack.t1055
+logsource:
+    category: ps_script
+    product: windows
+detection:
+    selection:
+        Path|endswith: '\bootim.ps1'
+        ScriptBlockText|contains|all:
+            - '$runPeEntryMethod.Invoke'
+            - '($nativePayloadBase64)'
+    condition: selection
+falsepositives:
+    - Legitimate scripts using the same file name and internal variable/method names, which is highly unlikely.
+level: critical

@@ -1,0 +1,21 @@
+title: SHELLTER Associated C2 Domain
+id: a5e3962b-968b-4976-b63e-ab7709f3e490
+status: experimental
+description: Detects DNS queries for domains associated with C2 servers used in campaigns leveraging the SHELLTER framework.
+references:
+    - https://www.elastic.co/security-labs/threat-command/taking-shellter
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'eaglekl.digital'
+    condition: selection
+falsepositives:
+    - Domains can be re-purposed or sinkholed.
+level: critical

@@ -1,0 +1,35 @@
+title: LATRODECTUS Antivirus Discovery Command
+id: f011c7d2-5e9b-4f8a-9a0d-329b3c5a61b4
+status: experimental
+description: Detects a specific and complex command line used by LATRODECTUS to enumerate installed antivirus products via WMI and cmd.exe.
+references:
+    - https://www.elastic.co/security-labs/threat-command/spring-cleaning-with-latrodectus
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.discovery
+    - attack.t1047
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\cmd.exe'
+        Image|endswith: '\wmic.exe'
+        CommandLine|contains|all:
+            - '/node:localhost'
+            - '/namespace:\\\\root\\SecurityCenter2'
+            - 'path AntiVirusProduct'
+            - 'Get DisplayName'
+    # The parent cmd.exe has the full logic, which is a stronger indicator
+    selection_parent:
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - 'wmic.exe'
+            - 'path AntiVirusProduct'
+            - '| findstr /V /B /C:displayName'
+            - '|| echo No Antivirus installed'
+    condition: 1 of selection*
+falsepositives:
+    - Unlikely
+level: high

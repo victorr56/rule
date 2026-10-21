@@ -1,0 +1,795 @@
+{
+  "malware_family": "ICMacOS",
+  "threat_actor": "GlowComa (MADHASH crypto-draining affiliate group)",
+  "platforms": [
+    "macos"
+  ],
+  "summary": "ICMacOS (Icarus macOS) is a macOS MaaS infostealer sold by the actor GlowComa that uses ClickFix copy-paste scripts to drop a bash dropper, harvest the login password via spoofed System Preferences dialogs, and exfiltrate browser, Keychain, wallet, messaging and developer-secret data. Version 2 adds a persistent RAT with a KeepAlive LaunchAgent (com.apple.systemupdater) and a Gorilla WebSocket C2 channel executing operator commands through /bin/sh. Detection anchors include the escapeai.live C2 endpoints, /tmp/.update-helper.log and /tmp/.cache-update.log, the com.apple.systemupdater LaunchAgent, and CIS geo-fencing checks.",
+  "mitre_techniques": [
+    "T1204.004",
+    "T1059.004",
+    "T1059.002",
+    "T1059.006",
+    "T1543.001",
+    "T1036.005",
+    "T1480",
+    "T1564",
+    "T1548",
+    "T1082",
+    "T1083",
+    "T1057",
+    "T1033",
+    "T1555.001",
+    "T1555.003",
+    "T1555.005",
+    "T1056.002",
+    "T1552.001",
+    "T1552.003",
+    "T1115",
+    "T1119",
+    "T1213",
+    "T1005",
+    "T1560",
+    "T1048.002",
+    "T1567",
+    "T1071.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/tmp/.update-helper.log",
+      "context": "Hidden log written by first-stage dropper script on execution",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.cache-update.log",
+      "context": "Log file initialized by ICMacOS stealer on execution",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.update-tmp/ICMacOs.gz",
+      "context": "Architecture-specific second-stage payload downloaded and uncompressed here",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.systemd-private-helper.zip",
+      "context": "Hidden ZIP archive of collected victim data before exfiltration",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/icmacos_run_v2.command",
+      "context": "Dropper downloaded by initial ClickFix bash script and run with zsh",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/LaunchAgents/com.apple.systemupdater.plist",
+      "context": "LaunchAgent plist installed for reboot persistence in Version 2",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "com.apple.systemupdater",
+      "context": "LaunchAgent Label masquerading as a legitimate Apple system process",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "RunAtLoad + KeepAlive + StartInterval: 3600",
+      "context": "LaunchAgent keys that restart the binary and re-run it every 60 minutes",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "security unlock-keychain -p $PASSWORD ~/Library/Keychains/login.keychain-db",
+      "context": "Dropper validates victim password against login Keychain (bash parent, up to 5 attempts)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "security find-generic-password -w -a \"<username>\" -s \"<BrowserName> Safe Storage\"",
+      "context": "Chromium AES-128 master key extraction from Keychain",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "security dump-keychain -d \"$HOME/Library/Keychains/login.keychain-db\" > \"$WORKDIR/Keychain/keychain_dump_raw.txt\" 2>/dev/null",
+      "context": "Keychain dump fallback when offline parsing fails",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "do shell script \"security dump-keychain -d '$HOME/Library/Keychains/login.keychain-db' > '$WORKDIR/Keychain/keychain_dump_raw.txt' 2>/dev/null\" with administrator privileges",
+      "context": "osascript elevation prompt to dump restricted system Keychain records",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "do shell script \"/bin/bash '%s'\" with administrator privileges with prompt \"%s\"",
+      "context": "Generic osascript admin-privilege shell execution template",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "locale | grep -c ru_RU",
+      "context": "CIS geo-fencing check; execution halts if Russian locale detected",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -s --max-time 5 https://ipinfo.io/country",
+      "context": "External IP geolocation check used for CIS geo-lock",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -s --max-time 5 https://api.ipify.org",
+      "context": "External IP discovery for victim info report header",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "uname -m",
+      "context": "Dropper detects arm64 vs amd64 to fetch matching payload",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "pgrep ICMACOS",
+      "context": "Version 2 enumerates and kills duplicate running instances",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "kill -SIGKILL {PID}",
+      "context": "Terminates existing ICMacOS instance during process de-confliction",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "launchctl bootstrap gui/<uid> ~/Library/LaunchAgents/com.apple.systemupdater.plist",
+      "context": "Loads the persistence agent into the active user GUI session",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "killall Terminal",
+      "context": "Dropper closes the Terminal window to hide activity from victim",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "pbpaste",
+      "context": "Clipboard collection in Version 2, no privileges or UI prompt required",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "system_profiler SPSoftwareDataType / SPHardwareDataType / SPDisplaysDataType",
+      "context": "System information discovery for exfiltration report header",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sysctl kern.hostname",
+      "context": "Hostname discovery via collected victim information routine",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sw_vers",
+      "context": "OS version discovery via collected victim information routine",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "ICMacOs",
+      "context": "Final stage macOS payload launched in background with password, build name and owner ID",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "keychainbreaker",
+      "context": "Embedded Go library used to parse and decrypt login Keychain offline",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "keychainbreaker",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Keychains/login.keychain-db",
+      "context": "Keychain database targeted for passwords, Wi-Fi credentials and certificates",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$WORKDIR/Keychain/keychain_dump_raw.txt",
+      "context": "Raw keychain dump output file created by security dump-keychain fallback",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "System Preferences wants to make changes.",
+      "context": "Spoofed macOS admin dialog text used to capture login password",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "You should update the settings to launch this app.",
+      "context": "Fake System Preferences dialog body shown to victim",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "password_prompt_text",
+      "context": "Remote build_config field allowing operator customization of fake password prompt",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "fake_error_title: \"System Update\"",
+      "context": "Default fake error dialog title returned by /api/build_config",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Application Support/Telegram Desktop/tdata/",
+      "context": "Telegram Desktop session data exfiltrated with key_data for full session hijack",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Group Containers/group.net.whatsapp.WhatsApp.shared/ChatStorage.sqlite",
+      "context": "WhatsApp message history database copied with -wal/-shm sidecars",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Application Support/discord/Local Storage/leveldb/",
+      "context": "Discord LevelDB store containing authentication token",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Messages/chat.db",
+      "context": "iMessage/SMS SQLite database copied with -wal and -shm",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Group Containers/group.com.apple.notes/NoteStore.sqlite",
+      "context": "Apple Notes database with attachment BLOBs and iCloud sync metadata",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Application Support/CallHistoryDB/CallHistory.storedata",
+      "context": "Apple call/FaceTime history database",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Containers/com.termius.mac/Data/Library/Application Support/Termius/",
+      "context": "Termius SSH/SFTP saved credentials, private keys and session history",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Group Containers/UBF8T346G9.Office/Outlook/",
+      "context": "Outlook local cache of mail, calendar and contacts plus .olm files",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Application Support/Steam/config/loginusers.vdf",
+      "context": "Steam account login records with AccountName, PersonaName, RememberPassword",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "*.ssfn",
+      "context": "SteamGuard Sentry Files acting as trusted-device tokens bypassing 2FA",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".ssh/id_rsa",
+      "context": "Developer SSH private keys harvested from $HOME",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".aws/credentials",
+      "context": "AWS developer credentials targeted from $HOME",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".kube/config",
+      "context": "Kubernetes credential file targeted from $HOME",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".docker/config.json",
+      "context": "Container registry credentials targeted from $HOME",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".config/gcloud/application_default_credentials.json",
+      "context": "Google Cloud default credentials targeted from $HOME",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".terraform.d/credentials.tfrc.json",
+      "context": "Terraform CLI cloud credentials targeted from $HOME",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".pgpass",
+      "context": "PostgreSQL credentials file targeted in database category",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".zsh_history",
+      "context": "Shell history harvested by dedicated terminal-history module for inline secrets",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "key4.db",
+      "context": "Firefox NSS key store collected with logins.json for offline credential decryption",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Cookies/Cookies.binarycookies",
+      "context": "Safari cookie store harvested from Safari directories",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ProtonVPN, Mullvad VPN, NordVPN, ExpressVPN, WireGuard",
+      "context": "VPN configuration profiles targeted by the supplementary Python payload",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Filegrabber",
+      "context": "Python module name that searches Desktop/Documents/Downloads for sensitive extensions",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".txt .pdf .docx .xlsx .json .csv .key",
+      "context": "File extensions targeted by the Python Filegrabber module",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "escapeai.live",
+      "context": "Primary ICMacOS C2, payload delivery and exfiltration domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mikoblico.xyz",
+      "context": "Secondary ICMacOS login/panel domain listed in IoCs",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "85.137.253.61",
+      "context": "ICMacOS login infrastructure IP from IoC list",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.13.186.247",
+      "context": "ICMacOS login infrastructure IP from IoC list",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://escapeai.live/icmacos_run_v2.command?t={date}",
+      "context": "Build-specific dropper download URL fetched by ClickFix script",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://escapeai.live/loader_v2.sh?build={build_name}&owner={owner}",
+      "context": "Downloader URL carrying build name and owner campaign parameters",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://escapeai.live/ICMacOs?arch=arm64",
+      "context": "Apple Silicon payload delivery URL selected via uname -m",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://escapeai.live/ICMacOs?arch=amd64",
+      "context": "Intel payload delivery URL selected via uname -m",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://escapeai.live/payload.py",
+      "context": "Supplementary Python payload URL served alongside the Mach-O binaries",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://escapeai.live/upload",
+      "context": "Exfiltration endpoint receiving multipart/form-data POST of stolen archive",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "wss://escapeai.live/ws?mac_id={hostname}&username={username}",
+      "context": "Gorilla WebSocket C2 channel executing operator commands via /bin/sh",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://escapeai.live/api/build_config",
+      "context": "Remote configuration endpoint returning fake error and password prompt text",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://ipinfo.io/country",
+      "context": "Victim country lookup used for CIS geo-lock guardrail",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://api.ipify.org",
+      "context": "External IP discovery called by victim information collection",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "multipart/form-data",
+      "context": "Exfiltration POST content type built with Go mime/multipart package",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "5dfb0c01ac5c075e23ec37873b30ba16cf28e290e9439d04101f0a8191f929d8",
+      "description": "ICMacOS dropper"
+    },
+    {
+      "sha256": "8cc449e7e240894e77187f6faff415bc8b9f2f9da73f60eef1f7605debd9144a",
+      "description": "ICMacOS dropper"
+    },
+    {
+      "sha256": "62e435102e1e1de74537f174ede7c8ff198dc4df3fd2e1167f537096e0b4dd17",
+      "description": "ICMacOS dropper"
+    },
+    {
+      "sha256": "857236d1902f4604acdf27519c0310064d21f8a82af3b95b1e4f02fef581b1d0",
+      "description": "ICMacOS dropper"
+    },
+    {
+      "sha256": "6917505bbdc8efa01ea1a0298eae62a93a57a8c98d3712a69d822dca4a667f05",
+      "description": "ICMacOS dropper"
+    },
+    {
+      "sha256": "dca852b53c259641e1782bd9122c5007130614a7a8fd17102400acb4f50f6e94",
+      "description": "ICMacOS dropper"
+    },
+    {
+      "sha256": "e7e8ac14aaee970c6d00c6cbb398decc56dfc128974c01bfc8e7acd13a18576e",
+      "description": "ICMacOS dropper"
+    },
+    {
+      "sha256": "ec37acd3bd15f50eee2941d5644ca0ee738b36ce4a39e9e08058e35ebc7961fc",
+      "description": "ICMacOS dropper"
+    },
+    {
+      "sha256": "fcf9de13ecc70b4fda3998ed7a93849edf86c48767a1a13f32f4a6a631a65ae2",
+      "description": "ICMacOS dropper"
+    },
+    {
+      "sha256": "3d4f70172c8f31813e7b37fc1a49bce193663e33c4eb65952bb5aec9d7176826",
+      "description": "ICMacOS dropper"
+    },
+    {
+      "sha256": "8b7606bdccdd6ff691db875283fdf5b6b658dd8d4d141b44e07f8f2583ff5604",
+      "description": "ICMacOS dropper"
+    },
+    {
+      "sha256": "bc8d70f000e73c0c7a69a2676805190e7109cab59df3e34c5a74d2cb7f13a7e4",
+      "description": "ICMacOS Mach-O payload Version 1 stealer"
+    },
+    {
+      "sha256": "a9b21ac0112855b835b5e5850ef167471eff7305d42b3a8104c1961b257a444d",
+      "description": "ICMacOS Mach-O payload Version 1 stealer"
+    },
+    {
+      "sha256": "c8136413ad38a1028050f5d508e25267b518c5fdeac80b6442103d1009d8924c",
+      "description": "ICMacOS Mach-O payload Version 1 stealer"
+    },
+    {
+      "sha256": "e52855d447d152bb698e565f361161cdc8946183ab09bf3cbea89765a2b5ff31",
+      "description": "ICMacOS Mach-O payload Version 2 persistent RAT"
+    },
+    {
+      "sha256": "d9df05a3fb68d302ecf134a1214b609c6ec0a3fb9122907214afac3908b587f4",
+      "description": "ICMacOS Mach-O payload Version 2 persistent RAT"
+    },
+    {
+      "sha256": "8b4303a065e18e80050ef22031ec60b1a4e84f958d9e56cc5cc34cd29d988d69",
+      "description": "ICMacOS supplementary Python payload"
+    }
+  ],
+  "file_types": [
+    "macho",
+    "script"
+  ]
+}

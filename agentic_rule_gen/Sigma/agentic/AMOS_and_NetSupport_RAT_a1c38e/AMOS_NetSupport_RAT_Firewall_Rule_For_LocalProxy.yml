@@ -1,0 +1,27 @@
+title: AMOS/NetSupport RAT Firewall Rule for LocalProxy
+id: 8d7c6b5a-4f3e-4d2c-9b8a-7e6f5a4b3c2d
+status: experimental
+description: Detects the creation of a Windows Firewall rule named "LocalProxy", used by the threat actor to allow inbound connections to their malicious proxy.
+references:
+    - https://www.huntress.com/blog/defcon-phishing-google-doc-malware
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1562.004
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\netsh.exe'
+        CommandLine|contains|all:
+            - 'advfirewall'
+            - 'firewall'
+            - 'add rule'
+            - 'name="LocalProxy"'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

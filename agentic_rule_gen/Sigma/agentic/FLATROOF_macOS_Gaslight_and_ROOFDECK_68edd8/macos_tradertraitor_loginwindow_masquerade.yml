@@ -1,0 +1,26 @@
+title: TraderTraitor ROOFDECK Masquerading as loginwindow
+id: 3c6218d6-31a4-44ed-abfd-429de0a969f6
+status: experimental
+description: Detects a process named 'loginwindow' executing from a non-standard path and launched by 'launchd', a technique used by the ROOFDECK malware to masquerade as the legitimate macOS login window process for persistence.
+references:
+    - https://www.sentinelone.com/labs/dont-call-us-well-call-your-apis-tradertraitor-backdoors-resurface-on-victim-with-no-crypto-ties/
+author: ioc-yara-daily (agentic)
+date: 2024-05-27
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+    - attack.persistence
+    - attack.t1543.001
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image|endswith: '/loginwindow'
+        ParentImage|endswith: '/launchd'
+    filter:
+        Image: '/System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow'
+    condition: selection and not filter
+falsepositives:
+    - Unlikely. The legitimate 'loginwindow' process should only run from its designated System path.
+level: high

@@ -1,0 +1,24 @@
+title: Celine Dion Ticket Scam Payment Subdomain Access
+id: f5fa9445-56fd-418c-8438-ac2edc0a200e
+status: experimental
+description: Detects web traffic to fraudulent payment subdomains used in the Celine Dion ticketing scam.
+references:
+    - https://www.group-ib.com/blog/fake-concert-ticket-scam-celine-dion/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname|startswith: 'pay.'
+        DestinationHostname|contains|all:
+            - 'celine'
+            - 'dion'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

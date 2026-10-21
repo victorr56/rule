@@ -1,0 +1,26 @@
+title: PHANTOMPULL Loader Download via BITS
+id: 53e414c5-a0fd-4f9e-a0e2-63b78294a616
+status: experimental
+description: Detects the execution of a PowerShell command that uses BITS to download the PHANTOMPULL loader, identified by the specific source URL and destination filename.
+references:
+    - https://www.elastic.co/security-labs/threat-command/phantom-in-the-vault
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1059.001
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'Start-BitsTransfer'
+            - '/syncobs.exe?q=%23OBSIDIAN'
+            - '$env:TEMP\syncobs.exe'
+    condition: selection
+falsepositives:
+    - Legitimate scripts that use BITS to download a file named 'syncobs.exe' to the temp directory.
+level: high

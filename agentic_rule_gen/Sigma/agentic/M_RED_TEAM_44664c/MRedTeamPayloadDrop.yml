@@ -1,0 +1,31 @@
+title: M-RED-TEAM Payload Drop 'sync.js'
+id: 5797d812-70b1-4f9e-a0e2-6369f643e93b
+status: experimental
+description: Detects the creation of 'sync.js', a stage 2 payload dropped by the M-RED-TEAM malware campaign in a specific NodeJS application data folder.
+references:
+    - https://www.wiz.io/blog/m-red-team-asyncapi-supply-chain-compromise-via-github-actions
+author: ioc-yara-daily (agentic)
+date: 2024-05-16
+tags:
+    - attack.execution
+    - attack.t1059.007
+logsource:
+    category: file_event
+    product:
+        - windows
+        - linux
+        - macos
+detection:
+    selection_win:
+        Image|endswith: '\node.exe'
+        TargetFilename|endswith: '\NodeJS\sync.js'
+    selection_lin:
+        Image|endswith: '/node'
+        TargetFilename|endswith: '/.local/share/NodeJS/sync.js'
+    selection_mac:
+        Image|endswith: '/node'
+        TargetFilename|endswith: '/Library/Application Support/NodeJS/sync.js'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate NodeJS development or synchronization tools that use the exact same file path, which is considered unlikely.
+level: high

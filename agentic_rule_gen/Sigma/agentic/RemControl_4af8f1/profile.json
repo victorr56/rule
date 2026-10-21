@@ -1,0 +1,722 @@
+{
+  "malware_family": "RemControl",
+  "threat_actor": "UNKK",
+  "platforms": [
+    "android"
+  ],
+  "summary": "RemControl is an Android banking trojan distributed as a fake TVTap IPTV app dropper that suppresses Google Play Protect via a local VPN, signs its payload per installation, and abuses the Accessibility Service to inject C2-served phishing overlays, stream the screen, log keystrokes and capture lock patterns. It resolves its C2 through a Telegram dead-drop (AES-128-CBC keyed by the marker string 'numeraZZZas') and talks to a FastAPI 'RemControl Proxy' backend over WebSocket with an HTTP /api fallback. Samples are branded with the hardcoded affiliate tag UNKK and geography campaign tags such as IT-NEW and FR-NEW4.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "com.vthretwdf.vthtwobbrRemControlApp",
+      "context": "Payload application class declared in AndroidManifest",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "numeraZZZas",
+      "context": "Marker string delimiting Base64 blob in Telegram dead-drop page",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Android.close()",
+      "context": "JavaScript in C2 overlay response that dismisses the phishing overlay",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RemControl Proxy",
+      "context": "C2 backend self-identification in exposed OpenAPI schema",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RemControl Panel",
+      "context": "Operator panel title in login page and API docs",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "quiz answers",
+      "context": "API doc wording for submitted banking credentials (cover story)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "parental-monitoring",
+      "context": "Cover story in RemControl Proxy API documentation",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "mid-quiz",
+      "context": "Overlay Fetch endpoint documented state value",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "unknown_result",
+      "context": "Overlay Fetch endpoint documented error value",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "if WebView fails to load just close",
+      "context": "Developer comment in Overlay Fetch API docs",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<file:NAME>",
+      "context": "Overlay Submit endpoint request.form() field placeholder",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "com.android.vending",
+      "context": "Google Play package added to VPN blocked-package list",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "CN=Android Debug, O=Android, C=US",
+      "context": "Per-install signing certificate generated in Android Keystore",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "UNKK",
+      "context": "Hardcoded affiliate tag (AFF) present in all analyzed samples",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IT-NEW",
+      "context": "Hardcoded Italy campaign tag",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IT-NEW4",
+      "context": "Hardcoded Italy campaign tag",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "FR-NEW",
+      "context": "Hardcoded France campaign tag",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "FR-NEW4",
+      "context": "Hardcoded France campaign tag",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "pt-v3",
+      "context": "Hardcoded Portugal campaign tag",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ARABIC2",
+      "context": "Hardcoded Middle East campaign tag",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ARABIC3",
+      "context": "Hardcoded Middle East campaign tag",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Branding",
+      "context": "Sample class holding affiliate tag, campaign tag and dead-drop URLs",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "AFF",
+      "context": "Branding class field for affiliate tag",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "TAG",
+      "context": "Branding class field for geographic campaign tag",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "RemoteAccessibilityService.g",
+      "context": "Array of localized uninstall-screen strings for self-preservation",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "RemoteAccessibilityService.h",
+      "context": "Array of localized factory-reset strings for self-preservation",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Factory reset",
+      "context": "Localized UI string used to detect factory reset screens",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "com.android.systemui:id/lockPatternView",
+      "context": "Pattern lock view resource ID targeted on AOSP",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "com.android.keyguard:id/lockPatternView",
+      "context": "Pattern lock view resource ID targeted on AOSP keyguard",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "com.miui.keyguard:id/lockPatternView",
+      "context": "Pattern lock view resource ID targeted on Xiaomi MIUI",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "com.huawei.keyguard:id/lockPatternView",
+      "context": "Pattern lock view resource ID targeted on Huawei",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "com.coloros.systemui:id/lockPatternView",
+      "context": "Pattern lock view resource ID targeted on OPPO ColorOS",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "com.samsung.android.lockscreen:id/lockPatternView",
+      "context": "Pattern lock view resource ID targeted on Samsung One UI",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "log.php",
+      "context": "Overlay HTML endpoint receiving email, password and expiry fields",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Verifying information...",
+      "context": "Alert displayed by overlay before page reload",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "997470916598588",
+      "context": "Meta Pixel tracking ID on fake Google Play page",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1909605966397328",
+      "context": "Second Meta Pixel tracking ID on fake Google Play page",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "// Создаем форму для отправки POST запроса",
+      "context": "Russian-language comment in overlay HTML code",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Update TVTap",
+      "context": "Dropper fake TVTap update screen title",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Start Install",
+      "context": "Button text on dropper startup screen",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "BIND_VPN_SERVICE",
+      "context": "Permission requested to run local VPN blocking com.android.vending",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "start_overlay",
+      "context": "C2 command activating phishing overlay for a target app",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "set_tamper_guard",
+      "context": "C2 command enabling or disabling self-preservation behaviour",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "screen_set_modes",
+      "context": "C2 command configuring screenshot and accessibility-tree streaming",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "input_fill_id",
+      "context": "C2 command populating a form field by view resource ID",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "change_udid",
+      "context": "C2 command rotating the device identifier",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "apps_report",
+      "context": "Device frame reporting full installed package list",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Inst*TvTap*.apk",
+      "context": "Dropper naming convention shared with Medusa UNKN botnet",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://tvtap-liveapp.com/dl.php",
+      "context": "Final APK download URL after geo/User-Agent gate",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tvtap-hd.app",
+      "context": "Fake TVTap distribution site registered July 10, 2026",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://vpn.doneplay.site/",
+      "context": "Fake TVTap distribution site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://ff-de.shutgpt.ir/",
+      "context": "Fake TVTap distribution site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://vpn.askarzadeh.com/",
+      "context": "Fake TVTap distribution site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://cdn.dlmafi.top/",
+      "context": "Fake TVTap distribution site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://216.126.229.216/",
+      "context": "Fake TVTap distribution site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bnbnhura.top",
+      "context": "C2 domain decrypted from Telegram dead-drop (RemControl Proxy)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "definatelynoone.com",
+      "context": "Operator panel server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "157.90.179.116",
+      "context": "Operator panel server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://telegram.me/ftestera",
+      "context": "Telegram dead-drop channel for C2 resolution",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://telegram.me/+Psyt04xu-cRjMTg0",
+      "context": "Telegram dead-drop channel for C2 resolution",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/overlay/{result_id}",
+      "context": "GET serves overlay HTML; POST submits stolen credentials",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/internal/overlays/{result_id}",
+      "context": "Panel internal overlay fetch endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/internal/overlays/{result_id}/submit",
+      "context": "Panel internal overlay credential submit endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api",
+      "context": "HTTP POST fallback C2 channel using same JSON envelope",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/internal/recordings/upload",
+      "context": "Panel endpoint for uploading VNC recordings",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/admin/builds/new",
+      "context": "Panel endpoint creating per-affiliate APK builds",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/admin/login",
+      "context": "Operator panel login endpoint",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "76392303f28a7e6f1463a5fa04a19faf40d51d7be6619943a914482b0f3c7f0b",
+      "description": "Dropper"
+    },
+    {
+      "sha256": "fa373aaa95ca512ba9595c3ab41bac892c8c79d4a31f5d74c2f3225b629de52e",
+      "description": "Dropper"
+    },
+    {
+      "sha256": "45e16e56c81059f6758dced28a58256287785a8b0815577c1140293589aa2ae1",
+      "description": "Dropper"
+    },
+    {
+      "sha256": "dd6d05ff31f64b9ca8ca9334a804dbee5917d6448acb026de4ca818017a04730",
+      "description": "Dropper"
+    },
+    {
+      "sha256": "3b0c49ed1590bceffbefed150bb64545e69e792c5ad63578cc3bca5c5b96f2cb",
+      "description": "Dropper (Installer-TvTapApp.apk)"
+    },
+    {
+      "sha256": "19fef425c3a774e493526126a441a31971db8ac5af84c1d9eef15a272ba02ec1",
+      "description": "Dropper (Installla-TvTap.apk)"
+    },
+    {
+      "sha256": "54efee2665d3779f1be0d885409e29e6cd07fe944fa82e5d6eeb832264c7409d",
+      "description": "Dropper (Installer-TvTap.apk)"
+    },
+    {
+      "sha256": "cb29b6348ae4458b6b506f8de9336d0980bbfaf88b1d68be2771b57090d29889",
+      "description": "Dropper (Installar-TvTap.apk)"
+    },
+    {
+      "sha256": "1a992e2b36b2a9a77300b0b0fe7e9c20e127c8257fd203bb4b3eaf1e35e63ce7",
+      "description": "Dropper (Installa-TvTap.apk)"
+    },
+    {
+      "sha256": "af2decf5c5cbff0c0460ab09ad3cff497c765e3cf61e6c45f4e3b5c6a103312c",
+      "description": "Payload"
+    },
+    {
+      "sha256": "28a09cd68b1f4212cc61bd2d44d03d55b8bcd7df284bab56cdae8507abc90e3c",
+      "description": "Payload"
+    },
+    {
+      "sha256": "c6e1235d5cd01a205a191ce48c3d68e9fea620671c0c069593027a0218fad5b0",
+      "description": "Payload"
+    },
+    {
+      "sha256": "95ec481745c64c385c60f6c812585e5060a50e38da44bc1a9f67da3921b1a50f",
+      "description": "Payload"
+    },
+    {
+      "sha256": "77ead085bae72b6cb1c33c55fbd7763c4d8050798c55af3132c3b904084eeb8a",
+      "description": "Payload"
+    },
+    {
+      "sha256": "ad2b019cf346b8b4e6b2174a95b1d897ce736087bd06066f31a9d7fd72283e9f",
+      "description": "Payload"
+    },
+    {
+      "sha256": "b714f590380e5be8233cd60a4f212d949aff27b3a980e6d644c84b0120dd25b3",
+      "description": "Payload"
+    },
+    {
+      "sha256": "648b34fa952a2806d9f4c272f8bfbadc45c0c370c3d7c2ff0c7ffbb015237ce1",
+      "description": "Payload"
+    },
+    {
+      "sha256": "5fff21af95bd38b8c11dd73342a55acb75e91ff1936ed0ccb06af28400ef87d4",
+      "description": "Payload"
+    }
+  ],
+  "file_types": [
+    "apk"
+  ]
+}

@@ -1,0 +1,405 @@
+{
+  "malware_family": "WWAHost WinRT Abuse (AppX sideloading OAuth token theft)",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A post-compromise technique sideloads a minimal AppX package whose ContentUriRules grants WindowsRuntimeAccess=\"all\", so Microsoft-signed WWAHost.exe renders attacker JavaScript with full WinRT access and abuses WebAuthenticationBroker with Microsoft Office's first-party client ID to capture real OAuth authorization codes, access tokens and refresh tokens. Every component is Microsoft-signed and the login is genuine, so detection keys on the EdgeHTML user agent MSAppHost/3.0 (Edge/18) reaching non-Microsoft destinations from an AppX web host. Stolen refresh tokens give MFA-surviving Microsoft 365 access that scales with the victim's privileges.",
+  "mitre_techniques": [
+    "T1528",
+    "T1550.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "process_name",
+      "value": "WWAHost.exe",
+      "context": "Microsoft-signed Windows Web App Host used to render attacker JavaScript with WinRT access",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "MSAuthHost",
+      "context": "Separate Microsoft host that renders the login.microsoftonline.com sign-in leg (Trident engine)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "WindowsRuntimeAccess=\"all\"",
+      "context": "AppX manifest ContentUriRules flag granting remote JavaScript the full WinRT surface",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ContentUriRules",
+      "context": "Manifest element pointing at attacker-controlled origin",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Add-AppxPackage -Register .\\AppxManifest.xml",
+      "context": "Standard-user sideload registration of attacker AppX package; parent process PowerShell, no UAC/SmartScreen",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AppModelUnlock\" /v AllowDevelopmentWithoutDevLicense /t REG_DWORD /d 1 /f",
+      "context": "Enables Developer Mode (admin-required prerequisite gate)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AppModelUnlock",
+      "context": "Key holding the Developer Mode toggle and enterprise sideloading policy",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "AllowDevelopmentWithoutDevLicense = 1 (REG_DWORD)",
+      "context": "Developer Mode enabled, the attack prerequisite gate",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "AllowAllTrustedApps",
+      "context": "Enterprise sideloading policy path that also permits registration",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "AppxManifest.xml",
+      "context": "Sideloaded manifest under user-writable paths %LOCALAPPDATA%, %USERPROFILE%, %TEMP% with external URL/StartPage",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\*\\AppData\\Local\\Packages\\*\\",
+      "context": "DLL loads from user-writable package path instead of System32 (Sysmon EID 7)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files\\WindowsApps",
+      "context": "Legitimate AppX install location; registration outside this path is suspicious",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MicrosoftAccountVerification_1.0.0.0_neutral__ap5pwk43ghhtp",
+      "context": "Sideloaded package identity in AppXDeploymentServer Event 400/613",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MicrosoftAccountVerification_ap5pwk43ghhtp",
+      "context": "Package family name reported after successful registration",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "d590ed36-52b3-4102-aeff-aad2292ab01c",
+      "context": "Microsoft Office first-party client ID used by the WebAuthBroker call",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "d3590ed6-52b3-4102-aeff-aad2292ab01c",
+      "context": "App ID shown as Application \"Microsoft Office\" in Entra sign-in log",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x80073CFF",
+      "context": "Add-AppxPackage -Register error when Developer Mode/sideloading policy is absent",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Windows.Security.Authentication.Web.Core.WebAuthenticationCoreManager",
+      "context": "WinRT class resolving via ...Web.Core.dll, reachable and exploited end-to-end",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Windows.System.Launcher",
+      "context": "WinRT class resolving via twinapi.appcore.dll, present on 24H2",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Windows.Security.Credentials.UI.CredentialPicker",
+      "context": "WinRT class returning plaintext credentials via native dialog (availability only on 24H2)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Windows.Security.Cryptography.DataProtection.DataProtectionProvider",
+      "context": "DPAPI provider class, backs user-scope secret decryption",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "WebAuthenticationBroker.authenticateAsync()",
+      "context": "Legacy WinRT OAuth flow invoked from attacker JavaScript inside the AppX host",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "silentMode",
+      "context": "WebAuthBroker parameter for UI-less token acquisition from cached sessions (unverified)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Launcher.launchUriAsync",
+      "context": "Protocol-handler launch primitive invoked from attacker JavaScript",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "powershell:, cmd:, ms-msdt:, search-ms:, ms-officecmd:",
+      "context": "Protocol handlers launched from within the trusted signed host process",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ApiInformation.IsTypePresent",
+      "context": "Read-only check used to measure WinRT surface availability per host",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "LOCAL=user",
+      "context": "DPAPI scope decrypted by attacker JavaScript in the original lab",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Microsoft-Windows-AppXDeploymentServer/Operational Event ID 400",
+      "context": "Records successful package register operation for the sideloaded package",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Security Event ID 5156",
+      "context": "WFP auditing records AppX host outbound connection with process image and destination IP",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PowerShell script-block logging Event ID 4104",
+      "context": "Captures the sideloaded manifest content",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Sysmon Event ID 7",
+      "context": "Image/DLL load from user-writable Packages path",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Microsoft-Windows-AppXDeploymentServer/Operational Event ID 613",
+      "context": "Deployment register performance summary, supplemental timing event",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (...; MSAppHost/3.0) AppleWebKit/537.36 ... Edge/18",
+      "context": "EdgeHTML AppX web host user agent; key detection string when seen off Microsoft infrastructure",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; Trident/7.0; MSAuthHost/1.0; rv:11.0) like Gecko",
+      "context": "Sign-in leg user agent recorded in Entra log; never carries MSAppHost/3.0",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/collect",
+      "context": "HTTP POST endpoint on attacker listener receiving the stolen authorization code",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/payload.html",
+      "context": "Attacker-hosted JavaScript payload requested through MSAppHost/3.0",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://10.0.1.100:8080/",
+      "context": "Attacker Kali listener serving payload and capturing the auth code",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "10.0.1.100",
+      "context": "Attacker listener/exfil destination (WFP Event 5156 destination address)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "urn:ietf:wg:oauth:2.0:oob",
+      "context": "OOB redirect URI returning the authorization code directly to attacker JavaScript",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "login.microsoftonline.com",
+      "context": "Real Microsoft sign-in endpoint rendered inside the AppX host dialog",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script",
+    "archive"
+  ]
+}

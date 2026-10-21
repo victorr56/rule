@@ -1,0 +1,24 @@
+title: ClickLock Stealer Execution From Staging Directory
+id: 114663c2-d3a8-4c1d-8526-0e9e4fd9a4a7
+status: experimental
+description: Detects the execution of payloads from the `.cacheb` staging directory used by ClickLock Stealer.
+references:
+    - https://www.group-ib.com/blog/clicklock-stealer-macos-malware/
+author: ioc-yara-daily (agentic)
+date: 2024-06-04
+tags:
+    - attack.execution
+    - attack.t1059.004
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image|endswith:
+            - '/.cacheb/zoom'
+            - '/.cacheb/chromer'
+        CommandLine|contains: 'run client'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

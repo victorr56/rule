@@ -1,0 +1,33 @@
+title: Cactus Ransomware Reconnaissance Output File
+id: b20677fe-5f72-4665-8b2b-7c70f03125e1
+status: experimental
+description: Detects the creation of .ttf or .woff files in the Qlik Sense fonts directory, which is a known tactic of the Cactus ransomware group to store the output of reconnaissance commands.
+references:
+    - https://blog.fox-it.com/2024/04/25/sifting-through-the-spines-identifying-potential-cactus-ransomware-victims/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1033
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith:
+            - '\Client\qmc\fonts\qle.ttf'
+            - '\Client\qmc\fonts\qle.woff'
+        Image|endswith:
+            - '\whoami.exe'
+            - '\quser.exe'
+            - '\systeminfo.exe'
+            - '\net.exe'
+            - '\net1.exe'
+            - '\ipconfig.exe'
+            - '\tasklist.exe'
+            - '\nltest.exe'
+            - '\dsquery.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,26 @@
+title: UTA0352 OAuth Phishing Impersonating Visual Studio Code
+id: 574044a4-bbcf-4ff5-8a25-c638e4a90a48
+status: experimental
+description: |
+    Detects specific URI parameters used in a UTA0352 OAuth phishing campaign that impersonates the Visual Studio Code client to acquire authorization codes for Microsoft Graph API access.
+references:
+    - https://www.elastic.co/security-labs/blog/entra-id-oauth-phishing-detection
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname: 'login.microsoftonline.com'
+        Url|contains|all:
+            - '/organizations/oauth2/v2.0/authorize'
+            - 'client_id=aebc6443-996d-45c2-90f0-388ff96faa56'
+            - 'redirect_uri=https://insiders.vscode.dev/redirect'
+            - 'scope=https://graph.microsoft.com/.default'
+    condition: selection
+falsepositives:
+    - Unlikely, as it combines a specific client ID with a specific redirect URI and scope.
+level: high

@@ -1,0 +1,22 @@
+title: Gambling Goblin oRAT Masquerading Execution
+id: f023ca55-dd68-450f-a3d2-d85c497ca194
+status: experimental
+description: Detects the execution of the oRAT backdoor, which runs from the 'xtables-addons' path but spoofs its process name to appear as an SSH session.
+references:
+    - https://research.checkpoint.com/2026/gaming-the-system-how-a-chinese-speaking-actor-turned-brazilian-government-sites-into-an-seo-weapon/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+detection:
+    selection:
+        Image|endswith: '/usr/local/bin/xtables-addons'
+        CommandLine: 'sshd: root@pts/0'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical
+logsource:
+    category: process_creation
+    product: linux

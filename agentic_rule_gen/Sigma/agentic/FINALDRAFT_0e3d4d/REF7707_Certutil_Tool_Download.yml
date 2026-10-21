@@ -1,0 +1,26 @@
+title: REF7707 Tool Download via Certutil
+id: f44c2a7a-9c7e-40e1-8845-6678280f2d4f
+status: experimental
+description: Detects the use of certutil.exe to download a file to C:\ProgramData\fontdrvhost.exe, a technique used by REF7707 to stage its tooling.
+references:
+    - https://www.elastic.co/security-labs/threat-command/fragile-web-ref7707
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1105
+detection:
+    selection:
+        Image|endswith: '\certutil.exe'
+        CommandLine|contains|all:
+            - '-urlcache'
+            - '-split'
+            - '-f'
+            - 'C:\ProgramData\fontdrvhost.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
+logsource:
+    category: process_creation
+    product: windows

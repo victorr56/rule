@@ -1,0 +1,30 @@
+title: Potential Rogue ScreenConnect C2/Payload DNS Query
+id: 5eb31e42-7ef8-4ca3-b6d8-9642646d231e
+status: experimental
+description: Detects DNS queries for domains known to be used for C2, payload hosting, and phishing in rogue ScreenConnect RMM campaigns.
+references:
+    - https://www.huntress.com/blog/phishing-bitb-rmm-attacks
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'adoube.vu'
+            - 'hosthiifran.screenconnect.com'
+            - 'instance-uxh86b-relay.screenconnect.com'
+            - 'selectstructure.com.au'
+            - 'victory.mkc1.digitaloceanspaces.com'
+            - 'relay.goldenmelon.us'
+            - 'scx.illuminantgroup.net'
+            - 'relay.illuminantgroup.net'
+            - 'wir.consultingics.com'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

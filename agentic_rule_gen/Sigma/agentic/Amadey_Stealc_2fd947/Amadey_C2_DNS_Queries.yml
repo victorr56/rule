@@ -1,0 +1,31 @@
+title: Amadey C2 Domain Communication
+id: 8c1c0a0c-5d9c-4869-95e5-f53833d74c2e
+status: experimental
+description: Detects DNS queries for domains and hostnames known to be used by Amadey C2 servers.
+references:
+    - https://www.welivesecurity.com/en/eset-research/eset-takes-part-operation-endgame-disrupt-amadey-stealc/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'mi.overlapsnowbound.com'
+            - 'microsoft-telemetry.cc'
+            - 'telemetry-xbox.lol'
+            - 'telemetry-sys.lol'
+            - 'mi.limpingbronco.com'
+            - 'mi.snowfieldupriver.com'
+            - 'mi.huffproofs.com'
+            - 'mi.candyendurable.com'
+            - 'mi.unbuttonrudder.com'
+            - 'mi.barbertingling.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

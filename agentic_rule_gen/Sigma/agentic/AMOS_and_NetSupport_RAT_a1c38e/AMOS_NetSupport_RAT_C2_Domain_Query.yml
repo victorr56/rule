@@ -1,0 +1,34 @@
+title: AMOS and NetSupport RAT C2 Domain Query
+id: 1f0e9d8c-7b6a-4d5c-9b8a-7e6f5a4b3c2d
+status: experimental
+description: Detects DNS queries for domains known to be used in the AMOS and NetSupport RAT campaigns.
+references:
+    - https://www.huntress.com/blog/defcon-phishing-google-doc-malware
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1568.002
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - '1foqo.lat'
+            - '2fksf.lat'
+            - 'apple-googleapi.com'
+            - 'apple.eu03hub.com'
+            - 'docsend.online'
+            - 'docsend.web12api.com'
+            - 'eu03hub.com'
+            - 'eu07connect.com'
+            - 'microsoft.eu02hub.com'
+            - 'msedgewebview1.pro'
+            - 'msedgewebview2.pro'
+            - 'signow.web12api.com'
+    condition: selection
+falsepositives:
+    - Unlikely. These domains are specific to this campaign.
+level: high

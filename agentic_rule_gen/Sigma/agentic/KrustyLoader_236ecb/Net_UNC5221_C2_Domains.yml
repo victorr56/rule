@@ -1,0 +1,22 @@
+title: UNC5221 KrustyLoader C2 Domain Query
+id: e86a6358-1f19-4a9f-8dfa-3f9c6d32aa76
+status: experimental
+description: Detects DNS queries for domains known to be used by UNC5221 for KrustyLoader C2 infrastructure.
+references:
+    - https://www.darktrace.com/blog/ivanti-under-siege-investigating-the-ivanti-endpoint-manager-mobile-vulnerabilities-cve-2025-4427-cve-2025-4428
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.command_and_control
+    - attack.t1102.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '0d8da2d1.digimg.store'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

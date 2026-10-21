@@ -1,0 +1,24 @@
+title: AsyncRAT C2 DNS Query
+id: f45e3c81-8d02-4b71-925a-d10c2c31e97d
+status: experimental
+description: Detects DNS queries for domains known to be associated with AsyncRAT C2 infrastructure.
+references:
+    - https://www.darktrace.com/blog/catching-a-rat-how-darktrace-neutralized-asyncrat
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1219
+    - attack.t1041
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection_exact:
+        QueryName: 'kashuub.com'
+    selection_subdomain:
+        QueryName|endswith: '.kashuub.com'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

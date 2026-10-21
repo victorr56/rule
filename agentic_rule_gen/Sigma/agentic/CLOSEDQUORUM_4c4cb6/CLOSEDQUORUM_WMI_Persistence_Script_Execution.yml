@@ -1,0 +1,24 @@
+title: CLOSEDQUORUM WMI Persistence Script Execution
+id: 1475704a-1a8c-4a30-802c-47fc917fef7b
+status: experimental
+description: Detects the execution of a PowerShell script named 'wmi.ps1' from the C:\Windows\Temp directory, a behavior associated with CLOSEDQUORUM's WMI-based persistence mechanism.
+references:
+    - https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.persistence
+    - attack.t1546.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains: 'C:\Windows\Temp\wmi.ps1'
+    condition: selection
+falsepositives:
+    - Unlikely, as this specific script name and path combination is highly suspicious and not part of legitimate administrative activity.
+level: high

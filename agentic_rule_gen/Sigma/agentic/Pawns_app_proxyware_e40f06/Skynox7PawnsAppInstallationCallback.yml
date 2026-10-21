@@ -1,0 +1,22 @@
+title: Skynox7 Pawns.app Installation Callback
+id: 3c2bb6f9-03b9-4592-b413-17631336c134
+status: experimental
+description: Detects the curl command used by the skynox7 actor to send a callback beacon indicating a successful installation of the Pawns.app proxyware.
+references:
+    - https://www.greynoise.io/blog/proxyjacking-edge-devices-residential-proxies
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/curl'
+        CommandLine|contains: '/cb?out=DONE_'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,23 @@
+title: Storm-2561 WatchGuard Phishing IPs
+id: 569d6c34-8c85-48b2-b4c6-e76e537a7f43
+status: experimental
+description: Detects network connections to IP addresses used in a WatchGuard VPN credential phishing campaign attributed to Storm-2561.
+references:
+    - https://www.huntress.com/blog/fake-watchguard-vpn-credential-phishing
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1608.006
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '80.249.132.140'
+            - '158.94.209.19'
+            - '74.208.236.39'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

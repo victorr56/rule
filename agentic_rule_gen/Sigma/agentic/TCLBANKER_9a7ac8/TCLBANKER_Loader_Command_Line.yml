@@ -1,0 +1,24 @@
+title: TCLBANKER Loader Command Line
+id: a01c0c99-07f0-4598-a53f-b883011ed0ea
+status: experimental
+description: Detects the execution of TCLBANKER's loader processes with the specific command-line argument '--renderer=sw', which is used to select and execute an embedded payload.
+references:
+    - https://www.elastic.co/security-labs/threat-command/tclbanker-brazilian-banking-trojan
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\logiaipromptbuilder.exe'
+            - '\tclloader.exe'
+        CommandLine|contains: '--renderer=sw'
+    condition: selection
+falsepositives:
+    - Unlikely. This combination of process names and the specific command-line switch is characteristic of the TCLBANKER loader.
+level: high

@@ -1,0 +1,24 @@
+title: KANDYKORN Persistence Via Discord Hijack on macOS
+id: e15e12f6-8c8d-4f71-a083-09439c299c85
+status: experimental
+description: Detects the execution of the KANDYKORN persistence payload ".log" by its loader, which masquerades as the legitimate Discord application on macOS.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-catches-dprk-passing-out-kandykorn
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.persistence
+    - attack.t1574
+    - attack.execution
+    - attack.t1059.006
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        ParentImage|endswith: '/Discord'
+        Image|endswith: '/.log'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

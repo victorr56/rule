@@ -1,0 +1,28 @@
+title: Rogue ScreenConnect C2 DNS Queries
+id: b2ac74df-05ba-411a-ab6a-93f88f8d6896
+status: experimental
+description: Detects DNS queries for domains associated with a phishing campaign abusing ScreenConnect for C2 and payload delivery.
+references:
+    - https://www.huntress.com/blog/screenconnect-power-bi
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1105
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'dailylifeproject.site'
+            - 'burnsworth.site'
+            - 'essaywritingservice.site'
+            - 'openpediatrics.site'
+            - 'check.vykyn.click'
+            - 'hamham27.screenconnect.com'
+            - 'onthegotree.site'
+            - 'instance-g01s1n-relay.screenconnect.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

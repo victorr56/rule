@@ -1,0 +1,20 @@
+title: Akira Affiliate GOST C2 Network Connection
+id: 11eb31a3-2ca4-4f27-a068-d0dfd92f76de
+status: experimental
+description: Detects network connections to a known C2 IP address (64.227.4.134) used by an Akira affiliate for a GOST tunnel.
+references:
+    - https://www.huntress.com/blog/mapping-akira-ransomware-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1572
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '64.227.4.134'
+    condition: selection
+falsepositives:
+    - This IP could be reassigned or used for legitimate purposes in the future.
+level: critical

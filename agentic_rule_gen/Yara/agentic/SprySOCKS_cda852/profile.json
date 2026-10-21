@@ -1,0 +1,723 @@
+{
+  "malware_family": "SprySOCKS",
+  "threat_actor": "FishMonger (I-SOON; aka Earth Lusca, TAG-22, Aquatic Panda, Red Dev 10)",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "SprySOCKS is a FishMonger backdoor, previously Linux-only, that now has two Windows variants: WIN_DRV, which uses the RawWNPF kernel driver to hide its connections, processes, files and registry keys and to divert TCP traffic, and WIN_PLUS, which persists as a print processor. Both are delivered via DLL side-loading, decrypt their components from AES-ECB-encrypted .dat containers, inject the backdoor into svchost.exe via process doppelgänging, and speak a custom TCP/UDP/WebSocket C&C protocol with more than 30 commands.",
+  "mitre_techniques": [
+    "T1592.004",
+    "T1590.005",
+    "T1587.001",
+    "T1059.003",
+    "T1053.005",
+    "T1569.002",
+    "T1106",
+    "T1547.012",
+    "T1546.012",
+    "T1205.002",
+    "T1134.002",
+    "T1622",
+    "T1140",
+    "T1070.004",
+    "T1070.009",
+    "T1027.007",
+    "T1027.013",
+    "T1055.013",
+    "T1014",
+    "T1497",
+    "T1574.002",
+    "T1562.004",
+    "T1010",
+    "T1083",
+    "T1518.001",
+    "T1082",
+    "T1614.001",
+    "T1007",
+    "T1124",
+    "T1056.001",
+    "T1115",
+    "T1132.001",
+    "T1573.001",
+    "T1008",
+    "T1665",
+    "T1571",
+    "T1095",
+    "T1041"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "klelam00007.zip",
+      "context": "VirusTotal archive containing the WIN_DRV variant and all components",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "klelam00007.bat",
+      "context": "Batch script that persists the WIN_DRV backdoor",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ApphostRagistreationVerifier.exe",
+      "context": "Renamed legitimately signed ThinPrint AutoConnect service binary used for DLL side-loading",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tpsvcloc.dll",
+      "context": "SprySOCKS WIN_DRV backdoor loader (MFC satellite DLL side-loaded by tpsvc.dll)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tpsvc.dll",
+      "context": "Legitimate signed library that loads tpsvcloc.dll",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "X1B5206BDC1743DD.dat",
+      "context": "Encrypted container with WIN_DRV backdoor, RawWNPF and DriverLoader",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "KX1B5206BDC1743DD.dat",
+      "context": "Encrypted DriverLoader kernel driver file",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "KW1B5206BDC1743FP.dat",
+      "context": "Encrypted RawWNPF kernel driver file",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "fsdiskbit.sys",
+      "context": "Dropped DriverLoader kernel driver loaded as a minifilter",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "bthcam.sys",
+      "context": "DriverLoader driver hash entry in the IOC table",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "affair-build.bat",
+      "context": "Cleanup script that deletes deployment files and restarts vds/spooler",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "VSPMsg.dll",
+      "context": "SprySOCKS WIN_PLUS first-stage loader installed as a print processor",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "config.dat",
+      "context": "Encrypted container of the WIN_PLUS backdoor and its loader",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "PrcsServer.dll",
+      "context": "Original name of both SprySOCKS backdoor DLLs (exports function Stop)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "snxhk.dll, SxWrapper.dll, SxIn.dll, SXIn64.dll, SbieDll.dll, cmdvrt32.dll",
+      "context": "Security/sandbox libraries whose presence in the loader process aborts execution",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%SystemRoot%\\Fonts\\",
+      "context": "Deployment directory used by the WIN_DRV variant",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\drivers\\fsdiskbit.sys",
+      "context": "Path where the decrypted DriverLoader driver is written",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Fonts\\KW1B5206BDC1743FP.dat",
+      "context": "Path read by DriverLoader to map RawWNPF in memory",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\spool\\drivers\\color\\config.dat",
+      "context": "WIN_PLUS encrypted container location on the victim",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\spool\\prtprocs\\x64\\VSPMsg.dll",
+      "context": "Print processor location of the first-stage loader",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Microsoft Event\\PFs\\VSPMsg.dll",
+      "context": "Hardcoded source path copied from by the first-stage loader",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Microsoft Event\\PFs\\config.dat",
+      "context": "Hardcoded source path of the encrypted container",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%appdata%\\Microsoft\\Vault\\lgf.dat",
+      "context": "INI file whose config/key=1 enables keylogging",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%appdata%\\Microsoft\\Vault\\lg.dat",
+      "context": "Keylog/clipboard log file (single-byte XOR 0x44)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\TH*",
+      "context": "Temporary file prefix TH used when dropping shellcode/injected payloads",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "fqwhi2d1qaz2",
+      "context": "Hardcoded mutex created by the WIN_PLUS SprySOCKS loader",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "prcs-server-run",
+      "context": "Mutex created by the SprySOCKS backdoor DLL at startup",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Global\\{DCAA7ED8-521B-4EAB-BE21-65254CF59239}",
+      "context": "Mutex created when keylogging is active",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "ApphostRagistreationVerifier",
+      "context": "Scheduled task run at ONSTART as NT AUTHORITY\\SYSTEM to launch the side-loaded loader",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\vds.exe",
+      "context": "IFEO key hidden by the RawWNPF registry callback",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\vds.exe\\debugger",
+      "context": "Set to the ApphostRagistreationVerifier.exe path for persistence via vds.exe",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SYSTEM\\ControlSet001\\Control\\Print\\Environments\\Windows x64\\Print Processors\\VSPMsg",
+      "context": "Print processor key registering the WIN_PLUS first-stage loader",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "msidiskserver",
+      "context": "Service registry key created to load fsdiskbit.sys (ImagePath \\??\\C:\\Windows\\System32\\drivers\\fsdiskbit.sys)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "uXQLESMXGaRMs6BL",
+      "context": "Hardcoded 128-bit AES-ECB key decrypting the loader/container and kernel drivers",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "QFTHEYjzX3RBOMgZ",
+      "context": "Hardcoded 128-bit AES-ECB key for C&C message payloads (base64 encoded)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x44",
+      "context": "Single-byte XOR key encrypting the keylog file lgd.dat/lg.dat",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0xACACBCBC",
+      "context": "TCP C&C header magic value (12-byte header: CRC, magic, size)",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0xACACBFBC",
+      "context": "UDP C&C magic value at offset 0x1C of a 36-byte header",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x1BDCCBAA",
+      "context": "WebSocket C&C magic value used as the Masking-Key (wire order aa cb dc 1b)",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "__msgid",
+      "context": "C&C message field specifying the command ID (e.g. __msgid|99)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "clientid|3926628324--0F8BFBFF000A0671",
+      "context": "Example client identifier in a decrypted C&C message",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "WIN_DRV",
+      "context": "Hardcoded version type string (with versionType/versionNumber and 1.8)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "WIN_PLUS",
+      "context": "Hardcoded version type string of the driver-less variant",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "versionType / versionNumber / 1.8",
+      "context": "UTF-16LE string constants referenced by CollectInfo in both variants",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\\Device\\RawWNPF",
+      "context": "Device name created by the RawWNPF kernel driver",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x220200",
+      "context": "RawWNPF IOCTL hiding connections to a local TCP port and activating TCP diversion",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x220350",
+      "context": "RawWNPF IOCTL inserting a PID into the hidden processes list",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x222000",
+      "context": "RawWNPF IOCTL initializing hiding/filter/persistence-protection functions",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x222004",
+      "context": "RawWNPF IOCTL returning hardcoded DWORD values 1 and 2 (possible driver version)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Delivery Optimization (TCP-In)",
+      "context": "WFP filter object name used by RawWNPF (callouts COInbound/COOutbound/COAuthConnect/COAuthListen/COAuthAccept/COAuthResAssignment)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Core Networking - Packet Too Big(ICMPv6 - In)",
+      "context": "Firewall rule name deleted and re-added to allow inbound TCP to the backdoor port",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "schtasks /create /tn \"ApphostRagistrationVerifier\" /tr \"%SystemRoot%\\Fonts\\ApphostRagistrationVerifier.exe\" /sc ONSTART /ru \"NT AUTHORITY\\SYSTEM\" /f",
+      "context": "klelam00007.bat persistence; parent process cmd.exe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "netsh advfirewall firewall add rule name=\"Core Networking - Packet Too Big(ICMPv6 - In)\" dir=in action=allow protocol=tcp localport=53781",
+      "context": "Executed by the backdoor to open its listening port",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "copy /y \".\\*.*\" \"%SystemRoot%\\Fonts\"",
+      "context": "klelam00007.bat copying all files into the Fonts directory",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sc stop vds / sc start vds",
+      "context": "affair-build.bat restarting the vds service to re-execute the loader via IFEO",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "spoolsv.exe -> VSPMsg.dll",
+      "context": "First-stage loader checks it was executed by spoolsv.exe (print processor)",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "GetErrorMessageModule",
+      "context": "Exported by VSPMsg.dll; used to set persistence as print processor",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "SetErrorMessageModule",
+      "context": "Exported by VSPMsg.dll (does nothing)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "Stop",
+      "context": "Exported function of both SprySOCKS backdoor DLLs (original name PrcsServer.dll)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "C:\\Users\\xdd\\Desktop\\今天\\2023-4-11\\2023-04-10__注册表驱动加载功能__集成到内测3中-未完成\\DriverMemoryLoadDriver\\x64\\Release\\DriverMemoryLoadDriver.pdb",
+      "context": "PDB path embedded in the DriverLoader driver",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "Xinyi Electronic Technology (Shanghai) Co., Ltd.",
+      "context": "Leaked PastDSE code-signing certificate used to sign fsdiskbit.sys (issued by VeriSign Class 3 Code Signing 2010 CA)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "207.148.78.36",
+      "context": "C&C IP hardcoded in the WIN_PLUS configuration (TCP 443, UDP 53, WebSocket 80)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "207.148.75.122",
+      "context": "SprySOCKS delivery server used by FishMonger in June 2023 (same Vultr range)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "207.148.64.0/20",
+      "context": "Vultr-hosted IP range containing the C&C and delivery server",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "53781",
+      "context": "TCP server listening port in the WIN_PLUS C&C configuration",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "443",
+      "context": "TCP C&C channel port from the hardcoded configuration",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "53",
+      "context": "UDP C&C channel port from the hardcoded configuration",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "80",
+      "context": "WebSocket C&C channel port from the hardcoded configuration",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

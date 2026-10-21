@@ -1,0 +1,105 @@
+{
+  "malware_family": "ChatGPT-themed credential phishing",
+  "threat_actor": "",
+  "platforms": [
+    "web"
+  ],
+  "summary": "Credential-phishing campaign that spoofs OpenAI/ChatGPT subscription renewal notices to steal ChatGPT account credentials and payment data. Victims receive an invoice-themed email from a lookalike nxcli.io sender domain whose button points to a Google API redirect that forwards to the actor's phishing login page hosted on the same infrastructure.",
+  "mitre_techniques": [
+    "T1566.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "support@9527db6e1a.nxcli.io",
+      "context": "Spoofed sender address on the fake ChatGPT invoice email",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Urgent: Update Your Payment Method to Avoid Service Interruption",
+      "context": "Subject line of the phishing email",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Subscription Payment Declined",
+      "context": "Bold lure heading in the fake invoice body",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Update Payment Information",
+      "context": "Button text in email that links to the phishing redirect",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "9527db6e1a.nxcli.io",
+      "context": "Sender domain of the phishing email (not an OpenAI domain)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://notifications.googleapis.com/email/redirect?t=AFG8qyW_Su5LnlMKcIA7MTSSwtdIBp6-pVpWF_Tm7YFcNgju_01zhPKtjCpIcIfTVDTsqk_NT5E4LWD15nZyb_erqoslbxoHKRH8O_TRSdvyON9ZbKAejE3mykvuQ2_t43Pveg7wh8bYrPQvCoCTK_XbSbXSCAsu3vTNbz0XJSMLjnnC...",
+      "context": "Stage 1 observed email infection URL using Google API wrapper redirect",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "e83cedb076.nxcli.io",
+      "context": "Host of the stage 2 phishing payload pages",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://e83cedb076.nxcli.io/fertaq/app/key.php",
+      "context": "Stage 2 observed payload URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://e83cedb076.nxcli.io/fertaq/app/login.php",
+      "context": "Stage 2 observed payload URL (credential capture/login page)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/fertaq/app/",
+      "context": "Path prefix used by the phishing kit on nxcli.io host",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

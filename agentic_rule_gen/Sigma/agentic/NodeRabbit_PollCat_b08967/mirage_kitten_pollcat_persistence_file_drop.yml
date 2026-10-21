@@ -1,0 +1,29 @@
+title: Mirage Kitten PollCat Persistence File Creation
+id: 86b46857-e683-42e1-a083-d92e5952d760
+status: experimental
+description: |
+    Detects the creation of 'requireObject.js' or 'package.json' files in a subdirectory of '%APPDATA%\Microsoft\Network\'.
+    This is a specific file placement technique used by the PollCat backdoor to set up its persistence mechanism.
+references:
+    - https://securelist.com/mirage-kitten-new-backdoors-noderabbit-pollcat/121244/
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.persistence
+    - attack.t1053.005
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_js:
+        TargetFilename|contains: '\Microsoft\Network\'
+        TargetFilename|endswith: '\requireObject.js'
+    selection_json:
+        # The malware also drops a package.json in this folder to configure the execution.
+        TargetFilename|contains: '\Microsoft\Network\'
+        TargetFilename|endswith: '\package.json'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate Node.js projects are not typically found in this directory.
+level: high

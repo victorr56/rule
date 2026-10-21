@@ -1,0 +1,32 @@
+title: WARMCOOKIE PowerShell Downloader and Execution
+id: f1a603c6-e94c-47b2-b132-7206d2d3a9da
+status: experimental
+description: |-
+    Detects the PowerShell script used by WARMCOOKIE to download and execute its payload. The script uses BITS to download a file to a random name in the %TEMP% directory and then executes it using rundll32.exe.
+references:
+    - https://www.elastic.co/security-labs/threat-command/dipping-into-danger
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.defense_evasion
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'Import-Module BitsTransfer'
+            - '[System.IO.Path]::GetRandomFileName()'
+            - 'Start-BitsTransfer -Source'
+            - 'rundll32.exe'
+            - ',Start'
+            - 'wait-job'
+            - 'Receive-Job'
+    condition: selection
+falsepositives:
+    - Legitimate administrative scripts that use BITS to download a file and then execute it via rundll32.exe, although this combination is highly unusual.
+level: high

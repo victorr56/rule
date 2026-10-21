@@ -1,0 +1,26 @@
+title: Lazarus RemotePE C2 Domain Query
+id: f02c1a8d-6a5a-4b9e-8c34-972a0f8b7f8c
+status: experimental
+description: Detects DNS queries for domains known to be used as C2 servers by the Lazarus RemotePE malware family.
+references:
+    - https://blog.fox-it.com/2026/05/22/remotepe-the-lazarus-rat-that-lives-in-memory/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.aes-secure.net'
+            - '.azureglobalaccelerator.com'
+            - '.msdeliverycontent.com'
+            - '.akamaicloud.com'
+            - '.intelcloudinsights.com'
+            - '.devicelinkintel.com'
+    condition: selection
+falsepositives:
+    - Unlikely. These domains are specifically associated with this threat actor's infrastructure.
+level: high

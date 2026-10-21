@@ -1,0 +1,23 @@
+title: AccountGuard VBScript Dropper Execution
+id: f983a936-8c46-4c3d-b40b-741c8d62657e
+status: experimental
+description: Detects the execution of 'AccountGuardSetup.vbs', the initial VBScript dropper used in the AccountGuard infection chain.
+references:
+    - https://www.huntress.com/blog/bank-spam-rmm
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.execution
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\wscript.exe'
+            - '\cscript.exe'
+        CommandLine|contains: 'AccountGuardSetup.vbs'
+    condition: selection
+falsepositives:
+    - Users downloading and intentionally executing a file with this specific name.
+level: high

@@ -1,0 +1,24 @@
+title: Rogue ScreenConnect C2 Domain Query
+id: 28f6158e-0c0e-436f-b253-ab051c5040e5
+status: experimental
+description: Detects DNS queries for domains known to be used as Command and Control (C2) infrastructure by the rogue ScreenConnect VBScript loader.
+references:
+    - https://www.huntress.com/blog/rogue-screenconnect-installations
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1572
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'tele-sync.opik.net'
+            - 'borertors92.anondns.net'
+            - 'homehub.opik.net'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

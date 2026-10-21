@@ -1,0 +1,22 @@
+title: Silver Fox/ValleyRAT Disables Windows Defender Via Registry
+id: 57608246-c290-410a-85d1-d2275ef9c86a
+status: experimental
+description: Detects the setting of the 'DisableAntiSpyware' registry value to 1 within the Windows Defender policy key, a technique used by ValleyRAT to disable Microsoft Defender Antivirus.
+references:
+    - https://securelist.com/valleyrat-backdoor-adware/121175/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\SOFTWARE\Policies\Microsoft\Windows Defender\DisableAntiSpyware'
+        Details: '1'
+    condition: selection
+falsepositives:
+    - Legitimate but discouraged administrative actions to disable Microsoft Defender.
+level: high

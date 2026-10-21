@@ -1,0 +1,28 @@
+title: UAC Bypass Via ms-settings Protocol Handler Hijack
+id: a0a40d58-45a7-47b8-80e9-b223c6f939b7
+status: experimental
+description: Detects the modification of the 'ms-settings' protocol handler registry key to establish persistence or perform a UAC bypass. This technique was observed in the CikaBika malware campaign.
+references:
+  - https://www.darktrace.com/blog/hiding-in-plain-sight-uncovering-a-multi-stage-ransomware-attack-through-behavioral-detection
+  - https://github.com/hfiref0x/UACME
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+  - attack.persistence
+  - attack.privilege_escalation
+  - attack.t1548.002
+logsource:
+  category: registry_set
+  product: windows
+detection:
+  selection:
+    TargetObject|endswith: '\Software\Classes\ms-settings\shell\open\command\(Default)'
+    Details|contains:
+      - 'cmd.exe /c'
+      - 'C:\ProgramData\'
+      - 'C:\Windows\Temp\'
+      - '\AppData\Local\Temp\'
+  condition: selection
+falsepositives:
+  - Legitimate software that uses this UAC bypass method (unlikely).
+level: high

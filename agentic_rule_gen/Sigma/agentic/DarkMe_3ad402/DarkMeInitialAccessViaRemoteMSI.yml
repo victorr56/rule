@@ -1,0 +1,26 @@
+title: DarkMe RAT Initial Access via Remote MSI Download
+id: f1c2d334-080c-4384-938a-360d03530018
+status: experimental
+description: Detects the execution of msiexec to download and quietly install a remote MSI, a technique used to stage the DarkMe RAT.
+references:
+    - https://www.huntress.com/blog/darkme-rat-abandons-exploits
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.defense_evasion
+    - attack.t1218.007
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\msiexec.exe'
+        CommandLine|contains|all:
+            - '/i http'
+            - '/quiet'
+            - 'propi.msi'
+    condition: selection
+falsepositives:
+    - Legitimate software deployment using msiexec with a file named 'propi.msi'.
+level: medium

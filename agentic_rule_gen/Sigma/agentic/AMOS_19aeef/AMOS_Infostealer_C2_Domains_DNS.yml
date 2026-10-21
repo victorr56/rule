@@ -1,0 +1,26 @@
+title: AMOS Infostealer C2 Domain DNS Query
+id: 71a067ff-06e0-4a81-9951-e12338c29181
+status: experimental
+description: Detects DNS queries for domains associated with the AMOS infostealer and its related infrastructure.
+references:
+    - https://www.huntress.com/blog/google-doc-sidebar-malware-mac-windows
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'apple-googleapi.com'
+            - 'web12api.com'
+            - 'eu03hub.com'
+            - 'GTA6Mainserver.com'
+            - 'GTA6Mainweb.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

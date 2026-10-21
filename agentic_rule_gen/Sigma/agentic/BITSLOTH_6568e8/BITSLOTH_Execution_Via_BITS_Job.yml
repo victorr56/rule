@@ -1,0 +1,22 @@
+title: BITSLOTH Execution via BITS Job
+id: 59a93010-867c-473d-9d11-5374e2a86576
+status: experimental
+description: Detects the execution of "setup_wm.exe" from a specific ProgramData subdirectory, which is characteristic of the BITSLOTH malware's persistence mechanism via a BITS job.
+references:
+    - https://www.elastic.co/security-labs/threat-command/bits-and-bytes-analyzing-bitsloth
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.t1197
+    - attack.t1574.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image: 'C:\ProgramData\Media\setup_wm.exe'
+        ParentImage|endswith: '\cmd.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

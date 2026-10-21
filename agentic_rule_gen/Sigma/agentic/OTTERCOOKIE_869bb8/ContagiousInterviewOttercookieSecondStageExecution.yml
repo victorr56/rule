@@ -1,0 +1,25 @@
+title: Contagious Interview (OTTERCOOKIE) Second Stage Execution
+id: 2d19b7d8-11f8-472e-8aa7-ec56d97c7e09
+status: experimental
+description: Detects the execution of second-stage PE payloads by node.exe, a behavior observed in the Contagious Interview campaign.
+references:
+    - https://www.elastic.co/security-labs/threat-command/contagious-interview-malware-svg-steganography
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\node.exe'
+        Image|endswith:
+            - '\hostService.exe'
+            - '\printSvc.exe'
+            - '\dhcpSvc.exe'
+    condition: selection
+falsepositives:
+    - Unlikely, but a legitimate Node.js application could theoretically spawn a process with one of these names.
+level: high

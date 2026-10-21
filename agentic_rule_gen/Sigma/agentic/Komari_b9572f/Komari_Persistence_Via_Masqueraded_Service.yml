@@ -1,0 +1,24 @@
+title: Komari Persistence Via Masqueraded "Windows Update Service"
+id: b5089304-4b55-46f3-a75d-6b5894107297
+status: experimental
+description: Detects the creation or modification of a Windows service named "Windows Update Service" configured to run the Komari agent executable. This is indicative of an adversary using the legitimate Komari tool for persistence while masquerading as a system service.
+references:
+    - https://www.huntress.com/blog/komari-c2-agent-abuse
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.persistence
+    - attack.t1543.003
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Services\Windows Update Service\Parameters\Application'
+        Details|endswith: '\komari-agent.exe'
+    condition: selection
+falsepositives:
+    - Unlikely, as the legitimate "Windows Update" service (wuauserv) does not use this name, path, or executable.
+level: high

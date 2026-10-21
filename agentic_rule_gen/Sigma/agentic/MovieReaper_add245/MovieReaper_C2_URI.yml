@@ -1,0 +1,29 @@
+title: MovieReaper Shellcode Download
+id: 6e9b4d8c-5a6b-4e1d-8f3a-78c6e2a9b4d1
+status: experimental
+description: Detects HTTP requests to specific hostnames and URI paths used by MovieReaper to download shellcode components.
+references:
+    - https://securelist.com/moviereaper-a-torrential-odyssey-with-a-solana-twist/112344/
+author: ioc-yara-daily (agentic)
+date: 2024-04-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - attack.ingress_tool_transfer
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname|endswith:
+            - 'cdn.cloudfronter.com'
+            - 'downloads.repacking.net'
+        Url|contains:
+            - '/cloud/v192.4/ui/sync-status-icons.png'
+            - '/cloud/v192.4/onboarding/welcome-bg.jpg'
+            - '/cloud/v192.4/ui/file-preview-placeholder.png'
+            - '/cloud/v192.4/shared/link-banner.jpg'
+    condition: selection
+falsepositives:
+    - Unlikely. These hostnames and URI paths are highly specific to this threat.
+level: high

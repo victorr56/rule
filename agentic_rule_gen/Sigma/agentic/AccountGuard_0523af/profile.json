@@ -1,0 +1,199 @@
+{
+  "malware_family": "AccountGuard",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "This malware is delivered via a phishing email impersonating Bank of America. A VBScript within a ZIP file initiates a multi-stage PowerShell execution chain that decodes and runs further scripts, ultimately downloading a legitimate ScreenConnect installer. The malware uses a UAC bypass to silently install ScreenConnect with elevated privileges, then uses SDDL and registry modifications to hide the service and prevent its removal.",
+  "mitre_techniques": [
+    "T1548.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "AccountGuardSetup.zip",
+      "context": "Initial ZIP file downloaded from phishing page.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AccountGuardSetup.vbs",
+      "context": "VBScript contained within AccountGuardSetup.zip.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%localappdata%\\Microsoft\\sc.msi",
+      "context": "Drop location for the ScreenConnect MSI payload.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Windows Security",
+      "context": "Hidden folder for the ScreenConnect installation.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "Windows Security",
+      "context": "Masquerading service name for the installed ScreenConnect client.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "$csharpCodeDecrypted",
+      "context": "PowerShell variable holding decrypted C# UAC bypass code.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ICMLuaUtil",
+      "context": "COM interface used for UAC bypass (T1548.002).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "LocalPackage",
+      "context": "Registry value deleted by VBScript to hide installation.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "217.60.195.167",
+      "context": "ScreenConnect C2 IP, port 8041/tcp.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bkofamerica.com",
+      "context": "Domain used in the sender's email address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sectioncompil.com",
+      "context": "Domain hosting the phishing page and malware.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kleinschnitg.com",
+      "context": "Redirector domain from the initial phishing link.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://kleinschnitg.com/F3bebOag/?id=email",
+      "context": "Link in the body of the phishing email.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://sectioncompil.com/wkudpl/windows/manage.html",
+      "context": "Windows-specific landing page for the phishing attack.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://sectioncompil.com/wkudpl/windows/download/AccountGuardSetup.zip",
+      "context": "Direct download URL for the malicious ZIP file.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cdn.uploadtourl.com/3b154d8e-61be-4521-b3c3-75efb845a2e2_msi_base64.txt",
+      "context": "URL hosting the base64-encoded ScreenConnect MSI.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "onlinebanking@ealerts.bkofamerica.com",
+      "context": "Email 'From' address used in the phishing campaign.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "3e404e542ae99eeb8827fa72e74dafeacc9b2a8af463a8e0789d7efb0a2dbfb8",
+      "description": "AccountGuardSetup.zip"
+    },
+    {
+      "sha256": "f580d528759829f62cba577c9126efe6478529f91609451c3a11e483b239e8a4",
+      "description": "AccountGuardSetup.vbs"
+    },
+    {
+      "sha256": "6d1dae4794a80caac5eee48b6189e49c4146eac123bcb03d585194bf2b2a3f10",
+      "description": "PowerShell decoded from AccountGuardSetup.vbs"
+    },
+    {
+      "sha256": "ed9f4c15d2857260ce635aad8024b8abaaa010eb13bb0ac77f3a8c296a3c66f2",
+      "description": "Second-level decoding of PowerShell (AES decrypt script)"
+    },
+    {
+      "sha256": "d0913e83d10cadae7af2d737b6c5172638680dfe87d04fa67b509b9c41c0f4bf",
+      "description": "Base64-encoded ScreenConnect .msi file"
+    },
+    {
+      "sha256": "bd987f9f493a234a74580eba1ab95d2178dd38d06bde7a67b991064e09cdc0ee",
+      "description": "ScreenConnect .msi decoded from base64"
+    }
+  ],
+  "file_types": [
+    "archive",
+    "script",
+    "pe",
+    "dotnet"
+  ]
+}

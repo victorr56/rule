@@ -1,0 +1,29 @@
+title: TELEPUZ Payload Execution via Rundll32
+id: 412496d5-a8c6-47b7-bdc1-15064e43ab7f
+status: experimental
+description: Detects the execution of TELEPUZ payloads using rundll32.exe with specific malware paths and exported function names.
+references:
+    - https://www.elastic.co/security-labs/threat-command/telepuz-maas-malware-clickfix
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1218.011
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_1:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains|all:
+            - '\DCFG\Runtime\Themes\Processor\twhost.dll'
+            - 'ServiceRoutine'
+    selection_2:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains|all:
+            - '\ProgramData\BrevixCore\drx_curator.dll'
+            - 'Control_RunDLL'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

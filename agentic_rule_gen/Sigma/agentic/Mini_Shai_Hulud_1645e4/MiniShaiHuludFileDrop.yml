@@ -1,0 +1,28 @@
+title: Mini Shai-Hulud Malicious File Drop
+id: e47b4d13-0599-4d8e-aa21-0a67e2311894
+status: experimental
+description: Detects the creation of files associated with the Mini Shai-Hulud malware campaign, typically dropped by the Node.js runtime during a compromised NPM package installation.
+references:
+    - https://www.wiz.io/blog/mini-shai-hulud-strikes-again-tanstack-more-npm-packages-compromised
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.execution
+    - attack.t1105
+    - attack.t1059.007
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\node.exe'
+        TargetFilename|endswith:
+            - 'router_init.js'
+            - 'setup.mjs'
+            - 'transformers.pyz'
+            - 'router_runtime.js'
+            - 'tanstack_runner.js'
+    condition: selection
+falsepositives:
+    - Legitimate Node.js packages creating files with these specific names.
+level: medium

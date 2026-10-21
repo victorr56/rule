@@ -1,0 +1,24 @@
+title: CikaBika DLL Sideloading in Microsoft Edge
+id: 5971a067-175a-4952-a63e-00100778c1a6
+status: experimental
+description: Detects Microsoft Edge loading 'dbghelp.dll' from its own application directory. This is a characteristic of search-order hijacking used by the CikaBika malware, where Edge inadvertently loads the malicious DLL instead of the legitimate system one.
+references:
+    - https://www.darktrace.com/blog/unmasking-vo1d-inside-darktraces-botnet-detection
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1574.001
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\msedge.exe'
+        ImageLoaded|endswith: '\Microsoft\Edge\Application\dbghelp.dll'
+    condition: selection
+falsepositives:
+    - Unlikely, as 'dbghelp.dll' is not a standard component of Microsoft Edge and should be loaded from System32.
+level: high

@@ -1,0 +1,24 @@
+title: Network Connection to CNCmachineRMS RAT C2 and Payload Staging IPs
+id: 7c2f9b1e-4a83-4d6f-9b21-5e0c8d3a6f47
+status: experimental
+description: Detects host connections to IP addresses attributed to a CNCmachineRMS RAT campaign - the C2 endpoint reached over TCP/443 (195.64.128.106) and the staging server that pushed a Windows EXE to the victim over the unusual TCP/9000 (107.175.82.242).
+references:
+  - https://www.malware-traffic-analysis.net/2026/10/01/index.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.command_and_control
+  - attack.t1071.001
+  - attack.t1105
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationIp:
+      - '107.175.82.242'
+      - '195.64.128.106'
+  condition: selection
+falsepositives:
+  - Unlikely in a monitored corporate network; these are dedicated malicious hosts, though IP ownership can change over time
+level: critical

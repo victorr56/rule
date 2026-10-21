@@ -1,0 +1,126 @@
+{
+  "malware_family": "MaisonReceipts",
+  "threat_actor": "",
+  "platforms": [
+    "web"
+  ],
+  "summary": "MaisonReceipts is a fraud-as-a-service platform that allows users to generate fake receipts for over 21 major brands. The service is promoted on social media and uses Discord for customer support and community building. Users purchase subscriptions to create customizable receipts in various currencies and formats (US, UK, EU) to facilitate the resale of counterfeit or stolen goods.",
+  "mitre_techniques": [],
+  "host_artifacts": [],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "maisonreceipts.cc",
+      "context": "Main service website for the fake receipt generator.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "maison.sellsn.io",
+      "context": "Transaction backend for MaisonReceipts subscriptions.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "receiptified.com",
+      "context": "A similar competing fake receipt generator service.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://t.me/maisonreceipts",
+      "context": "Telegram promotion and backup channel.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://discord.com/invite/Maison",
+      "context": "Primary Discord community invite for MaisonReceipts.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.youtube.com/@maison.receipts",
+      "context": "Official YouTube promotion channel.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.tiktok.com/@MS4wLjABAAAA4tVUKImGUAWY1kI5StElo04k8WuZAvqf29vCCYpcLyJ2IxLe8ZAAcTREtMMQf4su",
+      "context": "Official TikTok promotion account.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.instagram.com/maisonreceipts",
+      "context": "Official Instagram promotion account.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://x.com/maisonreceipts",
+      "context": "Official X (Twitter) promotion account.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://urlebird.com/user/mxrbi49/",
+      "context": "Urlebird (TikTok viewer) promotion account.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://discord.com/invite/zwiftreceipts",
+      "context": "Related service 'Zwift Receipts' Discord invite.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://discord.com/invite/hitreceipts",
+      "context": "Related service 'Hit Receipts' Discord invite.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://discord.com/invite/internetresells",
+      "context": "Related 'Internet Resells' Discord invite.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.scribd.com/document/786195844/resellerguide",
+      "context": "Scribd document titled 'resellerguide'.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

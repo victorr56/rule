@@ -1,0 +1,23 @@
+title: DarkMe RAT Persistence via 'Locked' URL Protocol Handler
+id: a7e366e6-95bb-41a4-9467-3e78b7b25e71
+status: experimental
+description: Detects the creation of the 'Locked://' custom URL protocol handler used by the DarkMe RAT for persistence. This handler executes a malicious COM object via rundll32.
+references:
+    - https://www.huntress.com/blog/darkme-rat-abandons-exploits
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1546
+    - attack.t1218.011
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Classes\Locked\shell\open\command\(Default)'
+        Details|contains: 'rundll32.exe /sta {CFDC57BA-1705-45AF-BA10-EFC3D592982B}'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

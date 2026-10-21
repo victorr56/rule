@@ -1,0 +1,24 @@
+title: AppleScript TCC-Abuse Campaign C2 Domains
+id: 3c57a26f-9721-4f11-9a74-d4b97d2e05fd
+status: experimental
+description: Detects DNS queries for domains associated with the macOS AppleScript phishing campaign C2 infrastructure.
+references:
+    - https://www.darktrace.com/blog/applescript-abuse-unpacking-a-macos-phishing-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'sevrrhst.com'
+            - 'stomcs.com'
+            - 'techcross-es.com'
+    condition: selection
+falsepositives:
+    - Unlikely. These are actor-controlled domains.
+level: critical

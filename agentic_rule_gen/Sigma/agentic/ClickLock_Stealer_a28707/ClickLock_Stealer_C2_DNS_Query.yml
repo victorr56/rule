@@ -1,0 +1,24 @@
+title: ClickLock Stealer C2 DNS Query
+id: e2b85e05-c1f9-4d89-9a74-d4b8f5ea048c
+status: experimental
+description: Detects DNS queries for domains known to be used by ClickLock Stealer for C2 and payload hosting.
+references:
+    - https://www.group-ib.com/blog/clicklock-stealer-macos-malware/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'panalobet.ph'
+            - 'store.grafsynergy.com'
+            - 'cottonbox.co.il'
+    condition: selection
+falsepositives:
+    - These domains are reportedly compromised, so minimal legitimate traffic might exist, but is highly unlikely in a corporate environment.
+level: high

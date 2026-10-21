@@ -1,0 +1,26 @@
+title: JINX-0164 Dropper Launchctl Job Submission
+id: 1a9f1a2e-4b8c-4f8e-a9b0-13f68de28310
+status: experimental
+description: Detects a command line used by a JINX-0164 dropper script to submit a malicious launchctl job for persistence and execution.
+references:
+    - https://www.wiz.io/blog/threat-actors-target-crypto-orgs
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.t1543.001
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image|endswith: '/bin/launchctl'
+        CommandLine|contains|all:
+            - 'submit'
+            - '-l chrome.job'
+            - '--update'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

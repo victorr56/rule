@@ -1,0 +1,22 @@
+title: JadeProx Linux SOCKS5 Proxy Staging
+id: 6e147e8c-529a-4c2f-b40b-74b83cc94823
+status: experimental
+description: Detects the download of a SOCKS5 proxy server from an actor-controlled Alibaba OSS bucket, a TTP observed on a JadeProx staging server.
+references:
+    - https://www.group-ib.com/blog/jadeprox-china-nexus-triback-loader/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1090.001
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/curl'
+        CommandLine|contains: 'dlrz-web.oss-cn-beijing.aliyuncs.com/uploads/socks5-server'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

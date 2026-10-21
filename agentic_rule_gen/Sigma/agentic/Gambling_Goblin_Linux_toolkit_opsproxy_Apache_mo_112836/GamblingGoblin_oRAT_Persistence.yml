@@ -1,0 +1,24 @@
+title: Gambling Goblin oRAT Systemd Service Persistence
+id: 97f3747d-bd76-4d2d-944a-935dfde1bd0a
+status: experimental
+description: Detects the creation of a systemd service for the oRAT backdoor, a technique used by Gambling Goblin for persistence.
+references:
+    - https://research.checkpoint.com/2026/gaming-the-system-how-a-chinese-speaking-actor-turned-brazilian-government-sites-into-an-seo-weapon/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1543.002
+detection:
+    selection:
+        Image|endswith: '/systemctl'
+        CommandLine|contains|all:
+            - 'enable'
+            - 'xtables-addons'
+    condition: selection
+falsepositives:
+    - Legitimate, but rare, administrative action to enable the 'xtables-addons' package service.
+level: high
+logsource:
+    category: process_creation
+    product: linux

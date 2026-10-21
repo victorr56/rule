@@ -1,0 +1,44 @@
+title: BPFDoor/Rekoobe Masquerading As Sniper/Oracle Process
+id: 8d5a7d32-d8de-4402-9a6d-8ac14f179c3f
+status: experimental
+description: Detects processes masquerading as specific software components, particularly from South Korean "Sniper" security appliances or Oracle platforms, as observed with BPFDoor and Rekoobe variants. This rule looks for cases where the process is executed with no command-line arguments.
+references:
+    - https://www.rapid7.com/blog/post/tr-smtp-is-the-key-bpfdoor-averat-hitting-the-network-edge
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_1:
+        Image: 'ora_ppmond'
+        CommandLine: 'ora_ppmond'
+    selection_2:
+        Image: '/sniper/snipe/bin/dtnpd'
+        CommandLine: '/sniper/snipe/bin/dtnpd'
+    selection_3:
+        Image: '/sniper/bin/ofgmd'
+        CommandLine: '/sniper/bin/ofgmd'
+    selection_4:
+        Image: '/sniper/autorun/rblsmtpd'
+        CommandLine: '/sniper/autorun/rblsmtpd'
+    selection_5:
+        Image: '/sniper/snipe/bin/snipe-smtpd'
+        CommandLine: '/sniper/snipe/bin/snipe-smtpd'
+    selection_6:
+        Image: '/sniper/bin/crond'
+        CommandLine: '/sniper/bin/crond'
+    selection_7:
+        Image: '/sniper/bin/earsd'
+        CommandLine: '/sniper/bin/earsd'
+    selection_8:
+        Image: '/sniper/apache/bin/httpd'
+        CommandLine: '/sniper/apache/bin/httpd'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate execution of these processes on their native security appliance or enterprise platforms. The rule is intended for general-purpose Linux systems.
+    - Legitimate software that is executed with no command-line arguments, causing the Image and CommandLine fields to be identical.
+level: high

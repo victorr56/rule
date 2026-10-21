@@ -1,0 +1,25 @@
+title: Syncro RMM Agent Spawning MSIExec
+id: a242512f-68cd-4743-85f0-15949d066b17
+status: experimental
+description: |
+    Detects the Syncro RMM agent (`SyncroLive.Agent.Runner.exe`) spawning `msiexec.exe`.
+    This behavior is indicative of an adversary chaining RMM tools, using one to install another, often to break process lineage and evade detection.
+references:
+    - https://redcanary.com/blog/security-operations/rmm-detection/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1218.007
+    - attack.defense_evasion
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\SyncroLive.Agent.Runner.exe'
+        Image|endswith: '\msiexec.exe'
+    condition: selection
+falsepositives:
+    - Legitimate software deployments initiated via the Syncro RMM. However, this is a rare and highly suspicious event worth investigating.
+level: high

@@ -1,0 +1,23 @@
+title: MacOS Stealer V2 C2 and Exfiltration IPs
+id: 7c555355-668f-49b8-bf99-813c9886a8ec
+status: experimental
+description: Detects network connections to IP addresses associated with macos-stealer-v2 C2 and exfiltration servers.
+references:
+    - https://blog.virustotal.com/2026/10/introducing-macos-mirage.html.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1105
+    - attack.t1041
+    - attack.t1071.001
+logsource:
+    category: network_connection
+detection:
+    selection:
+        DestinationIp:
+            - '193.178.159.129'
+            - '109.238.87.111'
+    condition: selection
+falsepositives:
+    - Benign traffic to these IPs if they are reallocated to legitimate services.
+level: critical

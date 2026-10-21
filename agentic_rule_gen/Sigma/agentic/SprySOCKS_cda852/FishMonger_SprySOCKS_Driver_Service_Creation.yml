@@ -1,0 +1,24 @@
+title: FishMonger SprySOCKS Driver Service Creation
+id: c8d5fa3f-846c-482a-9f4e-f2deec435c5c
+status: experimental
+description: Detects the creation of a service named 'msidiskserver' to load the malicious 'fsdiskbit.sys' driver used by the SprySOCKS WIN_DRV variant.
+references:
+    - https://www.welivesecurity.com/en/eset-research/fishmongers-arsenal-upgraded-sprysocks-windows/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1014
+    - detection.threat_hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|startswith: 'HKLM\SYSTEM\CurrentControlSet\Services\msidiskserver'
+        TargetObject|endswith: '\ImagePath'
+        Details|endswith: '\fsdiskbit.sys'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

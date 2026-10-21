@@ -1,0 +1,32 @@
+title: AVERAT/Rekoobe Outbound SMTP Traffic
+id: 03f572a1-5d9c-4903-8968-07e376041d8e
+status: experimental
+description: Detects outbound network connections to TCP port 25 (SMTP) from processes associated with AVERAT and Rekoobe malware. These backdoors use port 25 to disguise their C2 communications.
+references:
+    - https://www.rapid7.com/blog/post/tr-smtp-is-the-key-bpfdoor-averat-hitting-the-network-edge
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.003
+detection:
+    selection:
+        Image:
+            - '/sbin/udevds' # AVERAT
+            - '/sbin/ntpdate' # BPFDoor dropper watchdog
+            - '/sniper/autorun/rblsmtpd' # Rekoobe reverse shell
+        DestinationPort: 25
+    filter_legit_mta:
+        Image|endswith:
+            - '/sendmail'
+            - '/postfix'
+            - '/exim4'
+            - '/master' # Postfix master process
+            - '/smtpd'
+    condition: selection and not filter_legit_mta
+falsepositives:
+    - Custom or non-standard mail transfer agents (MTAs).
+level: high
+logsource:
+    category: network_connection
+    product: linux

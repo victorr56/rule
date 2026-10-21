@@ -1,0 +1,31 @@
+title: Gambling Goblin C2 Domain Lookups
+id: 11c6d3de-965a-4b0d-9b5a-9de9fd77b949
+status: experimental
+description: Detects DNS queries for domains associated with Gambling Goblin C2 infrastructure.
+references:
+    - https://research.checkpoint.com/2026/gaming-the-system-how-a-chinese-speaking-actor-turned-brazilian-government-sites-into-an-seo-weapon/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071
+detection:
+    selection:
+        QueryName|endswith:
+            - '.443.team'
+            - '.aliyun.la'
+            - '.aliyuntsl.com'
+            - '.github.la'
+            - '.gitlab.bet'
+            - '.kernel-lib.com'
+            - '.team-c2.com'
+            - 'data.windows-update-cdn.com'
+            - 'microsoft-azure-loadbalance.com'
+            - 'playfootball.info'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: medium
+logsource:
+    category: dns_query
+    product: windows

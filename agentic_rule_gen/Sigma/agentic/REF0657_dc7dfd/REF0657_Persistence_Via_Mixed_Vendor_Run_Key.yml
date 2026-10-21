@@ -1,0 +1,27 @@
+title: REF0657 Persistence Via Mixed Vendor Run Key
+id: 61e0b04c-a111-4f1b-a536-17b5e8055416
+status: experimental
+description: Detects the creation of a registry Run key for persistence that uses a file path containing mixed vendor names (McAfee and TrendMicro), as observed in REF0657 intrusions.
+references:
+    - https://www.elastic.co/security-labs/threat-command/unmasking-financial-services-intrusion-ref0657
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.persistence
+    - attack.t1547.001
+    - attack.defense_evasion
+    - attack.t1036.005
+    - detection.threat_hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains|all:
+            - '\Software\Microsoft\Windows\CurrentVersion\Run'
+            - '\TrendMicro' # The value name used for persistence
+        Details|contains: '\McAfee\TrendMicro\ds_monitor.exe' # The highly suspicious path
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

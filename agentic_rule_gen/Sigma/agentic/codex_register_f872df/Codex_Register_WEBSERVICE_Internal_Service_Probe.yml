@@ -1,0 +1,22 @@
+title: Codex-Register WEBSERVICE Internal Service Probe
+id: 978912e7-d464-4e1b-90f7-646736209d73
+status: experimental
+description: Detects a DNS query for the non-standard hostname 'file-service-namespaced' originating from Microsoft Excel. This behavior is associated with the 'formbin.xlsx' malicious workbook.
+references:
+    - https://www.sentinelone.com/labs/agents-at-large-tracing-illicit-openai-agent-activity-on-hugging-face/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.discovery
+    - attack.t1046
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\EXCEL.EXE'
+        QueryName: 'file-service-namespaced'
+    condition: selection
+falsepositives:
+    - Unlikely, unless a legitimate business application uses this specific naming convention and is accessed via Excel.
+level: high

@@ -1,0 +1,36 @@
+title: Inferno Drainer Associated Phishing Domains
+id: 97891782-a0e2-4b2a-a92c-56da456e3006
+status: experimental
+description: Detects DNS queries for domains associated with the Inferno Drainer phishing campaign.
+references:
+    - https://www.group-ib.com/blog/declaration-trap/
+author: ioc-yara-daily (agentic)
+date: 2024-05-30
+tags:
+    - attack.initial_access
+    - attack.t1566
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '176-65-134-35.cprapid.com'
+            - '25280-6588.s3.webspace.re'
+            - '66-63-187-130.cprapid.com'
+            - '6rbcc.com'
+            - 'belastingcryptotoeslagen.info'
+            - 'clientennota-webnl.ddns.info'
+            - 'crypto-aangifte.mljnoverheldportaal.com'
+            - 'cryptoaangifteportaal.com'
+            - 'digid-online.nl'
+            - 'mijnaangifte-2025.com'
+            - 'mijnoverheid-nl.com'
+            - 'nlweb-wetgeving.dnsrd.com'
+            - 'securedauth-nl.su'
+            - 'securedauth-no.su'
+            - 'sheckautnl.com'
+    condition: selection
+falsepositives:
+    - Legitimate access to any of these domains if they are sinkholed or taken over for research purposes.
+level: high

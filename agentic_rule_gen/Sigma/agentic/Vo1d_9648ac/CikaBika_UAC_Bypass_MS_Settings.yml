@@ -1,0 +1,24 @@
+title: CikaBika UAC Bypass via MS-Settings Handler
+id: d2c351f0-0a3e-436f-b67f-2b7cfd511993
+status: experimental
+description: Detects the modification of the 'ms-settings' URI scheme handler in the registry, a technique used by CikaBika to achieve a UAC bypass for privilege escalation.
+references:
+    - https://www.darktrace.com/blog/unmasking-vo1d-inside-darktraces-botnet-detection
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.privilege_escalation
+    - attack.t1548.002
+    - attack.defense_evasion
+    - attack.t1112
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Classes\ms-settings\shell\open\command'
+        Details|re: '(?i)(cmd|powershell|wscript|cscript|rundll32|mshta)\.exe'
+    condition: selection
+falsepositives:
+    - Legitimate modification of this key is highly unlikely but could occur in some administrative or development scenarios.
+level: high

@@ -1,0 +1,24 @@
+title: ShadowV2 C2 API Communication
+id: 3d1c1692-74bb-4e92-9130-9b049b7888a1
+status: experimental
+description: Detects HTTP requests to the ShadowV2 C2 API endpoints for heartbeats and command polling.
+references:
+    - https://www.darktrace.com/blog/shadowv2-an-emerging-ddos-for-hire-botnet
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection_heartbeat:
+        HttpUserAgent: 'ShadowV2'
+        UrlOriginal|endswith: '/api/vps/heartbeat'
+    selection_poll:
+        HttpUserAgent: 'ShadowV2'
+        UrlOriginal|contains: '/api/vps/poll/'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

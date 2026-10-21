@@ -1,0 +1,24 @@
+title: SocGholish Forced Authentication SCF File Creation
+id: 5f958f2d-450f-4318-b2a1-63fd6e4a2c51
+status: experimental
+description: Detects the creation of a malicious 'Thumbs.scf' file. This technique is used by actors like those deploying SocGholish to place these files on accessible network shares to trigger forced authentication and steal NTLMv2 hashes when a user browses the directory.
+references:
+    - https://www.darktrace.com/blog/socgholish-from-loader-and-c2-activity-to-ransomhub-deployment
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.credential_access
+    - attack.t1187
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\cscript.exe'
+            - '\wscript.exe'
+        TargetFilename|endswith: '\Thumbs.scf'
+    condition: selection
+falsepositives:
+    - Legitimate use of Windows Script Host to create a file with this name is highly unlikely.
+level: high

@@ -1,0 +1,23 @@
+title: Balonx Sistema CallFlow Backend API Access
+id: 890e71c9-760b-4ac4-9f44-77a83ef873fa
+status: experimental
+description: Detects web requests to specific API endpoints of the Balonx Sistema CallFlow vishing module backend.
+references:
+    - https://www.group-ib.com/blog/balonx-sistema-mexico-phaas-es/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1111
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|contains:
+            - 'https://panelbalonxfs.xyz/admin/api/api/gql'
+            - 'https://panelbalonxfs.xyz/admin/api/api/rest'
+            - 'https://panelbalonxfs.xyz/admin/api/api/token'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

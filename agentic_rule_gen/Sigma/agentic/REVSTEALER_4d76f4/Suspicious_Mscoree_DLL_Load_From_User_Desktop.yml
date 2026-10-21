@@ -1,0 +1,24 @@
+title: Suspicious Mscoree.dll Load From User Desktop
+id: e4b94c3d-6b07-4286-9a2d-4cced48375e4
+status: experimental
+description: Detects the loading of 'mscoree.dll' from a user's desktop, often by a process also running from the desktop. This is highly anomalous, as the legitimate DLL resides in the System32/SysWOW64 directories. This behavior was observed during REVSTEALER activity.
+references:
+    - https://www.elastic.co/security-labs/threat-command/revstealer-credential-harvesting-infostealer
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1574.001
+    - detection.threat_hunting
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|contains: '\Desktop\'
+        ImageLoaded|contains: '\Desktop\'
+        ImageLoaded|endswith: '\mscoree.dll'
+    condition: selection
+falsepositives:
+    - Custom developer applications or installers that incorrectly bundle and load system DLLs from non-standard locations.
+level: high

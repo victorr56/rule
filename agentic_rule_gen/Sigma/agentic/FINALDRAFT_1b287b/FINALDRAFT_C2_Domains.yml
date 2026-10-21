@@ -1,0 +1,25 @@
+title: FINALDRAFT C2 Domain Lookups
+id: a1b0213d-9f4a-4e2a-8d1f-8e4a8b72e0b5
+status: experimental
+description: Detects DNS queries for domains known to be used by FINALDRAFT C2 infrastructure. Several of these are typo-squatted domains of legitimate security vendors.
+references:
+    - https://www.elastic.co/security-labs/threat-command/finaldraft
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1102.003
+    - attack.command_and_control
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - poster.checkponit.com
+            - support.fortineat.com
+            - support.vmphere.com
+            - update.hobiter.com
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

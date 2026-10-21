@@ -1,0 +1,189 @@
+{
+  "malware_family": "",
+  "threat_actor": "",
+  "platforms": [
+    "web"
+  ],
+  "summary": "This report investigates suspicious activity involving a Microsoft Entra Agent ID assistive agent (on-behalf-of flow), where an agent identity sent a suspicious email on behalf of a human user. It demonstrates log correlation across Exchange, Microsoft Graph, and non-interactive sign-in logs to build a minimum viable story and provides detection guidance based on the Agent.agentType/Agent.agentSubjectType fields, the access_agent scope, and anomalous user-agent strings.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "Dev Agent Identity Blueprint - NOT FOR PROD",
+      "context": "Agent blueprint display name in audit log TargetResources",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "Agent001",
+      "context": "Agent identity app display name in sign-in log",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "access_agent",
+      "context": "Delegated OAuth scope for agent on-behalf-of consent",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Add delegated permission grant",
+      "context": "AuditLogs operation name for consent to agent",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Macintosh; macOS 26.4.1; en-US) PowerShell/7.6.1",
+      "context": "User-agent observed in Exchange, Graph API, and sign-in logs",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Client=REST;Mozilla/5.0 (Macintosh; macOS 26.4.1; en-US) PowerShell/7.6.1[AppId=8cd0a10f-0be8-413a-9bf2-f44bc568d1e4];",
+      "context": "Exchange ActorInfoString",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Here is your invoice",
+      "context": "Email subject sent by the agent",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "Agent.agentType == agenticAppInstance AND Agent.agentSubjectType == notAgentic",
+      "context": "Sign-in log signature for assistive agent OBO flow",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Group.Read.All Mail.ReadWrite Mail.Send MailboxSettings.ReadWrite User.Read openid profile email",
+      "context": "OAuth scopes granted to agent OBO token",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ClientCredentialType: federatedIdentityCredential",
+      "context": "Credential type in sign-in log",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "14d82eec-204b-4c2f-b7e8-296a70dab67e",
+      "context": "Microsoft Graph Command Line Tools client app ID used in consent URI",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://login.microsoftonline.com/adcb5820-70a1-4272-b79c-32f2bba44ddc/oauth2/v2.0/authorize?client_id=14d82eec-204b-4c2f-b7e8-296a70dab67e&response_type=code&redirect_uri=http://localhost/&response_mode=query&scope=api://beddadf7-4f3b-4e9b-8443-0b0cf777446e/access_agent",
+      "context": "Consent URI requesting access_agent scope",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "login.microsoftonline.com",
+      "context": "Entra ID authentication endpoint",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "graph.microsoft.com",
+      "context": "Microsoft Graph API endpoint",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://graph.microsoft.com/beta/users/[email protected]/microsoft.graph.sendMail",
+      "context": "Graph API sendMail request URI",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "40.126.23.26",
+      "context": "Microsoft infrastructure IP shown in Exchange log",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "51.3.97.221",
+      "context": "True client IP in Graph API and sign-in logs",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Macintosh; macOS 26.4.1; en-US) PowerShell/7.6.1",
+      "context": "User-agent in network logs",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://localhost/",
+      "context": "Localhost redirect URI abused in ConsentFix technique",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

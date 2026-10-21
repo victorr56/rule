@@ -1,0 +1,26 @@
+title: TraderTraitor FLATROOF/ROOFDECK Launch With Renderer Argument
+id: 593740ee-b552-475f-a991-383db67272cd
+status: experimental
+description: Detects the execution of TraderTraitor's FLATROOF or ROOFDECK malware using the '--type=renderer' command-line argument to masquerade as a browser process.
+references:
+    - https://www.sentinelone.com/labs/dont-call-us-well-call-your-apis-tradertraitor-backdoors-resurface-on-victim-with-no-crypto-ties/
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.execution
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image|endswith:
+            - '/SystemUpdate'
+            - '/iSync'
+            - '/loginwindow'
+        CommandLine|contains: '--type=renderer'
+    condition: selection
+falsepositives:
+    - Legitimate browser renderer processes are not expected to be named 'SystemUpdate', 'iSync', or 'loginwindow'.
+level: high

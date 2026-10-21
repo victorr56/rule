@@ -1,0 +1,31 @@
+title: Linux Codex Botnet Persistence via Cron Job
+id: a93c66f5-56f8-48b8-b427-44a6f81e9d0a
+status: experimental
+description: Detects the execution of a malicious shell command spawned by a cron job as part of the Codex botnet persistence mechanism.
+references:
+    - https://www.huntress.com/blog/codex-part-two
+author: ioc-yara-daily (agentic)
+date: 2024-05-28
+tags:
+    - attack.persistence
+    - attack.t1053.003
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        ParentImage|in:
+            - '/usr/sbin/cron'
+            - '/usr/sbin/crond'
+        Image|endswith: '/sh'
+        CommandLine|contains|all:
+            - 'wget'
+            - 'chmod'
+            - '+x'
+            - '/tmp/codex'
+    condition: selection
+falsepositives:
+    - Legitimate administrative scripts executed via cron that download and execute a payload named 'codex'.
+level: high

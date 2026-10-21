@@ -1,0 +1,97 @@
+{
+  "malware_family": "",
+  "threat_actor": "",
+  "platforms": [
+    "unknown"
+  ],
+  "summary": "A single initial access broker operator used the ProjectDiscovery Nuclei scanner at industrial scale from two CTG Server Limited (AS152194) IPs over December 25-28, testing 240+ exploits and confirming hits via Interactsh out-of-band (OAST) callback domains. GreyNoise attributes 57,000+ unique OAST subdomains and a shared Machine ID/JA4 fingerprint across 98% of attempts to one operator, indicating harvested vulnerability inventory destined for ransomware affiliates. Detection should focus on DNS/sinkhole logs for oast.* callback lookups and network logs for the two scanning IPs.",
+  "mitre_techniques": [
+    "T1595.002",
+    "T1190"
+  ],
+  "host_artifacts": [],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "134.122.136.119",
+      "context": "Scanning source IP, CTG Server Limited AS152194, wave one",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "134.122.136.96",
+      "context": "Scanning source IP, CTG Server Limited AS152194, both waves",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "AS152194",
+      "context": "CTG Server Limited ASN hosting scanning infrastructure",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "oast.pro",
+      "context": "Interactsh OAST callback domain queried from victim DNS logs",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "Interactsh"
+    },
+    {
+      "kind": "domain",
+      "value": "oast.site",
+      "context": "Interactsh OAST callback domain queried from victim DNS logs",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "Interactsh"
+    },
+    {
+      "kind": "domain",
+      "value": "oast.me",
+      "context": "Interactsh OAST callback domain queried from victim DNS logs",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "Interactsh"
+    },
+    {
+      "kind": "domain",
+      "value": "oast.online",
+      "context": "Interactsh OAST callback domain queried from victim DNS logs",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "Interactsh"
+    },
+    {
+      "kind": "domain",
+      "value": "oast.fun",
+      "context": "Interactsh OAST callback domain queried from victim DNS logs",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "Interactsh"
+    },
+    {
+      "kind": "domain",
+      "value": "oast.live",
+      "context": "Interactsh OAST callback domain queried from victim DNS logs",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "Interactsh"
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "57,000+ unique OAST subdomains under ProjectDiscovery Interactsh domains",
+      "context": "Out-of-band vulnerability confirmation callbacks to attacker server",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Interactsh"
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

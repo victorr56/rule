@@ -1,0 +1,25 @@
+title: Suspicious Modification of Azure DevOps SSH Task File
+id: 7904e548-c70e-4ab9-a4e9-11c75c86295d
+status: experimental
+description: Detects the modification or creation of the 'ssh.js' file within an Azure DevOps agent's task directory, when performed by a suspicious process such as a scripting engine. This could indicate an attempt to tamper with CI/CD tasks to steal credentials or execute malicious code.
+references:
+    - https://www.elastic.co/security-labs/threat-command/detecting-cicd-pipeline-abuse-with-llm-augmented-analysis
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.t1195.002
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        TargetFilename|contains|all:
+            - '_work/_tasks/SSH'
+            - '/ssh.js'
+        Image|endswith:
+            - '/python'
+            - '/python3'
+    condition: selection
+falsepositives:
+    - Custom build scripts that intentionally modify task files using Python, although this is a highly unusual and risky practice.
+level: high

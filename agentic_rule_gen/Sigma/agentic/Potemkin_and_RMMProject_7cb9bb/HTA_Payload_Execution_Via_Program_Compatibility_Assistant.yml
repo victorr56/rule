@@ -1,0 +1,25 @@
+title: HTA Payload Execution via Program Compatibility Assistant
+id: e2b66521-4f10-48e0-ac3b-01dd13d2f2fa
+status: experimental
+description: Detects the abuse of the Program Compatibility Assistant (pcalua.exe) to launch mshta.exe and execute a remote HTA payload. This technique was used for initial access in the Potemkin campaign.
+references:
+    - https://www.huntress.com/blog/potemkin-loader-rmmproject-clickfix-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1218
+    - attack.execution
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\pcalua.exe'
+        CommandLine|contains|all:
+            - '-a mshta.exe'
+            - '-c http'
+    condition: selection
+falsepositives:
+    - Extremely rare legitimate uses of the Program Compatibility Assistant in this manner.
+level: high

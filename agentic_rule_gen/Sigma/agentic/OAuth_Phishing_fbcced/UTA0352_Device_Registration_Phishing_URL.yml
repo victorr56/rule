@@ -1,0 +1,26 @@
+title: UTA0352 OAuth Phishing for Malicious Device Registration
+id: b925e0c5-ac33-4f22-9003-7f28ed024765
+status: experimental
+description: |
+    Detects specific URI parameters used in a UTA0352 OAuth phishing campaign to register a malicious device and mint a Primary Refresh Token (PRT) for persistence.
+references:
+    - https://www.elastic.co/security-labs/blog/entra-id-oauth-phishing-detection
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.persistence
+    - attack.t1098
+logsource:
+    category: proxy
+detection:
+    selection:
+        Destination.Hostname|endswith: 'login.microsoftonline.com'
+        Url|contains|all:
+            - '/organizations/oauth2/v2.0/authorize'
+            - 'client_id=29d9ed98-a469-4536-ade2-f981bc1d605e' # Microsoft Authentication Broker
+            - 'resource=01cb2876-7ebd-4aa4-9cc9-d28bd4d359a9' # Device Registration Service
+            - 'redirect_uri=https://login.microsoftonline.com/WebApp/CloudDomainJoin/8'
+    condition: selection
+falsepositives:
+    - Unlikely. The combination of the specific client ID, resource ID, and redirect URI is highly indicative of this malicious activity.
+level: high

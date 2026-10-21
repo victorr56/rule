@@ -1,0 +1,22 @@
+title: Plain-Crypto-JS RAT Persistence via Run Key
+id: 57423e80-a68b-4a8e-a226-9f7960164c48
+status: experimental
+description: Detects the creation of a registry run key value `MicrosoftUpdate` pointing to `system.bat`, used for persistence by the plain-crypto-js RAT.
+references:
+    - https://www.huntress.com/blog/supply-chain-compromise-axios-npm-package
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Microsoft\Windows\CurrentVersion\Run\MicrosoftUpdate'
+        Details|contains: 'system.bat'
+    condition: selection
+falsepositives:
+    - Unlikely. This combination of registry value name and data is highly specific to this threat.
+level: high

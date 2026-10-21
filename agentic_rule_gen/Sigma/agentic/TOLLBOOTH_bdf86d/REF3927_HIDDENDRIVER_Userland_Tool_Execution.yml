@@ -1,0 +1,25 @@
+title: REF3927 HIDDENDRIVER Userland Tool Execution
+id: f444a70b-410a-4a25-83e8-5b4861de805e
+status: experimental
+description: Detects the execution of userland tools used to interact with the HIDDENDRIVER rootkit.
+references:
+    - https://www.elastic.co/security-labs/threat-command/tollbooth
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1014
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\HijackDriverManager.exe'
+            - '\WingtbCLI.exe'
+        OriginalFileName:
+            - 'HijackDriverManager.exe'
+            - 'WingtbCLI.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

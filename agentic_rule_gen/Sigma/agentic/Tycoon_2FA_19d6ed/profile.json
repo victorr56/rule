@@ -1,0 +1,490 @@
+{
+  "malware_family": "Tycoon 2FA",
+  "threat_actor": "Storm-1747",
+  "platforms": [
+    "windows",
+    "web"
+  ],
+  "summary": "Tycoon 2FA is a Phishing-as-a-Service AiTM kit (attributed to Storm-1747) that reverse-proxies Entra ID and Google Workspace login flows to steal post-MFA session tokens, using cheap cloud-VPS relay IPs with Node.js HTTP clients and a residential-proxy operator console. Detection anchors include Node.js user agents (node, axios, undici) on Auth Broker/OfficeHome sign-ins, device-registration abuse for primaryRefreshToken persistence, and rapid multi-category Microsoft Graph reconnaissance from the same user within minutes of token issuance.",
+  "mitre_techniques": [
+    "T1566.002",
+    "T1539",
+    "T1078.004",
+    "T1098.005",
+    "T1550.001",
+    "T1087.004",
+    "T1069.003",
+    "T1526"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "axios/1.15.2",
+      "context": "Kit relay HTTP client UA against Microsoft Auth Broker/OfficeHome",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "node",
+      "context": "Bare default Node.js UA used by Tycoon 2FA kit relay",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "undici",
+      "context": "Node.js HTTP client UA of the kit relay tier",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "node-fetch/1.0",
+      "context": "Kit relay Node.js HTTP client UA (kit diagram shows node-fetch/1.6)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:139.0) Gecko/20100101 Firefox/139.0",
+      "context": "Operator console browser UA fixed across residential-proxy IPs",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\"navi\"+\"gator\", \"web\"+\"driver\", \"call\"+\"phantom\", \"docu\"+\"ment\", \"context\"+\"menu\"",
+      "context": "Evasion strings split and concatenated at runtime to defeat static scanning",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "send_to_browser / response_from_browser",
+      "context": "Socket.IO 4.6.0 relay event names in Google-targeting variant",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "recieveid",
+      "context": "Socket.IO event name typo used as consistent kit fingerprint",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1234567890123456",
+      "context": "Hardcoded CryptoJS AES-CBC key encrypting collected credentials",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "29d9ed98-a469-4536-ade2-f981bc1d605e",
+      "context": "Microsoft Authentication Broker client_id abused for device-code and DRS flows",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "4765445b-32c6-49b0-83e6-1d93765276ca",
+      "context": "o365.audit ApplicationId seen for kit relay OfficeHome sign-in",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "BAHUW5E4V",
+      "context": "Verification code shown on DocuSign-themed lure page",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "function tryfindingele(email) { emailinputcheck.value = email; emailsectionelecheck.querySelector(\".btn-blue-next-btn\").click(); }",
+      "context": "Kit JS auto-fills victim email and auto-clicks Next on password page",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "DESKTOP-472454",
+      "context": "Device display name in Entra Register_device audit log with axios UA",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "aiConfirmedSafe",
+      "context": "Entra ID Protection risk label observed during tier 2 relay",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "finbank.acsmithmawgroup.com",
+      "context": "Tycoon 2FA phishing lure page host",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "login-secure-doc-review.cfd",
+      "context": "First-hop lure host in Tycoon canary engagement",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "waistaithe.digital",
+      "context": "Custom CAPTCHA phishing page host",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.ipapi.is",
+      "context": "IP reputation service queried for researcher/cloud-provider filtering",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "storage.googleapis.com",
+      "context": "Legitimate Google hosting abused to stage phishing pages",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sites.google.com",
+      "context": "Legitimate Google Sites abused to stage phishing pages",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "enterpriseregistration.windows.net",
+      "context": "DRS endpoint abused for rogue device registration",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://storage.googleapis.com/kewaskumveterinary/offline_attachment.html",
+      "context": "Phishing page hosted on Google Storage",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://sites.google.com/view/8239698209/home",
+      "context": "Phishing page hosted on Google Sites",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://waistaithe.digital/foF2lSN7y@Q521iCs07/$eWVseXphdmV0Y5SiYWtsYW5AZGV2LnBybw==",
+      "context": "CAPTCHA-gated Tycoon phishing URL",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.google.com/accounts/OAuthLogin",
+      "context": "Chrome bootstrap sign-in scope authorized by Google kit relay",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1.0/transitiveRoleAssignments",
+      "context": "Graph role-discovery recon endpoint",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1.0/tenantRelationships/getResourceTenants",
+      "context": "Graph cross-tenant recon endpoint (POST)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1.0/me/contactFolders/contacts?$top=1000",
+      "context": "Graph contact harvesting for next-wave phishing",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1.0/me/mailboxSettings",
+      "context": "Graph mailbox recon endpoint",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1.0/subscribedSkus",
+      "context": "Graph org/licensing recon endpoint",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1.0/roleManagement/directory/roleAssignments",
+      "context": "Graph directory role enumeration endpoint",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1.0/me/memberOf/microsoft.graph.directoryRole",
+      "context": "Graph directory role membership enumeration",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/beta/organization/fb83355b-3bfe-4849-a3bc-480c7564e41b/settings/itemInsights",
+      "context": "/beta Graph recon endpoint used by operator console",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/EnrollmentServer/device/?api-version=2.0",
+      "context": "DRS device enrollment endpoint posted with CSR and transport key",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "AS45102 Alibaba US Technology Co., Ltd.",
+      "context": "Cloud-VPS ASN of kit relay tier",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "AS206092 F.n.s. Holdings Limited",
+      "context": "Residential-shaped ASN of operator console tier",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "AS62240 Clouvider Limited",
+      "context": "Cheap hosting ASN used by Google Workspace kit relay",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "AS214238 Host Telecom Ltd",
+      "context": "Cheap hosting ASN used by Google Workspace kit relay",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "9009, 45102, 215540, 29802, 62240, 204957, 395092",
+      "context": "ASN list in Google Workspace device-registration EQL detection rule",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.253.201.110",
+      "context": "Kit relay IP signing in as MAB/OfficeHome",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.253.214.227",
+      "context": "Kit relay IP for Auth Broker to Exchange Online",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.253.209.6",
+      "context": "Kit relay IP for axios/OfficeHome sign-in",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.253.128.153",
+      "context": "Kit relay IP registering device with axios UA",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.90.188.205",
+      "context": "Kit relay cloud-VPS IP (Alibaba, AS45102)",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.90.180.205",
+      "context": "Kit relay IP (Alibaba) in Auth Broker sign-in logs",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "216.73.163.94",
+      "context": "Operator console residential proxy IP (F.n.s. Holdings)",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "216.73.163.80",
+      "context": "Operator console residential proxy IP in Graph recon burst",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.149.82.54",
+      "context": "Google kit relay IP (Clouvider, AS62240)",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.39.127.238",
+      "context": "Google kit relay IP (Clouvider)",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "195.69.161.237",
+      "context": "Google kit relay IP signing in same user within minutes",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "142.111.176.135",
+      "context": "Google kit relay IP (Host Telecom, AS214238)",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "urn:ms-drs:enterpriseregistration.windows.net",
+      "context": "Token audience/resource swapped for DRS access token",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+      "context": "Grant type used to exchange cert-signed JWT for primaryRefreshToken",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script",
+    "document"
+  ]
+}

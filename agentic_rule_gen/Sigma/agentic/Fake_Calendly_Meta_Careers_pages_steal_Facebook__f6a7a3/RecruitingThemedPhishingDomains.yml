@@ -1,0 +1,32 @@
+title: Suspicious Recruiting-Themed Phishing Domain
+id: b5982855-3213-4158-b3d9-4809d3b38c20
+status: experimental
+description: Detects DNS queries for known recruiting-themed phishing domains used to lure victims to fake job interview pages.
+references:
+    - https://www.malwarebytes.com/blog/threat-intel/2026/10/fake-calendly-meta-careers-pages-steal-facebook-and-google-logins
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'joinconnect.cfd'
+            - 'joinconnect.works'
+            - 'joinhire.cfd'
+            - 'joinhire.info'
+            - 'joinquest.cfd'
+            - 'joinquest.info'
+            - 'joinquest.works'
+            - 'jointhetalent.cfd'
+            - 'jointhetalent.info'
+            - 'jointhetalent.works'
+            - 'jointheteam.cfd'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

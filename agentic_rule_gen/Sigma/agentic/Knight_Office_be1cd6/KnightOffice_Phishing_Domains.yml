@@ -1,0 +1,44 @@
+title: Knight Office Phishing Domains
+id: 59371755-fce1-424a-8742-b91122a27ff8
+status: experimental
+description: Detects DNS queries for domains associated with the Knight Office AiTM phishing kit.
+references:
+    - https://www.huntress.com/blog/inside-knight-office-m365-aitm-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'idoej.com'
+            - 'advancedplacyncement.vu'
+            - 'amstardmzsmc.vu'
+            - 'arandasoftzfdware.vu'
+            - 'avisoretentiunionllc.vu'
+            - 'capitalflwxinancialpartners.vu'
+            - 'certififiycationedge.vu'
+            - 'connectivnqzityltd.vu'
+            - 'crrbcearegroup.vu'
+            - 'digitaltrafwwrficsystems.vu'
+            - 'exceltecbusinessbwpsolutions.vu'
+            - 'genamewwgdiamarketing.vu'
+            - 'globaieflsoftinc.vu'
+            - 'globalmixeucbdmodetechnologyinc.vu'
+            - 'globalprojectspvtltd.vu'
+            - 'joinbusinessmanagementconsdjeulting.vu'
+            - 'kentmanqhfufacturingcompany.vu'
+            - 'kleepxrnlinecorporation.vu'
+            - 'knsinternacshtional.vu'
+            - 'monttmmlrustcompany.vu'
+            - 'mtprormtductions.vu'
+            - 'realestatecotblrp.vu'
+            - 'siottxgroup.vu'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

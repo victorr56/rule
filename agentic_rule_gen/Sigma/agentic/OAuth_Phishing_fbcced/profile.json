@@ -1,0 +1,239 @@
+{
+  "malware_family": "OAuth Phishing",
+  "threat_actor": "UTA0352",
+  "platforms": [
+    "web",
+    "windows",
+    "macos"
+  ],
+  "summary": "UTA0352 conducts OAuth phishing campaigns against Microsoft Entra ID to acquire authorization codes. These codes are used to either access Microsoft Graph API by impersonating the VSCode client for data exfiltration, or to register a malicious device using ROADtools to mint a Primary Refresh Token (PRT) for persistent, privileged access.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "aebc6443-996d-45c2-90f0-388ff96faa56",
+      "context": "Client ID for Visual Studio Code used in phishing URLs.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "29d9ed98-a469-4536-ade2-f981bc1d605e",
+      "context": "Client ID for Microsoft Authentication Broker used for device registration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "01cb2876-7ebd-4aa4-9cc9-d28bd4d359a9",
+      "context": "Resource ID for Device Registration Service (DRS).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "00000003-0000-0000-c000-000000000000",
+      "context": "Resource ID for Microsoft Graph.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".roadtool_auth",
+      "context": "ROADtools file for storing authentication tokens.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "ROADtools",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "urn:ms-drs:enterpriseregistration.windows.net",
+      "context": "Service principal for DRS targeted by ROADtx.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "ROADtools",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "10.0.19041.928",
+      "context": "Hardcoded Windows OS version in ROADtx device registration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "ROADtools",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "adrs_access",
+      "context": "OAuth scope value indicating Azure DRS access in logs.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Add device",
+      "context": "Entra ID audit log operation name for device registration.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Add registered users to device",
+      "context": "Entra ID audit log operation name for device registration.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Add registered owner to device",
+      "context": "Entra ID audit log operation name for device registration.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "primaryRefreshToken",
+      "context": "Incoming token type indicating PRT use in sign-in logs.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "refreshToken",
+      "context": "Incoming token type indicating RT use in sign-in logs.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "unbound",
+      "context": "Token protection status suggesting token replay or device spoofing.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize?state=https://mae.gov.ro/&client_id=aebc6443-996d-45c2-90f0-388ff96faa56&scope=https://graph.microsoft.com/.default&response_type=code&redirect_uri=https://insiders.vscode.dev/redirect&login_hint=<EMAIL HERE>",
+      "context": "Example phishing URL using VSCode client ID.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/organizations/oauth2/v2.0/authorize",
+      "context": "Phishing URL endpoint for authorization.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/oauth2/v2.0/token",
+      "context": "Endpoint to exchange authorization code for tokens.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1.0/me/messages",
+      "context": "Graph API endpoint to access user emails.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1.0/sites?search=*",
+      "context": "Graph API endpoint to enumerate SharePoint sites.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://insiders.vscode.dev/redirect",
+      "context": "Redirect URI for VSCode client phishing.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "vscode-redirect.azurewebsites.net",
+      "context": "Alternative redirect URI for VSCode client phishing.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://login.microsoftonline.com/WebApp/CloudDomainJoin/8",
+      "context": "Redirect URI for device registration phishing.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "https://graph.microsoft.com/.default",
+      "context": "OAuth scope used in phishing URL to get pre-consented permissions.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Microsoft.OData.Client/*",
+      "context": "User agent seen in audit logs during device registration.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

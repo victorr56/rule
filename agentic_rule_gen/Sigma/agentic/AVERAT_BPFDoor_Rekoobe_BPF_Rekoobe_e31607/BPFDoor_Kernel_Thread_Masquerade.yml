@@ -1,0 +1,30 @@
+title: BPFDoor Kernel Thread Masquerade
+id: 569805d2-3511-409b-ae7c-502a3a0e37b2
+status: experimental
+description: Detects processes with names designed to masquerade as kernel threads, as seen in a South Korean cluster of BPFDoor activity. This is detected when a user-space process spawns a child process with a name formatted like a kernel thread.
+references:
+    - https://www.rapid7.com/blog/post/tr-smtp-is-the-key-bpfdoor-averat-hitting-the-network-edge
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image:
+            - '[kaluad_sync]'
+            - '[charger_manager]'
+        ParentImage|contains:
+            # Legitimate kernel threads are not parented by common user-space processes.
+            - '/usr/bin/'
+            - '/usr/sbin/'
+            - '/bin/bash'
+            - '/bin/sh'
+            - '/sbin/sshd'
+    condition: selection
+falsepositives:
+    - Custom applications or daemons that legitimately spawn processes with names formatted like kernel threads.
+level: high

@@ -1,0 +1,22 @@
+title: SHELLTER Associated C2 IP Addresses
+id: 7c57e6e3-f661-4560-a292-623253b3b190
+status: experimental
+description: Detects network connections to IP addresses associated with C2 servers used in campaigns leveraging the SHELLTER framework.
+references:
+    - https://www.elastic.co/security-labs/threat-command/taking-shellter
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '185.156.72.80'
+            - '94.141.12.182'
+    condition: selection
+falsepositives:
+    - IP addresses can be re-purposed or be part of shared hosting.
+level: critical

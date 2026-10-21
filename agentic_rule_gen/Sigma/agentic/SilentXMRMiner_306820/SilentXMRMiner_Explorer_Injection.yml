@@ -1,0 +1,27 @@
+title: XMRig Miner Command Line Injected Into Explorer
+id: 5971ab7a-8fbb-4ec5-85e7-73d81b37f374
+status: experimental
+description: Detects command-line arguments typical of the XMRig cryptocurrency miner, but executed by explorer.exe, which indicates process injection. This behavior was observed in a campaign involving the SilentXMRMiner.
+references:
+    - https://www.huntress.com/blog/threat-actor-compiles-cryptominer
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.resource_hijacking
+    - attack.t1496
+    - attack.process_injection
+    - attack.t1055
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\explorer.exe'
+        CommandLine|contains|all:
+            - '--algo="rx/0"'
+            - '--pass=186605'
+            - '--url=auto.c3pool.org:19999'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

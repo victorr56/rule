@@ -1,0 +1,29 @@
+title: Gamaredon CVE-2025-8088 HTA Drop in Startup Folder
+id: c8635c40-349f-4318-b217-06830ccab866
+status: experimental
+description: Detects the creation of an HTA file in a startup folder by WINRAR.EXE. This specific TTP was used by Gamaredon to exploit a WinRAR vulnerability (CVE-2025-8088) for persistence.
+references:
+    - https://www.welivesecurity.com/en/eset-research/gamaredon-2025-leveraging-tunnels-workers-dead-drops-new-alliances/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_user:
+        Image|endswith: '\WINRAR.EXE'
+        TargetFilename|contains|all:
+            - '\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\'
+            - '.hta'
+    selection_common:
+        Image|endswith: '\WINRAR.EXE'
+        TargetFilename|contains|all:
+            - '\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\'
+            - '.hta'
+    condition: 1 of selection_*
+falsepositives:
+    - Extremely rare legitimate user action of extracting an HTA file from an archive directly into a startup folder using WinRAR.
+level: high

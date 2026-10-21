@@ -1,0 +1,25 @@
+title: Inbound Connection from Christmas 2026 Scanning Campaign IP
+id: c5d6b4a3-7e1d-40e1-b4f0-46603a11a84f
+status: experimental
+description: >-
+  Detects network traffic from IP addresses associated with a large-scale scanning campaign observed around Christmas 2026.
+  This activity utilized the Nuclei scanner to probe for over 240 exploits.
+  This rule is intended for use on network perimeter logs (e.g., firewall, VPN).
+references:
+  - https://www.greynoise.io/blog/christmas-scanning-campaign-fuel-2026-attacks
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.t1595.002
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    SourceIp:
+      - '134.122.136.119'
+      - '134.122.136.96'
+  condition: selection
+falsepositives:
+  - The IP addresses may have been re-allocated by the hosting provider and could be used for legitimate traffic in the future.
+level: medium

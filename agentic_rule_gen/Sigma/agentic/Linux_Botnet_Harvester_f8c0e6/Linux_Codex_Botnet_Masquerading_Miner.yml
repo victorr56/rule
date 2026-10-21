@@ -1,0 +1,25 @@
+title: Linux Codex Botnet XMRig Masquerading as systemd-logind
+id: 56cc0c23-f308-4e1b-bf88-910a7479c3d4
+status: experimental
+description: Detects the execution of an XMRig-based cryptominer masquerading as 'systemd-logind' from the /var/tmp directory, as observed in a Linux botnet campaign.
+references:
+    - https://www.huntress.com/blog/codex-part-two
+author: ioc-yara-daily (agentic)
+date: 2024-05-22
+tags:
+    - attack.impact
+    - attack.t1496
+    - attack.defense_evasion
+    - attack.t1036.005
+    - attack.execution
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image: '/var/tmp/systemd-logind'
+        CurrentDirectory: '/var/tmp'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

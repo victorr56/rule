@@ -1,0 +1,23 @@
+title: Microsoft SQL Server Spawning Command Shell
+id: 11504d6e-d09f-44e2-a080-60b5d9282362
+status: experimental
+description: Detects the MS SQL Server process ('sqlservr.exe') spawning a Windows Command Shell ('cmd.exe'), which is a strong indicator of 'xp_cmdshell' abuse for arbitrary command execution.
+references:
+    - https://www.elastic.co/security-labs/threat-command/unmasking-financial-services-intrusion-ref0657
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.execution
+    - attack.t1059.003
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\sqlservr.exe'
+        Image|endswith: '\cmd.exe'
+    condition: selection
+falsepositives:
+    - Legitimate administrative scripts or applications that are designed to use the 'xp_cmdshell' stored procedure.
+level: high

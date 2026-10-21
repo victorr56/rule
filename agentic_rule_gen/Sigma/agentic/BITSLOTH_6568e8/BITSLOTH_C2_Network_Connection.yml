@@ -1,0 +1,23 @@
+title: BITSLOTH C2 Network Connection
+id: a8d532b2-5e60-449e-b9e7-5a218080f339
+status: experimental
+description: Detects network connections to IP addresses known to be used as Command and Control servers by BITSLOTH malware.
+references:
+    - https://www.elastic.co/security-labs/threat-command/bits-and-bytes-analyzing-bitsloth
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.t1197
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '216.238.121.132'
+            - '45.116.13.178'
+            - '15.235.132.67'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

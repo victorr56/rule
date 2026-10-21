@@ -1,0 +1,24 @@
+title: GHOSTENGINE C2 DNS Queries
+id: b34763e0-6ca2-4876-b605-e42a98f1f510
+status: experimental
+description: Detects DNS queries to domains known to be used by GHOSTENGINE C2 infrastructure.
+references:
+    - https://www.elastic.co/security-labs/threat-command/invisible-miners-unveiling-ghostengine
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'download.yrnvtklot.com'
+            - 'ftp.yrnvtklot.com'
+            - 'online.yrnvtklot.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

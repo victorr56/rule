@@ -1,0 +1,26 @@
+title: React2Shell Persistence With Disguised Crond
+id: 5740b72f-5226-47b2-bd75-3b9576356c9a
+status: experimental
+description: |
+  Detects the execution of a file named 'crond' from the '/var/tmp' directory via 'nohup', a technique used by attackers to persist a cryptominer or backdoor after exploiting React2Shell (CVE-2025-55182).
+references:
+  - https://www.wiz.io/blog/nextjs-cve-2025-55182-react2shell-deep-dive
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+  - attack.t1053.003
+  - attack.t1036.005
+  - attack.execution
+  - attack.persistence
+  - attack.defense_evasion
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  selection:
+    Image|endswith: '/nohup'
+    CommandLine|contains: '/var/tmp/crond'
+  condition: selection
+falsepositives:
+  - Custom administrative scripts using a similar naming convention, although unlikely.
+level: high

@@ -1,0 +1,24 @@
+title: MacOS Stealer V2 Exfiltration With Curl
+id: 978917e9-b519-482f-87d2-747d91e3e8f8
+status: experimental
+description: Detects the use of curl by macos-stealer-v2 to exfiltrate a compressed archive of stolen data using a custom 'buildid' header.
+references:
+    - https://blog.virustotal.com/2026/10/introducing-macos-mirage.html.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1041
+    - attack.t1071.001
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image|endswith: '/usr/bin/curl'
+        CommandLine|contains|all:
+            - '-H buildid:'
+            - '--data-binary @/tmp/lksopo.zip'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

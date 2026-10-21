@@ -1,0 +1,26 @@
+title: Amadey Downloader Execution Via Msiexec
+id: 978eb352-7ed4-42f5-83e9-a46a6f112e4c
+status: experimental
+description: Detects Amadey malware being downloaded and executed via msiexec.exe using specific command-line arguments observed during TA505 campaigns.
+references:
+    - http://nao-sec.org/2019/04/Analyzing-amadey.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1218.007
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\msiexec.exe'
+        CommandLine|contains|all:
+            - '/i http'
+            - 'STOP=1'
+            - 'ksw='
+    condition: selection
+falsepositives:
+    - 'Unlikely, as the combination of arguments is specific to this malware campaign.'
+level: high

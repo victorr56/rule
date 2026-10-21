@@ -1,0 +1,185 @@
+{
+  "malware_family": "",
+  "threat_actor": "",
+  "platforms": [
+    "web"
+  ],
+  "summary": "This report walks through investigating a suspicious Microsoft Teams message sent by an Entra Agent ID agent user, correlating Purview MicrosoftTeams MessageCreatedHasLink events with MicrosoftGraphActivityLogs and AADNonInteractiveUserSignInLogs via AppAccessContext.UniqueTokenId. Agent users never produce interactive sign-ins; their activity is identifiable through the Agent.agentSubjectType value agentIDuser and the linked agent identity/blueprint in non-interactive sign-in logs. The agent-user OAuth flow (blueprint client secret, AzureADTokenExchange client assertion, user_fic on-behalf-of exchange) and the Graph API POST to a team channel messages endpoint are the key behaviors to detect.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "Greetings from your robot overlords.",
+      "context": "Teams message body posted by agent user via Graph API",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "agentIDuser",
+      "context": "Agent.agentSubjectType value in AADNonInteractiveUserSignInLogs indicating agent user",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "agenticAppInstance",
+      "context": "Agent.agentType value in non-interactive sign-in; parent blueprint of agent identity",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "grant_type=user_fic",
+      "context": "OAuth grant type for agent user on-behalf-of token exchange",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "8cd0a10f-0be8-413a-9bf2-f44bc568d1e4",
+      "context": "Agent identity (Agent001) linked to the agent user",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "beddadf7-4f3b-4e9b-8443-0b0cf777446e",
+      "context": "Parent blueprint app ID of the agent identity (Dev Agent Identity Blueprint - NOT FOR PROD)",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "5e411314-4d6a-4c6d-b8e7-fd75d22c1bdd",
+      "context": "Agent user object ID / UserKey that sent the Teams message",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "federatedIdentityCredential",
+      "context": "ClientCredentialType in the agent user non-interactive sign-in event",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ChannelMessage.Send Group.Read.All Mail.ReadWrite MailboxSettings.ReadWrite openid Team.ReadBasic.All TeamSettings.ReadWrite.All User.Read User.Read.All profile email",
+      "context": "OAuth scopes granted to the agent user's Graph token",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "MessageCreatedHasLink",
+      "context": "Purview MicrosoftTeams operation recording a sent message containing a link",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "MessageReported",
+      "context": "Purview MicrosoftTeams operation for a user-reported suspicious message",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Invoke-MgGraphRequest -Method POST -Uri 'https://graph.microsoft.com/beta/teams/$GroupId/channels/$ChannelId/messages/$ChatMessageId/softDelete'",
+      "context": "Remediation: soft-delete the agent-sent Teams message",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Update-MgBetaUser -UserId 5e411314-4d6a-4c6d-b8e7-fd75d22c1bdd -AccountEnabled:$false",
+      "context": "Remediation: disable the suspect agent user",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://domoarigato.ai/",
+      "context": "Link embedded in the agent-sent Teams message (MessageLinks/MessageURLs)",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "domoarigato.ai",
+      "context": "Domain of the link posted by the agent user in Teams",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Macintosh; macOS 26.4.1; en-US) PowerShell/7.6.1",
+      "context": "User-Agent of Graph API request and agent user sign-in that sent the Teams message",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "51.3.97.221",
+      "context": "Source IP of Graph API POST and of the agent user non-interactive sign-in",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "https://graph.microsoft.com/beta/teams/be391302-bbc4-412b-af64-836dff973fb0/channels/{channelId}/messages",
+      "context": "Graph API endpoint (POST) used to send the message as the agent user",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

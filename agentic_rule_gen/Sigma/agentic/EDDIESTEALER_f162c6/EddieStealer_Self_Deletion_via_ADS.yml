@@ -1,0 +1,25 @@
+title: EDDIESTEALER Self-Deletion via ADS
+id: 9a78e1c3-2947-49d7-862d-045a57a8a65a
+status: experimental
+description: Detects a file operation involving an Alternate Data Stream named ':metadata', which EDDIESTEALER uses as part of its self-deletion routine, often executed via the command prompt.
+references:
+    - https://www.elastic.co/security-labs/threat-command/eddiestealer
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1564.004
+    - attack.t1070.004
+detection:
+    selection:
+        Image|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+        TargetFilename|endswith: ':.metadata'
+    condition: selection
+logsource:
+    category: file_event
+    product: windows
+falsepositives:
+    - Unlikely, but some backup or synchronization tools might use ADS in a similar fashion.
+level: high

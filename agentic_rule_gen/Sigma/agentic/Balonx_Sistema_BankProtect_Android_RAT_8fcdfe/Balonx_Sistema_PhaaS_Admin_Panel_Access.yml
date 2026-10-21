@@ -1,0 +1,22 @@
+title: Balonx Sistema PhaaS Admin Panel Access
+id: 1e7a6f27-f051-40ef-861c-84803df6a090
+status: experimental
+description: Detects POST requests to the administrator panel login route of the Balonx Sistema PhaaS kit, which may indicate a login attempt.
+references:
+    - https://www.group-ib.com/blog/balonx-sistema-mexico-phaas-es/
+author: ioc-yara-daily (agentic)
+date: 2023-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1102
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|endswith: '/balonx'
+        HttpMethod: 'POST'
+    condition: selection
+falsepositives:
+    - Legitimate web applications that use the URI path '/balonx' for POST requests.
+level: medium

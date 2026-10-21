@@ -1,0 +1,22 @@
+title: GHOSTENGINE Phantom DLL Hijacking via msdtc.exe
+id: 59a1a1f3-d5d8-4f81-8b38-2d2c17462b32
+status: experimental
+description: Detects the loading of oci.dll by msdtc.exe, a technique used by GHOSTENGINE for persistence.
+references:
+    - https://www.elastic.co/security-labs/threat-command/invisible-miners-unveiling-ghostengine
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.persistence
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\msdtc.exe'
+        ImageLoaded|endswith: '\oci.dll'
+    condition: selection
+falsepositives:
+    - Legitimate use of Oracle client libraries by msdtc.exe, though this is highly unlikely.
+level: high

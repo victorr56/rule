@@ -1,0 +1,21 @@
+title: DNS Query for ByteZero Proxy Domain
+id: d1789c0a-0ac9-42b7-873b-f7fcbd830c29
+status: experimental
+description: Detects DNS queries for 'bytezero.io', a commercial proxy service observed delivering a significant portion of a SonicWall reconnaissance campaign.
+references:
+    - https://www.greynoise.io/blog/active-reconnaissance-campaign-targets-sonicwall-firewalls-through-commercial-proxy-infrastructure
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.reconnaissance
+    - attack.t1595
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'bytezero.io'
+    condition: selection
+falsepositives:
+    - Legitimate use of the ByteZero commercial proxy service.
+level: medium

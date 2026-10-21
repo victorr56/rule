@@ -1,0 +1,264 @@
+{
+  "malware_family": "\"Mini\" Shai-Hulud",
+  "threat_actor": "TeamPCP (attributed by report as authors of the base open-source malware)",
+  "platforms": [
+    "linux",
+    "macos"
+  ],
+  "summary": "Malicious versions of keyv, cacheable and 400+ other npm packages in the Keyv/Cacheable ecosystem delivered a descendant of the \"Mini\" Shai-Hulud worm that harvests cloud, CI/CD, AI-tool and cryptocurrency credentials. The payload persists via Claude Code hooks and VS Code tasks.json, exfiltrates stolen data to attacker-created GitHub repositories, and resolves its C2 domains at runtime from an Ethereum smart contract.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "IfYouBlockThisAPIKeyItWillCrashTheLiveProductionServersOfAllThirdPartyClients",
+      "context": "New intimidation string used in the malicious initial commits",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Shai-Hulud: Here We Go Again",
+      "context": "Default description of GitHub repositories created for data exfiltration",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "chore: update config",
+      "context": "Commit message used when pushing IDE hooks to repositories for persistence",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tmp.dpkg_14527.lock",
+      "context": "Lock file used by the payload",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "node_modules/keyv/Math_Symbol.js",
+      "context": "Malicious payload file dropped/installed in node_modules",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "math_init.js",
+      "context": "Payload file listed in the IOC hash table",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/bun-dl-*/",
+      "context": "Working/download directory used via Bun user-agent",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".claude/setup.mjs",
+      "context": "Claude Code hook persistence script",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".vscode/setup.mjs",
+      "context": "VS Code hook persistence script",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".vscode/tasks.json",
+      "context": "VS Code task file abused for persistence",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "StringListStore",
+      "context": "Ethereum smart contract queried via eth_call to retrieve C2 domains",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/shadow",
+      "context": "System file added to credential-theft target list",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "35a672cf34b996b91f3e1c28cbf3a05a37e036e4",
+      "context": "Hash of Math_Symbol.js and math_init.js payload files",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "35a672cf34b996b91f3e1c28cbf3a05a37e036e4"
+    },
+    {
+      "kind": "other",
+      "value": "686aa40d0fc22c8d569494543a0f891f359f2f99",
+      "context": "Hash of .claude/setup.mjs persistence script",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "686aa40d0fc22c8d569494543a0f891f359f2f99"
+    },
+    {
+      "kind": "other",
+      "value": "f525d52ceb966516686b482d3dc0137028cc6a63",
+      "context": "Hash of .vscode/setup.mjs persistence script",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "f525d52ceb966516686b482d3dc0137028cc6a63"
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "npm-cache.com",
+      "context": "Primary exfil domain; only domain returned by the smart contract after update",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.21.35.216",
+      "context": "Cloudflare IP for npm-cache[.]com",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "eth-mainnet.nodereal.io",
+      "context": "Ethereum RPC endpoint used for eth_call",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "35.175.164.77",
+      "context": "Amazon IP for eth-mainnet.nodereal[.]io",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "go.getblock.io",
+      "context": "Ethereum RPC endpoint used for eth_call",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.44.207.215",
+      "context": "IP for go.getblock[.]io",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "eth.llamarpc.com",
+      "context": "Ethereum RPC endpoint used for eth_call",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.67.167.200",
+      "context": "Cloudflare IP for eth.llamarpc[.]com",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pypi-get.com",
+      "context": "Additional IOC domain listed for the campaign",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "js-mirror.com",
+      "context": "Additional IOC domain listed for the campaign",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "api.github.com/user",
+      "context": "Endpoint monitored by the dead-man's switch to detect token revocation",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Bun/1.3.13",
+      "context": "User-agent observed performing malicious calls tied to this activity",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

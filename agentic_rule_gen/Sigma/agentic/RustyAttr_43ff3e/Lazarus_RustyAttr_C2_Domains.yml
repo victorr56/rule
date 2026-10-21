@@ -1,0 +1,22 @@
+title: Lazarus RustyAttr C2 Domains
+id: a3b76426-ed45-42a0-9c29-450f55bd6763
+status: experimental
+description: Detects DNS queries for domains associated with the Lazarus RustyAttr C2 infrastructure.
+references:
+    - https://www.group-ib.com/blog/stealthy-attributes-of-apt-lazarus/
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'support.cloudstore.business'
+            - 'support.docsend.site'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

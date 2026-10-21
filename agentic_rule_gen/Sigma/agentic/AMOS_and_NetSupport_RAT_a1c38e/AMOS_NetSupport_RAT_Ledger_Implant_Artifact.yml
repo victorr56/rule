@@ -1,0 +1,23 @@
+title: AMOS/NetSupport RAT Ledger Implant Artifact
+id: c3d2e1f0-a9b8-4c7d-8e6f-5a4b3c2d1e9f
+status: experimental
+description: Detects the creation of the 'app.crc32' bot ID file by MsBuild.exe, which is indicative of the Ledger wallet implant.
+references:
+    - https://www.huntress.com/blog/defcon-phishing-google-doc-malware
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.execution
+    - attack.t1127.001
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\MsBuild.exe'
+        TargetFilename|endswith: '\Ledger Live\app.crc32'
+    condition: selection
+falsepositives:
+    - Unlikely. Legitimate MsBuild.exe should not be writing to this path.
+level: high

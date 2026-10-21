@@ -1,0 +1,23 @@
+title: CikaBika Nim Loader Execution
+id: cfb2be7f-ed66-41e9-9188-664f7b445209
+status: experimental
+description: Detects the execution of the dropped Nim loader, identified by its specific filename, being launched by 'cmd.exe' as a child of the initial PowerShell loader.
+references:
+    - https://www.darktrace.com/blog/when-ai-infrastructure-becomes-part-of-the-attack-surface
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.001
+detection:
+    selection:
+        ParentImage|endswith: '\powershell.exe'
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains: 'IfyuUapz.txt'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: medium
+logsource:
+    category: process_creation
+    product: windows

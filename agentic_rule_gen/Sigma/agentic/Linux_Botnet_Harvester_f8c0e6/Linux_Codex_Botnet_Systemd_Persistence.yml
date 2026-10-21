@@ -1,0 +1,24 @@
+title: Linux Codex Botnet Persistence via Hidden Systemd Service
+id: 5698b688-6627-463d-82c8-7098e983483b
+status: experimental
+description: Detects the creation of hidden systemd user services for persistence by the 'kworker' malware, a component of the Linux Codex Botnet.
+references:
+    - https://www.huntress.com/blog/codex-part-two
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.persistence
+    - attack.t1543.002
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        Image: '/tmp/kworker'
+        TargetFilename|endswith:
+            - '/.config/systemd/user/.arpupdate.service'
+            - '/.config/systemd/user/.dnsupdate.service'
+    condition: selection
+falsepositives:
+    - Unlikely. The combination of a process executing from '/tmp/kworker' and creating these specific service files is a strong indicator of compromise.
+level: high

@@ -1,0 +1,29 @@
+title: Qilin Actor Base64 Encoded Payload Execution
+id: 87b28293-875f-4632-a6f6-e3d1ac2c2d1b
+status: experimental
+description: Detects a specific Base64-encoded command piped to bash for execution, as seen in Qilin campaign prompt injection attacks.
+references:
+    - https://www.wiz.io/blog/ai-infrastructure-honeypot
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.004
+    - attack.defense_evasion
+    - attack.t1027
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/bash'
+            - '/sh'
+            - '/ash'
+            - '/dash'
+            - '/zsh'
+        CommandLine|contains: 'echo ZWNobyBsd2hmdyAyPiYxO2NobW9kIDc3NyAvdmFyL3RtcC9kb2NrZXIgMj4mMTtlY2hvIGtmOWV1eiAyPiYx | base64 -d | bash'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

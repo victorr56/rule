@@ -1,0 +1,792 @@
+{
+  "malware_family": "PHANTOMPULSE",
+  "threat_actor": "REF6598 (DPRK-aligned clusters: Lazarus, BlueNoroff, UNC5342, APT38)",
+  "platforms": [
+    "windows",
+    "macos"
+  ],
+  "summary": "PHANTOMPULSE is the final-stage RAT of the REF6598 intrusion set, combining three public process-injection techniques (module stomping, debug-API state machine, manual mapping), a shared hardware-breakpoint AMSI/WLDP/ETW bypass, and rundll32-hosted scheduled-task persistence of an encrypted stub DLL. It resolves its C2 URL from Ethereum/Base/Optimism transaction input via Blockscout with a hardcoded fallback panel, and its resolver lacks sender verification, making the channel sinkhole-able with one transaction.",
+  "mitre_techniques": [
+    "T1566.003",
+    "T1059.001",
+    "T1055",
+    "T1055.001",
+    "T1218.007",
+    "T1218.011",
+    "T1053.005",
+    "T1547",
+    "T1112",
+    "T1562",
+    "T1070.004",
+    "T1082",
+    "T1033",
+    "T1057",
+    "T1518.001",
+    "T1056.001",
+    "T1115",
+    "T1113",
+    "T1041",
+    "T1071.001",
+    "T1102",
+    "T1573",
+    "T1027",
+    "T1140",
+    "T1134",
+    "T1548.002",
+    "T1106",
+    "T1497.003",
+    "T1574.002",
+    "T1620"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "mutex",
+      "value": "hVNBUORXNiFLhYYh",
+      "context": "Single-instance mutex, XOR-decrypted at startup; second instance exits",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "svcagent.dll",
+      "context": "Encrypted, LZNT1-compressed stub DLL decompressed from .rdata and dropped to disk",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%ProgramData%\\AssetMon\\svcagent.dll",
+      "context": "Primary stub DLL drop path; falls through on access error",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\AssetMon\\svcagent.dll",
+      "context": "Secondary stub DLL drop path",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\svcagent.dll",
+      "context": "Tertiary stub DLL drop path",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "healthmon.exe",
+      "context": "Original executable name / dropped dropper, terminated by uninstall step 6",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "diagcore.dll",
+      "context": "Legacy sideload DLL overwritten by CopyFileW during MigrateSideload hunt of running processes",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".elevate",
+      "context": "Elevation marker; presence alone routes schuac relaunch, content byte 0x31 never parsed",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "DotNetSvcUpdateTask",
+      "context": "Primary persistence, User Logon + Time trigger every 3 min, Standard RunLevel",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "DotNetSvcCoreTask",
+      "context": "Boot task, 15 min interval, HighestAvailable + Hidden, INTERACTIVE_TOKEN + BootTrigger",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "DotNetSvcUserTask",
+      "context": "User logon persistence task, Standard RunLevel",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "EdgeWebViewUpdateTask",
+      "context": "Legacy task removed during uninstall but never installed by this build",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "\\Microsoft\\Windows\\NetFramework\\DotNetSvcCoreTask",
+      "context": "Boot task path in .NET maintenance namespace; XML body embedded verbatim in .rdata",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rundll32.exe \"<deployed_dll>\",DllRegisterServer",
+      "context": "Task action for all three persistence tasks; parent svchost.exe (Schedule) on elevated relaunch",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "DllRegisterServer",
+      "context": "Export of stub DLL and entry used by rundll32 persistence and elevated relaunch",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Elevation:Administrator!new:{A6BFEA43-501F-456F-A845-983D3AD7B8F0}",
+      "context": "66-byte COM elevation moniker XOR-decrypted at runtime from .rdata with seed 0xE95CA237",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "\"MZ\"",
+      "context": "Named file-mapping section used by DbgNexum to stage PE, bootstrap stub and trampoline config",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0xE95CA237",
+      "context": "Seed XOR key computed at runtime to keep constant out of .rdata; encrypts COM moniker and keylog file",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ F7 7C 8E 40 DF C1 7B E5 E7 4D 86 79 D5 B3 53 41 }",
+      "context": "16-byte XOR key in .rdata for C2 fallback URL, mutex, drop-path filenames",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 5A 3C 7E 1D 9F 2B 4E 8A }",
+      "context": "8-byte XOR key in .rdata for UTF-16 LE blockchain provider hostnames",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ FF 25 00 00 00 00 }",
+      "context": "JMP [RIP-relative] thunk opcode passed to AddVectoredExceptionHandler from MEM_PRIVATE, PAGE_EXECUTE_READ page",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x04CF1142",
+      "context": "DJB2 dispatch hash for 'inject' command; installs AMSI/WLDP HWBP, routes to PhantomInject/ManualMap/DbgNexum",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "DJB2",
+      "hash_value": "0x04CF1142"
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x7C95D91A",
+      "context": "DJB2 dispatch hash for 'drop' command: DLL, EXE, shellcode (APC), MSI payloads",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "DJB2",
+      "hash_value": "0x7C95D91A"
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x9A37F083",
+      "context": "DJB2 dispatch hash for 'screenshot' command; GDI capture downscaled to 960px, uploaded as BMP",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "DJB2",
+      "hash_value": "0x9A37F083"
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x08DEDEF0",
+      "context": "DJB2 dispatch hash for 'keylog' start/stop command",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "DJB2",
+      "hash_value": "0x08DEDEF0"
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x4EE251FF",
+      "context": "DJB2 dispatch hash for 'uninstall' 6-step cleanup command",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "DJB2",
+      "hash_value": "0x4EE251FF"
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x65CCC50B",
+      "context": "DJB2 dispatch hash for 'elevate' command via schuac IElevatedFactoryServer UAC bypass",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "DJB2",
+      "hash_value": "0x65CCC50B"
+    },
+    {
+      "kind": "unique_string",
+      "value": "0xB3B5B880",
+      "context": "DJB2 dispatch hash for 'downgrade' command: SYSTEM to elevated admin transition",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "DJB2",
+      "hash_value": "0xB3B5B880"
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x20CE3BC8",
+      "context": "DJB2 dispatch hash for unnamed self-restart handler: NtTerminateProcess(-1,0) then ExitProcess(0)",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "DJB2",
+      "hash_value": "0x20CE3BC8"
+    },
+    {
+      "kind": "unique_string",
+      "value": "[STEP 1] Staged mode — payload downloaded from C2 at runtime",
+      "context": "Operational debug log string; LLM-style structured step numbering",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[STEP 1/3] Scheduled Task (DotNetSvcUpdateTask, logon + every 3 min)",
+      "context": "Debug log string naming the persistence task and its trigger",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[UNINSTALL 4/6] Removing persist_loader DLL + registry PE data...",
+      "context": "Debug log string from 6-step uninstall routine",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[REPAIR] Reinstalling boot task (INTERACTIVE_TOKEN)...",
+      "context": "Self-healing debug string for boot task reinstallation",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[HEIS] encrypt_text_only ENTER",
+      "context": "ENTER/DONE function-tracing debug string of disabled HEIS encryption subsystem",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "KeylogResolveAPIs: ENTER",
+      "context": "ENTER/DONE function-tracing debug string in keylogger API resolution",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "FindHostProcessEx: scan stats: total=%lu sessSkip=%lu openFail=%lu native=%lu wow64=%lu mapReject=%lu dbgReject=%lu sess=%lu",
+      "context": "Verbose host-process selection format string used by injectors",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ManualMap: thread hijacked and resumed — DLL injection via thread hijack complete",
+      "context": "ManualMap injector debug log string",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PE32 DLL in x64 host is impossible",
+      "context": "ManualMap debug log rejecting 32-bit DLLs on the x64 host path",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DbgNexumLoop64: stage 6 -> stub at %llx, base=%llx",
+      "context": "DbgNexum debug log for redirect to mapped_base+0x400 custom PE loader",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "UnhookNtdll: ntdll base = %p",
+      "context": "Dead-code string in .rdata from NTDLL unhooking subsystem with zero code references",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "applied %d relocation fixups to .text",
+      "context": "Dead-code string from unreferenced NTDLL unhooking subsystem",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "elevate: FAIL — no deployed DLL path",
+      "context": "Elevation debug string; em dash in C string as AI-assistance tell",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ">>> .elevate: NOT proxy — spawning trusted host to handle elevation",
+      "context": "Marker-state routing debug string for elevate command",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ">>> Phase 1: all registration methods failed, cleaning marker",
+      "context": "Proxy rundll32 path exhaustion message before cleaning .elevate marker",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ">>> .elevate redirect attempt %d",
+      "context": "Retry loop string in proxy rundll32 elevation fallback",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "App detection: found %d apps",
+      "context": "Debug string for hardcoded 19-app targeting presence check via GetFileAttributesW",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MigrateSideload",
+      "context": "Debug-string prefix for diagcore.dll sideload migration block in SetupRegistryPE",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Screenshot: failed to resolve GDI APIs",
+      "context": "Error string in screenshot function when hash-based GDI resolution fails",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "s_logs_buff",
+      "context": "Global buffer name used in screenshot function decompilation",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "WDAGUtilityAccount",
+      "context": "Anti-sandbox username in precomputed DJB2 table of 61 entries checked at startup; match exits process",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "DJB2",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "SysWOW64\\cmd.exe",
+      "context": "Fresh WoW64 fallback host spawned when no usable injection host found",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "NTLoad",
+      "context": "Legacy registry-resident PE blob value cleaned only during uninstall, never written by this build",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\{Domain,Standard,Public}Profile",
+      "context": "Recon reads per-profile firewall enabled state",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "eth.blockscout.com",
+      "context": "Blockscout Ethereum L1 provider queried for latest transaction input holding XOR'd C2 URL",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "base.blockscout.com",
+      "context": "Blockscout Base L2 provider for blockchain C2 resolution",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "optimism.blockscout.com",
+      "context": "Blockscout Optimism L2 provider for blockchain C2 resolution",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xc117688c530b660e15085bF3A2B664117d8672aA",
+      "context": "Blockchain C2 wallet (ETH/Base/Optimism); tx input XOR-decrypted with wallet address bytes",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x38796B8479fDAE0A72e5E7e326c87a637D0Cbc0E",
+      "context": "Funding wallet used to fund the C2 resolution wallet",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x580c",
+      "context": "Signature prefix of every XOR-encoded C2 URL in tx input ('ht' XOR '0x'); BigQuery chain-hunt indicator",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "panel.fefea22134.net",
+      "context": "C2 panel, hardcoded fallback when blockchain resolution fails",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://panel.fefea22134.net",
+      "context": "Hardcoded fallback C2 URL in .rdata, XOR-encrypted with 16-byte key",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "fea22134.net",
+      "context": "C2 domain encrypted in the binary",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "195.3.222.251",
+      "context": "Staging server for PowerShell/loader delivery",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/telemetry/report",
+      "context": "POST heartbeat with full system telemetry JSON",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/telemetry/tasks/<machine_id>",
+      "context": "GET command fetch endpoint",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/telemetry/upload/",
+      "context": "POST screenshot/file upload endpoint",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/telemetry/result",
+      "context": "POST command result delivery endpoint",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/telemetry/keylog/",
+      "context": "POST keylog data upload endpoint",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Content-Type: image/bmp",
+      "context": "Upload of raw in-memory BMP screenshot",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Content-Type: application/json",
+      "context": "Heartbeat and command result POSTs",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Content-Type: text/plain",
+      "context": "Keylog upload POST",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api4.ipify.org",
+      "context": "First public-IP discovery API in HTTPS chain",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ipv4.icanhazip.com",
+      "context": "Public-IP discovery fallback",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "checkip.amazonaws.com",
+      "context": "Public-IP discovery fallback",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ipif.org",
+      "context": "Local public-IP discovery service checked before heartbeat ip field",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "0x666.info",
+      "context": "macOS sibling C2 domain from prior REF6598 reporting",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "t.me/ax03bot",
+      "context": "macOS C2 Telegram dead-drop fallback",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "thoroughly-publisher-troy-clara.trycloudflare.com",
+      "context": "Prior C2 domain delivered via Cloudflare Tunnel",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "33dacf9f854f636216e5062ca252df8e5bed652efd78b86512f5b868b11ee70f",
+      "description": "PHANTOMPULSE RAT final payload (Windows implant analyzed in this report)"
+    },
+    {
+      "sha256": "70bbb38b70fd836d66e8166ec27be9aa8535b3876596fc80c45e3de4ce327980",
+      "description": "syncobs.exe PHANTOMPULL in-memory PE loader"
+    },
+    {
+      "sha256": "def66275fa3baffb16e6e4ae0297861d9790ae7161fbc271a2ba05d121f13c70",
+      "description": "Go beacon used for GTESTIC_WIN check-in"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

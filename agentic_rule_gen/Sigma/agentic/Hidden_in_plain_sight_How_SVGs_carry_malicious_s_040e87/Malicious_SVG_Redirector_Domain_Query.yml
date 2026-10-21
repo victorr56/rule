@@ -1,0 +1,23 @@
+title: Malicious SVG Redirector Domain Query
+id: 57441589-9a6d-419b-a010-0969d7bdf9f7
+status: experimental
+description: Detects DNS queries for domains known to be used as redirect targets in malicious SVG files. These SVGs are often delivered as phishing attachments and contain embedded JavaScript.
+references:
+    - https://www.reversinglabs.com/blog/how-svgs-carry-dangerous-scripts
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1566.001
+    - attack.t1189
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith:
+            - '01058telecom.de'
+            - 'qedhsp.cprltdf.es'
+            - 'wihportal.sbs'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

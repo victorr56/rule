@@ -1,0 +1,26 @@
+title: AMOS Stealer Initial Access via Curl-Zsh Pipe
+id: e4b2c1d3-3f1a-4c2d-8a5b-6f8e7c9a1b0c
+status: experimental
+description: Detects the specific command line pattern used to download and execute the initial macOS AMOS Stealer payload.
+references:
+    - https://www.huntress.com/blog/defcon-phishing-google-doc-malware
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.execution
+    - attack.t1059.004
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image|endswith: '/curl'
+        CommandLine|contains|all:
+            - 'apple-googleapi.com/i'
+            - '|'
+            - 'zsh'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

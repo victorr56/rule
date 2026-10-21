@@ -1,0 +1,22 @@
+title: VietCredCare Execution from Startup Folder
+id: 3c59ac47-b769-4dd7-ad30-80a2df332f14
+status: experimental
+description: Detects the execution of crsysys.exe from the user's startup folder, a known persistence method used by the VietCredCare stealer.
+references:
+    - https://www.group-ib.com/blog/vietcredcare-stealer/
+author: ioc-yara-daily (agentic)
+date: 2023-10-18
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\Microsoft\Windows\Start Menu\Programs\Startup\crsysys.exe'
+        ParentImage|endswith: '\explorer.exe'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

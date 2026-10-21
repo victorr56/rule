@@ -1,0 +1,778 @@
+{
+  "malware_family": "MacSync",
+  "threat_actor": "",
+  "platforms": [
+    "macos"
+  ],
+  "summary": "MacSync is a macOS infostealer and backdoor family distributed under MaaS via fake crypto-wallet apps (e.g. Toria), malicious DMGs and iCloud calendar scripts. This version uses binary Objective-C/Swift droppers, AES-CBC/GCM-encrypted modules, ECDH Curve25519 key wrapping via the custom pkgunpack utility, and an HTTP C2 requiring the X-Upload-Token header. It steals browser, crypto-wallet and developer credentials, verifies the admin password via the PAM API, and persists through a com.apple.finder.agent LaunchAgent, .zshrc injection and Git hooks.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "hex_pattern",
+      "value": "{ 73 6F 6E 6F 6D 61 62 6C 64 07 }",
+      "context": "XOR key decrypting overlay-stored URL in loader",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SONOMAC1",
+      "context": "magic word preceding overlay blob; read backwards",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 53 4F 4E 4F 4D 41 43 }",
+      "context": "SONOMAC marker followed by 91 00 00 00 blob size in overlay",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "cb09ff86cabde4f8cee2d3cdec370c623bfa6c2b72ae9750fc9a7b299c65d7ca",
+      "context": "AES-256-CBC key for zlib-compressed payload in stage three dropper",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "3a1af2b397c6958e6c3ba3c75912d60e",
+      "context": "IV paired with stage three dropper AES key",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "3744f975113dfc552df982dcae699f9154a448e05a743bdfb641a463352bc13a",
+      "context": "AES-256-CBC key for shell script in stage four dropper",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "8d371f8a7a6dcc2655544ae13cbca03d",
+      "context": "IV paired with stage four dropper AES key",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "ff664112d3215c5d184689fc836e0dc6c1a47e42c34e70b2c3d356864bc4cb4c",
+      "context": "AES-256-CBC key decrypting next stage executed in memory",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "09425f72de8bba18893dcd6f04115891",
+      "context": "IV paired with stage five loader AES key",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "7b7fc345b9b775f897f6bc8c32e11c4eb153a879721dd5810281185845c823e3",
+      "context": "AES-256-CBC key passed to openssl by second dropper script",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "0abc04d8b0f75bda92f9c92b798cc4b5",
+      "context": "IV passed to openssl by second dropper script",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "pFSxn/Uwg9bS45aVKCzA+8exSMfDHXpbpHC/f7G472w=",
+      "context": "server build_pub_b64 ECDH public key predefined in script",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "b8b4b88205a8f594b95a841bc37342898f34cad8a5a9e4a22ce69a31a1208650",
+      "context": "X-Upload-Token value reused by backdoor",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ff3ab9ef841630364818396f62e696b72aed162cf0b895b6643ef25dad79b51d",
+      "context": "second observed X-Upload-Token value",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "sn-dek-wrap-v1",
+      "context": "string concatenated with ECDH shared secret before SHA-256",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "pkgunpack",
+      "context": "custom key-generation/decryption utility downloaded from C2",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "curve25519_donna",
+      "context": "Curve25519 ECDH implementation used by pkgunpack genkey",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "curve25519-donna",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "com.apple.finder.agent",
+      "context": "LaunchAgent used for backdoor persistence",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/Library/Application Support/System",
+      "context": "non-default dir holding backdoor backup and support files",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/Library/Logs/.sysnotif-agent.log",
+      "context": "backdoor log file",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".repair-run",
+      "context": "script restoring backdoor files and reloading LaunchAgent",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "${HOME}/.zshrc",
+      "context": "zshrc injected with .repair-run execution line",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[[ -x \"$repair\" ]] && \"$repair\" 2>/dev/null",
+      "context": "line appended to .zshrc for persistence",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/osalogging.zip",
+      "context": "default regrab data archive path",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.sn-regrab-active",
+      "context": "regrab status marker file",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.sn-loader-${upload_token}.lock",
+      "context": "lock directory preventing re-execution",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "<app_path>/Contents/Resources/Helpers/KcHelper",
+      "context": "expected helper binary for keychain access feature (absent)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "_kc_grab_storage_item",
+      "context": "fallback function used when KcHelper is missing",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "security set-generic-password-partition-list -a <account_name> -s <service_name> -S <application_groups> -k <keychain_password> <keychain_path>",
+      "context": "modifies keychain partition_id for browser secret access",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Chrome Safe Storage|Chrome|ChromeStorage|apple-tool:,apple:,teamid:EQHXZ8M8AV",
+      "context": "encrypted argument example targeting Chrome secrets",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Brave Safe Storage|Brave|BraveStorage|apple-tool:,apple:,teamid:KL8N8XSYF4",
+      "context": "encrypted argument example targeting Brave secrets",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AGNT1",
+      "context": "magic constant confirming decrypted C2 config",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "BLD-150",
+      "context": "backdoor build number in overlay config",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "LAUNCHER_DEBUG",
+      "context": "environment variable enabling extended backdoor logging",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "sn_relay",
+      "context": "resource used by live_browser command, downloaded if absent",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "BTMNotificationAgent",
+      "context": "killed by .repair-run to suppress LaunchAgent notification",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "NotificationCenter",
+      "context": "killed alongside other notification agents",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "BackgroundTaskManagementAgent",
+      "context": "killed by .repair-run to hide persistence",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "kern.hv_vmm_present",
+      "context": "sysctl parameter used for VM detection",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "machdep.cpu.brand_string",
+      "context": "sysctl parameter used for VM detection",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PT_DENY_ATTACH",
+      "context": "ptrace flag set as anti-debugging",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.sys-<16-digit random value>",
+      "context": "location of unpacked second dropper",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%s/Library/Keychains/login.keychain-db",
+      "context": "snprintf format for keychain path in stealer",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.pkgunpack-$$",
+      "context": "runtime location of downloaded pkgunpack utility",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.45e7b90f.zip",
+      "context": "staging archive path in loader script",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "xattr -cr <app_name>",
+      "context": "loader removes quarantine attributes from bundle",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "zsh -s",
+      "context": "interpreter reads calendar contents line by line from anonymous pipe",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "script_b64",
+      "context": "server response field carrying base64 AppleScript for backdoor",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "deploy_ext",
+      "context": "backdoor command deploying browser extension",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "deploy_ledger",
+      "context": "backdoor command replacing Ledger wallet",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "regrab",
+      "context": "backdoor command re-collecting data into archive",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "live_browser",
+      "context": "backdoor command running sn_relay without AppleScript",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "/tmp directory used for all temporary files and *.lock files",
+      "context": "shared trait across MacSync stages",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://toria.app/",
+      "context": "fake Toria crypto wallet site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://warpcast.asia/Toria.dmg",
+      "context": "malicious DMG download",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://streamyard.appstore.com.mx/installer.sh",
+      "context": "attacker-hosted downloader script",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://slack.apple03cloudstore.com/installer.sh",
+      "context": "attacker-hosted downloader script",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://toria.apple03cloudstore.com/",
+      "context": "fake app distribution domain root",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://waaako.appstore.com.mx/installer.sh",
+      "context": "attacker-hosted downloader script",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://toria.apple03cloudstore.com/e3c1a6b00bc31e14/stage2.enc",
+      "context": "AES-CBC encrypted stage two payload",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://docsend.appstore.com.mx/dcc737d157ef4271/stage2.enc",
+      "context": "encrypted stage two payload",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://docsend.appstore.com.mx/dcc737d157ef4271/CoreUpdate.pkg.enc",
+      "context": "encrypted CoreUpdate payload",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://docsend.appstore.com.mx/dcc737d157ef4271/Helper.pkg.enc",
+      "context": "encrypted Helper payload",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://docsend.appstore.com.mx/pkgunpack",
+      "context": "custom pkgunpack decryptor download",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://caldav.icloud.com/published/2/MTk1NDMwMDMzNTUxOTU0M1aHCZ-nMxiyGzBTzPiodOf44DtKJ6PpjftAG28_ui2NCYMpL_vu4pF4ddsJ8ysg0QI7pR0VEIEbZYdilVZRw08",
+      "context": "public iCloud calendar delivering stage two script",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gateway.icloud.com/caldav/1_MTk1NDMwMDMzNTUxOTU0M0pybtJB186GzhogprwCQUjY3oZNiDFHH8WVo6bmgUtI/attach/4GE4TKNBTGAYDGMZVGUYTSNJUGOAALDAFMDOJBGWNUCYJLZRNDCLCO2YMQ3I64RLGMNXVG3KYBPWQOGYIEI7MPBDDYHECFDYVENTXIYFNDCPOVRMCTYI236RCYZAE63V5U3RTUYGUMO2CO7PKCLWMCXE73M7OPTHSGRWH5DXQ4PCUQU4ELZTLW54JSTK2H7VQ6PD26WOA2R7PPIQ6RTJWDEWP34U3HB4YWMXXC6EJ6PKWILSPYRSDEVY6QGMWSIUN6PR5W35KO3D4QZE7CFPUVBAEKI/Loader.app.tar.gz/YXR0YWNoYXR0YWNoYXR0YRhrE8mQ0E-b_dTUSGStQgTQ0ULFxCanei3Ke-EuEyQL",
+      "context": "iCloud-hosted Loader.app.tar.gz payload",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "docsend.appstore.com.mx",
+      "context": "primary C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "toria.apple03cloudstore.com",
+      "context": "second C2 / payload server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/agent/ping",
+      "context": "backdoor command retrieval endpoint",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/agent/refresh",
+      "context": "token refresh endpoint",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/asset/<upload_id>/init",
+      "context": "creates file on server for upload",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/asset/<upload_id>",
+      "context": "PUT endpoint uploading file",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/agent/<command_status>",
+      "context": "command status telemetry endpoint",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/loader/dek",
+      "context": "endpoint returning wrapped payload key",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/loader/log",
+      "context": "loader logging endpoint",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/asset/${upload_id}/segment/${idx}",
+      "context": "chunked upload PUT endpoint",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/loader/",
+      "context": "directory on C2 holding backdoor executable",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Upload-Token",
+      "context": "required custom header; absent causes C2 error",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-File-Size",
+      "context": "file size header on asset creation",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-File-Sha256",
+      "context": "SHA-256 hash header on asset creation",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Total-Segments",
+      "context": "chunk count header during segmented upload",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "a39d622b89bc3ddd903e9cefd2848d19a039c7d92178969b86f9ecf7ba36df49",
+      "description": "dropper_arm64.tmp Mach-O dropper extracted from DMG, labeled trojan.macsync (1/62 detections)"
+    }
+  ],
+  "file_types": [
+    "macho",
+    "script",
+    "archive"
+  ]
+}

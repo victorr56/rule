@@ -1,0 +1,22 @@
+title: Axios Supply Chain Attack Persistence via Run Key
+id: 5b43063f-3687-43ac-b873-10eb06b7fc61
+status: experimental
+description: Detects persistence mechanism used by the Axios supply chain attack where a Run key named "MicrosoftUpdate" is created to execute a batch script from the ProgramData folder.
+references:
+    - https://www.wiz.io/blog/axios-npm-compromised-in-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1547.001
+    - attack.persistence
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Microsoft\Windows\CurrentVersion\Run\MicrosoftUpdate'
+        Details|endswith: '\ProgramData\system.bat'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

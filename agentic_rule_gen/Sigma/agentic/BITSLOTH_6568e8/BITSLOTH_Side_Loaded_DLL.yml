@@ -1,0 +1,21 @@
+title: BITSLOTH Side-Loaded DLL 'flengine.dll'
+id: 9bb7e30d-ab63-4422-bcf3-cae979a0b021
+status: experimental
+description: Detects the loading of a malicious "flengine.dll" by "FLSengine.exe". This specific side-loading TTP is associated with the BITSLOTH malware, which places its payload in a suspicious "pl studio" directory.
+references:
+    - https://www.elastic.co/security-labs/threat-command/bits-and-bytes-analyzing-bitsloth
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\FLSengine.exe'
+        ImageLoaded|endswith: '\pl studio\flengine.dll'
+    condition: selection
+falsepositives:
+    - Legitimate FL Studio installations should not load modules from this path.
+level: high

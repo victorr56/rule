@@ -1,0 +1,28 @@
+title: CastleLoader Finger.exe Command Execution
+id: 597a7a1c-99f9-46ae-954f-561b369528d2
+status: experimental
+description: Detects the use of a highly obfuscated command line that abuses finger.exe to retrieve and execute commands, a technique used by CastleLoader.
+references:
+    - https://redcanary.com/blog/threat-intelligence/intelligence-insights-july-2026/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1204.004
+    - attack.defense_evasion
+    - attack.t1027
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - 'for /f'
+            - 'skip=8'
+            - 'f^^i^^n^^g^^e^^r'
+            - 'do call %h'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

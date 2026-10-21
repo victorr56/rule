@@ -1,0 +1,26 @@
+title: REF6138 RUDEDEVIL XMRig Cryptomining
+id: fce34c11-923f-42e6-a24a-71dd9b207572
+status: experimental
+description: Detects a specific XMRig command line including a wallet address used by the RUDEDEVIL malware as part of the REF6138 campaign.
+references:
+    - https://www.elastic.co/security-labs/threat-command/betting-on-bots
+author: ioc-yara-daily (agentic)
+date: 2023-10-17
+tags:
+    - attack.resource_hijacking
+    - attack.t1496
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/xmrig'
+        CommandLine|contains|all:
+            - 'stratum+tcp://auto.c3pool.org:19999'
+            - '-u 41qBGWTRXUoUMGXsr78Aie3LYCBSDGZyaQeceMxn11qi9av1adZqsVWCrUwhhwqrt72qTzMbweeqMbA89mnFepja9XERfHL'
+            - '-p R'
+    condition: selection
+falsepositives:
+    - Legitimate cryptomining activities using the same wallet and pool.
+level: high

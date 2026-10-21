@@ -1,0 +1,24 @@
+title: Tycoon 2FA Phishing Domain DNS Query
+id: 67d8d21b-ac45-4235-9614-257a064115f5
+status: experimental
+description: Detects DNS queries for domains known to be used by the Tycoon 2FA Phishing-as-a-Service kit.
+references:
+    - https://www.elastic.co/security-labs/threat-command/tycoon-2fa-aitm-detection-engineering
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'finbank.acsmithmawgroup.com'
+            - 'login-secure-doc-review.cfd'
+            - 'waistaithe.digital'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

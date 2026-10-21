@@ -1,0 +1,30 @@
+title: REVSTEALER C2 And Distribution Domains
+id: 9a6e1919-8692-411a-8c8b-6ef99e072bce
+status: experimental
+description: Detects DNS queries for domains known to be used by the REVSTEALER infostealer for C2 communication and distribution.
+references:
+    - https://www.elastic.co/security-labs/threat-command/revstealer-credential-harvesting-infostealer
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1102
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'monitor5.roast-core85.click'
+            - 'config.hubdisplay.lol'
+            - 'health.journal-metric.lol'
+            - 'metric.gardenpark.click'
+            - 'polygon.iwmukj.xyz'
+            - 'polygon.mnyhgxda.xyz'
+            - 'static4.livelab.one'
+            - 'elitecheatsx.live'
+            - 'resight-cheats.net'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

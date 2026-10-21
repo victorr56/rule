@@ -1,0 +1,28 @@
+title: Lazarus RustyAttr Shell Execution Pattern on macOS
+id: a77660c6-3023-4560-967b-2dd931168f63
+status: experimental
+description: Detects a specific shell command pattern used by the RustyAttr malware where a shell variable is populated by the output of a curl command and then executed via osascript.
+references:
+    - https://www.group-ib.com/blog/stealthy-attributes-of-apt-lazarus/
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.execution
+    - attack.t1059.004
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+            - '/zsh'
+        CommandLine|contains|all:
+            - 'shell=$(curl'
+            - 'osascript -e'
+            - 'do shell script'
+    condition: selection
+falsepositives:
+    - Highly unlikely, but custom administration scripts might use a similar construct to fetch and execute commands.
+level: high

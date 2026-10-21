@@ -1,0 +1,25 @@
+title: CikaBika Reconnaissance Commands from Microsoft Edge
+id: 111a681c-d648-4384-954f-561b8f5a5e30
+status: experimental
+description: Detects the execution of reconnaissance commands ('tasklist.exe', 'ipconfig.exe') originating from a Microsoft Edge parent process, which is indicative of the CikaBika RAT executing commands.
+references:
+    - https://www.darktrace.com/blog/unmasking-vo1d-inside-darktraces-botnet-detection
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.discovery
+    - attack.t1057
+    - attack.t1016
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\msedge.exe'
+        Image|endswith:
+            - '\tasklist.exe'
+            - '\ipconfig.exe'
+    condition: selection
+falsepositives:
+    - Legitimate browser extensions with native messaging components could potentially spawn system commands, but it is highly unusual for them to spawn 'tasklist.exe' or 'ipconfig.exe'.
+level: high

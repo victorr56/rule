@@ -1,0 +1,120 @@
+{
+  "malware_family": "XMRig",
+  "threat_actor": "",
+  "platforms": [
+    "linux",
+    "web"
+  ],
+  "summary": "GreyNoise telemetry shows exploitation of React Server Components CVE-2025-55182 (CVSS 10.0) consolidating onto two source IPs, 193.142.147.209 and 87.121.84.24, which generated 56% of 1.4M attempts in seven days. One operator opens reverse shells to port 12323, while the other drops XMRig cryptominer binaries from staging servers 205.185.127.97 and 176.65.132.224. Detection should focus on POST requests with unusual Next-Action headers and traffic to the listed scanner and staging infrastructure.",
+  "mitre_techniques": [
+    "T1190",
+    "T1496"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "process_name",
+      "value": "XMRig",
+      "context": "Cryptominer binary retrieved from staging servers after successful exploitation",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "193.142.147.209",
+      "context": "Top scanner, reverse shell operator, 488,342 sessions (34%)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "87.121.84.24",
+      "context": "Second dominant scanner, XMRig cryptominer operator, 311,484 sessions (22%)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "205.185.127.97",
+      "context": "XMRig staging server; hosted attacker domains since 2020",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "176.65.132.224",
+      "context": "XMRig staging server serving identical payloads",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "87.121.84.25",
+      "context": "Adjacent IP in scanner /24 serving Mirai/Gafgyt for MIPS/ARM",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "87.121.84.45",
+      "context": "Adjacent IP in scanner /24 serving Mirai/Gafgyt for MIPS/ARM",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mased.top",
+      "context": "Attacker-controlled subdomains on staging server since Sept 2020",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mercarios.buzz",
+      "context": "Attacker-controlled domain on staging server since Nov 2021",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bt2.radiology.link",
+      "context": "Attacker-controlled domain on staging server since Jan 2022",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Next-Action",
+      "context": "Unusual Next-Action header in POST requests to detect exploitation",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "12323",
+      "context": "Reverse shell port used by 193.142.147.209 back to scanner IP",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "elf",
+    "script"
+  ]
+}

@@ -1,0 +1,24 @@
+title: Potemkin Loader Persistence Via RunSearch Run Key
+id: a80352ef-3e3c-41c3-8f08-3335553e110d
+status: experimental
+description: Detects the creation of a persistence registry key by the Potemkin loader. The malware adds a 'RunSearch' value to the Run key, pointing to its executable in a fake 'Microsoft\RunSearch' folder.
+references:
+    - https://www.huntress.com/blog/potemkin-loader-rmmproject-clickfix-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\RunSearch'
+        Details|contains|all:
+            - '\AppData\Local\Microsoft\RunSearch\'
+            - 'RunSearch.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

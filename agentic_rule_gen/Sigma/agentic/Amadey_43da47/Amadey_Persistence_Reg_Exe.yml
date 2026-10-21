@@ -1,0 +1,25 @@
+title: Amadey Persistence Using User Shell Folders Via Reg.exe
+id: 59a930fd-a764-46c5-afc7-2c9e2b170c0c
+status: experimental
+description: Detects a command-line used by Amadey malware to establish persistence by modifying the 'Startup' value in the 'User Shell Folders' registry key.
+references:
+    - http://nao-sec.org/2019/04/Analyzing-amadey.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\reg.exe'
+        CommandLine|contains|all:
+            - 'ADD'
+            - 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders'
+            - '/v Startup'
+    condition: selection
+falsepositives:
+    - Legitimate scripts that modify this startup key, although uncommon via reg.exe.
+level: high

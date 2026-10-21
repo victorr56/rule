@@ -1,0 +1,25 @@
+title: PAYLOAD Ransomware Logon Banner Set Via GPO
+id: 9a7b1c4d-6d5f-4a0b-8d1e-8e3f9c6c2a1e
+status: experimental
+description: Detects the registry modification that sets the logon banner with text characteristic of the PAYLOAD ransomware. This is an effect of the malicious GPO application on endpoints.
+references:
+    - https://securelist.com/tr/payload-ransomware-via-group-policy/121335/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.impact
+    - attack.t1491.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_caption:
+        TargetObject|endswith: '\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\legalnoticecaption'
+        Details: 'Welcome to Payload!'
+    selection_text:
+        TargetObject|endswith: '\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\legalnoticetext'
+        Details|startswith: 'The next 72 hours will determine certain factors'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

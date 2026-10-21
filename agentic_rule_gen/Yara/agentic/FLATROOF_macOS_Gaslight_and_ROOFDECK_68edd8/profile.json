@@ -1,0 +1,681 @@
+{
+  "malware_family": "FLATROOF (macOS.Gaslight) and ROOFDECK",
+  "threat_actor": "TraderTraitor (Lazarus/DPRK; aka UNC4899, PUKCHONG, Jade Sleet)",
+  "platforms": [
+    "macos"
+  ],
+  "summary": "TraderTraitor used fake job-interview coding projects whose weaponized .terraform.lock.hcl files point at typosquatted Terraform provider registries to deliver the ARM64 Rust macOS backdoors FLATROOF (SystemUpdate) and ROOFDECK (iSync), later replaced by a stripped ROOFDECK named loginwindow. FLATROOF harvests browser, terminal, system and keychain data and exfiltrates over Telegram, while ROOFDECK verifies signed commands from a hardcoded HTTPS /app_version endpoint using an embedded RSA public key and resolves C2 via Nostr dead-drop lookups. Detections can anchor on the ~/Library/com.apple.* implant paths, the --type=renderer LaunchAgent masquerade, the pinned mkcert certificate metadata and the custom provider domains.",
+  "mitre_techniques": [
+    "T1059.004",
+    "T1070.004",
+    "T1071.001",
+    "T1082",
+    "T1115",
+    "T1547.001",
+    "T1553.001",
+    "T1555.001",
+    "T1555.003",
+    "T1567"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "~/Library/com.apple.iTunesCloud/SystemUpdate",
+      "context": "FLATROOF implant deployed under iTunesCloud masquerade name",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/com.apple.internal.ck/iSync",
+      "context": "ROOFDECK implant filepath",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/com.apple.appleaccountd/loginwindow",
+      "context": "Stripped second-stage ROOFDECK binary path",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/.config/.repl_history",
+      "context": "ROOFDECK local config storing C2 URLs and keys",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "/private/tmp/.pipe-airway",
+      "context": "ROOFDECK IPC pipe (pipe-airway WebSocket transport)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$TMPDIR/tmp*.lock",
+      "context": "FLATROOF lock file",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/DevOps-Automation/cloudshield",
+      "context": "Malicious workspace opened in Cursor before implant launch",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/LaunchAgents/loginwindow.plist",
+      "context": "ROOFDECK persistence plist",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "LaunchAgents ~/Library/LaunchAgents/*.plist with Label prefix com., ProgramArguments containing --type=renderer, RunAtLoad=true",
+      "context": "ROOFDECK Chrome-renderer persistence masquerade",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "xattr -rd com.apple.quarantine .../com.apple.internal.ck/iSync",
+      "context": "FLATROOF strips quarantine attribute from ROOFDECK (Gatekeeper bypass)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "chmod +x .../com.apple.internal.ck/iSync",
+      "context": "FLATROOF sets executable bit on ROOFDECK",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "nohup .../com.apple.iTunesCloud/SystemUpdate --type=renderer",
+      "context": "FLATROOF launch observed as Cursor child process",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "nohup .../com.apple.internal.ck/iSync --type=renderer",
+      "context": "ROOFDECK launch observed as Cursor child process",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "bash --init-file .../shellIntegration-bash.sh",
+      "context": "Cursor integrated terminal shell integration",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "zsh -l",
+      "context": "Cursor integrated terminal login shell spawning Node hosts",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rm -f",
+      "context": "loginwindow deletes FLATROOF and ROOFDECK binaries anti-forensically",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "SystemUpdate",
+      "context": "FLATROOF process name masquerading as Apple update",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "iSync",
+      "context": "ROOFDECK process name masquerading as Apple sync",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "loginwindow",
+      "context": "Stripped ROOFDECK process masquerading as macOS login window",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "--type=renderer",
+      "context": "Hardcoded parameter making implant look like Chrome renderer",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Screenshot command is not implemented yet.",
+      "context": "Literal returned by ROOFDECK screenshot handler",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-----BEGIN RSA PUBLIC KEY-----\nMIIBCgKCAQEAzan/EObUVxXNfPHdkDyCVR0AC9apleciK9ZQw+neWo6q+wvAhnLp\nPe7FZLomuwntUgI3afLDblgw9t19Kh7w/8CVwFncxh4PdqtdYno4teQ6fDLKXSWa\nZBG7zZ9R22jxPpiY70XKilXJuds34q7pfzVfbLvLTmTWyTtcyrOnRSCOwEHP/gHX\n0gX+8sdX7go6O37WwzB4zNvThS+E7hG+fVfrgEaH7IUi3RY9esuBS50UomfYefO3\ndK1aDMDWIwVj1skacPR9LazEc6PSGjSXxzI/N2xcpP9QKXn/Pk6r9fBzudhBL3Mw\nvWyNi03JbZGtGFiy6Wai6heJqgY7pF1PAQIDAQAB\n-----END RSA PUBLIC KEY-----",
+      "context": "RSA public key embedded in ROOFDECK verifying signed C2 commands",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "O=mkcert development CA, OU=ub@ub-Standard-PC-Q35-ICH9-2009, CN=mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "context": "Self-signed pinned TLS certificate embedded in ROOFDECK",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "mkcert",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "1cd6d13ff15adbf7a42025d10ec99b4a",
+      "context": "Serial of mkcert-generated certificate pinned in ROOFDECK",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "nostr_public_keys",
+      "context": "Config field holding operator Nostr pubkeys for dead-drop lookup",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "pastebin_key",
+      "context": "Config field for Pastebin-style dead-drop resolver",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "recovery_url",
+      "context": "Config field for fallback/recovery C2 endpoint",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "rsa_private_key",
+      "context": "Config field holding an agent-provisioned RSA private key",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "rssh",
+      "context": "ROOFDECK command starting a stateful reverse shell",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "clipboard",
+      "context": "ROOFDECK command reading/writing the macOS clipboard",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".terraform.lock.hcl",
+      "context": "Weaponized Terraform lock file in fake interview repositories",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "02df07a173ab03b82a4fb6a08973fff8b1467f28",
+      "context": "SHA-1 of FLATROOF (SystemUpdate) binary",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "c491d477dbe0ae04e9aed9dbe237144c03f73ec4",
+      "context": "SHA-1 of ROOFDECK (iSync) binary",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "5728b11d30586bbfc1d8bd12df1c722a06e767a2",
+      "context": "SHA-1 of stripped ROOFDECK (loginwindow) binary",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "technicais.sytes.net",
+      "context": "FLATROOF C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "storage.hubpage.cloud",
+      "context": "ROOFDECK C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "grenight.com",
+      "context": "ROOFDECK (loginwindow) C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "176.97.114.232",
+      "context": "FLATROOF C2 IP (technicais.sytes.net)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.11.59.140",
+      "context": "ROOFDECK C2 IP (storage.hubpage.cloud)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "85.137.56.245",
+      "context": "ROOFDECK C2 IP (grenight.com)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "85.137.56.10",
+      "context": "ROOFDECK third-stage staging server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/app_version",
+      "context": "Hardcoded ROOFDECK HTTPS tasking endpoint",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://api.nostr.watch/v1/online",
+      "context": "Pulls live Nostr relays for operator profile discovery",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "wss://relay.damus.io",
+      "context": "Hardcoded Nostr relay for operator profile discovery",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "wss://nos.lol",
+      "context": "Hardcoded Nostr relay for operator profile discovery",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "wss://nostr.mom",
+      "context": "Hardcoded Nostr relay for operator profile discovery",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "wss://relay.snort.social",
+      "context": "Hardcoded Nostr relay for operator profile discovery",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "wss://offchain.pub",
+      "context": "Hardcoded Nostr relay for operator profile discovery",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "wss://relay.nostr.band",
+      "context": "Hardcoded Nostr relay for operator profile discovery",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "wss://nostr.oxtr.dev",
+      "context": "Hardcoded Nostr relay for operator profile discovery",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "wss://nostr.wine",
+      "context": "Hardcoded Nostr relay for operator profile discovery",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "registry.hashicorp-aws.com",
+      "context": "Attacker Terraform provider registry in weaponized lockfile",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "registry.hashicorp-aws.io",
+      "context": "Attacker Terraform provider registry in weaponized lockfile",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "registry.hashicorp-terraform.io",
+      "context": "Attacker Terraform provider registry in weaponized lockfile",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "185-66-91-112.cprapid.com",
+      "context": "Domain using pinned certificate with CN mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "213-111-146-132.cprapid.com",
+      "context": "Domain using pinned certificate with CN mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "anesthesiaschool.com",
+      "context": "Domain using pinned certificate with CN mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "app.heyhay.online",
+      "context": "Domain using pinned certificate with CN mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dela.servehttp.com",
+      "context": "Domain using pinned certificate with CN mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "galaxy-royal.online",
+      "context": "Domain using pinned certificate with CN mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "game.galaxy-royal.online",
+      "context": "Domain using pinned certificate with CN mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "heyhay.online",
+      "context": "Domain using pinned certificate with CN mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mactroubleshoots.pro",
+      "context": "Domain using pinned certificate with CN mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mx01.galaxy-royal.online",
+      "context": "Domain using pinned certificate with CN mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ns4.galaxy-royal.online",
+      "context": "Domain using pinned certificate with CN mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tinklify.com",
+      "context": "Domain using pinned certificate with CN mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "update.heyhay.online",
+      "context": "Domain using pinned certificate with CN mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "vaimage.com",
+      "context": "Domain using pinned certificate with CN mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wss.sytes.net",
+      "context": "Domain using pinned certificate with CN mkcert ub@ub-Standard-PC-Q35-ICH9-2009",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/exubient0/terraform-candidate-repo/blob/main/.terraform.lock.hcl",
+      "context": "Weaponized Terraform lock file in fake interview repo",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/radupopa369/gtn-candidate-repo/blob/feat/three-tier-infrastructure/live/.terraform.lock.hcl",
+      "context": "Weaponized Terraform lock file in fake interview repo",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/chainstacker/Northwind-IAC/blob/930e5be6d34511bedbfb0d762bd08fffe64e9630/aws/us-east-1/prod/northwind/global/vpc/.terraform.lock.hcl",
+      "context": "Weaponized Terraform lock file in fake interview repo",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/Steed-LHV/assessment",
+      "context": "Assessment repo referencing weaponized provider domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "macho",
+    "script"
+  ]
+}

@@ -1,0 +1,31 @@
+title: Midnight Blizzard CaptiveCrunch C2 and Staging IP Connections
+id: f585a06c-a618-471d-a02b-2877e8166c43
+status: experimental
+description: Detects network connections to IP addresses associated with Midnight Blizzard's CaptiveCrunch C2, staging, and phishing infrastructure.
+references:
+    - https://www.reversinglabs.com/blog/how-rl-mapped-a-midnight-blizzard-linked-campaign-from-two-hashes
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '213.145.86.112'
+            - '104.145.210.184'
+            - '31.57.243.154'
+            - '104.194.151.133'
+            - '104.194.159.55'
+            - '38.146.28.75'
+            - '107.189.26.194'
+            - '104.194.159.150'
+            - '38.146.28.132'
+            - '192.142.52.31'
+    condition: selection
+falsepositives:
+    - Unlikely, but IPs can be reallocated over time.
+level: medium

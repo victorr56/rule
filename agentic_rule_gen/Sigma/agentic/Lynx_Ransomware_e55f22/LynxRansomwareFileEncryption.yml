@@ -1,0 +1,22 @@
+title: Lynx Ransomware File Encryption
+id: 57bfb1d8-305b-426c-9477-aa97171d1844
+status: experimental
+description: Detects the creation of the Lynx Ransomware ransom note "ReadMe_LYNX.txt" by the ransomware executable. This activity is a strong indicator of the file encryption phase of the attack.
+references:
+    - https://www.darktrace.com/blog/new-threat-on-the-prowl-investigating-lynx-ransomware
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.impact
+    - attack.t1486
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\LYNX.exe'
+        TargetFilename|endswith: '\ReadMe_LYNX.txt'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: critical

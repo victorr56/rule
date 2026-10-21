@@ -1,0 +1,24 @@
+title: GHOSTENGINE Vulnerable Driver Drop
+id: ffb048a9-4b8c-40b9-aa2b-b892ed48c8b4
+status: experimental
+description: Detects Tiworker.exe writing known vulnerable drivers used by GHOSTENGINE to disable security software.
+references:
+    - https://www.elastic.co/security-labs/threat-command/invisible-miners-unveiling-ghostengine
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\Tiworker.exe'
+        TargetFilename|endswith:
+            - '\Windows\System32\drivers\aswArPots.sys'
+            - '\Windows\System32\drivers\IObitUnlockers.sys'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

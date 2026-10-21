@@ -1,0 +1,25 @@
+title: FrostyNeighbor PicassoLoader Payload Drop in ProgramData
+id: 489d846b-e3c3-424b-b0b2-30114f15d031
+status: experimental
+description: Detects the creation of PicassoLoader/Cobalt Strike components 'ViberPC.exe' or 'ViberPC.dll' in the 'C:\ProgramData' directory.
+references:
+    - https://www.welivesecurity.com/en/eset-research/frostyneighbor-fresh-mischief-digital-shenanigans/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\ProgramData\'
+        TargetFilename|endswith:
+            - '\ViberPC.dll'
+            - '\ViberPC.exe'
+    condition: selection
+falsepositives:
+    - Legitimate 'Viber' software is unlikely to write files with these names directly into C:\ProgramData.
+level: high

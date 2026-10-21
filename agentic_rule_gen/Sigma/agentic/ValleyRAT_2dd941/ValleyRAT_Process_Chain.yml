@@ -1,0 +1,22 @@
+title: Silver Fox/ValleyRAT Sideloading Process Chain
+id: b4133499-c98f-4ed3-bd54-d8350170a41f
+status: experimental
+description: Detects the specific process chain where QnWallpaper.exe launches QnwPlayer.exe, as observed in ValleyRAT infections leveraging a malicious libcef.dll for sideloading.
+references:
+    - https://securelist.com/valleyrat-backdoor-adware/121175/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.hijack_execution_flow
+    - attack.t1574.002
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        ParentImage|endswith: '\QnWallpaper.exe'
+        Image|endswith: '\QnwPlayer.exe'
+    condition: selection
+falsepositives:
+    - Unlikely. This process relationship is specific to the QN Wallpaper software and its malicious exploitation.
+level: high

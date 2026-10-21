@@ -1,0 +1,25 @@
+title: TELEPUZ Self-Deletion Command
+id: b12d93e1-7e3f-42a1-b847-a9a3b680d22c
+status: experimental
+description: Detects a command line pattern used by TELEPUZ to delete its initial payload after a delay, using the ping command for a timeout.
+references:
+    - https://www.elastic.co/security-labs/threat-command/telepuz-maas-malware-clickfix
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1070.004
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - 'ping 127.0.0.1'
+            - '& del'
+            - 'telepuz.dll'
+    condition: selection
+falsepositives:
+    - Unlikely, but a different file could be used by an administrator for a similar purpose.
+level: medium

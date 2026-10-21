@@ -1,0 +1,23 @@
+title: Suspicious PowerShell Execution by MSP360 RMM Agent
+id: 9b2d8d8e-7e9e-4a6a-8b8a-9c9d9e9f9a9b
+status: experimental
+description: Detects the MSP360 RMM Agent process ('RMM.Agent.exe') spawning a PowerShell process. This was observed in a campaign where attackers used a legitimate MSP360 RMM installer to gain initial access, then used the agent to download and install a second RMM tool (ScreenConnect) via PowerShell.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/09/29/phishing-abuses-rmm-tools-persistent-access/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1219
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\RMM.Agent.exe'
+        Image|endswith: '\powershell.exe'
+    condition: selection
+falsepositives:
+    - Legitimate administrative activity using MSP360 RMM to run PowerShell scripts.
+level: high

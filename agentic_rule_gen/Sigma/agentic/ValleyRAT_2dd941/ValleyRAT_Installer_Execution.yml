@@ -1,0 +1,25 @@
+title: Silver Fox/ValleyRAT Decoy Installer Execution
+id: 541f5a50-6d33-40e1-a083-d9d1b09bce91
+status: experimental
+description: Detects the execution of decoy installers used in the ValleyRAT campaign, which masquerade as installers for DingTalk, Google Chrome, or Tencent Meeting.
+references:
+    - https://securelist.com/valleyrat-backdoor-adware/121175/
+author: ioc-yara-daily (agentic)
+date: 2024-06-13
+tags:
+    - attack.user_execution
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - 'FS_SETUP_DD_173.exe'
+            - 'FS_SETUP_GG_173.exe'
+            - 'FS_SETUP_HY_173.exe'
+        OriginalFileName: 'Setup.exe'
+    condition: selection
+falsepositives:
+    - Legitimate installers using these highly specific filenames.
+level: high

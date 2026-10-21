@@ -1,0 +1,39 @@
+title: SparroWocky C2 Communication
+id: 6e0e64c2-9e32-4752-b13c-74a49c95d901
+status: experimental
+description: Detects network connections to IP addresses known to be used by the SparroWocky backdoor for C2 communication.
+references:
+    - https://www.welivesecurity.com/en/eset-research/beware-sparrowock-backdoor-bites-commands-catch/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1095
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '216.238.110.120'
+            - '38.54.57.17'
+            - '38.60.197.55'
+            - '38.60.209.106'
+            - '38.60.224.51'
+            - '38.60.224.235'
+            - '38.60.241.65'
+            - '38.60.241.127'
+            - '38.60.241.193'
+            - '77.111.101.40'
+            - '91.148.134.115'
+            - '130.94.101.82'
+            - '140.99.164.199'
+            - '149.104.87.228'
+            - '149.104.90.203'
+            - '216.238.92.2'
+            - '216.238.105.53'
+            - '216.238.121.164'
+    condition: selection
+falsepositives:
+    - These IPs are dedicated to this actor, but infrastructure can be volatile or re-assigned over time.
+level: high

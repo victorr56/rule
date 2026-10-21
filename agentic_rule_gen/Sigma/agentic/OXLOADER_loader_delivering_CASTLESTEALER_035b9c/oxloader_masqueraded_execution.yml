@@ -1,0 +1,24 @@
+title: OXLOADER Masquerading as VAudio Interop.exe
+id: f48b871c-3b7c-4740-9a2d-45da58c0c455
+status: experimental
+description: |
+  Detects the execution of "Interop.exe" from a suspicious "VAudio" path with the specific
+  command-line argument "/delayfix", as observed with OXLOADER malware.
+references:
+  - https://www.elastic.co/security-labs/threat-command/oxloader-malware-loader-infostealer
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.defense_evasion
+  - attack.t1036.005
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\Common Files\VAudio\Interop.exe'
+    CommandLine|contains: '/delayfix'
+  condition: selection
+falsepositives:
+  - Unlikely, as the combination of path, filename, and argument is highly specific.
+level: high

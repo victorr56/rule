@@ -1,0 +1,30 @@
+title: EtherRAT/TONResolver Blockchain C2 Resolver Lookup
+id: 5747447e-8ff6-42d4-a16f-fcf2e260902c
+status: experimental
+description: Detects HTTP requests containing specific smart contract addresses used by EtherRAT and TONResolver to resolve their C2 server. This is a core behavior of these malware families.
+references:
+    - https://cofense.com/blog/from-guest-complaints-to-malware-blockchain-abuse-targets-hotels
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1102.001
+logsource:
+    category: proxy
+detection:
+    selection_eth:
+        HttpMethod: 'POST'
+        RequestBody|contains|all:
+            - 'eth_call'
+            - '0x277852e1C349b03c79E348018a8391bD21C412E8'
+            - '0x7c2d825c'  # keccak256('getC2()')
+    selection_ton:
+        HttpMethod: 'POST'
+        Url.Path|endswith: '/api/v2/runGetMethod'
+        RequestBody|contains|all:
+            - '0:c66119f0e5635c4380441d7a79baf0c02a0ab7ea6cd78de06507fc5dc2c1a5d9'
+            - 'get_c2_url'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely.
+level: critical

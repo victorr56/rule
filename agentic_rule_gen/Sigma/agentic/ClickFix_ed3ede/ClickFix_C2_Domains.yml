@@ -1,0 +1,24 @@
+title: ClickFix C2 Domains
+id: a2ac6a98-8fa8-485f-a39c-48c9038d17b8
+status: experimental
+description: Detects DNS queries for domains known to be used as C2 infrastructure in ClickFix campaigns.
+references:
+    - https://www.darktrace.com/blog/unpacking-clickfix-darktraces-detection-of-a-prolific-social-engineering-tactic
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: any
+detection:
+    selection:
+        QueryName:
+            - 'rkuagqnmnypetvf.top'
+            - 'tlgrm-redirect.icu'
+            - 'diagnostics.medgenome.com' # Compromised
+    condition: selection
+falsepositives:
+    - Legitimate traffic to the compromised domain 'diagnostics.medgenome.com' if the site has been cleaned.
+level: high

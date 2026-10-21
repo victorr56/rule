@@ -1,0 +1,26 @@
+title: Toy Ghouls Bird Agent Registry Activity
+id: af515e12-d021-4f93-b6f1-a3f2cc81f5c6
+status: experimental
+description: |
+    Detects the creation of specific registry keys used by the Element version of the Bird Agent backdoor to store its sealed configuration or metrics interval.
+references:
+    - https://securelist.com/toy-ghouls-new-hivemq-and-element-backdoors/121270/
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.persistence
+    - attack.defense_evasion
+    - attack.t1112
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        Image: 'C:\Users\Public\element.exe'
+        TargetObject|endswith:
+            - '\Software\synapse\Config\SealedConfig'
+            - '\Software\SynapseAgent\metrics_interval'
+    condition: selection
+falsepositives:
+    - Legitimate Element messenger application activity. However, it is not expected to run from 'C:\Users\Public\element.exe'.
+level: high

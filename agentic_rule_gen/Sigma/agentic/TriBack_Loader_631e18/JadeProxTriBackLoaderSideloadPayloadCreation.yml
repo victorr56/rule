@@ -1,0 +1,25 @@
+title: JadeProx TriBack Loader Sideload Payload Creation
+id: 5743a6d7-e2fe-4be1-953e-acfe23d24022
+status: experimental
+description: Detects the creation of an encrypted payload file (.dat or .log) by ServiceHub.DataWarehouseHost.exe, which is a characteristic of the TriBack loader's DLL sideloading routine.
+references:
+    - https://www.group-ib.com/blog/jadeprox-china-nexus-triback-loader/
+author: ioc-yara-daily (agentic)
+date: 2023-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1574.001
+    - attack.t1140
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\ServiceHub.DataWarehouseHost.exe'
+        TargetFilename|endswith:
+            - '\ServiceHub.DataWarehouseHost.exe.dat'
+            - '\ServiceHub.DataWarehouseHost.exe.log'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

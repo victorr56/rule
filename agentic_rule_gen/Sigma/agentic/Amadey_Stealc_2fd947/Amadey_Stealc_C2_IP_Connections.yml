@@ -1,0 +1,36 @@
+title: Amadey and Stealc C2 IP Communication
+id: 3c6b29f9-673d-4299-880c-7b0687707e40
+status: experimental
+description: Detects network connections to IP addresses known to be used as C2 servers for Amadey and Stealc malware.
+references:
+    - https://www.welivesecurity.com/en/eset-research/eset-takes-part-operation-endgame-disrupt-amadey-stealc/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '62.60.226.159'
+            - '64.188.91.237'
+            - '94.154.35.25'
+            - '95.85.238.4'
+            - '176.111.174.140'
+            - '176.124.199.207'
+            - '193.156.1.16'
+            - '194.26.192.191'
+            - '196.251.107.130'
+            - '213.209.150.166'
+            - '185.208.158.116'
+            - '152.89.198.124'
+            - '185.156.72.96'
+            - '78.46.242.112'
+            - '178.16.53.7'
+    condition: selection
+falsepositives:
+    - Connections to these IPs from legitimate scanners or security researchers.
+level: high

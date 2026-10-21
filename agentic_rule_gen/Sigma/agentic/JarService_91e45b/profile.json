@@ -1,0 +1,529 @@
+{
+  "malware_family": "JarService",
+  "threat_actor": "MoYu Group",
+  "platforms": [
+    "android"
+  ],
+  "summary": "A multi-stage Android malware chain (JarService dropper, loader, clicker/reverse-proxy loader) delivered to DoFun automotive head units through the legitimate TWCore updater (com.tw.core) and its MQTT-driven APK installer. The final stage installs the \"zhima\" reverse-proxy module to build a proxy botnet and perform ad fraud, with configuration and commands pulled from C2 JSON APIs. Kaspersky attributes the campaign with high confidence to the MoYu Group, an actor linked to the BADBOX botnet.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/push/apk/",
+      "context": "TWCore (com.tw.core.g.c) directory for downloading APKs to install",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "installNotExists",
+      "context": "TWCore MQTT flag; when true, apps not yet on device are installed",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AppUpgradeMessageReceiv",
+      "context": "TWCore log tag in the upgrade message handler",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "设备未安装对应应用, return",
+      "context": "TWCore log when the target app is not installed (report code 107)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "本地有新版本, return",
+      "context": "TWCore log when local app version is newer (report code 104)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "mosdk-host-loader",
+      "context": "Thread name created by the stage 2 loader; ties activity to MoYu",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "AdmoyuService",
+      "context": "Service in com.abc.nexus that launches a JarService-like dropper",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "com.tw.core",
+      "context": "Package name that installed the malware on head units",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "com.tw.jar1",
+      "context": "packageName the stage 2 loader reports to its C2",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "com.tw.jar",
+      "context": "Package of the loader stage in the infection scheme",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "com.abc.nexus",
+      "context": "App on TV set-top boxes containing moYu malicious components",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "com.c.j.qbh",
+      "context": "Class whose wa() method is the stage 2 payload entry point",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "com.ast.sdk.BillingMain",
+      "context": "Stage 3 payload entry point class (init method)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "com.miyc.transfer.Client",
+      "context": "className entry point of the zhima reverse-proxy module",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "byteArrayOutputStream.write(bArr[i][i2] ^ (30 - i))",
+      "context": "JarService encrypted-block XOR routine, 30-block loop, linear key",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "arr_b[v2] = (byte)(arr_b[v2] ^ ((int)(f * 100.0f)))",
+      "context": "Stage 3 payload XOR decryption using float-derived key",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "type = ",
+      "context": "Log string in the stage 3 payload decryption routine",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\\{\\{([^\\}]*)\\}\\}",
+      "context": "Pattern.compile regex parsing {{...}} placeholders in C2 commands",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "loadlib2",
+      "context": "C2 command that downloads and executes payloads (zhima)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "loadlib",
+      "context": "C2 command name, not fully implemented at publication",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "loadlib3",
+      "context": "C2 command name, not fully implemented at publication",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "deeplink",
+      "context": "C2 command name opening a resource in the browser",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "traceroute",
+      "context": "C2 command name for ICMP availability checks",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "productId",
+      "context": "C2 command identifier mapped to serialized JSON in SharedPreferences",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "tagName",
+      "context": "C2 field holding the command name",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "dexUrl",
+      "context": "C2 response field with the next-stage payload download link",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "configVersion",
+      "context": "C2 configuration version field returned to the clicker",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "de77c3303e93c9450424759f1741441c",
+      "context": "MD5 of the zhima payload (sh65.io) in the loadlib2 command",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "md5",
+      "hash_value": "de77c3303e93c9450424759f1741441c"
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "cardoor.cn",
+      "context": "Subdomain hosts the MQTT broker sending APK install messages to TWCore",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://ovcloudcontrol.cdn.cardoor.cn/upgrade/2026-06-08/bd80bd3c3d0e4bf6b5b4a825650d01f5.apk",
+      "context": "Address used to download JarService dropper",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://ovcloudcontrol.cdn.cardoor.cn/upgrade/2025-06-10/fe71af9ecf174de48d2b2ccc2c15fb04.apk",
+      "context": "Address used to download JarService dropper",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://ovcloudcontrol.cdn.cardoor.cn/upgrade/2024-11-07/fa831c3c23824b99871163387bcda7ad.apk",
+      "context": "Address used to download JarService dropper",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "144.217.243.201",
+      "context": "Host of stage 3 dex and zhima payload downloads (/vr34der34/)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://144.217.243.201/vr34der34/dex3.68.png",
+      "context": "dexUrl returned by C2 for the stage 3 payload",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://144.217.243.201/vr34der34/sh65.io",
+      "context": "zhima reverse-proxy module downloaded via loadlib2",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "107.151.248.132",
+      "context": "Proxy address parameter passed to the zhima module",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "128.14.210.58",
+      "context": "zhima C2; admin.uipoxy.com resolves to it",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cpc/api/task",
+      "context": "C2 endpoint polled every 90 minutes for config/tasks",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cpc/api/report",
+      "context": "reportApi endpoint in the C2 configuration",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cpc/api/xml",
+      "context": "GET endpoint returning command contents for unknown productIds",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kshahnd.sbs",
+      "context": "C2 host (t2/a2 subdomains) in returned configuration",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mdsjhd.sbs",
+      "context": "C2 host (t2/a2 subdomains) in returned configuration",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "nmnsny.sbs",
+      "context": "C2 host (t2/a2 subdomains, http and https) in configuration",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kookjar.com",
+      "context": "Target of the http C2 command (api subdomain)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://api.kookjar.com/sayhi?channel=daihai&uuid={get_uuid_10}",
+      "context": "URL in C2 command productId 3505 (tagName http)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "admin.uipoxy.com",
+      "context": "Hosts the zhima reverse-proxy admin panel",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://admin.uipoxy.com/proxy/u/login",
+      "context": "zhima admin panel login page",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/proxy/u/login",
+      "context": "Shared login path across MoYu-linked proxy panels",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/proxy/register?channelKey=<invitation code>",
+      "context": "Shared signup path using invitation code",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pxyedge.com",
+      "context": "Hosts terms/privacy links on the operator registration page",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "proxyforu.com",
+      "context": "Residential-proxy vendor named in registration page copyright string",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "xmsae.sbs",
+      "context": "IOC domain associated with the campaign",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ishano456.sbs",
+      "context": "IOC domain associated with the campaign",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "xshaon123.sbs",
+      "context": "IOC domain associated with the campaign",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ty54fgd435.my",
+      "context": "IOC domain associated with the campaign",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ue886578433.online",
+      "context": "IOC domain associated with the campaign",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ty4523.space",
+      "context": "IOC domain associated with the campaign",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "apk"
+  ]
+}

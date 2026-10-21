@@ -1,0 +1,22 @@
+title: Inferno Drainer Malicious Script 'wallet-connect-v4.js'
+id: f487a552-6d45-420a-8c54-8e10ff4a9a08
+status: experimental
+description: Detects web requests for 'wallet-connect-v4.js', a script file associated with the Inferno Drainer phishing kit. This detection is narrowed to domains ending in the .io TLD, a pattern observed across multiple domains used by this threat actor.
+references:
+    - https://www.group-ib.com/blog/declaration-trap/
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|endswith: '/wallet-connect-v4.js'
+        DestinationHostname|endswith: '.io'
+    condition: selection
+falsepositives:
+    - Legitimate Web3 applications hosted on .io domains that use a file named 'wallet-connect-v4.js'.
+level: medium

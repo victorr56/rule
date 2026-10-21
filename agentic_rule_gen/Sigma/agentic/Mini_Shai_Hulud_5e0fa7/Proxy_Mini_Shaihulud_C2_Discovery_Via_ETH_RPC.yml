@@ -1,0 +1,24 @@
+title: Mini Shai-Hulud C2 Discovery via Ethereum RPC
+id: 21e86971-d602-4ab8-85e8-54c330c6a1e3
+status: experimental
+description: Detects HTTP POST requests characteristic of Mini Shai-Hulud malware querying an Ethereum smart contract to resolve its C2 address. It looks for the specific contract name and RPC method in the POST body, combined with the Bun user agent.
+references:
+    - https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1102
+logsource:
+    category: proxy
+detection:
+    selection:
+        cs-method: 'POST'
+        PostData|contains|all:
+            - 'eth_call'
+            - 'StringListStore'
+        UserAgent|startswith: 'Bun/'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

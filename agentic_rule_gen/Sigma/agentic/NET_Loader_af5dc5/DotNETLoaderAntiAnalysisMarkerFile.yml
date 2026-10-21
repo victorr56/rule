@@ -1,0 +1,26 @@
+title: .NET Loader Anti-Analysis Marker File Creation
+id: 3b1a8d05-b0bd-460d-8526-9f7a77d24260
+status: experimental
+description: Detects the creation of a marker file indicating the .NET loader has detected an analysis environment. The filename contains a characteristic typo.
+references:
+    - https://www.huntress.com/blog/malspam-to-loader-delivery-chain-analysis
+author: ioc-yara-daily (agentic)
+date: 2024-07-24
+tags:
+    - attack.defense_evasion
+    - attack.t1497
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\01_detect_analisse_process.txt'
+        Image|contains:
+            - '\AppData\'
+            - '\ProgramData\'
+            - '\Users\'
+            - '\Windows\Temp\'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

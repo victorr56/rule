@@ -1,0 +1,24 @@
+title: AMOS Infostealer Persistence via Run Key
+id: 59a1cf64-b586-455b-b984-90768b4ef213
+status: experimental
+description: Detects persistence mechanism used by an AMOS infostealer variant, which creates a Run key entry named 'Ledger Wallet Installer' pointing to MsBuild.exe.
+references:
+    - https://www.huntress.com/blog/google-doc-sidebar-malware-mac-windows
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains|all:
+            - '\CurrentVersion\Run'
+            - 'Ledger Wallet Installer'
+        Details|contains: 'MsBuild.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

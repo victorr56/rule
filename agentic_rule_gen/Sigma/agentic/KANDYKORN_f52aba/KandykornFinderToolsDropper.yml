@@ -1,0 +1,26 @@
+title: KANDYKORN FinderTools Dropper Execution on macOS
+id: 3c5d648b-3e74-4b5b-9d41-e3e9d8928fd6
+status: experimental
+description: Detects the execution of the 'FinderTools' python script, which is used to download the next stage SUGARLOADER payload.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-catches-dprk-passing-out-kandykorn
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.execution
+    - attack.t1059.006
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image|re: '/python[23]?$'
+        CommandLine|contains|all:
+            - 'FinderTools'
+            - 'http://'
+    condition: selection
+falsepositives:
+    - Legitimate python scripts named 'FinderTools' that also make HTTP requests.
+level: high

@@ -1,0 +1,353 @@
+{
+  "malware_family": "Defence Impairment Script",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Threat actors deployed steganographic ASPX webshells, potentially by exploiting Adobe ColdFusion vulnerabilities. Post-exploitation, a batch script (`i.bat`) executed numerous defense impairment techniques, including disabling Microsoft Defender, terminating logging services like Sysmon, and modifying registry keys to enable credential dumping via a Mimikatz-based tool.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "ONEPIECE",
+      "context": "String embedded in steganographic webshells, used as operational check.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 4F 4E 45 50 49 45 43 45 }",
+      "context": "Hexadecimal encoding for the string 'ONEPIECE' in the webshell.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "x_best_911",
+      "context": "String embedded in webshells, sent upon command execution.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "i.bat",
+      "context": "Primary defense impairment and credential dumping batch script.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mimidrv.sys",
+      "context": "Mimikatz kernel driver deleted after use.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "g.com",
+      "context": "Tool used to dump credentials to pass.txt, likely Mimikatz.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "w3wp.exe>whoami.exe",
+      "context": "IIS worker process spawning reconnaissance commands, indicating a webshell.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "%windir%\\system32\\inetsrv\\appcmd set config /section:httpLogging /dontLog:True",
+      "context": "Disabling IIS HTTP logging via appcmd.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -c \"Set-MpPreference -DisableRealtimeMonitoring $True\"",
+      "context": "Disabling Defender real-time monitoring via PowerShell.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "@WMIC /Namespace:\\\\root\\Microsoft\\Windows\\Defender class MSFT_MpPreference call Add ExclusionPath=\\\"C:\\ProgramData\\x\\\\\"",
+      "context": "Adding a Defender exclusion for a directory via WMIC.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "@WMIC /Namespace:\\\\root\\Microsoft\\Windows\\Defender class MSFT_MpPreference call Add ExclusionExtension=\\\".mdk\\\"",
+      "context": "Adding a Defender exclusion for a file extension via WMIC.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "taskkill /im cyserver.exe /f",
+      "context": "Terminating Cortex security software process.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sc delete sysmon",
+      "context": "Deleting the Sysmon service.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "net1 localgroup Administratorer >>admins.txt",
+      "context": "Enumerating administrators using net1 for Nordic languages.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "reg add HKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\WDigest /v UseLogonCredential /t REG_DWORD /d 1 /f",
+      "context": "Enabling plaintext credential caching for WDigest.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "REGEDIT /e ODBC.TXT HKEY_LOCAL_MACHINE\\SOFTWARE\\ODBC\\ODBC.INI",
+      "context": "Exporting ODBC connection information from the registry.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "%windir%\\system32\\inetsrv\\appcmd uninstall module \"ModSecurity IIS (32bits)\"",
+      "context": "Uninstalling the ModSecurity WAF module from IIS.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "reg add \"HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\sysmon.exe\" /v \"Debugger\" /t REG_SZ /d \"ntsd -d\" /f",
+      "context": "Neutralizing Sysmon by setting a debugger in Image File Execution Options.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "reg delete HKEY_CLASSES_ROOT\\Wscript.shell /f",
+      "context": "Deleting registry key to cripple WScript.shell functionality.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wevtutil cl security",
+      "context": "Clearing the Windows Security event log.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "UseLogonCredential=1",
+      "context": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\WDigest",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Debugger=ntsd -d",
+      "context": "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\filebeat.exe",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKEY_CLASSES_ROOT\\CLSID\\{F935DC22-1CF0-11D0-ADB9-00C04FD58A0B}",
+      "context": "Deleted by attacker to break WScript.Shell object by CLSID.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKEY_CLASSES_ROOT\\CLSID\\{13709620-C279-11CE-A49E-444553540000}",
+      "context": "Deleted by attacker to break Shell.Application object engine.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "cyserver",
+      "context": "Cortex service that was stopped and deleted.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "BotFilter82",
+      "context": "Name for WMI __EventFilter used for persistence to clear event logs.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "BotConsumer23",
+      "context": "Name for WMI CommandLineEventConsumer used to clear event logs.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/CFIDE/adminapi/_datasource/setmsaccessRegistry.cfm",
+      "context": "Targeted endpoint indicating possible Adobe ColdFusion exploitation.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/CFIDE/adminapi/_datasource/setsldatasource.cfm",
+      "context": "Targeted endpoint indicating possible Adobe ColdFusion exploitation.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/CFIDE/adminapi/_datasource/setdsn.cfm",
+      "context": "Targeted endpoint indicating possible Adobe ColdFusion exploitation.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/CFIDE/adminapi/customtags/l10n.cfm",
+      "context": "Targeted endpoint indicating possible Adobe ColdFusion exploitation.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/CFIDE/adminapi/serverinstance.cfc",
+      "context": "Targeted endpoint indicating possible Adobe ColdFusion exploitation.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "bd74a00f4d2ec3bf50d13ddf324bb368b2464d547abd0c572ef5e2f77943a920",
+      "description": "Steganography Webshell (UA4fp7R.aspx)"
+    },
+    {
+      "sha256": "40859ede262098086962ab00c89f02452aa9941c88c7f4ac002db166179980c6",
+      "description": "Steganography Webshell (03Fl3i.aspx)"
+    },
+    {
+      "sha256": "f63d293e117cae1d0a6c24359fc1361a9dc48178049cc6491051b09268c8c39c",
+      "description": "Steganography webshell (WRBYTR5750images.aspx)"
+    },
+    {
+      "sha256": "94cd18f3f030fcc9b259dc410b17ea72a1f9800ee654f8e0f07a87bb9443b593",
+      "description": "Defence evasion/enumeration batch file (i.bat)"
+    },
+    {
+      "sha256": "793768ce4fadab044c7502ea5ec4d8e1569283f289dfd73419e119f32d56d0f3",
+      "description": "PHP webshell (jT1Ds.php)"
+    },
+    {
+      "sha256": "f0ff36ecdc843351913dbfbd9122b62563894936ff64215a7a2f89181ebdb57f",
+      "description": "Webshell (RG0eQV6.php)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

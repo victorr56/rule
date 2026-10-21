@@ -1,0 +1,28 @@
+title: Gambling Goblin DownPro Execution Chain
+id: 59a16f44-803a-44eb-ac04-f44ec7fcb29b
+status: experimental
+description: Detects the DownPro component executing a subsequent backdoor payload with the specific "-si" argument.
+references:
+    - https://research.checkpoint.com/2026/gaming-the-system-how-a-chinese-speaking-actor-turned-brazilian-government-sites-into-an-seo-weapon/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059
+detection:
+    selection:
+        ParentImage|endswith:
+            - '/usr/local/bin/systemd-udevd'
+            - '/usr/local/bin/rsync-tsl'
+            - '/usr/local/bin/tcp-tsl'
+            - '/usr/local/bin/snapd-ext'
+            - '/usr/local/bin/fsck-disk'
+            - '/usr/local/bin/nftables-init'
+        CommandLine|contains: ' -si'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
+logsource:
+    category: process_creation
+    product: linux

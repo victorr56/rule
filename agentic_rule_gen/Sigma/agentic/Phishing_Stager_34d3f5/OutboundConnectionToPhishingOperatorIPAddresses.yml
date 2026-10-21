@@ -1,0 +1,23 @@
+title: Outbound Connection to Phishing Operator IP Addresses
+id: d9c0f9cc-6539-4d69-a1c6-a67b438676d3
+status: experimental
+description: Detects outbound network connections to IP addresses associated with a Romanian threat actor conducting a large-scale phishing campaign.
+references:
+    - https://www.huntress.com/blog/terminal-server-phishing-stager-exposed
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '212.93.152.37'
+            - '80.94.95.37'
+            - '216.152.151.168'
+    condition: selection
+falsepositives:
+    - These IPs may be reassigned to benign services over time.
+level: high

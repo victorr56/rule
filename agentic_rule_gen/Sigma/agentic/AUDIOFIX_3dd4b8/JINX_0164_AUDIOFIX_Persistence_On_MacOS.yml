@@ -1,0 +1,22 @@
+title: JINX-0164 AUDIOFIX Persistence On MacOS
+id: 58e39f3a-14d2-4309-8b09-b47209355152
+status: experimental
+description: Detects the creation of a malicious plist file used by the AUDIOFIX malware for persistence on macOS. The malware masquerades as a Microsoft Teams component.
+references:
+    - https://www.wiz.io/blog/threat-actors-target-crypto-orgs
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.persistence
+    - attack.t1543.001
+logsource:
+    category: file_event
+    product: macos
+detection:
+    selection:
+        TargetFilename|endswith: '/Library/LaunchAgents/com.microsoft.teams.coreaudiod.plist'
+        Image|endswith: '/Microsoft Update Assistant.app/Contents/MacOS/updater'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

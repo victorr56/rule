@@ -1,0 +1,262 @@
+{
+  "malware_family": "EtherRAT, TONResolver",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "EtherRAT and TONResolver are NodeJS-based malware families delivered via malicious LNK shortcuts masquerading as JPG images in email campaigns targeting the hotel/accommodation industry. Instead of hardcoded C2, both resolve their current C2 address at runtime by reading data stored in Ethereum (EtherRAT) or TON (TONResolver) blockchain smart contracts via public APIs, enabling cheap C2 rotation and resisting takedown. Detection should focus on blockchain JSON-RPC/API lookups (eth_call), NodeJS runtime execution spawned by image-like LNK files, and the blockchain-derived C2 domains listed here.",
+  "mitre_techniques": [
+    "T1102.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": ".JPG",
+      "context": "LNK shortcut with mismatched .JPG extension inside archive, masquerading as image",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".MP4",
+      "context": "Dummy MP4 in archive with varying file size per download to defeat hash detection",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Node.js",
+      "context": "NodeJS runtime downloaded by LNK to run EtherRAT or TONResolver",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x277852e1C349b03c79E348018a8391bD21C412E8",
+      "context": "Ethereum smart contract queried by EtherRAT to resolve C2 (ATR 422147)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0:c66119f0e5635c4380441d7a79baf0c02a0ab7ea6cd78de06507fc5dc2c1a5d9",
+      "context": "TON smart contract queried by TONResolver to resolve C2 (ATR 422158)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "eth_call",
+      "context": "JSON-RPC read request EtherRAT sends to public Ethereum endpoint to read contract slot/event",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gateway001kir.com",
+      "context": "EtherRAT C2 resolved from Ethereum contract 0x277852e1C349b03c79E348018a8391bD21C412E8",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sslgateway001.com",
+      "context": "EtherRAT C2 resolved from Ethereum smart contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "waygatterol002.com",
+      "context": "EtherRAT C2 resolved from Ethereum smart contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "lotus-vista-additions-joshua.trycloudflare.com",
+      "context": "EtherRAT C2 resolved from Ethereum smart contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "perrine90-deltajohnsons.com",
+      "context": "EtherRAT C2 resolved from Ethereum smart contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kadmecnp-643laolmd.com",
+      "context": "EtherRAT C2 resolved from Ethereum smart contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "lermontov-656idlop.com",
+      "context": "EtherRAT C2 resolved from Ethereum smart contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "fdffofofofo4.com",
+      "context": "EtherRAT C2 resolved from Ethereum smart contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "opencode-setup-al.com",
+      "context": "EtherRAT C2 resolved from Ethereum smart contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dns1.southafricanorth.cloudapp.azure.com",
+      "context": "EtherRAT C2 on abused Azure cloudapp subdomain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "update.norwayeast.cloudapp.azure.com",
+      "context": "EtherRAT C2 on abused Azure cloudapp subdomain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "allres.southafricanorth.cloudapp.azure.com",
+      "context": "EtherRAT C2 on abused Azure cloudapp subdomain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "synctimes.australiaeast.cloudapp.azure.com",
+      "context": "EtherRAT C2 on abused Azure cloudapp subdomain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "luxmaxing.southafricanorth.cloudapp.azure.com",
+      "context": "EtherRAT C2 on abused Azure cloudapp subdomain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "amanohuguta.cfd",
+      "context": "TONResolver C2 resolved from TON contract 0:c66119f0e5635c4380441d7a79baf0c02a0ab7ea6cd78de06507fc5dc2c1a5d9",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hsaertyuoang34.sbs",
+      "context": "TONResolver C2 resolved from TON smart contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "zloapobikahy23.bond",
+      "context": "TONResolver C2 resolved from TON smart contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tonajukbhuakpo2.shop",
+      "context": "TONResolver C2 resolved from TON smart contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "njzlopghznkamkl.cfd",
+      "context": "TONResolver C2 resolved from TON smart contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "nuypoiaklber.lol",
+      "context": "TONResolver C2 resolved from TON smart contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://share.google/jcH0iEr8DBNs0KT15",
+      "context": "Embedded link in fake guest complaint email delivering EtherRAT",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://share.google/ut3woL0XFCVOUtCDo",
+      "context": "Embedded link in fake altercation email delivering TONResolver",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://vencycs.com/?confirm/6568438944267",
+      "context": "Booking.com-spoofing ClickFix lure link from prior campaign (Pure Logs/XWorm)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script",
+    "archive"
+  ]
+}

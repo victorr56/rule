@@ -1,0 +1,25 @@
+title: ScreenConnect Backdoor Campaign Network Connection
+id: 421685a4-2396-419b-ab00-bb65a3d76b10
+status: experimental
+description: Detects network connections to IPs associated with a ScreenConnect backdoor campaign, covering both the initial delivery and C2 phases.
+references:
+    - https://www.malware-traffic-analysis.net/2026/09/14/index.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.initial_access
+    - attack.command_and_control
+    - attack.t1566.002
+    - attack.t1219
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '159.198.35.37'  # Phishing/Delivery: icci-sa.com
+            - '15.204.43.235'  # C2 Relay: instance-udppxf-relay.screenconnect.com
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

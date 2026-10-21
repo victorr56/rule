@@ -1,0 +1,205 @@
+{
+  "malware_family": "MovieReaper",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "MovieReaper is a multi-stage, modular crimeware framework distributed as fake movie executables via malicious torrent files pushed from the compromised public torrent repository itorrents[.]org. A loader downloads shellcode in plain HTTP(S) from deadhub[.]org (fallback 193.23.118[.]155), then retrieves a second-stage C2 address stored on the Solana blockchain and deploys UAC-bypass and persistence modules that masquerade as msedge.exe under %ProgramData%\\Microsoft\\Windows\\Telemetry.",
+  "mitre_techniques": [
+    "T1548.002",
+    "T1071.001",
+    "T1102"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "mutex",
+      "value": "Global\\fnulSktzSqvVLXHU",
+      "context": "Loader global mutex, random string suffix; single-instance check",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Global\\E4AyDKzvEhe2hgAr",
+      "context": "Loader global mutex variant listed in IOC mutex section",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%ProgramData%\\Microsoft\\Windows\\Telemetry\\msedge.exe",
+      "context": "Final persistence path where loader masquerades as Edge",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "get_coff_module_cmd",
+      "context": "Stage 2 command that parses COFF module and calls module_init",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "module_init",
+      "context": "Entry function executed from downloaded COFF module",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "the odyssey (2026) [1080p] [webrip] [5.1].exe",
+      "context": "Torrent-delivered loader disguised as movie file",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "EtwpCreateEtwThread",
+      "context": "Undocumented ntdll function called to execute shellcode",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 0F 05 }",
+      "context": "Syscall stub inside ntdll reused for raw NtProtectVirtualMemory call",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "deadhub.org",
+      "context": "First-stage C2 serving shellcode over HTTPS",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "193.23.118.155",
+      "context": "First-stage C2 fallback over plain HTTP",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "208.64.33.90",
+      "context": "Second-stage C2 (TLS-pinned, protobuf)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "208.94.246.53",
+      "context": "Second-stage C2 (TLS-pinned, protobuf)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cloud/v192.4/ui/sync-status-icons.png",
+      "context": "Randomly chosen path used to fetch shellcode parts",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cloud/v192.4/onboarding/welcome-bg.jpg",
+      "context": "Randomly chosen path used to fetch shellcode parts",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cloud/v192.4/ui/file-preview-placeholder.png",
+      "context": "Randomly chosen path used to fetch shellcode parts",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cloud/v192.4/shared/link-banner.jpg",
+      "context": "Randomly chosen path used to fetch shellcode parts",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/getAccountInfo",
+      "context": "Solana RPC endpoint queried to retrieve encrypted second C2 address",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "6pnDGAiHgyPdmckM5Qt1YbanGzrX43WLEU159nRaNLDm",
+      "context": "Solana account storing base64-encoded second-stage C2 address",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "CSiY8bQLBYPdfPWkwipBzH6sijTVQVVsA279JQdvwHtL",
+      "context": "Solana program used by attackers to store account data",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.mainnet.solana.com",
+      "context": "Legitimate Solana RPC endpoint abused for C2 address delivery",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "itorrents.org",
+      "context": "Compromised public torrent repository used for initial spread",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

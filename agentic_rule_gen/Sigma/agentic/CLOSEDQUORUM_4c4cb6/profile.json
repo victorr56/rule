@@ -1,0 +1,486 @@
+{
+  "malware_family": "CLOSEDQUORUM",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "CLOSEDQUORUM is a 16.4MB 64-bit Go Windows implant whose command and control is delegated to a quorum of commercial LLM providers (DeepSeek, Qwen, Mistral, Gemini), which vote on each next action (inject, persist, steal, move) via plurality voting. It steals LSASS credentials, browser passwords and crypto wallets, exfiltrating AES-256-GCM/base64 data to an operator Discord webhook, and evades analysis with ETW patching, time-based guards and WindowsUpdate-themed persistence. The public distribution build is inert, with placeholder API keys and webhook, and configured per-operator builds are generated at compile time.",
+  "mitre_techniques": [
+    "T1055.004",
+    "T1055.012",
+    "T1547.001",
+    "T1053.005",
+    "T1546.003",
+    "T1059.001",
+    "T1003.001",
+    "T1555.003",
+    "T1552.001",
+    "T1005",
+    "T1074.001",
+    "T1567.004",
+    "T1102",
+    "T1573.001",
+    "T1132.001",
+    "T1030",
+    "T1685",
+    "T1027",
+    "T1480.001",
+    "T1497.003",
+    "T1036.005"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "You are an advanced malware strategist. Provide ONLY executable decisions.",
+      "context": "Hardcoded LLM system prompt in main.queryLLM",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SYSTEM CONTEXT:\nTARGET: %s\nCAPABILITIES: Process injection, persistence, credential theft, lateral movement",
+      "context": "Per-execution prompt template, TARGET:%s substituted at runtime",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "decision: \"inject\"|\"persist\"|\"steal\"|\"move\"",
+      "context": "LLM decision schema string in binary",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "consensus",
+      "context": "Fallback decision string with no capability handler; loop sleeps and retries",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "dummy_api_key",
+      "context": "Placeholder LLM API credential in distribution build",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "dummy_webhook_url",
+      "context": "Placeholder Discord webhook in distribution build",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "deepseekAPIKey",
+      "context": "Developer API key variable baked into gohno-final.exe via -ldflags",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "geminiAPIKey",
+      "context": "Developer API key variable baked into gohno-final.exe via -ldflags",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "balzak",
+      "context": "Former name of the family, used as VT metadata anchor",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "exploit_type: \"shellcode\"|\"dll\"|\"process_hollow\"|\"reflective\"",
+      "context": "Prompt template exploit_type choices",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "evasion_method: \"obfuscate\"|\"encrypt\"|\"sleep\"|\"unhook\"",
+      "context": "Prompt template evasion_method choices",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "target_process: Windows process to target",
+      "context": "Prompt template field enumerating model choices",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "main.ModelOrchestrator",
+      "context": "DWARF function name querying providers one-by-one",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "main.interModelDiscussion",
+      "context": "DWARF function resolving provider votes by plurality",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "main.queryLLM",
+      "context": "DWARF function performing live LLM API call",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "main.lsassDump",
+      "context": "DWARF function dumping LSASS memory",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "main.extractCryptoWallets",
+      "context": "DWARF function stealing wallet data",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "main.sendToDiscord",
+      "context": "DWARF function posting exfil to Discord webhook",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "main.earlyBirdInject",
+      "context": "DWARF function for Early Bird APC injection",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "main.dumpBrowserCredentials",
+      "context": "Function harvesting Chrome/Edge/Firefox credentials",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "main.generateShellcode",
+      "context": "Function generating shellcode before injection branch",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "main.injectProcess",
+      "context": "Function performing PEB-walk process hollowing",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "main.establishPersistence",
+      "context": "Function dispatching persistence mechanisms",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "main.gatherSystemInfo",
+      "context": "Function capturing hostname, OS, CPU, admin status for prompt context",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "WindowsUpdate",
+      "context": "Value set under current user's Registry Run key for persistence",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\wmi.ps1",
+      "context": "PowerShell script written by WMI event subscription persistence",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\",
+      "context": "Staging location for LSASS dumps, browser databases and wallet files",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "logins.json",
+      "context": "Firefox credential store targeted for theft",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Login Data",
+      "context": "Chrome and Edge credential database targeted for theft",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "exodus.wallet",
+      "context": "Exodus wallet file targeted for extraction",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "gohno-final.exe",
+      "context": "Development build file with API keys baked in via -ldflags",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "earlyburb.exe",
+      "context": "Build associated with Discord exfil domains",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "NtQueueApcThread",
+      "context": "Queues shellcode APC in Early Bird injection",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "MiniDumpWriteDump",
+      "context": "Used to capture full LSASS memory contents",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "EtwEventWrite",
+      "context": "Overwritten with a single RET instruction to suppress ETW telemetry",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "SeDebugPrivilege",
+      "context": "Privilege enabled before LSASS dumping",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "AES-256-GCM with key derived from current date",
+      "context": "Exfil encryption; ciphertext base64-encoded, split into 1,900-byte segments posted each second",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "schtasks.exe",
+      "context": "Used to create persistence scheduled task",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "powershell.exe",
+      "context": "Executes C:\\Windows\\Temp\\wmi.ps1 for WMI persistence",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "api.deepseek.com",
+      "context": "LLM provider endpoint queried by the quorum; tie-break priority model",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.mistral.ai",
+      "context": "LLM provider endpoint queried by the quorum",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "openrouter.ai",
+      "context": "LLM provider endpoint present post-behaviours-refresh",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cdn.discordapp.com",
+      "context": "Discord exfil channel domain in earlyburb.exe/production builds",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "250d4fa37488af9b025333fa17705573d721467b203765bc360890b4f5a90cd7",
+      "description": "CLOSEDQUORUM sample referenced by the CAIRN YARA rule and VT metadata; part of the developer build chain"
+    },
+    {
+      "sha256": "c4dc171f2513fcaf9d5ecc815a94aee4063b213ab380f80bd3ac422dee5205a7",
+      "description": "CLOSEDQUORUM developer build chain sample (seven-day development span)"
+    },
+    {
+      "sha256": "c13cea04f598e2b0c248d603a6e31bd13aabb64d8149c1b6a77b64e0b983a86f",
+      "description": "CLOSEDQUORUM developer build chain sample (seven-day development span)"
+    },
+    {
+      "sha256": "f5f1f8c3e7b883793800ab6ccf21b3e60bd0730f300b4595fe74a33adc17a63c",
+      "description": "CLOSEDQUORUM developer build chain sample (seven-day development span)"
+    },
+    {
+      "sha256": "5191cf625dfc209a347f137b50aea199e82040fd5ee9086fb3e2de73c133f3cb",
+      "description": "CLOSEDQUORUM developer build chain sample (seven-day development span)"
+    },
+    {
+      "sha256": "eddbd0ecf7195d38fefae5b9d393abfa79e6f3f94bde19308ecef130a05a42e5",
+      "description": "CLOSEDQUORUM developer build chain sample (seven-day development span)"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

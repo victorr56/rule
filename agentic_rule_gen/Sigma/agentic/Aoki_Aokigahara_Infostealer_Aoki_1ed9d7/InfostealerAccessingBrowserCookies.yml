@@ -1,0 +1,51 @@
+title: Process From Non-Standard Path Accessing Browser Cookies
+id: 9a3e2b4c-1f8d-4a9b-8c7d-6f3e1d5a7b9c
+status: experimental
+description: Detects a process running from a non-standard location (e.g., user's temporary folder) accessing common browser cookie database files. This is a common pattern for information stealers like Aoki.
+references:
+    - https://www.security.com/threat-intelligence/aoki-infostealer-ai-targeting
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.credential_access
+    - attack.t1555.003
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_chrome:
+        Image|contains:
+            # Common suspicious execution locations for dropped malware
+            - '\AppData\Local\Temp\'
+            - '\AppData\Roaming\'
+            - '\Windows\Temp\'
+            - 'C:\Users\Public\'
+            - '\Downloads\'
+            - '\Desktop\'
+        TargetFilename|contains|all:
+            - '\AppData\Local\'
+            - '\User Data\'
+            - '\Network\Cookies' # Chromium-based browsers (Chrome, Edge, Brave, etc.)
+    selection_firefox:
+        Image|contains:
+            # Common suspicious execution locations for dropped malware
+            - '\AppData\Local\Temp\'
+            - '\AppData\Roaming\'
+            - '\Windows\Temp\'
+            - 'C:\Users\Public\'
+            - '\Downloads\'
+            - '\Desktop\'
+        TargetFilename|endswith: '\cookies.sqlite' # Firefox
+    filter_main:
+        Image|endswith:
+            # Filter legitimate browsers that can be installed in user space or run as portable apps
+            - '\chrome.exe'
+            - '\msedge.exe'
+            - '\brave.exe'
+            - '\firefox.exe'
+            - '\vivaldi.exe'
+            - '\opera.exe'
+    condition: (1 of selection_*) and not filter_main
+falsepositives:
+    - Legitimate portable browsers or other user-run tools that need to access cookie data.
+level: high

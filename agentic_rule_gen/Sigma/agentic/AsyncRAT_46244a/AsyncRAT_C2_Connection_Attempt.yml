@@ -1,0 +1,31 @@
+title: AsyncRAT C2 Connection Attempt
+id: 8b067a51-1e9e-4c7a-b58d-78c6e3d2c0b7
+status: experimental
+description: Detects network connections to IP addresses and ports known to be associated with AsyncRAT C2 infrastructure.
+references:
+    - https://www.darktrace.com/blog/catching-a-rat-how-darktrace-neutralized-asyncrat
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1219
+    - attack.t1041
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '185.49.126.50'
+            - '195.26.255.81'
+            - '191.96.207.246'
+        DestinationPort:
+            - 2106
+            - 6606
+            - 7707
+            - 8041
+            - 8808
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

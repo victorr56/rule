@@ -1,0 +1,327 @@
+{
+  "malware_family": "GoldFactory",
+  "threat_actor": "GoldFactory",
+  "platforms": [
+    "ios",
+    "android"
+  ],
+  "summary": "GoldFactory is a Chinese-speaking threat actor targeting iOS and Android users in the APAC region, particularly Vietnam and Thailand. Their malware suite, which includes GoldDigger and GoldPickaxe, steals facial recognition data to create AI deepfakes for bypassing banking app biometrics. The malware also exfiltrates PII and SMS messages, and is distributed via smishing, leading to TestFlight or MDM profile installations for iOS, and fake app stores for Android.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "GoldActivity",
+      "context": "Activity name contained within the GoldDigger APK.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GoldPickaxe.iOS",
+      "context": "The name given to the iOS trojan variant by the researchers.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GoldDiggerPlus",
+      "context": "The name given to a new variant of GoldDigger by the researchers.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GoldKefu",
+      "context": "The name given to an embedded trojan inside GoldDiggerPlus.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "VirBox packer",
+      "context": "The Android variants are wrapped in this commercial packer.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "JetFire library",
+      "context": "GoldPickaxe.iOS uses this library to implement a websocket client.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MicroSocks",
+      "context": "GoldPickaxe.iOS uses this project to implement SOCKS5 proxy functionality.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "MicroSocks",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "newconfig.ini",
+      "context": "Configuration file for the reverse proxy on GoldPickaxe.iOS.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "config.ini",
+      "context": "Configuration file for the reverse proxy on GoldPickaxe.Android.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "[common]",
+      "context": "Section header in the FRP proxy configuration file template.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "server_addr = #server_addr",
+      "context": "Line from the FRP proxy configuration file template.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "local_port = 1081",
+      "context": "Line from the FRP proxy configuration file template.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ILMessageFilterExtensionNetworkURL",
+      "context": "Key in the app extension's info.plist for the message relay URL.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "com.apple.identitylookup.message-filter",
+      "context": "NSExtensionPointIdentifier for the iOS message filtering extension.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Please hold the camera steady",
+      "context": "Instructional tip shown to victim during face capture.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Please blink",
+      "context": "Instructional tip shown to victim during face capture.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "upload_idcard",
+      "context": "Websocket command to request the victim's ID card.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "destory",
+      "context": "Websocket command for the malware to uninstall itself.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "pwderror",
+      "context": "Websocket command for GoldDigger to create multiple failed password attempts.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "googleplay_auth",
+      "context": "Websocket command for GoldPickaxe.Android to open security settings.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "127.0.0.1:1081",
+      "context": "Local SOCKS5 proxy server started by GoldPickaxe variants.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PPSPing",
+      "context": "Library used by GoldPickaxe.iOS to check connection speed.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://testflight.apple.com/join/",
+      "context": "URL prefix used to distribute the iOS trojan via Apple TestFlight.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/apple/getfrpconfig",
+      "context": "GoldPickaxe.iOS API endpoint to get configuration for fast reverse proxy.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/apple/savevideo2",
+      "context": "GoldPickaxe.iOS API endpoint to send URL of uploaded face video.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/apple/uploadidcard",
+      "context": "GoldPickaxe.iOS API endpoint to send URL to the victim's ID card.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/apple/sms_",
+      "context": "GoldPickaxe.iOS API endpoint used in Message Filter extension to proxy SMS.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/app/uploadidcard",
+      "context": "GoldPickaxe.Android API endpoint to send URL of uploaded ID card.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/app/getBPackageUrl",
+      "context": "GoldPickaxe.Android API endpoint to retrieve URL for 'B' package.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/app/savevideo",
+      "context": "GoldPickaxe.Android API endpoint to send URL of uploaded face video.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/app/canuninstall",
+      "context": "GoldDigger API endpoint to check if app can be uninstalled.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/app/savedevice2",
+      "context": "GoldDigger API endpoint to send detailed device information.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/app/saveinputbk",
+      "context": "GoldDigger API endpoint to send stolen bank credentials.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "archive"
+  ]
+}

@@ -1,0 +1,24 @@
+title: Phexia macOS Downloader Curl Command
+id: 3d5e219a-9d33-47a3-af78-831e3d36e8b4
+status: experimental
+description: Detects the curl command line used in Phexia's copy-and-paste lure on macOS to download a malicious payload.
+references:
+  - https://redcanary.com/blog/threat-intelligence/intelligence-insights-august-2026/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.execution
+  - attack.t1204.001
+logsource:
+  category: process_creation
+  product: macos
+detection:
+  selection:
+    Image|endswith: '/curl'
+    CommandLine|contains|all:
+      - 'gl1nto.spiintforge.ru'
+      - '/04jhdkq5'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high

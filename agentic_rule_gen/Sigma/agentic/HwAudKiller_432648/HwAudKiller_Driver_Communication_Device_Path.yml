@@ -1,0 +1,23 @@
+title: HwAudKiller Driver Load
+id: 031804f3-33e1-4560-9176-0f81d11894d7
+status: experimental
+description: Detects the loading of the HwAudKiller driver, a malicious kernel driver used to terminate EDR and other security processes.
+references:
+    - https://www.huntress.com/blog/w2-malvertising-to-kernel-mode-edr-kill
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+    - attack.t1055
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image: 'System'
+        ImageLoaded|endswith: '\Hwaud.sys'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

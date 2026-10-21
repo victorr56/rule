@@ -1,0 +1,284 @@
+{
+  "malware_family": "ShadowV2",
+  "threat_actor": "",
+  "platforms": [
+    "linux",
+    "web"
+  ],
+  "summary": "ShadowV2 is a DDoS-for-hire botnet whose Go-based ELF implant is deployed into exposed Docker daemons (observed against AWS EC2 honeypots) via a Python spreader running from GitHub CodeSpaces. The unstripped implant registers with a FastAPI/Pydantic C2 at shadow.aurozacloud[.]xyz, heartbeats every second, polls for commands every five seconds, and launches HTTP floods including HTTP/2 rapid reset and a ChromeDP-based Cloudflare UAM bypass. Detection should focus on the implant's Go symbol and string artifacts, the /app/deployment drop path, the Docker SDK user agent, and the C2 API endpoints.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/app/deployment",
+      "context": "Single Go ELF implant binary dropped here inside the Docker container",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "shadow-go",
+      "context": "YARA string in ShadowV2 implant",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "shadow.aurozacloud.xyz",
+      "context": "YARA string embedded in the implant",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[SHADOW-NODE]",
+      "context": "YARA string in ShadowV2 implant",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "main.registerWithMaster",
+      "context": "Go symbol (unstripped binary) for C2 registration",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "main.handleStartAttack",
+      "context": "Go symbol for attack handling",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "attacker.bypassUAM",
+      "context": "Go symbol for Cloudflare UAM bypass",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "attacker.performHTTP2RapidReset",
+      "context": "Go symbol for HTTP/2 rapid reset attack",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 8B 05 ?? ?? ?? ?? 48 8B 1D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? 48 89 8C 24 38 01 00 00 48 89 84 24 40 01 00 00 48 8B 4C 24 40 48 BA 00 09 6E 88 F1 FF FF FF 48 8D 04 0A E8 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? 48 89 8C 24 48 01 00 00 48 89 84 24 50 01 00 00 48 8D 05 ?? ?? ?? ?? BB 05 00 00 00 48 8D 8C 24 38 01 00 00 BF 02 00 00 00 48 89 FE E8 ?? ?? ?? ?? }",
+      "context": "YARA $code1 from published ShadowV2 rule",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 89 35 ?? ?? ?? ?? 0F B6 94 24 80 02 00 00 88 15 ?? ?? ?? ?? 0F B6 94 24 81 02 00 00 88 15 ?? ?? ?? ?? 0F B6 94 24 82 02 00 00 88 15 ?? ?? ?? ?? 0F B6 94 24 83 02 00 00 88 15 ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? }",
+      "context": "YARA $code2 from published ShadowV2 rule",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 8D 15 ?? ?? ?? ?? 48 89 94 24 68 04 00 00 48 C7 84 24 78 04 00 00 15 00 00 00 48 8D 15 ?? ?? ?? ?? 48 89 94 24 70 04 00 00 48 8D 15 ?? ?? ?? ?? 48 89 94 24 80 04 00 00 48 8D 35 ?? ?? ?? ?? 48 89 B4 24 88 04 00 00 90 }",
+      "context": "YARA $code3 from published ShadowV2 rule",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "MASTER_ADDR",
+      "context": "Environment variable passed at docker run, supplies C2 address",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "VPS_NAME",
+      "context": "Environment variable used to derive the implant VPS_ID",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "VPS_ID",
+      "context": "VPS_NAME concatenated with unix timestamp; implant identifier for C2 comms",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "{\"detail\":[{\"type\":\"missing\",\"loc\":[\"body\",\"vps_id\"],\"msg\":\"Field required\",\"input\":{\"vps_name\":\"xxxxx\"},\"url\":\"https://errors.pydantic.dev/2.11/v/missing\"}]}",
+      "context": "Pydantic validation error returned by the ShadowV2 C2 API on malformed request",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "advanced attack platform",
+      "context": "Self-description on the DDoS platform login page",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ChromeDP",
+      "context": "Bundled headless Chrome binary used to solve the Cloudflare JS challenge for UAM bypass",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "chromedp",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "fasthttp",
+      "context": "Valyala's Go HTTP library used to create the attack clients for HTTP flooding",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "fasthttp",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "shadow.aurozacloud.xyz",
+      "context": "ShadowV2 C2 server behind Cloudflare; fake seizure notice on root",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://shadow.aurozacloud.xyz/api/vps/heartbeat",
+      "context": "POST every second with VPS_ID as heartbeat",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://shadow.aurozacloud.xyz/api/vps/poll/<VPS ID>",
+      "context": "GET every 5 seconds to poll for new attack commands",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/login",
+      "context": "DDoS platform operator login UI",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "docker-sdk-python/7.1.0",
+      "context": "Observed header on initial-access requests via Python Docker SDK",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Meta-Source-Client: github/codespaces",
+      "context": "Header injected by GitHub on requests originating from CodeSpaces",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "23.97.62.139",
+      "context": "Microsoft/GitHub IP in Singapore originating spreader connections",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "23.97.62.136",
+      "context": "Spreader IP listed in IoCs",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "chache08.werkecdn.me",
+      "context": "Target of observed 120-thread HTTP/2 rapid reset attack (Amsterdam FDCServers VPS)",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "2462467c89b4a62619d0b2957b21876dc4871db41b5d5fe230aa7ad107504c99",
+      "description": "Current ShadowV2 Go ELF implant (not reported by OSINT providers)"
+    },
+    {
+      "sha256": "1b552d19a3083572bc433714dfbc2b75eb6930a644696dedd600f9bd755042f6",
+      "description": "Older ShadowV2 malware version submitted to VirusTotal on June 25, zero detections"
+    },
+    {
+      "sha256": "1f70c78c018175a3e4fa2b3822f1a3bd48a3b923d1fbdeaa5446960ca8133e9c",
+      "description": "Older ShadowV2 malware version submitted to VirusTotal on July 30, zero detections"
+    }
+  ],
+  "file_types": [
+    "elf",
+    "script"
+  ]
+}

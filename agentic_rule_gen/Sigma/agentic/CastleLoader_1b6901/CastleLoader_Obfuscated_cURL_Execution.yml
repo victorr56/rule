@@ -1,0 +1,28 @@
+title: CastleLoader Obfuscated cURL Execution
+id: e4f9d22b-59d4-42b7-a3a6-b51da1f1e944
+status: experimental
+description: Detects a complex, obfuscated command line used by CastleLoader to locate cURL and PowerShell and download a next stage payload using caret-obfuscated syntax.
+references:
+    - https://redcanary.com/blog/threat-intelligence/intelligence-insights-july-2026/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.003
+    - attack.defense_evasion
+    - attack.t1027
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - 'where c*u*r*l.e?e'
+            - 'where p*ell.exe'
+            - 'h^t^t^p^s^:'
+            - 'for /f'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

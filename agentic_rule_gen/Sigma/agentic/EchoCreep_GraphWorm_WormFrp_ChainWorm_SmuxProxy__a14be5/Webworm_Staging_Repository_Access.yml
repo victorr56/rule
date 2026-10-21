@@ -1,0 +1,27 @@
+title: Webworm PowerShell Download from Staging Repository
+id: b92137e0-91a2-4a0b-967f-c1a7d65b4c10
+status: experimental
+description: Detects the execution of a PowerShell command used by Webworm to download a payload from a staging GitHub repository.
+references:
+  - https://www.welivesecurity.com/en/eset-research/webworm-new-burrowing-techniques/
+author: ioc-yara-daily (agentic)
+date: 2024-05-20
+tags:
+  - attack.command_and_control
+  - attack.t1105
+  - attack.execution
+  - attack.t1059.001
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection:
+    Image|endswith: '\powershell.exe'
+    CommandLine|contains|all:
+      - '$wc.DownloadFile('
+      - 'anjsdgasdf/WordPress/releases/download/'
+      - 'C:\ProgramData\'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high

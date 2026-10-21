@@ -1,0 +1,24 @@
+title: Contagious Interview (OTTERCOOKIE) Lock File Creation
+id: e4f5e71c-3430-4e31-ba0b-d2c6c06a3780
+status: experimental
+description: 'Detects the OTTERCOOKIE RAT creating its ''vhost.ctl'' lock file, which is used to ensure only a single instance is running. This detection is based on the known executable name/path creating the specific lock file.'
+references:
+    - https://www.elastic.co/security-labs/threat-command/contagious-interview-malware-svg-steganography
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.defense_evasion
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_1:
+        Image|endswith: '\NcdAutoUpdate.exe'
+        TargetFilename|endswith: '\.npm\vhost.ctl'
+    selection_2:
+        Image|startswith: 'C:\ProgramData\Ncd\'
+        TargetFilename|endswith: '\.npm\vhost.ctl'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate software is unlikely to match both the process path/name and the specific lock file path.
+level: high

@@ -1,0 +1,27 @@
+title: Tick ShadowPad Side-Loading via AppLaunch.exe
+id: 8b0665f8-5807-4251-ab82-27edce5f042e
+status: experimental
+description: Detects the side-loading of a malicious mscoree.dll by AppLaunch.exe from a non-standard, misspelled path, a technique used by a ShadowPad variant deployed by the Tick threat actor.
+references:
+    - http://nao-sec.org/2024/06/building-caspers-shadow.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.persistence
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\AppLaunch.exe'
+        ImageLoaded|contains: '\MicroSoft.NET\mscoree.dll' # Note typo in 'MicroSoft'
+    filter:
+        ImageLoaded|startswith: # Filter legitimate loads
+            - 'C:\Windows\System32\'
+            - 'C:\Windows\SysWOW64\'
+    condition: selection and not filter
+falsepositives:
+    - Unlikely
+level: high

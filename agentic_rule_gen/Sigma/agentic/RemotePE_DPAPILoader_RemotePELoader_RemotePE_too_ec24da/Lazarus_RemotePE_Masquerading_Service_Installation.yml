@@ -1,0 +1,22 @@
+title: Lazarus RemotePE Masquerading Service Installation
+id: 57d81a8b-18a0-4f96-8576-9c7047214e21
+status: experimental
+description: Detects the creation or modification of a Windows service named 'Ias' to point to the malicious 'Iassvc.dll', a persistence technique used by the Lazarus RemotePE loader. The legitimate service is named 'IAS' and uses 'iassvcs.dll'.
+references:
+    - https://blog.fox-it.com/2026/05/22/remotepe-the-lazarus-rat-that-lives-in-memory/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1543.003
+    - attack.t1574.002
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\SYSTEM\CurrentControlSet\Services\Ias\Parameters\ServiceDll'
+        Details|endswith: '\Iassvc.dll'
+    condition: selection
+falsepositives:
+    - Unlikely. The combination of the service name 'Ias' (legitimate is 'IAS') and the DLL name 'Iassvc.dll' (legitimate is 'iassvcs.dll') is highly specific to this threat.
+level: high

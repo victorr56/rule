@@ -1,0 +1,22 @@
+title: REF8801/CloudSyncD Infection Marker File Creation
+id: 11c05d76-591a-452f-a65c-3f92de97e889
+status: experimental
+description: Detects the creation of the '.cobra' file in the AppData\Roaming directory, a unique marker used by the REF8801 Windows loader (update.exe) to check if the host is already infected.
+references:
+    - https://www.elastic.co/security-labs/threat-command/apex-accelerator-malicious-npm-packages
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.defense_evasion
+    - attack.t1480.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\update.exe'
+        TargetFilename|endswith: '\AppData\Roaming\.cobra'
+    condition: selection
+falsepositives:
+    - Legitimate software named 'update.exe' that creates a '.cobra' file in the AppData\Roaming directory.
+level: high

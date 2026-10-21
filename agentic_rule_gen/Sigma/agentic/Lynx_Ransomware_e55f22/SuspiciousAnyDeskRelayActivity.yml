@@ -1,0 +1,24 @@
+title: Suspicious AnyDesk Relay Activity
+id: 8c121408-0130-4e31-8f9d-157fc225c5d0
+status: experimental
+description: Detects DNS queries for specific AnyDesk relay hostnames that have been associated with Lynx Ransomware operations.
+references:
+    - https://www.darktrace.com/blog/new-threat-on-the-prowl-investigating-lynx-ransomware
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1219
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'relay-48ce591e.net.anydesk.com'
+            - 'relay-c9990d24.net.anydesk.com'
+            - 'relay-da1ad7b4.net.anydesk.com'
+    condition: selection
+falsepositives:
+    - Legitimate use of AnyDesk might route through these specific relays, although it is less likely for a specific set to be used across an enterprise.
+level: medium

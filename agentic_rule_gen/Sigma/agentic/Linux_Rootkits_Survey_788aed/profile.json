@@ -1,0 +1,346 @@
+{
+  "malware_family": "Linux Rootkits (Survey)",
+  "threat_actor": "Various",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "This report provides a survey of Linux rootkit techniques, emphasizing behavioral detection over fragile static signatures. It details userland (LD_PRELOAD) and kernel-space (LKM, eBPF, io_uring) infection and persistence mechanisms. Specific detection strategies are offered for process activity, file modifications, syscalls, and common defense evasion tactics like process masquerading and log clearing.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/etc/ld.so.preload",
+      "context": "File used to force loading of malicious shared objects system-wide.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/ld.so.conf",
+      "context": "File modified to add malicious library paths.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.X12-unix/libz.so.1",
+      "context": "Example path for a dropped shared object file before being moved.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "insmod \"$MODULE_DIR/$MODULE_NAME.ko\"",
+      "context": "Singularity rootkit loading its kernel module from a shell script.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Singularity",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "init_module",
+      "context": "Syscall used to load a kernel module, bypassing userland utilities.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "finit_module",
+      "context": "Syscall used to load a kernel module, bypassing userland utilities.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "loading out-of-tree module taints kernel.",
+      "context": "Kernel log message indicating a non-standard module was loaded.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "module verification failed: signature and/or required key missing - tainting kernel",
+      "context": "Kernel log message indicating an unsigned module was loaded.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "reveng_rtkit",
+      "context": "Module name seen in kernel taint logs.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "kill -64 <pid>",
+      "context": "Example of using a high-numbered signal as a covert trigger.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bpf_probe_write_user",
+      "context": "Kernel log message indicating use of a sensitive eBPF helper.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "nysm",
+      "context": "eBPF rootkit (post-exploitation container) detected by helper usage.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "boopkit",
+      "context": "eBPF rootkit (backdoor) detected by helper usage.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "io_uring_setup",
+      "context": "Syscall used to set up io_uring for stealthy I/O operations.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "io_uring_enter",
+      "context": "Syscall used to submit/wait for io_uring operations.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/modules-load.d/*",
+      "context": "Directory for configuration files to load kernel modules at boot.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "singularity.conf",
+      "context": "Persistence file created by Singularity under /etc/modules-load.d/.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Singularity",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ACTION==\"add\", ENV{MAJOR}==\"1\", ENV{MINOR}==\"8\", RUN+=\"/lib/udev/reptile\"",
+      "context": "Reptile persistence rule triggered by /dev/random device add event.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Reptile",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/lib/udev/reptile",
+      "context": "Reptile loader path executed by its udev persistence rule.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Reptile",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/systemd/system/*.service",
+      "context": "Systemd service file path used for persistence.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/init.d/*",
+      "context": "SysVinit script path used for persistence.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/cron.d/*",
+      "context": "Cron job directory used for persistence.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "kworker",
+      "context": "Masquerading name for rootkit process to blend in with kernel threads.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "kthreadd -> bash",
+      "context": "Spawning a shell from a kernel thread process for command execution.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "exec -a [kworker/1] ...",
+      "context": "Masquerading a process as a kernel thread using `exec -a`.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "prctl(PR_SET_NAME) or prctl with a0=0xf",
+      "context": "Using prctl syscall to stomp a process name and masquerade.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "history -c",
+      "context": "Command to clear the current shell's history.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "dmesg --clear",
+      "context": "Command to clear the kernel ring buffer to erase logs.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "journalctl --vacuum-time=*",
+      "context": "Command to clear journald logs to erase traces.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/opt/bds_elf/bds_start.sh",
+      "context": "Loader script for the bds rootkit, which cleans dmesg logs.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "bds rootkit",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "shred",
+      "context": "Securely deleting files to hinder forensics, used by Singularity loader.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "touch -r /etc/ld.so.conf /dev/shm/file",
+      "context": "Timestomping a file by referencing another file's timestamp.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "Outbound connection from kworker or kthreadd process to non-private IP",
+      "context": "Reptile rootkit C2/port knocking activity from a masqueraded kernel thread.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "elf",
+    "script"
+  ]
+}

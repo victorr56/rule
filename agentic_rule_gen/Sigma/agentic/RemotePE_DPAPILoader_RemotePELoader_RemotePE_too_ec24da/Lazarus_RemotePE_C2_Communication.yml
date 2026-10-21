@@ -1,0 +1,26 @@
+title: Lazarus RemotePE C2 Communication
+id: 9a7e6b8a-f521-4d37-af5a-6dd53a1a9807
+status: experimental
+description: Detects HTTP C2 communications used by the RemotePE malware family, characterized by a specific URI path and custom cookies.
+references:
+    - https://blog.fox-it.com/2026/05/22/remotepe-the-lazarus-rat-that-lives-in-memory/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection_checkin:
+        cs-method: 'POST'
+        cs-uri-path: '/channel'
+        c-cookie|contains: 'at_check=true'
+    selection_session:
+        cs-method: 'POST'
+        cs-uri-path: '/channel'
+        c-useragent: 'Microsoft-Delivery-Optimization/10.0'
+        c-cookie|contains: 'ai_session='
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate Microsoft services might use some of these indicators, but the specific combinations of URI path, method, and cookie keys are characteristic of RemotePE C2 traffic.
+level: high

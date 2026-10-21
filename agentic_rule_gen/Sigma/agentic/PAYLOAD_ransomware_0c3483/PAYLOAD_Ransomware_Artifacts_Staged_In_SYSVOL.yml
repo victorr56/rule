@@ -1,0 +1,24 @@
+title: PAYLOAD Ransomware Artifacts Staged In SYSVOL
+id: f1c2d3e4-a5b6-4c7d-8e9f-0a1b2c3d4e5f
+status: experimental
+description: Detects the creation of files associated with PAYLOAD ransomware within a SYSVOL path. These files are used for the ransom note and wallpaper.
+references:
+    - https://securelist.com/tr/payload-ransomware-via-group-policy/121335/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.impact
+    - attack.t1484.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\sysvol\'
+        TargetFilename|endswith:
+            - '\payload.jpg'
+            - '\hello.txt'
+    condition: selection
+falsepositives:
+    - Legitimate administrative scripts, images, or test files with the same generic names being placed in SYSVOL.
+level: high

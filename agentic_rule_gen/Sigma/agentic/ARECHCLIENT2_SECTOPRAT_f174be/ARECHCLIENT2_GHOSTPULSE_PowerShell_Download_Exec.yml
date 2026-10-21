@@ -1,0 +1,26 @@
+title: ARECHCLIENT2/GHOSTPULSE PowerShell Download and Execution
+id: f6c4f9a0-d1e5-4a6c-9418-2e0f43884d5f
+status: experimental
+description: Detects a specific PowerShell command line used to download, expand, and execute the GHOSTPULSE loader, which is a precursor to the ARECHCLIENT2 RAT.
+references:
+    - https://www.elastic.co/security-labs/threat-command/a-wretch-client
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.t1059.001
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'Invoke-WebRequest'
+            - 'ComponentStyle.zip'
+            - 'Expand-Archive'
+            - 'crystall\Crysta_x86.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

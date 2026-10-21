@@ -1,0 +1,25 @@
+title: MacSync C2 Domain Query
+id: 593b4a2f-e8d1-4158-9418-47ac17e914e7
+status: experimental
+description: Detects DNS queries for domains known to be used by MacSync for payload delivery and data exfiltration.
+references:
+    - https://www.huntress.com/blog/macsync-stealer-rat-reverse-engineering
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'agenticsora.com'
+            - 'malwareaudit.com'
+            - 'main.sdhomeinspectors.com'
+            - 'main.southcarolinacounselor.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

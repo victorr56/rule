@@ -1,0 +1,29 @@
+title: ARTEX Related C2 and Proxy IP Activity
+id: af9d2e1c-5d15-46f0-a3a8-444bd72d6ff1
+status: experimental
+description: Detects network connections to IP addresses identified as C2 or proxy infrastructure in an ARTEX-related campaign targeting financial institutions.
+references:
+    - https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1090
+logsource:
+    category: network_connection
+detection:
+    selection:
+        DestinationIp:
+            - '38.244.50.120' # Actor-controlled ARTEX host
+            - '101.53.80.20' # Proxy
+            - '103.248.148.84' # Proxy
+            - '124.155.252.63' # Proxy
+            - '154.201.79.246' # Proxy
+            - '203.160.133.172' # Proxy
+            - '205.214.59.31' # Proxy
+            - '209.209.85.38' # Proxy
+            - '23.158.220.98' # Proxy
+            - '23.248.249.90' # Proxy
+    condition: selection
+falsepositives:
+    - These IPs may be re-allocated to legitimate services over time.
+level: high

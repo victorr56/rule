@@ -1,0 +1,269 @@
+{
+  "malware_family": "Eosinophil infostealer (lazy/chromeelevator)",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A January 2026 campaign distributes ZIP archives impersonating Malwarebytes (and other software) installers that use DLL sideloading of a malicious CoreMessaging.dll to drop final-stage infostealers. The malicious DLLs are identifiable by shared metadata signature strings and unusual alphanumeric export names. Dropped payloads exfiltrate browser credentials, MFA and cryptocurrency wallet data.",
+  "mitre_techniques": [
+    "T1574.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "CoreMessaging.dll",
+      "context": "Malicious DLL sideloaded next to legitimate EXE from the ZIP",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "15Mmm95ml1RbfjH1VUyelYFCf",
+      "context": "Unusual alphanumeric export of malicious DLLs",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "2dlSKEtPzvo1mHDN4FYgv",
+      "context": "Unusual alphanumeric export of malicious DLLs",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Peastaking plenipotence ductileness chilopodous codicillary.",
+      "context": "DLL metadata signature string for pivoting variants",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "© 2026 Eosinophil LLC",
+      "context": "DLL metadata copyright/signature string",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "4acaac53c8340a8c236c91e68244e6cb",
+      "context": "behash shared by all campaign ZIP archives",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "5ddb604194329c1f182d7ba74f6f5946",
+      "context": "behash of final-stage infostealer payloads",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "malwarebytes-windows-github-io-X.X.X.zip",
+      "context": "Distributed archive naming pattern impersonating Malwarebytes",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "gitconfig.com.txt",
+      "context": "TXT bundled in ZIP, contains a single GitHub URL",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Agreement_About.txt",
+      "context": "TXT bundled in ZIP, contains a single GitHub URL",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\u2r6mchdl.exe",
+      "context": "Payload dropped by malicious DLL, flagged as infostealer",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\9g42l.exe",
+      "context": "Win32 DLL payload dropped by malicious DLL",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\xFa4w4.exe",
+      "context": "Payload file related to final-stage infostealer",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\j1eyk.exe",
+      "context": "Payload file related to final-stage infostealer",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\lka8p55uu.exe",
+      "context": "Payload file related to final-stage infostealer",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "CreateDispatcherQueueController",
+      "context": "Legitimate CoreMessaging.dll export imported by the sideloading EXE",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://github.com/",
+      "context": "Only content of TXT file bundled in every ZIP, used for pivoting",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "6773af31bd7891852c3d8170085dd4bf2d68ea24a165e4b604d777bd083caeaa",
+      "description": "Malicious ZIP archive impersonating Malwarebytes installer"
+    },
+    {
+      "sha256": "5591156d120934f19f2bb92d9f9b1b32cb022134befef9b63c2191460be36899",
+      "description": "malwarebytes-windows-github-io ZIP archive (v1.5.3)"
+    },
+    {
+      "sha256": "42d53bf0ed5880616aa995cad357d27e102fb66b2fca89b17f92709b38706706",
+      "description": "malwarebytes-windows-github-io ZIP archive (v7.8.4)"
+    },
+    {
+      "sha256": "ca8467ae9527ed908e9478c3f0891c52c0266577ca59e4c80a029c256c1d4fce",
+      "description": "malwarebytes-windows-github-io ZIP archive (v7.13.5)"
+    },
+    {
+      "sha256": "9619331ef9ff6b2d40e77a67ec86fc81b050eeb96c4b5f735eb9472c54da6735",
+      "description": "malwarebytes-windows-github-io ZIP archive (v3.88.4)"
+    },
+    {
+      "sha256": "5aa6f4a57fb86759bbcc9fc6c61b5f74c0ca74604a22084f9e0310840aa73664",
+      "description": "malwarebytes-windows-github-io ZIP archive (v6.5.5)"
+    },
+    {
+      "sha256": "84021dcfad522a75bf00a07e6b5cb4e17063bd715a877ed01ba5d1631cd3ad71",
+      "description": "malwarebytes-protection-github-io ZIP archive (v4.11.1)"
+    },
+    {
+      "sha256": "606baa263e87d32a64a9b191fc7e96ca066708b2f003bde35391908d3311a463",
+      "description": "Malicious CoreMessaging.dll sideloaded DLL referenced in YARA rule"
+    },
+    {
+      "sha256": "fd855aa20467708d004d4aab5203dd5ecdf4db2b3cb2ed7e83c27368368f02bb",
+      "description": "CoreMessaging.dll loaded by DLL sideloading"
+    },
+    {
+      "sha256": "a0687834ce9cb8a40b2bb30b18322298aff74147771896787609afad9016f4ea",
+      "description": "CoreMessaging.dll loaded by DLL sideloading"
+    },
+    {
+      "sha256": "472cc3a240bc552c2a0d75866e942ee2cb9e9454ab7b00378a8ed0196be1eb97",
+      "description": "Win32 EXE payload dropped to C:\\Windows\\u2r6mchdl.exe"
+    },
+    {
+      "sha256": "6a2d6a4a547dac5faec8c76438d77066b3b6fa550cb01e76f1c56f471888004a",
+      "description": "Payload dropped by one of the malicious DLLs"
+    },
+    {
+      "sha256": "6e850d1541c90f161b5bbe2f3bdceaab92fc29391b76dcfb5b3f6ee3b05c8cc6",
+      "description": "Payload dropped by one of the malicious DLLs"
+    },
+    {
+      "sha256": "871938c1a6d6b5e33627be3ade5a11b266e0d7fe90dadeb3dde87fe83e4fcc78",
+      "description": "Payload dropped by one of the malicious DLLs"
+    },
+    {
+      "sha256": "ba27682751f190f8233253026d187f9903fb57a9b2f8df7733d445e07028b833",
+      "description": "Payload dropped by one of the malicious DLLs"
+    },
+    {
+      "sha256": "cbc5990644a752545ea150c5ce5c52ba522c975886c12588a433ca013c9f2cc5",
+      "description": "Win32 DLL payload dropped to C:\\Windows\\9g42l.exe"
+    },
+    {
+      "sha256": "fa2d63916b01987ed7f98e4729dbf119211a7974ab1b69d0af889034690668a7",
+      "description": "Payload dropped by one of the malicious DLLs"
+    },
+    {
+      "sha256": "5ee9d4636b01fd3a35bd8e3dce86a8c114d8b0aa6b68b1d26ace7ef0f85b438a",
+      "description": "Final-stage payload dropped by malicious DLL"
+    },
+    {
+      "sha256": "e84b0dadb0b6be9b00a063ed82c8ddba06a2bd13f07d510d14e6fd73cd613fba",
+      "description": "Final-stage payload dropped by malicious DLL"
+    },
+    {
+      "sha256": "62006477bbba363227cfe00d9a3d936adba8be1e42a143226f5bb384406b55bc",
+      "description": "Infostealer payload C:\\Windows\\xFa4w4.exe"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "archive"
+  ]
+}

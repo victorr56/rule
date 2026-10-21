@@ -1,0 +1,23 @@
+title: VietCredCare Facebook Business Account Check
+id: e47b4d11-5364-4e4b-91f6-edb05a764acb
+status: experimental
+description: Detects a specific web request pattern used by VietCredCare to check if a victim's Facebook account is a business account.
+references:
+    - https://www.group-ib.com/blog/vietcredcare-stealer/
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.credential_access
+    - attack.t1555
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname: 'business.facebook.com'
+        Url|contains: '/content_management/'
+        HttpUserAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36'
+    condition: selection
+falsepositives:
+    - Unlikely, as this specific combination of an old User-Agent and specific URL is characteristic of the malware's automated checks.
+level: medium

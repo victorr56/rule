@@ -1,0 +1,21 @@
+title: Potential Tycoon 2FA Phishing Kit IP Reputation Check
+id: e4b2569c-29f9-4de9-a86d-6218170c97cc
+status: experimental
+description: Detects DNS queries for 'api.ipapi.is', an IP reputation service. This service is queried by the Tycoon 2FA phishing kit to filter out connections from researchers and cloud providers.
+references:
+    - https://www.elastic.co/security-labs/threat-command/tycoon-2fa-aitm-detection-engineering
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'api.ipapi.is'
+    condition: selection
+falsepositives:
+    - Legitimate use of the ipapi.is service for security or geolocation purposes.
+level: medium

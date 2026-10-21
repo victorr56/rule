@@ -1,0 +1,358 @@
+{
+  "malware_family": "GhostContainer",
+  "threat_actor": "NightEagle (APT-Q-95)",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "NightEagle (APT-Q-95) gained access to Russian organizations via compromised VPN credentials and deployed the .NET GhostContainer backdoor on Microsoft Exchange servers by abusing VIEWSTATE and the x-owa-urlpostdata header. The group then tunnelled traffic with legitimate Microsoft dev tunnels (*.*.devtunnels.ms) and the public rdp2tcp tool over RDP, and moved laterally via Impacket atexec, portproxy, BlueKeep (CVE-2019-0708) exploitation and DCSync.",
+  "mitre_techniques": [
+    "T1572",
+    "T1036.012"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "App_Web_Container_1.dll",
+      "context": "GhostContainer backdoor .NET DLL (MD5 631fb131a56caf4ca0f287ed73e876ab)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "3ecd1cd627d0340c92901a478a7caad8.dll",
+      "context": "GhostContainer backdoor DLL named after its MD5 digest in KEDR process tree",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AdobeSync.exe",
+      "context": "Tool archive member masquerading as Adobe software (MD5 1dcafb7f8448683281106b06dd22409a)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "adobe_32.exe",
+      "context": "Masquerading tunneling tool; sandbox run connected to dev tunnels (MD5 1f3034b706c78b35d8e34044e68c693a)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "1c-office-plugin.exe",
+      "context": "Masquerading tool name (MD5 4aa9fb1bf9223dfcdac920759bc7a3c7)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "1cbroker.exe",
+      "context": "Masquerading tool name (MD5 4aa9fb1bf9223dfcdac920759bc7a3c7)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "trueconf.exe",
+      "context": "Masquerading tool name (MD5 4aa9fb1bf9223dfcdac920759bc7a3c7)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "trueconf-broker.exe",
+      "context": "Archive member named after legitimate conferencing software",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "stexec.py",
+      "context": "Impacket atexec script observed creating scheduled tasks for port forwarding",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Impacket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "rdp2tcp",
+      "context": "RDP virtual channel name logged in RdpCoreTS events 132/148 on server component startup",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "rdp2tcp",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "fakePath",
+      "context": "Parameter accepted by GhostContainer App_Web_843e75cf5b63 class to build virtual paths",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "fakePageName",
+      "context": "Parameter accepted by GhostContainer App_Web_843e75cf5b63 class to build virtual paths",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "USERMODE_EGG",
+      "context": "Marker string in CVE-2019-0708 exploit shellcode memory dump",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SHELLCODE",
+      "context": "Marker in CVE-2019-0708 exploit memory dump",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Trojan.MSIL.GhostContainer.gen",
+      "context": "Kaspersky detection name for GhostContainer backdoor samples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Trojan:MSIL/GhostContainer.gen",
+      "context": "Detection name shown for GhostContainer in KEDR process tree",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "assembly_name",
+      "value": "App_Web_843e75cf5b63",
+      "context": "GhostContainer .NET class handling fakePath/fakePageName virtual paths",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "assembly_name",
+      "value": "App_Web_8c9b251fb5b3",
+      "context": "GhostContainer .NET class implementing proxying and socket forwarding",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "assembly_name",
+      "value": "Stub",
+      "context": "GhostContainer .NET class processing C2 commands and bypassing AMSI/ETW",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "net user bosch Ktk17362 /add && net localgroup Remote Desktop Users /add && net localgroup Administrators /add && net localg",
+      "context": "Executed by CVE-2019-0708 shellcode on exploited RDP service; recovered from memory dump",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "netsh interface portproxy add v4tov4 listenport=443 connectaddress=10.0.12.101 connectport=445",
+      "context": "Port forwarding launched by scheduled task created with Impacket atexec",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "506167654e616d650073616d706c6550",
+      "context": "KTAE genotype string matched in GhostContainer samples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "506174680066616b506167654e616d",
+      "context": "KTAE genotype string matched in GhostContainer samples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "Microsoft-Windows-RemoteDesktopServices-RdpCoreTS/Operational.evtx",
+      "context": "Log recording events 132 (channel opened) and 148 (closed), including rdp2tcp channel",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://github.com/mirror-js/mirror-js/refs/heads/main/js/js-webpack.zip",
+      "context": "GitHub-hosted archive of tunneling tools disguised as webpack JS assets",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/mirror-js/mirror-js/refs/heads/main/js/jsonp-pack.zip",
+      "context": "GitHub-hosted archive of tunneling tools disguised as JS assets",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/browserthemes/resourcepack/releases/download/main/resource-pack.zip",
+      "context": "GitHub release hosting archived tunneling tools as a resource pack",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/mirror-js/mirror-js",
+      "context": "Attacker repository used to host tool archives",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/browserthemes/resourcepack",
+      "context": "Attacker repository used to host tool archives",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tfgwd1nc-8443.euw.dev.tunnels.ms",
+      "context": "Microsoft dev tunnels domain used to expose RDP port 3389",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "wss://tfgwd1nc-8443.euw.devtunnels.ms",
+      "context": "Dev tunnels WebSocket endpoint contacted by adobe_32.exe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://tfgwd1nc-8443.euw.dev.tunnels.ms/",
+      "context": "Dev tunnels URL seen in KEDR process tree during tunneling",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "*.*.devtunnels.ms",
+      "context": "Legitimate Microsoft dev tunnels domain pattern abused for RDP tunneling",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "x-owa-urlpostdata",
+      "context": "Header through which C2 commands reach the GhostContainer Stub class",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-TunnelSkipAntiPhishingPage",
+      "context": "Suspicious header set by adobe_32.exe in dev tunnels requests",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Exploit.CVE-2019-0708.TCP.C&C",
+      "context": "KATA network signature detecting BlueKeep exploitation traffic",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "dotnet",
+    "archive"
+  ]
+}

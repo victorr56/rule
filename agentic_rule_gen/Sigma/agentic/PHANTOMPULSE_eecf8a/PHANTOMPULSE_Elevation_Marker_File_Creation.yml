@@ -1,0 +1,27 @@
+title: PHANTOMPULSE Elevation Marker File Creation
+id: d4b3a4f8-99e0-4a8e-8a21-c7c88b0f4d3c
+status: experimental
+description: Detects the creation of the '.elevate' marker file by a process running from a potentially suspicious location. PHANTOMPULSE uses this file to coordinate a privileged relaunch of its components.
+references:
+    - https://www.elastic.co/security-labs/threat-command/blockchain-c2-phantompulse-rat-sinkhole
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.privilege_escalation
+    - attack.t1548.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|contains:
+            - '\AppData\Local\'
+            - '\AppData\Roaming\'
+            - '\ProgramData\'
+            - '\Users\Public\'
+            - '\Windows\Temp\'
+        TargetFilename|endswith: '\.elevate'
+    condition: selection
+falsepositives:
+    - Legitimate software that runs from user-writable directories and creates files with the '.elevate' extension, which is considered unlikely.
+level: medium

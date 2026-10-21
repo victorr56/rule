@@ -1,0 +1,27 @@
+title: FrostyNeighbor PicassoLoader Persistence via ViberPCService Run Key
+id: a7e39a5d-79e4-44ac-8178-5776d6ec1217
+status: experimental
+description: |-
+    Detects the creation of a registry Run key value named 'ViberPCService' used by PicassoLoader to persist.
+    This key is set to execute a malicious LNK file via 'shell32.dll,ShellExec_RunDLL'.
+references:
+    - https://www.welivesecurity.com/en/eset-research/frostyneighbor-fresh-mischief-digital-shenanigans/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1547.001
+    - detection.threat_hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Microsoft\Windows\CurrentVersion\Run\ViberPCService'
+        Details|contains|all:
+            - 'shell32.dll,ShellExec_RunDLL'
+            - 'C:\ProgramData\ViberPC.lnk'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,35 @@
+title: Suspicious Child Process Of AhsayCBS Service
+id: 97891823-3889-498c-8433-ec14e548d1c8
+status: experimental
+description: Detects the AhsayCBS service process ('cbssvcX64.exe' or 'cbssvcX86.exe') spawning a command shell or a common downloader utility. This behavior is indicative of post-exploitation activity following a successful compromise of the AhsayCBS application, such as via CVE-2026-105134.
+references:
+    - https://www.huntress.com/blog/ahsaycbs-flaws-exploit
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.t1190
+    - attack.t1569.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_utils:
+        ParentImage|endswith:
+            - '\cbssvcX64.exe'
+            - '\cbssvcX86.exe'
+        Image|endswith:
+            - '\curl.exe'
+            - '\certutil.exe'
+            - '\bitsadmin.exe'
+            - '\wget.exe'
+    selection_shells:
+        ParentImage|endswith:
+            - '\cbssvcX64.exe'
+            - '\cbssvcX86.exe'
+        Image|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+    condition: 1 of selection_*
+falsepositives:
+    - 'Legitimate administrative scripts or maintenance tasks that interact with the AhsayCBS service, although this is highly unlikely.'
+level: high

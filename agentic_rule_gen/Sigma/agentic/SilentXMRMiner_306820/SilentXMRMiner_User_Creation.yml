@@ -1,0 +1,27 @@
+title: Creation of 'oldadministrator' Local User
+id: a23e80e5-7975-4fc1-a982-1262d0baad27
+status: experimental
+description: Detects the creation of a local user account named 'oldadministrator', which was used by an actor deploying SilentXMRMiner.
+references:
+    - https://www.huntress.com/blog/threat-actor-compiles-cryptominer
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1136.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\net.exe'
+            - '\net1.exe'
+        CommandLine|contains|all:
+            - 'user'
+            - 'oldadministrator'
+            - '/add'
+    condition: selection
+falsepositives:
+    - Unlikely, as the username is highly specific to this campaign.
+level: high

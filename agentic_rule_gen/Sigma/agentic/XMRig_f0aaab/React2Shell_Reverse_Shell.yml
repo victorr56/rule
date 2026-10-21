@@ -1,0 +1,23 @@
+title: React2Shell Exploitation Reverse Shell
+id: 5418b764-a957-4180-873b-5a1762ac9f71
+status: experimental
+description: Detects an outbound network connection to a known attacker IP on a specific port (12323) used for a reverse shell following successful exploitation of CVE-2025-55182 (React2Shell).
+references:
+    - https://www.greynoise.io/blog/react2shell-exploitation-consolidates
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1190
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '193.142.147.209'
+        DestinationPort: 12323
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

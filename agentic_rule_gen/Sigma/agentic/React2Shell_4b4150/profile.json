@@ -1,0 +1,266 @@
+{
+  "malware_family": "React2Shell",
+  "threat_actor": "Unknown",
+  "platforms": [
+    "linux",
+    "web"
+  ],
+  "summary": "React2Shell is an exploit for CVE-2025-55182, a critical RCE in React Server Components, heavily affecting Next.js applications. Attackers use it for initial access into cloud and container environments to perform credential harvesting, deploy cryptominers (XMRig) and sophisticated backdoors like Sliver. A notable variant is a fileless backdoor that hooks the Node.js HTTP server to execute commands via a magic URL path.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "http.Server.prototype.emit",
+      "context": "Node.js function hooked by fileless backdoor to intercept HTTP requests.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "react-server-dom-webpack/server",
+      "context": "Package containing the vulnerable decodeReply function in custom implementations.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "$3:constructor:constructor",
+      "context": "Gadget chain component used to access the Function() constructor for RCE.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "console.log(7*7+1)//",
+      "context": "Example arbitrary code string from the PoC payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "systemd-devd",
+      "context": "XMRig cryptominer masquerading as a system process in containers.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "XMRig",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "nohup /var/tmp/crond",
+      "context": "Disguised persistence mechanism for a cryptominer inside a container.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/shadow",
+      "context": "Targeted by Node-native exfiltration script for credential theft.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/.ssh/id_rsa",
+      "context": "Targeted by Node-native exfiltration script to steal SSH private keys.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/.bash_history",
+      "context": "Targeted by Node-native exfiltration script to steal command history.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".bash_history_last1000",
+      "context": "Filename used when exfiltrating stolen bash history.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/.config/gcloud",
+      "context": "A directory targeted by a secret harvesting script.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ps aux",
+      "context": "Executed by credential harvesting script to gather system information.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "netstat -anpt",
+      "context": "Executed by credential harvesting script to list network connections.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "shadow",
+      "context": "Hardcoded 'type' string for exfiltrating /etc/shadow contents.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ssh_key",
+      "context": "Hardcoded 'type' string for exfiltrating SSH keys.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/favicon.login.ico",
+      "context": "Magic path trigger for fileless Node.js backdoor.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "next-action",
+      "context": "HTTP header that triggers the vulnerable RSC deserialization in Next.js.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://144.91.87.221:9999/detect_data",
+      "context": "Hardcoded C2 endpoint for Node-native silent exfiltration script.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "169.254.169.254/latest/meta-data/iam/security-credentials/",
+      "context": "Cloud instance metadata service endpoint accessed for IAM credentials.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "anywherehost.site",
+      "context": "Malware infrastructure domain for cryptomining campaigns.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "inerna1.site",
+      "context": "Malware infrastructure domain for cryptomining campaigns.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "keep.camdvr.org",
+      "context": "Sliver C2 infrastructure domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Sliver"
+    },
+    {
+      "kind": "url",
+      "value": "http://anywherehost.site/xb/systemd-devd.$(uname -m)",
+      "context": "URL pattern for downloading masqueraded XMRig miner.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "XMRig"
+    },
+    {
+      "kind": "url",
+      "value": "http://keep.camdvr.org:8000/BREAKABLE_PARABLE5",
+      "context": "URL for downloading a Sliver payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Sliver"
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "oast*",
+      "context": "DNS-based beaconing pattern used to confirm RCE and exfiltrate data.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "144.91.87.221",
+      "context": "C2 address for Node.js based exfiltration.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "t.cnzzs.co",
+      "context": "Domain associated with a reused TLS certificate for Sliver C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Sliver"
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "elf",
+    "script",
+    "archive"
+  ]
+}

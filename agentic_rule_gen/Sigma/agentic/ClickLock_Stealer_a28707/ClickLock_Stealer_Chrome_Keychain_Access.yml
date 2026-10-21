@@ -1,0 +1,29 @@
+title: ClickLock Stealer Chrome Keychain Access from Shell
+id: d4b39b0d-5853-4874-946e-1d54b87515c1
+status: experimental
+description: Detects ClickLock Stealer attempting to access Chrome's keychain credentials using the 'security' command-line tool, spawned from a shell.
+references:
+    - https://www.group-ib.com/blog/clicklock-stealer-macos-malware/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.credential_access
+    - attack.t1555.003
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        ParentImage|endswith:
+            - '/bash'
+            - '/sh'
+            - '/zsh'
+        Image|endswith: '/security'
+        CommandLine|contains|all:
+            - 'find-generic-password'
+            - '-ga'
+            - '"Chrome"'
+    condition: selection
+falsepositives:
+    - Legitimate diagnostic or backup scripts that need to access Chrome's keychain (unlikely).
+level: high

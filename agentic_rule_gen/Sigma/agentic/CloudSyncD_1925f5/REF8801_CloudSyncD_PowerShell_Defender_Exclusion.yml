@@ -1,0 +1,25 @@
+title: REF8801/CloudSyncD PowerShell Defender Exclusion
+id: 5691d904-e53b-4866-9e5c-c68e169d5f78
+status: experimental
+description: Detects PowerShell being used to add a Windows Defender exclusion for the '.apex-audit' directory. This behavior is associated with the '@apexacc/audit' malicious npm package distributed by REF8801.
+references:
+    - https://www.elastic.co/security-labs/threat-command/apex-accelerator-malicious-npm-packages
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'Add-MpPreference'
+            - '-ExclusionPath'
+            - '\.apex-audit'
+    condition: selection
+falsepositives:
+    - Unlikely, as the exclusion path is highly specific to this threat.
+level: high

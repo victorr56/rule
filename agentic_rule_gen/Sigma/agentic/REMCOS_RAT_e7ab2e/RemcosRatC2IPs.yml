@@ -1,0 +1,27 @@
+title: REMCOS RAT C2 Network Connection
+id: 110d9f4d-175a-4b05-b1a7-e9a660d2b789
+status: experimental
+description: Detects network connections to IP addresses associated with REMCOS RAT C2 infrastructure.
+references:
+    - https://www.elastic.co/security-labs/threat-command/dissecting-remcos-rat-part-four
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1573.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '43.230.202.33'
+            - '77.105.132.70'
+            - '104.250.180.178'
+            - '107.175.229.139'
+            - '122.176.133.66'
+            - '185.70.104.90'
+    condition: selection
+falsepositives:
+    - 'These IPs might be reassigned to benign services in the future.'
+level: high

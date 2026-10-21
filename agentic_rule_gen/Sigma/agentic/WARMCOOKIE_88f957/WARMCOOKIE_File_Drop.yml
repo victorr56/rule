@@ -1,0 +1,32 @@
+title: WARMCOOKIE DLL Payload Dropped
+id: 9a6e1919-6889-4995-b9d9-29007f354ab5
+status: experimental
+description: |-
+    Detects the creation of the WARMCOOKIE payload 'RtlUpd.dll' in the 'C:\ProgramData\RtlUpd\' directory. This activity occurs after the initial downloader script successfully fetches the payload.
+references:
+    - https://www.elastic.co/security-labs/threat-command/dipping-into-danger
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    # The file is downloaded by a BITS job, often running under a svchost.exe instance, or by the initial script running under powershell.exe or wscript.exe.
+    # The specificity of the path is high enough to warrant an alert.
+    selection_ps:
+        TargetFilename|endswith: '\ProgramData\RtlUpd\RtlUpd.dll'
+        Image|endswith: '\powershell.exe'
+    selection_wscript:
+        TargetFilename|endswith: '\ProgramData\RtlUpd\RtlUpd.dll'
+        Image|endswith: '\wscript.exe'
+    selection_svchost:
+        TargetFilename|endswith: '\ProgramData\RtlUpd\RtlUpd.dll'
+        Image|endswith: '\svchost.exe'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

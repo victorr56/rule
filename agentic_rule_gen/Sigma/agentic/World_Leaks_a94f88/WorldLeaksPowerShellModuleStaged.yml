@@ -1,0 +1,24 @@
+title: World Leaks PowerShell Module Staged
+id: a8d5910c-fde2-45e0-9426-ed83e1c61858
+status: experimental
+description: Detects the creation of a suspicious PowerShell module 'OpenSSHUtils.psm1' in an unusual path, as observed in World Leaks intrusions.
+references:
+    - https://www.darktrace.com/blog/when-reality-diverges-from-the-playbook-darktrace-identifies-encryption-in-a-world-leaks-ransomware-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\programdata\syc\OpenSSHUtils.psm1'
+        Image|endswith: '\bitsadmin.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

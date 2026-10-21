@@ -1,0 +1,25 @@
+title: LATRODECTUS ICEDID Loader Execution
+id: b9e0f3a6-2c1a-4f5b-9d7c-8e6f5d4c3b2a
+status: experimental
+description: Detects the execution of the ICEDID loader via rundll32.exe, as initiated by LATRODECTUS. This is characterized by the use of a specific "-zzzz=" command-line parameter.
+references:
+    - https://www.elastic.co/security-labs/threat-command/spring-cleaning-with-latrodectus
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.execution
+    - attack.defense_evasion
+    - attack.t1218.011
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains|all:
+            - ',init'
+            - '-zzzz='
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

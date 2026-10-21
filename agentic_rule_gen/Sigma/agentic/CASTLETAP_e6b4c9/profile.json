@@ -1,0 +1,529 @@
+{
+  "malware_family": "CASTLETAP",
+  "threat_actor": "UNC3886",
+  "platforms": [
+    "network_device"
+  ],
+  "summary": "Threat-hunting profile for exploitation and post-exploitation of internet-facing FortiGate firewalls, covering credential stuffing, rogue super_admin account creation, certificate manipulation, NAT/port-forward backdoors, full-config exfiltration, and FortiManager script abuse. Hunting relies on FortiGate local logs (log IDs 32001/32002/32003, 44546/44547/44548, 41987/41990, 32095, 32052) and FortiManager CDB object-change events to correlate logins with config changes. UNC3886 used FortiManager script deployment to drop the CASTLETAP backdoor (/bin/fgfm) with ICMP port-knocking C2 visible only in local traffic logs.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/bin/fgfm",
+      "context": "CASTLETAP backdoor dropped on FortiGate via FortiManager script abuse (UNC3886)",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "show full-configuration",
+      "context": "Log ID 44548, action=Show, jsconsole; full config dump for credential extraction",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "execute vpn certificate local generate rsa attacker-cert3 2048 365 US CA \"San Francisco\" \"Attacker Org\" Security attacker3.local admin@attacker.local",
+      "context": "Log ID 44548, action=Execute, jsconsole; attacker-generated local VPN certificate",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "diag sys ha checksum show",
+      "context": "Example msg field of Log ID 44548 (Action performed)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "cfgpath=system.admin",
+      "context": "Log ID 44547; admin account add/edit/delete in config change events",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "cfgpath=firewall.vip",
+      "context": "Log ID 44547; VIP/DNAT backdoor creation",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "cfgpath=firewall.vip6",
+      "context": "Log ID 44547; IPv6 virtual IP configurations",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "firewall.ippool",
+      "context": "Log ID 44547; source NAT pools",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "firewall.policy",
+      "context": "Log ID 44547; firewall policy referencing VIPs",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "vpn.certificate.local",
+      "context": "Certificate changes including private keys",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "log.setting",
+      "context": "cfgpath indicating logging configuration tampering",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "sys_sso_forticloud_admin",
+      "context": "Built-in FortiCloud SSO admin account abused for initial access",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "accprofile[super_admin]",
+      "context": "cfgattr on attacker-created admin account",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "two-factor[disable]",
+      "context": "cfgattr showing MFA disabled on new admin account",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "trusthost1[0.0.0.0 255.255.255.0]",
+      "context": "cfgattr granting admin access from any IP",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "portforward[enable]",
+      "context": "cfgattr enabling port forwarding in VIP object",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "ui=\"fgfmd\"",
+      "context": "Log ID 32052; confirms script pushed from FortiManager",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "map_dstport 22, 3389, 445, 1433, 3306, 5432",
+      "context": "Sensitive internal ports attackers forward via VIP mappedport",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "32001",
+      "context": "FortiGate log ID - Admin login successful",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "32002",
+      "context": "FortiGate log ID - Admin login failed",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "32003",
+      "context": "FortiGate log ID - Admin login disabled (brute force lockout)",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "44546",
+      "context": "FortiGate log ID - Configuration changed",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "44547",
+      "context": "FortiGate log ID - Object attribute configured",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "44548",
+      "context": "FortiGate log ID - Action performed (CLI command executed)",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "41987",
+      "context": "FortiGate log ID - Certificate updated",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "41990",
+      "context": "FortiGate log ID - Certificate update failed",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "32095",
+      "context": "FortiGate log ID - Admin performed an action from GUI (config download)",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "32052",
+      "context": "FortiGate log ID - Upload and run a script (FortiManager push)",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0021030002",
+      "context": "FortiManager log ID - CDB event log for object changed, subtype=objcfg",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0001000014",
+      "context": "FortiGate traffic log ID shown with subtype=local (backdoor C2 egress)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "backupadmin",
+      "context": "Local admin account created by attacker during CVE-2026-24858 exploitation",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ssl-admin",
+      "context": "Rogue local admin account created in SentinelOne-investigated intrusion",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "helpdesk",
+      "context": "Attacker-created admin account with trusthost 0.0.0.0 shown in log example",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "backdoor-ssh",
+      "context": "cfgobj name of malicious VIP port-forward rule (extport 2222 to mappedport 22)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "fortidcagent",
+      "context": "LDAP service account whose stored credentials were decrypted from stolen config",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "FGT_ha_admin",
+      "context": "System account seen in cfgattr user field of config change logs",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "183.87.217.222",
+      "context": "Credential-stuffing source IP targeting admin login (Wiz events screenshot)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "101.36.122.139",
+      "context": "Credential-stuffing source IP, username root",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "205.235.2.176",
+      "context": "Credential-stuffing source IP, username expresso",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "2.58.57.140",
+      "context": "Credential-stuffing source IP, username upgrade",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "107.150.105.153",
+      "context": "Credential-stuffing source IP, username znc",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "43.155.214.159",
+      "context": "Credential-stuffing source IP (malicious reputation)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "113.141.72.65",
+      "context": "Credential-stuffing source IP, username tarun",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "194.113.195.96",
+      "context": "Credential-stuffing source IP, username devuser01",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "118.196.30.45",
+      "context": "Credential-stuffing source IP (malicious reputation)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "118.33.113.91",
+      "context": "Credential-stuffing source IP, username scheduler",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tutamail.com",
+      "context": "Disposable email domain seen in SSO admin key (figure 3)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "openmail.pro",
+      "context": "Disposable email domain used for FortiCloud SSO admin accounts",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "protonmail.com",
+      "context": "Privacy-focused provider observed in FortiCloud SSO attacks",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mail.io",
+      "context": "Domain of attacker emails cloud-init@mail.io / cloud-noc@mail.io",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "support@openmail.pro",
+      "context": "Disposable SSO account used in CVE-2026-24858 exploitation chain",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "cloud-noc@mail.io",
+      "context": "Known malicious SSO email pattern; also appears as FortiManager key field",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "ICMP (proto=1) port knocking",
+      "context": "CASTLETAP covert C2 channel; visible in FortiGate subtype=local traffic logs",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "50050",
+      "context": "Cobalt Strike default C2 port flagged for hunting in FortiGate traffic logs",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "4444",
+      "context": "Metasploit default C2 port flagged for hunting in FortiGate traffic logs",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "unknown"
+  ]
+}

@@ -1,0 +1,24 @@
+title: Skynox7 Pawns.app Payload Download To /tmp/gs
+id: 28f6e246-de0b-466d-a77c-a076cdb94ac3
+status: experimental
+description: Detects the download of the Pawns.app client to '/tmp/gs', a behavior observed in the skynox7 campaign.
+references:
+    - https://www.greynoise.io/blog/proxyjacking-edge-devices-residential-proxies
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.ingress_tool_transfer
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/curl'
+        CommandLine|contains|all:
+            - '-o /tmp/gs'
+            - '/x86_64'
+    condition: selection
+falsepositives:
+    - Other tools could be legitimately downloaded to '/tmp/gs', though the combination with the '/x86_64' URL path increases specificity.
+level: medium

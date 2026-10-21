@@ -1,0 +1,344 @@
+{
+  "malware_family": "Balonx Sistema (BankProtect Android RAT)",
+  "threat_actor": "Balonx",
+  "platforms": [
+    "android",
+    "web"
+  ],
+  "summary": "Balonx Sistema is a Mexican subscription-based Phishing-as-a-Service platform that uses a persistent WebSocket channel (SCREEN_CHANGE protocol, endpoint /ws) to relay victim input to legitimate banking portals in real time and to intercept MFA/OTP codes across 14 fake screen types. It ships an Android RAT branded BankProtect (package sacred.explosion, built on the commercial Spyroid framework) distributed via the fake PROTECCION_BANCARIA security-alert screen, plus CallFlow, an AI vishing module combining GPT-4o-mini, ElevenLabs TTS and OpenAI Whisper over a FreePBX backend. Detection can key on the RAT package/class names, base64-encoded C2 configuration fields, the /ws and /balonx paths and the CallFlow domains.",
+  "mitre_techniques": [
+    "T1566.002",
+    "T1539",
+    "T1557",
+    "T1111",
+    "T1476",
+    "T1422",
+    "T1521",
+    "T1598.003",
+    "T1583.001",
+    "T1586.001",
+    "T1596.005",
+    "T1656"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "sacred.explosion",
+      "context": "Android APK package name of RAT delivered by Balonx phishing pages",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bxelllolzxqfmaszk1049",
+      "context": "Main class name of BankProtect Android RAT APK",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "MTk2LjI1MS44NC4xMQ==",
+      "context": "Base64-encoded ClientHost field holding Android RAT C2 IP",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "Nzc3MQ==",
+      "context": "Base64-encoded ClientPort field holding Android RAT C2 port",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "qldtfdbdooddqhkryrrybqqdshtjudhqayosltdvhznalaswadóYnPdC135.ufrrlvd1",
+      "context": "Hardcoded ConnectionKey authenticating RAT socket to C2",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Spyroid.net",
+      "context": "Framework marker string in BankProtect RAT class code",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Spyroid",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "balonx",
+      "context": "SuperAdmin account name in PhaaS source code and panel",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SCREEN_CHANGE",
+      "context": "WebSocket protocol command switching the victim screen",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PROTECCION_BANCARIA",
+      "context": "Screen type pushing fake bank-security APK download",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CODIGO",
+      "context": "Screen type requesting SMS OTP from victim",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SMS_COMPRA",
+      "context": "Screen type requesting purchase-authorization OTP",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VERIFICACION_ID",
+      "context": "Screen type activating camera to capture ID and selfie",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "allowedBanks",
+      "context": "Permission matrix controlling which banks each Executive may target",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Aclaraciones Bancarias",
+      "context": "Phishing landing page brand text of Balonx campaigns",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "setSoTimeout(0)",
+      "context": "Socket option keeping RAT C2 connection open indefinitely",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "FreePBX 17.0.4.31",
+      "context": "PBX version powering the CallFlow AI vishing backend",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "FreePBX 17.0.28",
+      "context": "FreePBX panel version shown on CallFlow backend",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "carolina",
+      "context": "ElevenLabs synthetic voice persona of fake bank agent",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PanelBalonxbot",
+      "context": "Telegram bot issuing affiliate OTP codes and notifications",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "@BalonxSistema",
+      "context": "Telegram support handle in PhaaS panel and APK management",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "callbalonx.info",
+      "context": "CallFlow AI vishing module login portal",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "panelbalonxfs.xyz",
+      "context": "FreePBX and UCP backend for CallFlow",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "balonx.online",
+      "context": "Balonx Sistema phishing domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "aclaraciones-digital.online",
+      "context": "Phishing domain tied to Aclaraciones Bancarias campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "soporte-aclaracion.xyz",
+      "context": "Phishing domain tied to Aclaraciones campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "196.251.84.11",
+      "context": "Android RAT C2 address hardcoded in BankProtect APK",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "85.31.235.109",
+      "context": "CallFlow SIP/PBX server address",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/ws",
+      "context": "WebSocket endpoint present on all active Balonx phishing domains",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://panelbalonxfs.xyz/admin/api/api/gql",
+      "context": "GraphQL API endpoint of CallFlow backend",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://panelbalonxfs.xyz/admin/api/api/rest",
+      "context": "REST API endpoint of CallFlow backend",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://panelbalonxfs.xyz/admin/api/api/token",
+      "context": "Authentication token endpoint of CallFlow backend",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "7771/TCP",
+      "context": "Android RAT C2 port hardcoded in APK",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "5160/TCP",
+      "context": "CallFlow SIP port (5060 unavailable per source comments)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/balonx",
+      "context": "Administrator panel login route of the PhaaS kit",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "apk",
+    "script"
+  ]
+}

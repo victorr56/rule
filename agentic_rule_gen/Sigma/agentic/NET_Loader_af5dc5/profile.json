@@ -1,0 +1,448 @@
+{
+  "malware_family": ".NET Loader",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "This threat profile describes a multi-stage, fileless .NET loader delivered via a malspam campaign. The loader employs in-memory execution, heavy obfuscation, and extensive anti-analysis and defense evasion techniques, including patching AMSI and ETW. It establishes persistence via scheduled tasks and registry keys and uses legitimate Microsoft binaries like InstallUtil.exe and MSBuild.exe for process injection.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "Bestellung_2026.html",
+      "context": "Malicious HTML attachment from malspam email.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "A021185521S210008-11521.js",
+      "context": "JScript loader contained in ZIP archive.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\ktncm.js",
+      "context": "Relocated path for JScript loader.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\nlbzl.ps1",
+      "context": "Dropped PowerShell script from JScript loader.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%UserProfile%\\AppData\\LocalLow\\LocalLow Windows\\Program Rules\\Program Rules NVIDEO\\Program Rules\\Program Rules NVIDEO",
+      "context": "Loader's NVIDIA-themed staging directory.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "01_detect_analisse_process.txt",
+      "context": "Marker file created when analysis tool is detected.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "InstallUtil.exe",
+      "context": "Hardcoded injection target for RunPE.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "MSBuild.exe",
+      "context": "Hardcoded injection target for RunPE.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Update Drivers NVIDEO_<random>",
+      "context": "Persistence entry name in HKCU Run/RunOnce keys.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; WOW64; Trident/4.0; SLCC1; .NET CLR 2.0.50727; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 3.5.30729; .NET CLR 3.0.30618; InfoPath.2; OfficeLiveConnector.1.3; OfficeLivePatch.0.0)",
+      "context": "Hardcoded IE8 User-Agent for payload retrieval.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "schtasks /Create /TN “<name>” /XML “<path>” /F",
+      "context": "Command to create scheduled task persistence from XML.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd /k START “” “<self>” & EXIT",
+      "context": "Used for UAC elevation with 'runas' verb.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "P@55w0rd!",
+      "context": "Password for deriving AES C2 key via PBKDF2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "lHxoBf+5Ft6YrDx4FyDWwg==",
+      "context": "Hardcoded TripleDES key for resource decryption.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "nFukcUaa5h0=",
+      "context": "Hardcoded TripleDES IV for resource decryption.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "criando",
+      "context": "Portuguese string 'creating' in mangled CreateProcessA wrapper name.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "NhqIM",
+      "context": "Delimiter used in metadata passed to RunPE injector.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "E-Mail nicht gefunden. Weiterleitung…",
+      "context": "String shown on lure page without email fragment.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ClassLibrary3.Class1",
+      "context": "Type name resolved for reflective loading.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "prFVI",
+      "context": "Method name invoked reflectively.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VirteyQDs64x",
+      "context": "Obfuscated DllImport name for VirtualAllocEx.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "9495",
+      "context": "Magic constant in custom stream cipher.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "10476",
+      "context": "Magic constant in custom stream cipher.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "22014",
+      "context": "Magic constant in custom stream cipher.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "any.run",
+      "context": "String checked in process list for anti-analysis.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "%x%",
+      "context": "Delimiter used to split downloaded payload.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "PT{8-11}M",
+      "context": "Randomized interval for repeating persistence task.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ B8 BB 00 00 C0 C3 }",
+      "context": "Patch for NtManageHotPatch (32-bit): mov eax, 0xC00000BB; ret",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ B8 BB 00 00 C0 C2 10 00 }",
+      "context": "Patch for NtManageHotPatch (32-bit): mov eax, 0xC00000BB; ret 0x10",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 31 C0 C3 }",
+      "context": "Patch for EtwEventWrite (64-bit): xor rax, rax; ret",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "fostercareintheus.optimizationprime.com",
+      "context": "Redirector stage after DoubleClick.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bth.startthewave.org",
+      "context": "Domain hosting the delivery kit.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://pengajian.muliastudy.com/images/edu/u.php",
+      "context": "URL serving the initial ZIP payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "andrefelipedonascime1778799406970.2241107.meusitehostgator.com.br",
+      "context": "Domain serving staging files (01.txt, 02.txt, 03.txt).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "catalogo.castrouria.com",
+      "context": "Domain serving bl.txt payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "xtadts.ddns.net",
+      "context": "Loader C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "afxwd.ddns.net",
+      "context": "Loader C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://ipapi.co/json/",
+      "context": "Geolocation service used by lure page.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/ddm/trackclk/N4892.5020.4774291382421/B23999293.271539123",
+      "context": "Google DoubleClick click-tracking path.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/GpazlLUWIJ_14_05_Meus_ArquivosDeTexto/03.txt",
+      "context": "Path for initial .NET loader download.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/c84da/bl.txt",
+      "context": "Path for packed loader download.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "D5B7247C497788CF0031CEB06E3DF77A45FEF59F1E49633DC7159816D64759B5",
+      "context": "Hardcoded SHA256 C2 certificate pin.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "C61B1941CF756EB7551F7C661743802362728B785ADC22E860D269713DFB01A6",
+      "context": "Hardcoded SHA256 C2 certificate pin.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "C356AFF1A01C2B0DA472E584C8E3C8F875B9A24280435D42836A77B19F5A8C18",
+      "context": "Hardcoded SHA256 C2 certificate pin.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "F1C3EBE78BD8C38559BF3CFCC9A9FA37D221E31780774A3787E26160A61F5348",
+      "context": "Hardcoded SHA256 C2 certificate pin.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "E91FB249AA97BE5C7931E430781167EDFE7BA804720B5F643E6AB70B7E6E74DD",
+      "context": "Hardcoded SHA256 C2 certificate pin.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "document",
+    "script",
+    "pe",
+    "dotnet"
+  ]
+}

@@ -1,0 +1,29 @@
+title: DarkMe RAT C2 and Staging Domains
+id: 67b66710-53be-4977-8c38-89f92931558c
+status: experimental
+description: Detects DNS queries for domains associated with DarkMe RAT C2 and staging infrastructure.
+references:
+    - https://www.huntress.com/blog/darkme-rat-abandons-exploits
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1095
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - onlineview365.com
+            - readonline365.com
+            - thatawful.boutique
+            - megchartedbk7.com
+            - storageonline.me
+            - viewdocument.live
+            - advancedfuturetechnology.com
+            - sharedfuturetech.com
+    condition: selection
+falsepositives:
+    - Legitimate access to a domain that has been sinkholed or repurposed.
+level: high

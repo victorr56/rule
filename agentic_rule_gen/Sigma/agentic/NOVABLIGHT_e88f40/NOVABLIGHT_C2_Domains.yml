@@ -1,0 +1,25 @@
+title: NOVABLIGHT - C2 Domain Connection
+id: 57fa3c5d-007e-4009-8472-88741e976b9e
+status: experimental
+description: Detects DNS queries for domains associated with the NOVABLIGHT infostealer C2 infrastructure.
+references:
+    - https://www.elastic.co/security-labs/threat-command/maas-appeal-an-infostealer-rises-from-the-ashes
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1567.002
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.nova-blight.top'
+            - '.nova-blight.site'
+            - '.nova-blight.xyz'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

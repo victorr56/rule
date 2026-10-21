@@ -1,0 +1,26 @@
+title: WebBrowserPassView Execution from Deceptive Windows Update Path
+id: 5b4e72c8-8889-4b66-880c-c69784f932f9
+status: experimental
+description: |
+    Detects the execution of the WebBrowserPassView credential dumping tool from a highly specific and deceptive file path designed to look like a Windows Update in progress.
+    This pattern was observed in campaigns abusing RMM tools.
+references:
+    - https://redcanary.com/blog/security-operations/rmm-detection/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.credential_access
+    - attack.t1555.003
+    - attack.defense_evasion
+    - attack.t1564.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\WebBrowserPassView.exe'
+        CommandLine|contains: '\Working on updates_13% complete_Don''t turn off your computer\'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

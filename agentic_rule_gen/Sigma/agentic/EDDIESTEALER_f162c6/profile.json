@@ -1,0 +1,353 @@
+{
+  "malware_family": "EDDIESTEALER",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "EDDIESTEALER is a Rust-based infostealer distributed via fake CAPTCHA pages. It is delivered by a PowerShell command that downloads a JS loader, which in turn fetches the final payload. The stealer targets browser credentials, cryptocurrency wallets, and other sensitive data, using a configurable task list from its C2 server.",
+  "mitre_techniques": [
+    "T1566",
+    "T1059",
+    "T1555",
+    "T1204",
+    "T1027",
+    "T1041",
+    "T1497"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "gverify.js",
+      "context": "Second-stage JavaScript payload downloaded by PowerShell.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ":metadata",
+      "context": "NTFS alternate data stream name used for self-deletion.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "431e2e0e-c87b-45ac-9fdb-26b7e24f0d39",
+      "context": "Decrypted UUID mutex, unique per sample, also used as C2 identifier.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "apps\\bin\\src\\services\\chromium_hound.rs",
+      "context": "Internal Rust source file path from panic metadata.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "apps\\bin\\src\\services\\system.rs",
+      "context": "Internal Rust source file path from panic metadata.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "apps\\bin\\src\\structs\\search_pattern.rs",
+      "context": "Internal Rust source file path from panic metadata.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "jy::ds::OpenHandle",
+      "context": "Demangled name for custom CreateFileW wrapper function.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "local_state_pattern",
+      "context": "Decrypted string related to backward-compatible DPAPI theft.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "login_data_pattern",
+      "context": "Decrypted string related to backward-compatible DPAPI theft.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "--window-position=-3000,-3000 https://google.com",
+      "context": "Spawns invisible browser instance to read its memory.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "--utility-sub-type=network.mojom.NetworkService",
+      "context": "Used to identify the Chromium network service child process.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "--remote-debugging-port=<port_num>",
+      "context": "Spawns Chrome with DevTools enabled for credential theft.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%localappdata%\\DeskShare Data\\FTP Manager Lite\\2.0\\FTPManagerLiteSettings.db",
+      "context": "Targeted FTP client data.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%appdata%\\GHISLER\\wcx_ftp.ini",
+      "context": "Targeted Total Commander FTP data.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%appdata%\\Exodus\\exodus.wallet\\*",
+      "context": "Targeted cryptocurrency wallet files.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x8000000000000000",
+      "context": "Discriminant value in Rust enum for error handling checks.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "FindPattern",
+      "context": "Name of inlined function from COOKIEKATZ for pattern matching.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "COOKIEKATZ",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "llll.fit",
+      "context": "Intermediate infrastructure for hosting loader and payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "shiglimugli.xyz",
+      "context": "EDDIESTEALER C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "xxxivi.com",
+      "context": "EDDIESTEALER C2 and intermediate infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "plasetplastik.com",
+      "context": "EDDIESTEALER intermediate infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "militrex.wiki",
+      "context": "EDDIESTEALER intermediate infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.144.53.145",
+      "context": "EDDIESTEALER C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "84.200.154.47",
+      "context": "EDDIESTEALER C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://llll.fit/version/",
+      "context": "URL to download second-stage payload (gverify.js).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://llll.fit/io",
+      "context": "URL to download EDDIESTEALER executable.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/handler",
+      "context": "Base resource path for C2 communication.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/handler/info/<session_id>",
+      "context": "URI path pattern for sending initial host information.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Base64(IV):Base64(AESEncrypt(data))",
+      "context": "C2 data encapsulation format with prepended IV.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://localhost:<port>/json/version",
+      "context": "Queried to get WebSocket debugger URL for Chrome.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Target.createTarget",
+      "context": "Chrome DevTools command to open a new tab.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "chrome://password-manager/passwords",
+      "context": "Internal Chrome URL targeted to load credentials into memory.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "e8942805238f1ead8304cfdcf3d6076fa0cdf57533a5fae36380074a90d642e4",
+      "description": "g_verify.js EDDIESTEALER loader"
+    },
+    {
+      "sha256": "7930d6469461af84d3c47c8e40b3d6d33f169283df42d2f58206f43d42d4c9f4",
+      "description": "verif.js EDDIESTEALER loader"
+    },
+    {
+      "sha256": "47409e09afa05fcc9c9eff2c08baca3084d923c8d82159005dbae2029e1959d0",
+      "description": "EDDIESTEALER payload"
+    },
+    {
+      "sha256": "162a8521f6156070b9a97b488ee902ac0c395714aba970a688d54305cb3e163f",
+      "description": "EDDIESTEALER payload"
+    },
+    {
+      "sha256": "f8b4e2ca107c4a91e180a17a845e1d7daac388bd1bb4708c222cda0eff793e7a",
+      "description": "EDDIESTEALER payload"
+    },
+    {
+      "sha256": "acae8a4d92d24b7e7cb20c0c13fd07c8ab6ed8c5f9969504a905287df1af179b",
+      "description": "EDDIESTEALER payload"
+    },
+    {
+      "sha256": "0f5717b98e2b44964c4a5dfec4126fc35f5504f7f8dec386c0e0b0229e3482e7",
+      "description": "EDDIESTEALER payload (verification.exe)"
+    },
+    {
+      "sha256": "218ec38e8d749ae7a6d53e0d4d58e3acf459687c7a34f5697908aec6a2d7274d",
+      "description": "EDDIESTEALER payload"
+    },
+    {
+      "sha256": "5330cf6a8f4f297b9726f37f47cffac38070560cbac37a8e561e00c19e995f42",
+      "description": "EDDIESTEALER payload (verifcheck.exe)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

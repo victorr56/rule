@@ -1,0 +1,28 @@
+title: TCLBANKER C2 and Phishing Domain DNS Query
+id: 81d86d63-2384-40da-9e8c-529a393e507d
+status: experimental
+description: Detects DNS queries for domains and subdomains associated with TCLBANKER command and control (C2), file distribution, and phishing campaigns.
+references:
+    - https://www.elastic.co/security-labs/threat-command/tclbanker-brazilian-banking-trojan
+author: ioc-yara-daily (agentic)
+date: 2024-06-18
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'mxtestacionamentos.com'
+            - 'arquivos-omie.com'
+            - 'documentos-online.com'
+            - 'afonsoferragista.com'
+            - 'doccompartilhe.com'
+            - 'recebamais.com'
+            - 'saogeraldoshiping.com'
+    condition: selection
+falsepositives:
+    - Legitimate traffic to these domains if they are re-registered and used for benign purposes in the future.
+level: high

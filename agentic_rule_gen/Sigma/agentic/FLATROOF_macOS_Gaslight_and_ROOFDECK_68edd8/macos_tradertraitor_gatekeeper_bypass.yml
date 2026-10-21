@@ -1,0 +1,30 @@
+title: TraderTraitor Gatekeeper Bypass for ROOFDECK Implant
+id: 597a731d-bca7-4cd1-9c60-e832d2054ff3
+status: experimental
+description: Detects commands used by the FLATROOF malware to prepare the ROOFDECK implant for execution by removing the quarantine attribute and setting the executable bit.
+references:
+    - https://www.sentinelone.com/labs/dont-call-us-well-call-your-apis-tradertraitor-backdoors-resurface-on-victim-with-no-crypto-ties/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1553.001
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection_xattr:
+        Image|endswith: '/xattr'
+        CommandLine|contains|all:
+            - '-rd'
+            - 'com.apple.quarantine'
+            - '/com.apple.internal.ck/iSync'
+    selection_chmod:
+        Image|endswith: '/chmod'
+        CommandLine|contains|all:
+            - '+x'
+            - '/com.apple.internal.ck/iSync'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely, this combination of commands and specific file paths is characteristic of the malware setup routine.
+level: high

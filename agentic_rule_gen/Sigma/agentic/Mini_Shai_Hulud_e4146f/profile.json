@@ -1,0 +1,294 @@
+{
+  "malware_family": "Mini Shai Hulud",
+  "threat_actor": "TeamPCP",
+  "platforms": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "summary": "Mini Shai Hulud is a supply chain campaign by TeamPCP targeting SAP-related and other npm packages. The malware uses a `preinstall` script to execute a credential stealer that harvests secrets from developer environments and CI/CD pipelines, including cloud, Kubernetes, and browser credentials. Data is exfiltrated to attacker-controlled GitHub repositories, with fallback mechanisms involving GitHub commit searches for configuration.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "OhNoWhatsGoingOnWithGitHub",
+      "context": "Signature phrase in commit messages used for exfiltration and fallback C2.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Checkmarx Configuration Storage",
+      "context": "Description set on attacker-created GitHub repositories for exfiltration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "beautifulcastle",
+      "context": "Keyword searched on GitHub to find commits containing a base64-encoded C2 configuration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".claude/settings.json",
+      "context": "Claude Code hook configuration file to execute payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".vscode/tasks.json",
+      "context": "VS Code task configuration to execute payload on folder open.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".claude/execution.js",
+      "context": "Payload placed for persistence in Claude Code environments.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".claude/setup.mjs",
+      "context": "Dropper placed for persistence in Claude Code environments.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".vscode/setup.mjs",
+      "context": "Dropper placed for persistence in VSCode environments.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "node .vscode/setup.mjs",
+      "context": "Command run by VS Code task to trigger the dropper.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "setup.mjs",
+      "context": "Malicious dropper script executed via npm `preinstall` hook.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "execution.js",
+      "context": "Second-stage credential stealing payload.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "preinstall",
+      "context": "The npm package.json script hook used to trigger the initial infection.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "word1-word2-number",
+      "context": "Naming scheme for exfiltration repositories on GitHub.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "folderOpen",
+      "context": "Value for `runOn` key in .vscode/tasks.json to auto-run malware.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "@cap-js/sqlite@2.2.2",
+      "context": "Compromised npm package.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "@cap-js/postgres@2.2.2",
+      "context": "Compromised npm package.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "@cap-js/db-service@2.10.1",
+      "context": "Compromised npm package.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "mbt@1.2.48",
+      "context": "Compromised npm package.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "intercom-client@7.0.5",
+      "context": "Compromised npm package.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "lightning@2.6.2",
+      "context": "Compromised PyPI package.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ru",
+      "context": "Language prefix checked to evade execution on Russian systems.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "zero.masscan.cloud",
+      "context": "Dedicated C2 infrastructure for exfiltration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "94.154.172.43",
+      "context": "Exfiltration endpoint IP resolved from fallback mechanism.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/telemetry",
+      "context": "Exfiltration endpoint URI path.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "4066781fa830224c8bbcc3aa005a396657f9c8f9016f9a64ad44a9d7f5f45e34",
+      "description": "Shared dropper script setup.mjs"
+    },
+    {
+      "sha256": "eb6eb4154b03ec73218727dc643d26f4e14dfda2438112926bb5daf37ae8bcdb",
+      "description": "Payload execution.js from @cap-js/postgres and @cap-js/db-service"
+    },
+    {
+      "sha256": "6f933d00b7d05678eb43c90963a80b8947c4ae6830182f89df31da9f568fea95",
+      "description": "Payload execution.js from @cap-js/sqlite"
+    },
+    {
+      "sha256": "80a3d2877813968ef847ae73b5eeeb70b9435254e74d7f07d8cf4057f0a710ac",
+      "description": "Payload execution.js from mbt"
+    },
+    {
+      "sha256": "1d9e4ece8e13c8eaf94cb858470d1bd8f81bb58f62583552303774fa1579edee",
+      "description": "Malicious tarball for @cap-js/postgres v2.2.2"
+    },
+    {
+      "sha256": "258257560fe2f1c2cc3924eae40718c829085b52ae3436b4e46d2565f6996271",
+      "description": "Malicious tarball for @cap-js/db-service v2.10.1"
+    },
+    {
+      "sha256": "a1da198bb4e883d077a0e13351bf2c3acdea10497152292e873d79d4f7420211",
+      "description": "Malicious tarball for @cap-js/sqlite v2.2.2"
+    },
+    {
+      "sha256": "86282ebcd3bebf50f087f2c6b00c62caa667cdcb53558033d85acd39e3d88b41",
+      "description": "Malicious tarball for mbt v1.2.48"
+    },
+    {
+      "sha256": "14eb4ce01dd4307759887ff819359b70d7d9ff709ecde039a5abc1aac325b128",
+      "description": "Poisoned .claude/settings.json file for persistence"
+    },
+    {
+      "sha256": "927387d0cfac1118df4b383decc2ea6ba49c9d2f98b47098bcbcba1efc026e1f",
+      "description": "Poisoned .vscode/tasks.json file for persistence"
+    }
+  ],
+  "file_types": [
+    "script"
+  ]
+}

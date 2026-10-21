@@ -1,0 +1,24 @@
+title: REF1695/CNB Bot VBS Launcher Execution
+id: c46be73f-ac48-433b-85e3-99d750c029cd
+status: experimental
+description: Detects the execution of the CNB Bot VBScript launcher "sysdata.vbs" via wscript.exe, typically initiated by a scheduled task.
+references:
+    - https://www.elastic.co/security-labs/threat-command/fake-installers-to-monero
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.execution
+    - attack.t1059.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\wscript.exe'
+        CommandLine|contains|all:
+            - '//nologo'
+            - 'sysdata.vbs'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

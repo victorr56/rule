@@ -1,0 +1,23 @@
+title: Knight Office C2 and Phishing Infrastructure IPs
+id: 9a0d8e87-a2f2-491b-9aa8-9f17d23d8c11
+status: experimental
+description: Detects network connections to IP addresses associated with the Knight Office phishing infrastructure.
+references:
+    - https://www.huntress.com/blog/inside-knight-office-m365-aitm-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '104.37.188.94'
+            - '154.127.53.78'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

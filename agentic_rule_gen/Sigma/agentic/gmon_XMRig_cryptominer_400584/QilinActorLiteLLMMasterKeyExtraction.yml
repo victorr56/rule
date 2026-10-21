@@ -1,0 +1,28 @@
+title: Qilin Actor LiteLLM Master Key Extraction
+id: f45009f4-3d07-4e65-8b89-32213e4b3017
+status: experimental
+description: Detects a command used to extract the LiteLLM master key and API key from a running process's Python module state.
+references:
+    - https://www.wiz.io/blog/ai-infrastructure-honeypot
+author: ioc-yara-daily (agentic)
+date: 2024-07-26
+tags:
+    - attack.credential_access
+    - attack.t1552
+    - attack.execution
+    - attack.t1059.006
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/python3'
+        CommandLine|contains|all:
+            - "-c 'import litellm"
+            - 'litellm.api_key'
+            - 'ps.master_key'
+            - 'litellm_master_key_hash'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

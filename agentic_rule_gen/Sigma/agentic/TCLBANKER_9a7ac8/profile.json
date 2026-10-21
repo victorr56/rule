@@ -1,0 +1,818 @@
+{
+  "malware_family": "TCLBANKER",
+  "threat_actor": "REF3076",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "TCLBANKER is a Brazilian banking trojan, assessed as a major MAVERICK/SORVEPOTEL update, delivered as an MSI inside a ZIP that sideloads a malicious screen_retriever_plugin.dll into the signed Logitech LogiAiPromptBuilder.exe. Its environment-gated, syscall-generating loader decrypts two .NET Reactor-protected modules: Tcl.Agent, which monitors browser URLs and drives WebSocket C2 with WPF full-screen bank overlays, and Tcl.WppBot, a worm that hijacks WhatsApp Web sessions and sends phishing mail via the victim's Outlook account.",
+  "mitre_techniques": [
+    "T1566.001",
+    "T1218.007",
+    "T1574.002",
+    "T1059.001",
+    "T1059.003",
+    "T1053.005",
+    "T1140",
+    "T1027",
+    "T1622",
+    "T1497.001",
+    "T1497.003",
+    "T1562.001",
+    "T1106",
+    "T1055",
+    "T1057",
+    "T1010",
+    "T1082",
+    "T1614.001",
+    "T1113",
+    "T1056.001",
+    "T1115",
+    "T1056.003",
+    "T1185",
+    "T1071.001",
+    "T1102",
+    "T1105",
+    "T1114.001",
+    "T1529"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "screen_retriever_plugin.dll",
+      "context": "Malicious DLL masquerading as a Flutter plugin, sideloaded by LogiAiPromptBuilder.exe",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "LogiAiPromptBuilder.exe",
+      "context": "Signed Logitech Flutter app abused for DLL sideloading",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "logiaipromptbuilder.exe",
+      "context": "Allow-listed host process that lets the loader execute",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "tclloader.exe",
+      "context": "Second allow-listed loader host; suspected developer test process name",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "--renderer=sw",
+      "context": "Command-line string selecting which embedded .NET payload is aligned",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "EtwEventWrite",
+      "context": "Patched in ntdll.dll with xor eax,eax; ret to disable user-mode ETW",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 33 C0 C3 }",
+      "context": "Patch bytes written over EtwEventWrite after VirtualProtect",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "DbgUiRemoteBreakin",
+      "context": "First byte overwritten with ret so remote debugger break-in returns",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x13C4BDD866D470D3",
+      "context": "Magic constant compared against anti_analysis_and_debug_hash result",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x26A6329B24CDA3EB",
+      "context": "Magic constant compared against get_system_disk_info result",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0xDBFCE5AC2DC1C29D",
+      "context": "Magic constant compared against PerformLanguageCheck result",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0xA7B3C1D5E2F48691",
+      "context": "Anti-debug XOR key accumulated into gated hash",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x4E2F8A9103D7B5C6",
+      "context": "Anti-debug XOR key for PEB NtGlobalFlag check",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0xB4E6D8F2A1C37509",
+      "context": "Language check constant gated on GEOID_BRAZIL and pt-BR LCID",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x6F1A3D5E8C02B794",
+      "context": "XOR key unmasking lang_check at runtime",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 4A 7B E2 1D 8F 56 C3 A9 37 64 D1 0E 95 F8 2B 70 }",
+      "context": "GClass2.byte_0 16-byte key decrypting embedded bank domain strings",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 5C 3A F1 8E 72 D4 A6 19 4B 87 E3 2F 6D C0 58 93 }",
+      "context": "16-byte XOR key decrypting C2 URL and API key",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "NE6F/ghuiTYo5O5fDK4w8m0XkP4b+sN/crDST1nyduQzSJrrAKeIfS7x",
+      "context": "XOR-encrypted C2 URL literal decrypted at startup",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0d21613a-2609-45fc-83ff-d0feaa0c891f",
+      "context": "Hardcoded campaign authentication token / API key",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "b7ba9e80-0d04-4d9e-b217-c8b3cce335a2",
+      "context": "Bearer token authenticating self-update downloads",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "70e4f943-e323-4484-97d7-35401bf6812c",
+      "context": "Campaign GUID used as HMAC-SHA256 handshake signing key",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0F87369F-A4E5-4CFC-BD3E-73E6154572DD",
+      "context": "Task Scheduler CLSID used via COM interop for persistence",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "RuntimeOptimizeService",
+      "context": "Hidden logon-trigger scheduled task created for persistence",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LocalAppData%\\LogiAI",
+      "context": "Installation directory the malware copies itself into",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\temp\\tcl-debug.txt",
+      "context": "Developer debug logging path exposing agent presence on disk",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "flutter_engine.cfg",
+      "context": "Local version-hash marker file read by the self-update gate",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\update_{8hexchars}.msi",
+      "context": "Downloaded self-update MSI path pattern",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "msiexec /i /qn REINSTALLMODE=amus",
+      "context": "Silent install of update MSI from self-deleting batch script",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "shutdown.exe /r /t 0 /f",
+      "context": "Opcode 6 forced reboot command",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "taskmgr",
+      "context": "Task Manager killed every 500ms during C2 session",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "WDA_EXCLUDEFROMCAPTURE",
+      "context": "SetWindowDisplayAffinity flag hiding overlays from screen capture",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "WH_KEYBOARD_LL",
+      "context": "Low-level keyboard hook installed as input blocker",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Estamos entrando em contato",
+      "context": "Vishing wait-screen text shown after phone number submission",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Trabalhando em atualizacoes",
+      "context": "Default subtitle of fake Windows Update stall overlay",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "no_session: QR code detectado, sem conta logada",
+      "context": "WhatsApp bot log when cloned session needs QR verification",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "whatsapp: sessao carregada",
+      "context": "WhatsApp bot log after cloned session loads and spam starts",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\msvc-rt14\\bin\\hostfxr.exe",
+      "context": "Disguised Selenium Manager binary resolving matching chromedriver",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\oc<guid>.ps1",
+      "context": "PowerShell script dropped to harvest Outlook contacts",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\<GUID>\\",
+      "context": "Temporary cloned browser-profile directory for session hijacking",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "WPP.chat.sendTextMessage",
+      "context": "WA-JS WPPConnect function abused to send WhatsApp spam",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Marshal.GetActiveObject(\"Outlook.Application\")",
+      "context": "COM interop attaching to running Outlook process",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "OUTLOOK.EXE",
+      "context": "Launched or attached to for phishing mail sending",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "chromedriver.exe",
+      "context": "Resolved at runtime to drive headless Chromium",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Ida_trusted_idbs",
+      "context": "Watchdog targets this mutex/event as analyst tooling indicator",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "IDA_COMM_PIPE_",
+      "context": "Watchdog targets this mutex/event as analyst tooling indicator",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Local\\x64dbg",
+      "context": "Watchdog targets debugger mutex/event",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Frida",
+      "context": "Watchdog targets frida mutex/event",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "YOURAPPNAMEHERE",
+      "context": "Placeholder mutex name targeted by watchdog",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "SbieDll.dll",
+      "context": "Loaded module checked by watchdog for sandbox presence",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "cuckoomon.dll",
+      "context": "Loaded module checked by watchdog for sandbox presence",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "vmcheck.dll",
+      "context": "Loaded module checked by watchdog for VM presence",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dbgcore.dll",
+      "context": "Loaded module checked by watchdog for debugger presence",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "netreactorslayer",
+      "context": "Analyst tool process enumerated and targeted by watchdog",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "pe-sieve",
+      "context": "Analyst tool process enumerated and targeted by watchdog",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IDATopLevelWindow",
+      "context": "IDA window class name detected via FindWindowW",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "WinDbgFrameClass",
+      "context": "Debugger window class name detected via FindWindowW",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VBoxVBoxVBox",
+      "context": "VirtualBox hypervisor vendor signature checked",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      "context": "Truncated User-Agent used by self-update WebClient",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "campanha1-api.ef971a42.workers.dev",
+      "context": "Cloudflare Workers C2 API endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mxtestacionamentos.com",
+      "context": "C2 host for WebSocket command session",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "documents.ef971a42.workers.dev",
+      "context": "File server hosting versions, updates and payload zip",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "wss://mxtestacionamentos.com/ws",
+      "context": "WebSocket C2 endpoint opened on bank domain match",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://campanha1-api.ef971a42.workers.dev/api/installs",
+      "context": "First-run POST beacon after persistence",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://campanha1-api.ef971a42.workers.dev/api/campaign",
+      "context": "Campaign configuration endpoint consumed by both worm agents",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://documents.ef971a42.workers.dev/api/version",
+      "context": "Self-update hash check endpoint",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://documents.ef971a42.workers.dev/api/update",
+      "context": "Self-update MSI download endpoint",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://documents.ef971a42.workers.dev/file",
+      "context": "Campaign file endpoint serving trojanized MSI zip",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/progress",
+      "context": "Worm agents report batch progress to C2",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/control",
+      "context": "Polled for remote pause or resend commands",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Authorization: Bearer b7ba9e80-0d04-4d9e-b217-c8b3cce335a2",
+      "context": "Auth header on self-update file server requests",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "arquivos-omie.com",
+      "context": "Phishing page under development impersonating Brazilian ERP",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "documentos-online.com",
+      "context": "Likely staged REF3076 phishing domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "afonsoferragista.com",
+      "context": "Likely staged B2B-lure phishing domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "doccompartilhe.com",
+      "context": "Likely staged shared-document phishing domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "recebamais.com",
+      "context": "Likely staged credit/loan phishing domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "191.96.224.96",
+      "context": "Brazilian-hosted IP previously resolving mxtestacionamentos.com C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "saogeraldoshiping.com",
+      "context": "Domain on same IP, previously associated with Water Saci and SORVEPOTEL",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "web.whatsapp.com",
+      "context": "WhatsApp Web page loaded from cloned profile for spam",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "ef971a42",
+      "context": "Cloudflare Workers account hosting all C2 and distribution infrastructure",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "701d51b7be8b034c860bf97847bd59a87dca8481c4625328813746964995b626",
+      "description": "screen_retriever_plugin.dll TCLBANKER loader component"
+    },
+    {
+      "sha256": "8a174aa70a4396547045aef6c69eb0259bae1706880f4375af71085eeb537059",
+      "description": "screen_retriever_plugin.dll TCLBANKER loader component"
+    },
+    {
+      "sha256": "668f932433a24bbae89d60b24eee4a24808fc741f62c5a3043bb7c9152342f40",
+      "description": "screen_retriever_plugin.dll TCLBANKER loader component"
+    },
+    {
+      "sha256": "63beb7372098c03baab77e0dfc8e5dca5e0a7420f382708a4df79bed2d900394",
+      "description": "XXL_21042026-181516.zip initial TCLBANKER ZIP containing malicious MSI"
+    },
+    {
+      "sha256": "cb2e7c07bd1b290444a5a1aa6362b97669f70b0a2452f311698d6c5baa0014d2",
+      "description": "Server-supplied self-update payload hash from file server /api/version"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet",
+    "archive",
+    "script"
+  ]
+}

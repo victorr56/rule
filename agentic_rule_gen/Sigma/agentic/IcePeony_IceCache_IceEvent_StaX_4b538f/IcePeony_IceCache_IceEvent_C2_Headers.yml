@@ -1,0 +1,26 @@
+title: IcePeony IceCache/IceEvent C2 Communication
+id: 61e1b4b1-8b01-4475-b383-a7ca6a20c576
+status: experimental
+description: Detects C2 communication from IcePeony's IceCache or IceEvent malware based on specific HTTP headers.
+references:
+    - http://nao-sec.org/2024/10/IcePeony-with-the-996-work-culture.html
+author: ioc-yara-daily (agentic)
+date: 2024-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection_cmd:
+        cs_method: 'POST'
+        HttpHeader|contains: 'X-Cmd: EXEC'
+    selection_token:
+        cs_method: 'POST'
+        HttpHeader|contains:
+            - 'X-Token: cbFOvVX1582Mr7nt'
+            - 'X-Token: tn7rM2851XVvOFbc'
+    condition: all of selection_*
+falsepositives:
+    - Unlikely
+level: critical

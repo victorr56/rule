@@ -1,0 +1,36 @@
+title: PowerShell Execution of Gamaredon Ptero Tooling
+id: 5464a781-a67e-450f-a38f-a9572b6c1647
+status: experimental
+description: Detects the presence of Gamaredon's Ptero family tool names on the PowerShell command line. These tools include downloaders, stealers, and weaponizers used in their 2025 campaigns.
+references:
+    - https://www.welivesecurity.com/en/eset-research/gamaredon-2025-leveraging-tunnels-workers-dead-drops-new-alliances/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains:
+            - 'PteroDee'
+            - 'PteroCache'
+            - 'PteroDum'
+            - 'PteroOdd'
+            - 'PteroEffigy'
+            - 'PteroPaste'
+            - 'PteroSetup'
+            - 'PteroSand'
+            - 'PteroVDoor'
+            - 'PteroPSDoor'
+            - 'PteroBox'
+            - 'PteroLNK'
+            - 'PteroPSLoad'
+    condition: selection
+falsepositives:
+    - Unlikely, as these are specific malware family names.
+level: high

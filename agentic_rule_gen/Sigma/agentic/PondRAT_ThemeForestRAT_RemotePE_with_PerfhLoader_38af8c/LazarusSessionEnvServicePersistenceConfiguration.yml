@@ -1,0 +1,25 @@
+title: Lazarus SessionEnv Service Persistence Configuration
+id: 5418b765-a864-46c5-a6e5-47e0964724b4
+status: experimental
+description: Detects the use of 'sc.exe' to configure the SessionEnv service to start automatically. This is used by a Lazarus subgroup to ensure their phantom DLL loader persists across reboots.
+references:
+    - https://blog.fox-it.com/2025/09/01/three-lazarus-rats-coming-for-your-cheese/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1543.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\sc.exe'
+        CommandLine|contains|all:
+            - 'config'
+            - 'sessionenv'
+            - 'start=auto'
+    condition: selection
+falsepositives:
+    - Legitimate administrative activity, although changing the SessionEnv service startup type is rare.
+level: medium

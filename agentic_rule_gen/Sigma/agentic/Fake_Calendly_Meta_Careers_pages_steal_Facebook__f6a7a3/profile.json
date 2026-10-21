@@ -1,0 +1,215 @@
+{
+  "malware_family": "",
+  "threat_actor": "",
+  "platforms": [
+    "web"
+  ],
+  "summary": "A reusable phishing kit impersonates Calendly booking pages for fake Meta job interviews to steal Facebook and Google credentials, including 2FA codes and phone-prompt approvals relayed in real time. The kit polls an attacker collection server (AWS API Gateway in ap-southeast-1) to drive the victim's screen flow and carries version 0.8.0 plus a Vietnamese production-deployment comment. Victims are lured through 'join'-prefixed recruiting-themed domains on the .cfd, .info and .works TLDs.",
+  "mitre_techniques": [
+    "T1566.002",
+    "T1056.003",
+    "T1111"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "0.8.0",
+      "context": "Phishing kit version number carried in code",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Change the key here when deploying to production.",
+      "context": "Vietnamese code comment in kit (translated)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "The login information you entered is incorrect.",
+      "context": "Fake Facebook login error message",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Incorrect code. Please try again.",
+      "context": "Fake 2FA code error message",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Facebook requires you to sign in to the Gmail address",
+      "context": "Fake Google sign-in prompt text",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Facebook will not share any of your data with your Google Account.",
+      "context": "Fake Google sign-in reassurance text",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Career Profile",
+      "context": "Signup prompt on fake login page",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Calendly | Meta Careers",
+      "context": "Fake Calendly booking page title",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Job Search | Calendly Careers",
+      "context": "Page title in phishing UI figure",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "joinconnect.cfd",
+      "context": "Phishing domain impersonating recruiter",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "joinconnect.works",
+      "context": "Phishing domain impersonating recruiter",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "joinhire.cfd",
+      "context": "Phishing domain impersonating recruiter",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "joinhire.info",
+      "context": "Phishing domain impersonating recruiter",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "joinquest.cfd",
+      "context": "Phishing domain impersonating recruiter",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "joinquest.info",
+      "context": "Phishing domain impersonating recruiter",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "joinquest.works",
+      "context": "Phishing domain impersonating recruiter",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "jointhetalent.cfd",
+      "context": "Phishing domain impersonating recruiter",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "jointhetalent.info",
+      "context": "Phishing domain impersonating recruiter",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "jointhetalent.works",
+      "context": "Phishing domain impersonating recruiter",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "jointheteam.cfd",
+      "context": "Phishing domain impersonating recruiter",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "rkrt01c0mc.execute-api.ap-southeast-1.amazonaws.com",
+      "context": "Attacker credential collection endpoint (AWS API Gateway)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "join*[.]cfd|join*[.]info|join*[.]works",
+      "context": "Shared naming pattern of recruiting-themed phishing domains",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

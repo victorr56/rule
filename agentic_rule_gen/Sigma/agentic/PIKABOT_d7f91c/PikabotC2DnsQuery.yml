@@ -1,0 +1,22 @@
+title: PIKABOT C2 Domain Name Query
+id: f4b1d2e3-5a7c-4d6b-8e9f-a0c1d2e3f4b5
+status: experimental
+description: Detects DNS queries for domains known to be used by PIKABOT for C2 or payload delivery.
+references:
+    - https://www.elastic.co/security-labs/threat-command/pikabot-i-choose-you
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1573
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith:
+            - '.gloverstech.com'
+            - '.entrevientos.com.ar'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

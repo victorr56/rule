@@ -1,0 +1,22 @@
+title: Royal Road Dropper intel.wll Load
+id: a7d0577a-2591-4c4f-9e45-13b30a570077
+status: experimental
+description: Detects the loading of 'intel.wll', a known dropper component used by various threat actors leveraging the Royal Road weaponizer. This activity typically occurs after a user opens a malicious RTF document.
+references:
+    - http://nao-sec.org/2021/01/royal-road-redive.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1203
+    - attack.t1055
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\WINWORD.EXE'
+        ImageLoaded|endswith: '\intel.wll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

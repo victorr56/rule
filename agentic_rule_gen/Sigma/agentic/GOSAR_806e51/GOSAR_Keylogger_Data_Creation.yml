@@ -1,0 +1,22 @@
+title: REF3864/GOSAR Keylogger Data Creation
+id: a9b8c7d6-e5f4-4d3c-b2a1-9e8f7d6c5b4a
+status: experimental
+description: Detects the creation of keylogger or clipboard data files by GOSAR in an unusual Start Menu sub-directory.
+references:
+    - https://www.elastic.co/security-labs/threat-command/under-the-sadbridge-with-gosar
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.collection
+    - attack.t1056.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image: 'C:\ProgramData\taskhost.exe'
+        TargetFilename|startswith: 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\diagnostics\'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

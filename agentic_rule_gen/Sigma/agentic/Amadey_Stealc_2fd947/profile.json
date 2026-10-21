@@ -1,0 +1,741 @@
+{
+  "malware_family": "Amadey, Stealc",
+  "threat_actor": "plymouth (Stealc operator); InCrease (Amadey operator)",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Amadey is a modular malware loader and Stealc a MaaS infostealer, both sold as services with affiliate-run C&C panels; ESET clustered hundreds of samples using embedded RC4 keys, C&C URL random paths, and build identifiers ('sd' for Amadey, 'build' for Stealc) to support Operation Endgame. Amadey beacons over HTTP with an initial 'st=s' POST, receives RC4-encrypted task lists delimited by <c> and <d>, and can deploy stealer, clipper, hVNC and proxy modules; Stealc speaks RC4-encrypted JSON containing build/hwid, an access_token session key and steal_* configuration flags. Both families check the victim's keyboard layout and abort on CIS-country locales.",
+  "mitre_techniques": [
+    "T1583.004",
+    "T1587.001",
+    "T1588.001",
+    "T1608.001",
+    "T1195",
+    "T1059.003",
+    "T1106",
+    "T1129",
+    "T1204.002",
+    "T1136.001",
+    "T1547.001",
+    "T1027.015",
+    "T1055.002",
+    "T1480",
+    "T1140",
+    "T1218.007",
+    "T1218.011",
+    "T1027",
+    "T1036",
+    "T1552.001",
+    "T1552.002",
+    "T1555.003",
+    "T1528",
+    "T1539",
+    "T1555",
+    "T1012",
+    "T1016",
+    "T1033",
+    "T1057",
+    "T1082",
+    "T1083",
+    "T1518.001",
+    "T1614.001",
+    "T1113",
+    "T1119",
+    "T1005",
+    "T1008",
+    "T1071.001",
+    "T1132.001",
+    "T1219.002",
+    "T1573.001",
+    "T1020",
+    "T1041"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "sd",
+      "context": "Amadey hardcoded six-character hex build ID matching [0-9a-f]{6}, sent in initial C&C handshake",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<c>",
+      "context": "Amadey task list opening delimiter in C&C responses",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<d>",
+      "context": "Amadey task list closing delimiter in C&C responses",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "r=B483",
+      "context": "Amadey registration POST body prefix in Figure 4 capture",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "build",
+      "context": "Stealc build/campaign identifier, stored unobfuscated in binary, sent in C&C handshake",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "hwid",
+      "context": "Stealc machine fingerprint field, UUIDv4 derived from volume serial number",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "create",
+      "context": "Stealc initial registration request type",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "upload_file",
+      "context": "Stealc C&C operation type used to exfiltrate collected data",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "loader",
+      "context": "Stealc C&C operation type to fetch and execute follow-on payload",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "done",
+      "context": "Stealc C&C operation type signalling completion",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "access_token",
+      "context": "Stealc response field with session key required in subsequent requests",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "opcode",
+      "context": "Stealc decrypted C&C response field",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "self_delete",
+      "context": "Stealc config flag to self-destruct after collection",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "take_screenshot",
+      "context": "Stealc config flag to screenshot the victim",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "steal_steam",
+      "context": "Stealc config flag targeting Steam",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "steal_outlook",
+      "context": "Stealc config flag targeting Outlook",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "steal_foxmail",
+      "context": "Stealc config flag targeting Foxmail",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "steal_winscp",
+      "context": "Stealc config flag targeting WinSCP",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "use_v20",
+      "context": "Stealc Chromium browser config flag in decrypted C&C configuration",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "parse_cookies",
+      "context": "Stealc browser parsing config option",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "parse_logins",
+      "context": "Stealc browser parsing config option",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "parse_history",
+      "context": "Stealc browser parsing config option",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "parse_webdata",
+      "context": "Stealc browser parsing config option",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "soft_path",
+      "context": "Stealc browser config field holding executable path",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\Google\\Chrome\\User Data",
+      "context": "Stealc Chromium target profile path from decrypted configuration",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "context": "Stealc soft_path value for Chrome in decrypted configuration",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "per-sample RC4 key for C&C communications",
+      "context": "Amadey samples embed one RC4 key, usable as affiliate cluster identifier",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "two per-build RC4 keys (string obfuscation and C&C encryption)",
+      "context": "Stealc samples embed separate keys for runtime strings and network traffic",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "cmd.exe",
+      "context": "Amadey executes cmd.exe with SYSTEM privileges and runs CMD scripts",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "rundll32.exe",
+      "context": "Amadey downloads and loads additional DLL via rundll32",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "msiexec.exe",
+      "context": "Amadey executes payloads distributed as MSI packages",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "MusNotification.exe",
+      "context": "Stealc sample masquerading as legitimate Windows binary",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "KB.14.804.8407.exe",
+      "context": "Stealc sample disguised as a Windows update",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "yinkaroj.exe",
+      "context": "Stealc infostealer sample",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Patch.exe",
+      "context": "Stealc infostealer sample, detected as Win32/Spy.Agent.QOL",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "VeloTeam_x32.exe",
+      "context": "Stealc infostealer sample, detected as Win32/Spy.Agent.QOL",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/<random_path>/index.php",
+      "context": "Consistent Amadey C&C URL pattern; random path reused across C&C servers of one cluster",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "st=s",
+      "context": "Amadey initial beacon HTTP POST body",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "62.60.226.159",
+      "context": "Amadey C&C server, FEMO IT SOLUTIONS LIMITED, first seen 2026-04-13",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "64.188.91.237",
+      "context": "Stealc C&C server, Hurricane Electric LLC, first seen 2026-03-19",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "94.154.35.25",
+      "context": "Amadey C&C server, Artem Sevastyanov, first seen 2026-03-26",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "95.85.238.4",
+      "context": "Stealc C&C server, DATAMAT CZ s.r.o., first seen 2026-04-09",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "176.111.174.140",
+      "context": "Amadey C&C server, RU-NUBES-20220530, first seen 2026-03-04",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "176.124.199.207",
+      "context": "Stealc C&C server, AEZA INTERNATIONAL LTD, first seen 2026-03-31",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "188.114.96.1",
+      "context": "Amadey C&C server, Cloudflare, first seen 2026-04-02",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "193.156.1.16",
+      "context": "Amadey C&C server, RU-PROTON66-20191118, first seen 2026-02-24",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "194.26.192.191",
+      "context": "Stealc C&C server, 1337 Services GmbH, first seen 2026-02-20",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "196.251.107.130",
+      "context": "Stealc C&C server, NTT America, first seen 2026-04-17",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mi.overlapsnowbound.com",
+      "context": "Amadey C&C domain behind 188.114.96.1",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "microsoft-telemetry.cc",
+      "context": "Amadey C&C domain in Figure 5 URL examples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "telemetry-xbox.lol",
+      "context": "Amadey C&C domain in Figure 5 URL examples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "telemetry-sys.lol",
+      "context": "Amadey C&C domain in Figure 5 URL examples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mi.limpingbronco.com",
+      "context": "Amadey C&C domain in Figure 5 URL examples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mi.snowfieldupriver.com",
+      "context": "Amadey C&C domain in Figure 5 URL examples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mi.huffproofs.com",
+      "context": "Amadey C&C domain in Figure 5 URL examples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mi.candyendurable.com",
+      "context": "Amadey C&C domain in Figure 5 URL examples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mi.unbuttonrudder.com",
+      "context": "Amadey C&C domain in Figure 5 URL examples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mi.barbertingling.com",
+      "context": "Amadey C&C domain in Figure 5 URL examples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/d19ku38f/index.php",
+      "context": "Amadey C&C URL path from 94.154.35.25 in Figure 4",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/di9ku38f/index.php",
+      "context": "Amadey C&C URL random path on 94.154.35.25",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/kawT2QXfpPueNM/index.php",
+      "context": "Amadey random path reused across mi.* domains",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cvdfnaFJBmC0/index.php",
+      "context": "Amadey C&C random path on microsoft-telemetry.cc",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cvdfnaFJBmC1/index.php",
+      "context": "Amadey random path shared by telemetry-xbox.lol and 178.16.53.7",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cvdfnaFJBmC2/index.php",
+      "context": "Amadey C&C random path on telemetry-sys.lol",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/g7hen3xxf/index.php",
+      "context": "Amadey C&C random path on 213.209.150.166",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/bVoZEtTa1/index.php",
+      "context": "Amadey C&C random path on 185.208.158.116",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/te4h2nus/index.php",
+      "context": "Amadey C&C random path on 185.156.72.96",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/so57Nst/index.php",
+      "context": "Amadey C&C random path on 78.46.242.112",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/tu3d2rom/index.php",
+      "context": "Amadey C&C random path on 176.46.157.50",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/8bdDsv3dk2FF/index.php",
+      "context": "Amadey C&C random path on 152.89.198.124",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "213.209.150.166",
+      "context": "Amadey C&C server in Figure 5 URL examples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.208.158.116",
+      "context": "Amadey C&C server in Figure 5 URL examples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "152.89.198.124",
+      "context": "Amadey C&C server in Figure 5 URL examples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.156.72.96",
+      "context": "Amadey C&C server in Figure 5 URL examples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "78.46.242.112",
+      "context": "Amadey C&C server in Figure 5 URL examples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "178.16.53.7",
+      "context": "Amadey C&C server in Figure 5 URL examples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

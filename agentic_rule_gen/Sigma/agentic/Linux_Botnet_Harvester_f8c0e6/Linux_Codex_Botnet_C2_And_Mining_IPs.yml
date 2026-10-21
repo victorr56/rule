@@ -1,0 +1,27 @@
+title: Linux Codex Botnet C2 and Mining Pool Activity
+id: 110e58d9-693a-446a-93be-d3083bd6031f
+status: experimental
+description: Detects network connections to IP addresses used for C2, payload staging, data exfiltration, and mining by the Linux Codex Botnet.
+references:
+    - https://www.huntress.com/blog/codex-part-two
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '162.55.234.175'
+            - '147.45.41.25'
+            - '172.86.127.128'
+            - '172.245.159.216'
+            - '57.129.119.218'
+            - '62.60.246.210'
+    condition: selection
+falsepositives:
+    - These IPs may be reallocated in the future.
+level: high

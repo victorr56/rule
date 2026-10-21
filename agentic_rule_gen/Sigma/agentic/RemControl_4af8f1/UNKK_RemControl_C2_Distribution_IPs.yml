@@ -1,0 +1,23 @@
+title: UNKK RemControl C2 and Distribution IPs
+id: 3c5e8f49-5735-494b-a9f8-d45e7f1dfa83
+status: experimental
+description: Detects network connections to IP addresses associated with the RemControl Android trojan C2 and distribution infrastructure.
+references:
+    - https://www.group-ib.com/blog/remcontrol-android-banking-trojan/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '157.90.179.116'
+            - '216.126.229.216'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

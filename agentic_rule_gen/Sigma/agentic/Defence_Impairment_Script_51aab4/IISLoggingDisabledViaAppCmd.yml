@@ -1,0 +1,25 @@
+title: IIS HTTP Logging Disabled Via AppCmd
+id: d7f06d8a-6b5d-4952-bf6d-a19c6798a722
+status: experimental
+description: Detects the use of appcmd.exe to disable HTTP logging for IIS, a technique used to evade detection on a web server.
+references:
+    - https://www.huntress.com/blog/mimikatz-credential-dumping-defence-impairment
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1562.006
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\inetsrv\appcmd.exe'
+        CommandLine|contains|all:
+            - 'set config'
+            - '/section:httpLogging'
+            - '/dontLog:True'
+    condition: selection
+falsepositives:
+    - Legitimate administrative action to disable logging, but should be investigated as it is an abnormal practice.
+level: high

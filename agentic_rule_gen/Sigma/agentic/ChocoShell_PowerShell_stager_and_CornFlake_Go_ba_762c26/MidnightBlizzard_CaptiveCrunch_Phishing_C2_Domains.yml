@@ -1,0 +1,29 @@
+title: Midnight Blizzard CaptiveCrunch Phishing and C2 DNS Queries
+id: 79f727c9-f1f3-424a-93a8-4ca7f89d31d7
+status: experimental
+description: Detects DNS queries for domains associated with Midnight Blizzard's CaptiveCrunch phishing and C2 infrastructure.
+references:
+    - https://www.reversinglabs.com/blog/how-rl-mapped-a-midnight-blizzard-linked-campaign-from-two-hashes
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'ms365-live.com'
+            - 'owa-ms365.com'
+            - 'ms365-device.com'
+            - 'm365-owa.com'
+            - 'wa-meeting.com'
+            - 'chathamhouse.eu'
+            - 'chamber-ua.org'
+            - 'cdncounter.net'
+    condition: selection
+falsepositives:
+    - Legitimate access to compromised but benign-looking domains (extremely rare).
+level: medium

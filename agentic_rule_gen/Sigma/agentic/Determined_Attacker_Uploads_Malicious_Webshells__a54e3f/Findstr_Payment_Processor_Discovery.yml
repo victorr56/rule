@@ -1,0 +1,29 @@
+title: Findstr Used to Discover Payment Processor Integrations
+id: 486a2f2b-10f5-4676-92b1-125952d790d0
+status: experimental
+description: Detects the use of findstr.exe to recursively search files for keywords related to common payment processors. This indicates an attacker performing reconnaissance to understand the financial transaction environment.
+references:
+    - https://www.huntress.com/blog/parks-recreation-platform-webshell-attack
+author: ioc-yara-daily (agentic)
+date: 2024-05-27
+tags:
+    - attack.discovery
+    - attack.t1083
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\findstr.exe'
+        CommandLine|contains|all:
+            - '/s'
+            - '/i'
+            - 'AuthorizeNet'
+            - 'Fortis'
+            - 'CardConnect'
+            - 'Braintree'
+            - 'Stripe'
+    condition: selection
+falsepositives:
+    - A developer or system administrator might search for these terms during legitimate debugging or analysis, but the combination of multiple processor names in a single command is suspicious.
+level: high

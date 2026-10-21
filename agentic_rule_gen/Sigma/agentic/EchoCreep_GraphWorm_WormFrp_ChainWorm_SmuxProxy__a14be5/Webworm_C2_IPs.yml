@@ -1,0 +1,26 @@
+title: Webworm Group C2 and Proxy Server Connection
+id: a3e1c0d2-8b3d-4c3e-8a71-e7a9341f2382
+status: experimental
+description: Detects network connections to IP addresses known to be used by the Webworm APT group for C2 and proxying activities.
+references:
+  - https://www.welivesecurity.com/en/eset-research/webworm-new-burrowing-techniques/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.command_and_control
+  - attack.t1071.001
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationIp:
+      - '45.77.13.67'
+      - '64.176.85.158'
+      - '104.243.23.43'
+      - '108.61.200.151'
+      - '144.168.60.233'
+  condition: selection
+falsepositives:
+  - Unlikely, but IPs can be reassigned over time.
+level: critical

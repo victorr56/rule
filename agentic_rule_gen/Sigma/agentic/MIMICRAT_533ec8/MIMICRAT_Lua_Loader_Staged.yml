@@ -1,0 +1,21 @@
+title: MIMICRAT Lua Loader Staged (zbuild.exe)
+id: 2db9a36f-b27b-40f4-857c-1cd3697eb2f7
+status: experimental
+description: Detects the creation of the MIMICRAT Lua loader 'zbuild.exe' in its characteristic staging directory.
+references:
+    - https://www.elastic.co/security-labs/threat-command/mimicrat-custom-rat-mimics-c2-frameworks
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1074.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\zbuild.exe'
+        TargetFilename|startswith: 'C:\ProgramData\knz_'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: medium

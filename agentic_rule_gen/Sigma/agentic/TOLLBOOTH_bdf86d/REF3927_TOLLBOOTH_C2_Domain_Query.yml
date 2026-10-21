@@ -1,0 +1,26 @@
+title: REF3927 TOLLBOOTH C2 Domain Query
+id: 56d22d25-9f5e-4c55-b0b0-329437d2f9d1
+status: experimental
+description: Detects DNS queries for domains associated with the TOLLBOOTH malware infrastructure, used for configuration, SEO farming, and payload delivery.
+references:
+    - https://www.elastic.co/security-labs/threat-command/tollbooth
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1505.004
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'c.cseo99.com'
+            - 'f.fseo99.com'
+            - 'api.aseo99.com'
+            - 'mlxya.oss-accelerate.aliyuncs.com'
+            - 'asf-sikkeiyjga.cn-shenzhen.fcapp.run'
+            - 'ask-bdtj-selohjszlw.cn-shenzhen.fcapp.run'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,29 @@
+title: Phexia EtherHiding C2 Beacon
+id: a231b6e4-4d8b-491c-b5f7-87e366158d60
+status: experimental
+description: >-
+  Detects a command line pattern characteristic of the Phexia malware family's 'EtherHiding' technique.
+  The malware uses curl to query a public blockchain RPC endpoint, specifically calling a function on a smart contract (0xA3a603F8a454a9c905b4c579Bb72628F7C15C2A0) to resolve its C2 server address.
+  This behavior has been observed on macOS but the command is platform-agnostic and could be seen on Linux systems.
+references:
+  - https://redcanary.com/blog/threat-intelligence/intelligence-insights-august-2026/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.command_and_control
+  - attack.t1102
+  - detection.threat_hunting
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  selection:
+    Image|endswith: '/curl'
+    CommandLine|contains|all:
+      - 'eth_call'
+      - '0xA3a603F8a454a9c905b4c579Bb72628F7C15C2A0' # Phexia smart contract
+      - '0x2686ecea' # eth_call function selector
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high

@@ -1,0 +1,28 @@
+title: Scarlet Goldfinch Obfuscated Command-Line Execution
+id: 9a206a4b-84a8-4217-a169-ed8f4a3c2602
+status: experimental
+description: Detects an obfuscated command-line pattern used by Scarlet Goldfinch to download and execute a payload via curl and mshta.
+references:
+    - https://redcanary.com/blog/threat-intelligence/intelligence-insights-june-2026/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.003
+    - attack.defense_evasion
+    - attack.t1027
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - 'for /f '
+            - '^c^u^r^l^'
+            - '&& ^m^s^h^t^a^'
+            - '35613analytics.com/uuu'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

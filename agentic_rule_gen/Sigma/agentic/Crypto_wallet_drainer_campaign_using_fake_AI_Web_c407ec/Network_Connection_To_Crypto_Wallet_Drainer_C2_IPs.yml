@@ -1,0 +1,23 @@
+title: Network Connection To Crypto Wallet Drainer C2 IPs
+id: 11c6d3f2-1b15-460d-85ce-fc2a62002fbe
+status: experimental
+description: Detects network connections to IP addresses associated with a crypto wallet drainer campaign.
+references:
+    - https://www.darktrace.com/blog/crypto-wallets-continue-to-be-drained-in-elaborate-social-media-scam
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1041
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '45.94.47.167'
+            - '77.73.129.18'
+            - '45.94.47.112'
+    condition: selection
+falsepositives:
+    - These IPs could be reassigned in the future and may be used by benign services.
+level: high

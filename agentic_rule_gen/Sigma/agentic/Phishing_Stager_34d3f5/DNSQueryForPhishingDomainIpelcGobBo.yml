@@ -1,0 +1,20 @@
+title: DNS Query For Phishing Domain ipelc.gob.bo
+id: 8c47e8e7-e43e-4d5f-9721-68f76d498670
+status: experimental
+description: Detects DNS queries for the compromised Bolivian government domain 'ipelc.gob.bo', which was used to host a phishing kit.
+references:
+    - https://www.huntress.com/blog/terminal-server-phishing-stager-exposed
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1566.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'ipelc.gob.bo'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

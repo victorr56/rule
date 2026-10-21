@@ -1,0 +1,25 @@
+title: ClickFix RAT Sideloading Host Execution
+id: 3a4b5c6d-8b9c-4d6e-9f0a-1b2c3d4e5f6a
+status: experimental
+description: Detects the execution of legitimate executables from malicious paths, a behavior associated with the ClickFix RAT's DLL sideloading technique initiated by the MSI installer.
+references:
+    - https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1574.002
+    - attack.defense_evasion
+    - attack.execution
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\msiexec.exe'
+        Image|endswith:
+            - '\Programs\Advanced Printer Configuration Reader\COTFileReadApp.exe'
+            - '\Programs\Stardock Smart DeElevation Tool\DeElevate64.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

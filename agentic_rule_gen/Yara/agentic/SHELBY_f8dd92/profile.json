@@ -1,0 +1,426 @@
+{
+  "malware_family": "SHELBY",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "SHELBY is a .NET malware family consisting of SHELBYLOADER and SHELBYC2 components that abuse GitHub for command and control. The malware establishes persistence via the Run registry key, performs extensive sandbox checks, and exfiltrates system information. Its reliance on a hardcoded GitHub Personal Access Token (PAT) for C2 access represents a significant operational security flaw.",
+  "mitre_techniques": [
+    "T1566",
+    "T1027",
+    "T1620",
+    "T1059.001",
+    "T1041"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "JPerf-3.0.0.exe",
+      "context": "Initial loader executable from phishing attachment.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "HTTPService.dll",
+      "context": "SHELBYLOADER component, side-loaded by Microsoft.Http.Api.exe.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "HTTPApi.dll",
+      "context": "SHELBYC2 component, the encrypted backdoor payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%AppData%\\Local\\Microsoft\\HTTPApi",
+      "context": "Installation directory for malware components.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Global\\GHS",
+      "context": "Prefix for mutex name, followed by unique machine ID.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "context": "Registry key used for establishing persistence.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Select * from Win32_ComputerSystem",
+      "context": "WMI query for sandbox detection.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "SELECT * FROM Win32_VideoController",
+      "context": "WMI query for sandbox detection (video controller).",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "vmsrvc",
+      "context": "VMware process checked for sandbox detection.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "vmtools",
+      "context": "VMware process checked for sandbox detection.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "xenservice",
+      "context": "Xen process checked for sandbox detection.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "vboxservice",
+      "context": "VirtualBox process checked for sandbox detection.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "vboxtray",
+      "context": "VirtualBox process checked for sandbox detection.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "explorer.exe",
+      "context": "Expected parent process; malware checks if its parent is NOT this.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Vivante.txt",
+      "context": "Heartbeat file created in GitHub repo, name means 'alive'.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Command.txt",
+      "context": "File on C2 containing commands for a specific victim.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Broadcast.txt",
+      "context": "File on C2 containing commands for all victims.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/download",
+      "context": "Internal command to download a file from GitHub.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/upload",
+      "context": "Internal command to upload a file to GitHub.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/dlextract",
+      "context": "Internal command to download and extract a zip file.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/evoke",
+      "context": "Internal command to reflectively load a .NET binary.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[WARN] Unusual parent process detected: ",
+      "context": "Log string from SHELBYLOADER's parent process check.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Persist ID: ",
+      "context": "Log string from SHELBYLOADER indicating persistence status.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "File Uploaded Successfully",
+      "context": "Log string from SHELBYC2 after a successful upload.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Obfuscar",
+      "context": ".NET obfuscator used on loader and backdoor.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Obfuscar",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Inno setup",
+      "context": "Installer technology used for the initial dropper.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "Inno setup",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://api.github.com/repos/",
+      "context": "Base URL for GitHub API C2 communications.",
+      "specificity": "low",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "github.com/johnshelllby",
+      "context": "C2 GitHub account.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "github.com/arturshellby",
+      "context": "C2 GitHub account.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "arthurshelby.click",
+      "context": "C2 domain for DNS-based keying.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "speed-test.click",
+      "context": "Domain resolving to C2 infrastructure.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "s.*.*.arthurshelby.click",
+      "context": "DNS C2 registration pattern: s.<id>.<data>.[domain]",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "l[0-9]+.*.arthurshelby.click",
+      "context": "DNS C2 key retrieval pattern: l<index>.<id>.[domain]",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "2.56.126.151",
+      "context": "C2 infrastructure IP, also hosted arthurshelby.click.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "2.56.126.157",
+      "context": "C2 infrastructure IP.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "2.56.126.188",
+      "context": "C2 infrastructure IP.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.86.68.55",
+      "context": "C2 infrastructure IP.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "195.16.74.138",
+      "context": "C2 infrastructure IP.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+      "context": "Hardcoded User-Agent for C2 communication.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Accept: application/vnd.github.v3+json",
+      "context": "Accept header for GitHub API C2.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "0e25efeb4e3304815f9e51c1d9bd3a2e2a23ece3a32f0b47f829536f71ead17a",
+      "description": "details.zip lure archive"
+    },
+    {
+      "sha256": "feb5d225fa38efe2a627ddfbe9654bf59c171ac0742cd565b7a5f22b45a4cc3a",
+      "description": "JPerf-3.0.0.exe loader"
+    },
+    {
+      "sha256": "0354862d83a61c8e69adc3e65f6e5c921523eff829ef1b169e4f0f143b04091f",
+      "description": "HTTPService.dll (SHELBYLOADER)"
+    },
+    {
+      "sha256": "fb8d4c24bcfd853edb15c5c4096723b239f03255f17cec42f2d881f5f31b6025",
+      "description": "HTTPApi.dll (SHELBYC2)"
+    },
+    {
+      "sha256": "472e685e7994f51bbb259be9c61f01b8b8f35d20030f03215ce205993dbad7f5",
+      "description": "JPerf-3.0.0.zip lure archive"
+    },
+    {
+      "sha256": "5c384109d3e578a0107e8518bcb91cd63f6926f0c0d0e01525d34a734445685c",
+      "description": "Setup.exe loader"
+    },
+    {
+      "sha256": "e51c6f0fbc5a7e0b03a0d6e1e1d26ab566d606b551c785bf882e9a02f04c862b",
+      "description": "Lure zip file"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet",
+    "archive"
+  ]
+}

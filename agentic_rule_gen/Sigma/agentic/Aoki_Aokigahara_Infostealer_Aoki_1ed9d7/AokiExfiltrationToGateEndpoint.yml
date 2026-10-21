@@ -1,0 +1,26 @@
+title: Aoki Infostealer Exfiltration via /gate Endpoint
+id: 5b6c3e7f-1d8f-4a0b-93f5-7c09341c2a0d
+status: experimental
+description: Detects HTTP/S requests to the '/gate' URI path on domains known to be used by the Aoki infostealer for data exfiltration.
+references:
+    - https://www.security.com/threat-intelligence/aoki-infostealer-ai-targeting
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.exfiltration
+    - attack.t1041
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname|endswith:
+            - 'dobeqnesmot.cc'
+            - 'hjazfioe.surf'
+            - 'neihite.cc'
+        Url|endswith: '/gate'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

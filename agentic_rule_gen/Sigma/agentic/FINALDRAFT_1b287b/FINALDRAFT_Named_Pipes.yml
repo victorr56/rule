@@ -1,0 +1,28 @@
+title: FINALDRAFT Named Pipes
+id: f4c54a93-548c-4f7f-8c38-89c0b2984920
+status: experimental
+description: Detects the creation of named pipes with specific GUIDs used by FINALDRAFT malware modules for inter-process communication and C2.
+references:
+    - https://www.elastic.co/security-labs/threat-command/finaldraft
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.command_and_control
+    - attack.t1573.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_ipconfig:
+        TargetFilename|startswith: '\\.\pipe\'
+        TargetFilename|endswith: '\E340C955-15B6-4ec9-9522-1F526E6FBBF1'
+    selection_psloader:
+        TargetFilename|startswith: '\\.\pipe\'
+        TargetFilename|endswith: '\BD5AE956-0CF5-44b5-8061-208F5D0DBBB2'
+    selection_pnt:
+        TargetFilename|startswith: '\\.\pipe\'
+        TargetFilename|endswith: '\EAA0BF8D-CA6C-45eb-9751-6269C70813C9'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: critical

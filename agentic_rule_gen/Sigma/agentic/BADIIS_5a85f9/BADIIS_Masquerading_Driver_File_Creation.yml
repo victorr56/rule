@@ -1,0 +1,27 @@
+title: BADIIS Masquerading Driver Load
+id: 1d3e8a6a-d9b1-4c7e-8c6c-9a3e2d5c7b9c
+status: experimental
+description: Detects the loading of BADIIS components that masquerade as legitimate Windows drivers. Malicious drivers are often unsigned.
+references:
+    - https://www.elastic.co/security-labs/threat-command/badiis-to-the-bone-new-insights-to-global-seo-poisoning-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+    - attack.persistence
+    - attack.t1547.006
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        ImageLoaded|endswith:
+            - '\WUDFPfprot.sys'
+            - '\WppRecorderpo.sys'
+            - '\WppRecorderrt.sys'
+        Signed: false
+    condition: selection
+falsepositives:
+    - Legitimate but unsigned drivers using the same filenames (highly unlikely).
+level: high

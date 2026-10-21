@@ -1,0 +1,21 @@
+title: MoYu Group JarService Payload Download
+id: 5e638f38-2321-4543-982d-8b067f502c33
+status: experimental
+description: Detects HTTP requests containing a specific path segment used by MoYu Group's JarService malware to download payloads.
+references:
+    - https://securelist.com/android-head-unit-malware/121106/
+author: ioc-yara-daily (agentic)
+date: 2024-06-18
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection:
+        c-uri|contains: '/vr34der34/'
+        cs-user-agent|startswith: 'Dalvik/'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

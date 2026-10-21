@@ -1,0 +1,29 @@
+title: UNC3886 Malicious SSO Email In Command Line
+id: a2314541-b3b4-4b57-a9a3-5c31fc0b5b19
+status: experimental
+description: Detects the use of known malicious email addresses, associated with UNC3886, in command line arguments. This may indicate the creation or modification of a rogue SSO admin account on a FortiGate device.
+references:
+    - https://www.wiz.io/blog/agentless-threat-hunting-fortigate
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.persistence
+    - attack.t1136
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_email_1:
+        Image|endswith: '/bin/sh'
+        CommandLine|contains|all:
+            - 'clish'
+            - 'support@openmail.pro'
+    selection_email_2:
+        Image|endswith: '/bin/sh'
+        CommandLine|contains|all:
+            - 'clish'
+            - 'cloud-noc@mail.io'
+    condition: 1 of selection_email_*
+falsepositives:
+    - Legitimate administrative commands on a FortiGate device that happen to include one of the specified email addresses.
+level: high

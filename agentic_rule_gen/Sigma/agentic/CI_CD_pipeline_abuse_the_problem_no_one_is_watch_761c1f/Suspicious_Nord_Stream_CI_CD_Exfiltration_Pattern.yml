@@ -1,0 +1,27 @@
+title: Suspicious Nord Stream CI/CD Exfiltration Pattern
+id: 5b778d9b-a010-4828-98e6-76495df01c9a
+status: experimental
+description: Detects a command line pattern used by the Nord Stream tool to exfiltrate secrets from a GitHub Actions environment by filtering environment variables and double base64 encoding them. This specific command is highly indicative of the Nord Stream payload template.
+references:
+    - https://www.elastic.co/security-labs/threat-command/detecting-cicd-pipeline-abuse-with-llm-augmented-analysis
+author: ioc-yara-daily (agentic)
+date: 2023-10-16
+tags:
+    - attack.t1552.008
+    - attack.t1059
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+        CommandLine|contains|all:
+            - 'awk -v RS=''0'''
+            - '/^secret_/'
+            - 'base64 -w0 | base64 -w0'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

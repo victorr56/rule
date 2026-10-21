@@ -1,0 +1,25 @@
+title: ScreenConnect Backdoor Campaign DNS Activity
+id: 5a4a9c6b-2f34-4a49-9686-e88383f518fa
+status: experimental
+description: Detects DNS queries associated with a ScreenConnect backdoor campaign, covering both the initial delivery and C2 phases.
+references:
+    - https://www.malware-traffic-analysis.net/2026/09/14/index.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.initial_access
+    - attack.command_and_control
+    - attack.t1566.002
+    - attack.t1219
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.icci-sa.com'  # Phishing/Delivery
+            - '.instance-udppxf-relay.screenconnect.com'  # C2 Relay
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

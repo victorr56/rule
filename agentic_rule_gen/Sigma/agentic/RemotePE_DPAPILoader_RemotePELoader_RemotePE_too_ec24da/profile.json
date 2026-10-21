@@ -1,0 +1,668 @@
+{
+  "malware_family": "RemotePE (DPAPILoader / RemotePELoader / RemotePE toolset)",
+  "threat_actor": "Lazarus subgroup (overlaps AppleJeus, Citrine Sleet, UNC4736, Gleaming Pisces)",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "DPAPILoader is an environmentally keyed first-stage DLL that decrypts a DPAPI-protected, 0x8D-XORed RemotePELoader payload from the DeviceMetadataStore directory, then reflectively loads it with libpeconv. RemotePELoader applies HellsGate/TartarusGate unhooking and ETW patching before polling an HTTP C2 for the final RemotePE RAT, which executes entirely in memory and exposes RTTI-based command classes. Detection anchors include masquerading service DLLs (Iassvc.dll), DPAPI-encrypted blobs in DeviceMetadataStore, the ETW patch bytes 48 33 c0 c3, the wake-up event 554D5C1F-AABE-49E4-AB57-994D22ECED28 and the cookie/JSON keys MicrosoftApplicationsTelemetryDeviceId, at_check, ai_session, MSFPC, MUID and armAuthorization.",
+  "mitre_techniques": [
+    "T1480.001",
+    "T1620",
+    "T1543.003",
+    "T1574.002",
+    "T1562.001",
+    "T1071.001",
+    "T1070.004"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\Iassvc.dll",
+      "context": "DPAPILoader masquerading as legitimate IAS DLL",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Iassvc.dll",
+      "context": "Filename used for DPAPILoader (host-based IOC)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\iassvcs.dll",
+      "context": "Legitimate IAS DLL mimicked; extra 's' in malicious filename",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "sspicli.dll",
+      "context": "DPAPILoader variant sideloaded by ESET edp.exe",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wmiclnt.dll",
+      "context": "DPAPILoader variant exposing WmiOpenBlock, payload embedded in DLL",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "ServiceMain",
+      "context": "Export of Iassvc.dll DPAPILoader sample",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "InitSecurityInterfaceW",
+      "context": "Export of sspicli.dll DPAPILoader sample",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "WmiOpenBlock",
+      "context": "Export of wmiclnt.dll DPAPILoader sample",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "Ias",
+      "context": "Masquerading service name in service record",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "Internet Authentication Service",
+      "context": "Masquerading service display name running Iassvc.dll",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%SystemRoot%\\system32\\Iassvc.dll",
+      "context": "ServiceDll value of the masquerading service",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "%systemroot%\\system32\\svchost.exe -k netsvcs -p",
+      "context": "Service image path/args hosting DPAPILoader via netsvcs",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Microsoft\\Windows\\DeviceMetadataStore\\en-US*.*",
+      "context": "Wildcard path searched for encrypted payload and config",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\??\\C:\\ProgramData\\Microsoft\\Windows\\DeviceMetadataStore\\en-US*.*",
+      "context": "RemotePELoader config wildcard search path",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "c:/ProgramData/Microsoft/Windows/DeviceMetadataStore/en-US/08548ba0-000b-46ea-8618-9e296cbc3ca3.devicemetadata-ms",
+      "context": "DPAPI-encrypted RemotePELoader payload observed in IR case",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "c:/ProgramData/Microsoft/Windows/DeviceMetadataStore/en-US/05f1f8fd-d226-4de8-a8d4-0e2b066cacb4.devicemetadata-ms",
+      "context": "DPAPI-encrypted C2 config file decrypted for analysis",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 4D 53 43 46 }",
+      "context": "Cabinet magic bytes (MSCF) used to skip legitimate metadata packages",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 33 c0 c3 }",
+      "context": "Bytes written to EtwEventWrite to disable ETW event generation",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "0x8D",
+      "context": "XOR key applied after DPAPI decryption of payload and config",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-c1=2-c2=2-c3=2",
+      "context": "Static suffix in MSCC cookie value sent by both loaders",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "%08lx%08lx%08lx%08lx",
+      "context": "Format string for MSFPC and MS0 cookie values",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "%04x",
+      "context": "Format string for HASH cookie value",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "SOFTWARE\\Microsoft\\SQMClient\\MachineId",
+      "context": "Bot ID source for RemotePE variants 2023-07 to 2024-04",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "Software\\Microsoft\\Cryptography\\MachineGuid",
+      "context": "Bot ID source for RemotePE 2024-05-11 sample",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "554D5C1F-AABE-49E4-AB57-994D22ECED28",
+      "context": "Windows event checked while sleeping to wake RemotePE on demand",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RemotePEC2Config",
+      "context": "On-disk C2 configuration structure name (sizeof 0xb38)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "C2Message",
+      "context": "Shared C2 message struct: uint64 seed, 16-byte AES-GCM tag, ciphertext",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "C2Command",
+      "context": "RemotePE decrypted command struct (payload_size, class_id, function_id, request_id)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IMiddleController",
+      "context": "RTTI class name of RemotePE command-processing thread",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IChannelController",
+      "context": "RTTI class name of RemotePE C2 communication thread",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IConfigProfile",
+      "context": "RTTI class name for get/set C2 configuration commands",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IKernelModule",
+      "context": "RTTI class string hunted by YARA rule",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RemotePE::IMiddleController::decrypt",
+      "context": "Decompiled command-batch decryption routine",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RemotePE::IMiddleController::run_c2_command",
+      "context": "Decompiled command dispatcher",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "libpeconv",
+      "context": "Open-source reflective PE loading library used by both loaders",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "libpeconv",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "cabinet.dll",
+      "context": "Windows Cabinet compression API used for MSZIP command output",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[!] Could not allocate memory at the desired base!\\n",
+      "context": "DPAPILoader/libpeconv error message in YARA hunting rule",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[!] Virtual section size is out ouf bounds: ",
+      "context": "DPAPILoader/libpeconv error message (typo verbatim)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[!] Invalid relocDir pointer\\n",
+      "context": "DPAPILoader/libpeconv error message",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[-] Not supported relocations format at %d: %d\\n",
+      "context": "DPAPILoader/libpeconv error message",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[!] Cannot fill imports into 32 bit PE via 64 bit loader!\\n",
+      "context": "DPAPILoader/libpeconv error message",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "filesize == 3094 and uint32(0) == 0x00000001 and uint32(0x8E) == 0x00000B40",
+      "context": "YARA condition detecting RemotePE DPAPI-encrypted config (dwDataLen 0xB40 padded)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "lpReserved == 0x1000",
+      "context": "DllMain check enforcing load by previous stage in the chain",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "EtwEventWrite",
+      "context": "ETW function patched in-process to suppress telemetry",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "edp.exe -> sspicli.dll",
+      "context": "ESET binary sideloading the DPAPILoader sspicli.dll variant",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "livedrivefiles.com",
+      "context": "RemotePE(Loader) C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "aes-secure.net",
+      "context": "RemotePE(Loader) C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "azureglobalaccelerator.com",
+      "context": "RemotePE(Loader) C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "msdeliverycontent.com",
+      "context": "RemotePE(Loader) C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "akamaicloud.com",
+      "context": "RemotePE(Loader) C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "intelcloudinsights.com",
+      "context": "RemotePE(Loader) C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "devicelinkintel.com",
+      "context": "RemotePE(Loader) C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://aes-secure.net/channel",
+      "context": "C2 URL stored in DPAPI-encrypted config (wsC2Url_1)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/channel",
+      "context": "POST path used for check-in, polling and command responses",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Microsoft-Delivery-Optimization/10.0",
+      "context": "Configurable HTTP user-agent used by RemotePELoader/RemotePE",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Cookie: MSCC=<[0-9a-z]{24}-c1=2-c2=2-c3=2>",
+      "context": "Check-in cookie mimicking Microsoft telemetry",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "MicrosoftApplicationsTelemetryDeviceId",
+      "context": "Cookie carrying the bot ID",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "MSFPC",
+      "context": "Cookie with GUID/HASH/LV/V/LU fields",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "MS0",
+      "context": "Cookie indicating RemotePELoader request",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "MUID",
+      "context": "RemotePE cookie replacing MS0 to differentiate from RemotePELoader",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "at_check=true",
+      "context": "Cookie marking the initial check-in (no session yet)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "ai_session",
+      "context": "Cookie carrying C2 session ID after check-in",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "odata.metadata",
+      "context": "JSON key containing C2 session ID or the AES-GCM/Base64 PE payload",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "armAuthorization",
+      "context": "JSON key carrying AES-GCM/Base64 command output to the C2",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "POST /channel HTTP/1.1 with Content-Type: application/json",
+      "context": "HTTP POST C2 request format over Namecheap shared hosting",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "4f6ae0110cf652264293df571d66955f7109e3424a070423b5e50edc3eb43874",
+      "description": "DPAPILoader (Iassvc.dll), service-loaded first stage"
+    },
+    {
+      "sha256": "aa4a2d1215f864481994234f13ab485b95150161b4566c180419d93dda7ac039",
+      "description": "DPAPILoader (wmiclnt.dll), embedded payload variant"
+    },
+    {
+      "sha256": "159471e1abc9adf6733af9d24781fbf27a776b81d182901c2e04e28f3fe2e6f3",
+      "description": "DPAPILoader (sspicli.dll), sideloaded variant"
+    },
+    {
+      "sha256": "7a05188ab0129b0b4f38e2e7599c5c52149ce0131140db33feb251d926428d68",
+      "description": "RemotePELoader, decrypted from disk"
+    },
+    {
+      "sha256": "37f5afb9ed3761e73feb95daceb7a1fdbb13c8b5fc1a2ba22e0ef7994c7920ef",
+      "description": "RemotePE RAT sample (PE timestamp 2023-07-04)"
+    },
+    {
+      "sha256": "6b33d20196267b0d64bca815ca863558d26b17cee77caf62a6cce8eae555ac8d",
+      "description": "RemotePE RAT sample (PE timestamp 2023-10-17)"
+    },
+    {
+      "sha256": "62e040a32aac2d2faa8d2bffa2cf7ab662228cebf9bb78eaa0a633c0b729d119",
+      "description": "RemotePE RAT sample (PE timestamp 2024-04-18)"
+    },
+    {
+      "sha256": "710f15302859c7af1c1e25219d704841b3fdbc48f16a5a574d5ab6cf4f4842e8",
+      "description": "RemotePE RAT sample (PE timestamp 2024-05-11)"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

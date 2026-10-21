@@ -1,0 +1,23 @@
+title: REF8801/CloudSyncD Disables Smart App Control
+id: a8c2b189-e160-496e-a3b0-6819eb79f45d
+status: experimental
+description: Detects the modification of the 'VerifiedAndReputablePolicyState' registry key to 0, a technique used by REF8801 to disable Smart App Control on Windows 11 as part of its malicious npm package payload.
+references:
+    - https://www.elastic.co/security-labs/threat-command/apex-accelerator-malicious-npm-packages
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+    - detection.threat_hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\SYSTEM\CurrentControlSet\Control\CI\Policy\VerifiedAndReputablePolicyState'
+        Details: '0'
+    condition: selection
+falsepositives:
+    - System administrators or security testing tools performing similar actions.
+level: high

@@ -1,0 +1,23 @@
+title: REF3864/SADBRIDGE Staging Directory File Activity
+id: c6e9d7f3-b2a8-4c1e-8a9d-5f6e7d8c9b0a
+status: experimental
+description: Detects svchost.exe dropping an executable file into the SADBRIDGE staging directory 'C:\ProgramData\Microsoft\DeviceSync\Device\Stage\Data\DevQueryBroker\'.
+references:
+    - https://www.elastic.co/security-labs/threat-command/under-the-sadbridge-with-gosar
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\svchost.exe'
+        TargetFilename|startswith: 'C:\ProgramData\Microsoft\DeviceSync\Device\Stage\Data\DevQueryBroker\'
+        TargetFilename|endswith: '.exe'
+    condition: selection
+falsepositives:
+    - Legitimate software installers or updaters might write executables to this directory, although this is not common behavior.
+level: high

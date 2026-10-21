@@ -1,0 +1,26 @@
+title: BTR.sys Service Configured with ADS Changelist
+id: 6a3f114c-1d0b-419b-ab28-a55e2d83f090
+status: experimental
+description: >-
+    Detects a Windows service being configured to use a specially named Alternate Data Stream (ADS) called ':changelist' as its argument.
+    This is the core mechanism used by the BTR_CLI PoC to pass an encrypted transaction configuration to the BTR.sys driver at boot time.
+references:
+    - https://research.checkpoint.com/2026/btr-reforged-weaponizing-defenders-remediation-driver-as-a-kernel-operation-primitive/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.privilege_escalation
+    - attack.t1543.003
+    - attack.t1564.004
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Args'
+        Details|contains: '.sys:changelist'
+    condition: selection
+falsepositives:
+    - Unlikely. This specific combination of a service argument and a ':changelist' ADS on a driver file is unique to this technique.
+level: critical

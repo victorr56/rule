@@ -1,0 +1,25 @@
+title: Storm-2561 WatchGuard Phishing Domains (DNS)
+id: 486a2468-d014-498c-8433-e7f015ab5f4e
+status: experimental
+description: Detects DNS queries for domains used in a WatchGuard VPN credential phishing campaign attributed to Storm-2561.
+references:
+    - https://www.huntress.com/blog/fake-watchguard-vpn-credential-phishing
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1583.001
+    - attack.t1608.006
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'firebox-ssl.org'
+            - 'watchguard-ssl.online'
+            - 'watchguard-vpn.com'
+            - 'watchguard-vpn.net'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

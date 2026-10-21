@@ -1,0 +1,23 @@
+title: CikaBika RAT UAC Bypass via ms-settings
+id: fd21b339-b9a3-48ee-a0b2-4d8fc3aa29ef
+status: experimental
+description: Detects the modification of the 'ms-settings' protocol handler registry key to execute a command via cmd.exe. This is a known UAC bypass technique used by tools like CikaBika RAT for privilege escalation.
+references:
+    - https://www.darktrace.com/blog/under-medusas-gaze-how-darktrace-uncovers-rmm-abuse-in-ransomware-campaigns
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1548.002
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Classes\ms-settings\shell\open\command\(Default)'
+        Details|contains: 'cmd.exe /c'
+    condition: selection
+logsource:
+    category: registry_set
+    product: windows
+falsepositives:
+    - Legitimate use of this UAC bypass is extremely rare. Some niche administrative tools might perform similar actions, but it warrants investigation.
+level: high

@@ -1,0 +1,25 @@
+title: TCLBANKER Persistence via Scheduled Task
+id: e36a539c-514d-44a3-83d3-7d88de001968
+status: experimental
+description: Detects the creation of a scheduled task named 'RuntimeOptimizeService', a specific persistence mechanism used by the TCLBANKER trojan.
+references:
+    - https://www.elastic.co/security-labs/threat-command/tclbanker-brazilian-banking-trojan
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/TN'
+            - 'RuntimeOptimizeService'
+    condition: selection
+falsepositives:
+    - Unlikely. The scheduled task name 'RuntimeOptimizeService' is specific to TCLBANKER.
+level: high

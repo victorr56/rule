@@ -1,0 +1,27 @@
+title: Mirage Kitten NodeRabbit Persistence Execution via Intel DSA Masquerade
+id: 215417ae-b389-4b68-809f-43152d1b09b2
+status: experimental
+description: |
+    Detects the execution of NodeRabbit v2 persistence, which uses a renamed Node.js binary 'IntelDSA.exe' to run 'idriver_support.js'.
+    This is typically triggered by a scheduled task named 'IntelDriverSupportUpdate'.
+references:
+    - https://securelist.com/mirage-kitten-new-backdoors-noderabbit-pollcat/121244/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.007
+    - attack.persistence
+    - attack.t1053.005
+    - detection.threat_hunting
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '\IntelDSA.exe'
+        CommandLine|contains: 'idriver_support.js'
+    condition: selection
+falsepositives:
+    - Unlikely. Legitimate Intel DSA does not typically run JavaScript files from the command line in this manner.
+level: high

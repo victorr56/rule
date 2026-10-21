@@ -1,0 +1,27 @@
+title: MANTLEMAZE Service Creation for Vulnerable Driver
+id: 3c59e7e7-3f33-41a4-9e79-880a91e1d0f5
+status: experimental
+description: Detects the creation of a kernel service pointing to the vulnerable driver 'iqvw64e.sys'. This is a common method for Bring Your Own Vulnerable Driver (BYOVD) attacks as seen with MANTLEMAZE and is used for privilege escalation and defense evasion.
+references:
+    - https://blog.talosintelligence.com/ignore-all-instructions-and-read-this-blog-the-state-of-ai-analysis-evasion-in-malware/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1543.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\sc.exe'
+        CommandLine|contains|all:
+            - 'create'
+            - 'type= kernel'
+            - 'binPath='
+            - 'iqvw64e.sys'
+    condition: selection
+falsepositives:
+    - Legitimate installation of this Intel driver using sc.exe, which is considered rare.
+level: high

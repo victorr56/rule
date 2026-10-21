@@ -1,0 +1,41 @@
+title: Suspicious Tool Dropped in ScreenConnect Temp Folder
+id: e1c3d1f0-4a5b-4c6d-8e9f-0a1b2c3d4e5f
+status: experimental
+description: Detects the creation of suspicious or known hacking tools in the ScreenConnect temporary staging folder. This activity was observed after attackers established persistence using ScreenConnect to download and execute post-exploitation tools.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2023/09/29/phishing-abuses-rmm-tools-persistent-access/
+author: ioc-yara-daily (agentic)
+date: 2024-05-22
+tags:
+    - attack.credential_access
+    - attack.collection
+    - attack.defense_evasion
+    - attack.t1105
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_path:
+        Image|endswith:
+            - 'ScreenConnect.ClientService.exe'
+            - 'ScreenConnect.Client.exe'
+        TargetFilename|contains:
+            - '\Documents\ScreenConnect\Temp\'
+            - '\OneDrive\Documents\ScreenConnect\Temp\'
+    selection_tools:
+        Image|endswith:
+            - 'ScreenConnect.ClientService.exe'
+            - 'ScreenConnect.Client.exe'
+        TargetFilename|endswith:
+            - '\WebBrowserPassView.exe'
+            - '\SCHider.exe'
+            - '\WindowsSecurity_PIN.exe'
+            - '\WindowsSecurity_Password.exe'
+            - '\HideFromControlPanel.exe'
+            - '\MouseHiderGUI.exe'
+            - '\WebBrowserBookmarksView.exe'
+            - '\WindowsKey.exe'
+    condition: all of selection_*
+falsepositives:
+    - Legitimate administrator activity involving these tools and ScreenConnect, which is highly unlikely.
+level: high

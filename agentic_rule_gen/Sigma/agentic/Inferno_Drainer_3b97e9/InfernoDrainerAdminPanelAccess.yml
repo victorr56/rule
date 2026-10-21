@@ -1,0 +1,24 @@
+title: Inferno Drainer Phishing Kit Admin Panel Access
+id: d928f09d-0b1a-429f-864a-251c6b1b7904
+status: experimental
+description: Detects web requests to the '/include_admin' path, which is used for the administrative panel of the Inferno Drainer phishing kit.
+references:
+    - https://www.group-ib.com/blog/declaration-trap/
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        c-uri-path|contains: '/include_admin'
+        cs-method:
+            - 'GET'
+            - 'POST'
+    condition: selection
+falsepositives:
+    - Unlikely, but could match benign software that coincidentally uses this URL path.
+level: high

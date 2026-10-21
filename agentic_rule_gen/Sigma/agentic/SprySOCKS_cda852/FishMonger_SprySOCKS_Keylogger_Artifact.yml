@@ -1,0 +1,23 @@
+title: FishMonger SprySOCKS Keylogger Artifact Creation
+id: da81119b-f8fe-4a57-a359-2a441315531d
+status: experimental
+description: Detects the creation of the keylogger output file 'lg.dat' in a specific AppData path by the SprySOCKS backdoor.
+references:
+    - https://www.welivesecurity.com/en/eset-research/fishmongers-arsenal-upgraded-sprysocks-windows/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.collection
+    - attack.t1056.001
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\svchost.exe'
+        TargetFilename|endswith: '\Microsoft\Vault\lg.dat'
+    condition: selection
+falsepositives:
+    - Legitimate software that uses the same file path, although this is unlikely.
+level: high

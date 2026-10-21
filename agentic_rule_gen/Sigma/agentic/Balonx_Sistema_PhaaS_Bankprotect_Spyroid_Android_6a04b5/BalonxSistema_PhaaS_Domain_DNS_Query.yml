@@ -1,0 +1,26 @@
+title: Balonx Sistema PhaaS Domain DNS Query
+id: c4316d97-15ef-4d30-b9df-cfb385e49221
+status: experimental
+description: Detects DNS queries for domains associated with the Balonx Sistema PhaaS infrastructure.
+references:
+    - https://www.group-ib.com/blog/balonx-sistema-mexico-phaas/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1566.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'callbalonx.info'
+            - 'panelbalonxfs.xyz'
+            - 'balonx.online'
+            - 'Aclaraciones-digital.online'
+            - 'soporte-aclaracion.xyz'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

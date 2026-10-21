@@ -1,0 +1,24 @@
+title: MIMICRAT C2 IP Connection
+id: 5cf1b4f4-5f5c-4389-9a73-82a1df7794ba
+status: experimental
+description: Detects network connections to known MIMICRAT command and control IP addresses.
+references:
+    - https://www.elastic.co/security-labs/threat-command/mimicrat-custom-rat-mimics-c2-frameworks
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '45.13.212.250'
+            - '45.13.212.251'
+            - '23.227.202.114'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

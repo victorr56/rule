@@ -1,0 +1,24 @@
+title: WARMCOOKIE C2 Network Connection
+id: 8d69e46a-7330-4e3b-b236-ecf052528148
+status: experimental
+description: Detects network connections to IP addresses known to be used by WARMCOOKIE C2 servers.
+references:
+    - https://www.elastic.co/security-labs/threat-command/dipping-into-danger
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '80.66.88.146'
+            - '185.49.69.41'
+            - '45.9.74.135'
+    condition: selection
+falsepositives:
+    - This rule uses specific C2 infrastructure IPs which are unlikely to generate false positives, but this infrastructure can be short-lived.
+level: medium

@@ -1,0 +1,25 @@
+title: Deceptive MSP360 RMM Installer Filename Pattern
+id: 5a8a1f6a-0b2a-4f4c-b9b5-6a8b1b2d4f2f
+status: experimental
+description: Detects the creation of executable files with filenames matching a pattern used in a phishing campaign to disguise MSP360 RMM installers as business documents or other legitimate software.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/09/29/phishing-abuses-rmm-tools-persistent-access/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1204
+    - attack.t1036.005
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains|all:
+            - '_rmm_v2.5.0.67_'
+            - '_oid'
+        TargetFilename|endswith: '.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

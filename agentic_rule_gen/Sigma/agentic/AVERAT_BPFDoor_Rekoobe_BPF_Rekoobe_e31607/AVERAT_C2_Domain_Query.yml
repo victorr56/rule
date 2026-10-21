@@ -1,0 +1,24 @@
+title: AVERAT C2 Domain Query
+id: 28b05615-1888-4679-b003-a261ef5580ac
+status: experimental
+description: Detects DNS queries for domains known to be used by the AVERAT backdoor for command and control.
+references:
+    - https://www.rapid7.com/blog/post/tr-smtp-is-the-key-bpfdoor-averat-hitting-the-network-edge
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1568.002
+detection:
+    selection:
+        QueryName:
+            - 'mx.zxopfds.com'
+            - 'spam.suwaccqi.com'
+            - 'mx1.wwstifsteel.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: medium
+logsource:
+    category: dns_query
+    product: windows

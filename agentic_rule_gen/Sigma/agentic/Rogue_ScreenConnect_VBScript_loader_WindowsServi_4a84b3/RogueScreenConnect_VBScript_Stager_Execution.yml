@@ -1,0 +1,28 @@
+title: Rogue ScreenConnect Spawning VBScript Stager
+id: 97890b07-dd35-4303-ae4a-a03498875501
+status: experimental
+description: 'Detects a rogue ScreenConnect client spawning wscript.exe to execute a VBScript stager from a temporary directory. This is characteristic of the initial execution chain.'
+references:
+    - https://www.huntress.com/blog/rogue-screenconnect-installations
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.005
+    - attack.t1219
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\ScreenConnect.WindowsClient.exe'
+        Image|endswith: '\wscript.exe'
+        CommandLine|contains: '\Temp\'
+    filter_path:
+        CommandLine|contains:
+            - '\ScreenConnect\Temp\'
+            - '\ConnectWiseControl\Temp\'
+    condition: selection and filter_path
+falsepositives:
+    - Legitimate ScreenConnect remote support actions that involve running scripts from these specific temporary folders, although this is not standard behavior.
+level: high

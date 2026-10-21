@@ -1,0 +1,172 @@
+{
+  "malware_family": "Lumma Stealer",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Lumma Stealer, also known as LUMMAC2, is an information stealer that uses a custom ChaCha20 implementation to decrypt its C2 domains. The malware contains distinct code patterns that can be used to locate the crypto setup routine, the decryption function, and the encrypted list of C2 servers. The ChaCha20 context is initialized once and then reused with an incrementing counter for subsequent decryptions.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "hex_pattern",
+      "value": "b838?24400b???????00b???0???0096f3a5",
+      "context": "Lumma ChaCha20 key/nonce setup routine (CRYPTO_SETUP_PATTERN)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "5553575681ec1?0100008b??243?01000085??0f84??080000",
+      "context": "Lumma C2 decryption function (DECRYPTION_FUNCTION_PATTERN)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "8d8?e0?244008d7424??ff3?565?68????4500e8????ffff",
+      "context": "Lumma C2 decryption branch (C2_DECRYPTION_BRANCH_PATTERN)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "2",
+      "context": "Initial ChaCha20 counter value for C2 decryption (CHACHA20_INITIAL_COUNTER)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xFF",
+      "context": "Max length of C2 list (C2_LIST_MAX_LENGTH)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x80",
+      "context": "Size of an encrypted C2 entry (C2_SIZE)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "WinHTTP.dll",
+      "context": "Loaded before ChaCha20 context initialization",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://mocadia.com/iuew",
+      "context": "Decrypted C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://mastwin.in/qsaz",
+      "context": "Decrypted C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://ordinarniyvrach.ru/xiur",
+      "context": "Decrypted C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://yamakrug.ru/lzka",
+      "context": "Decrypted C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://vishneviyjazz.ru/neco",
+      "context": "Decrypted C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://yrokistorii.ru/uqya",
+      "context": "Decrypted C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://stolevnica.ru/xjuf",
+      "context": "Decrypted C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://visokiykaf.ru/mntn",
+      "context": "Decrypted C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://kletkamozga.ru/iwqq",
+      "context": "Decrypted C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "https://",
+      "context": "Prefix programmatically added to decrypted C2 strings",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "26803ff0e079e43c413e10d9a62d344504a134d20ad37af9fd3eaf5c54848122",
+      "description": "Lumma Stealer unencrypted sample"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

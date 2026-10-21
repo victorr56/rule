@@ -1,0 +1,371 @@
+{
+  "malware_family": "BTR_CLI",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "BTR_CLI is a research PoC that weaponizes Microsoft's signed Windows Defender Boot-Time Removal driver (BTR.sys) as an arbitrary file/registry kernel primitive by forging its RC4-encrypted, ~CRC32-validated transaction config stored in a :changelist ADS. The driver is staged as a SERVICE_SYSTEM_START (Start=1) service in the \"Boot Bus Extender\" group, executing in a pre-EDR \"Golden Window\" after the filesystem is writable but before user-mode AV services start. Detection relies on ADS creation on .sys files, System (PID 4) file/registry operations after a driver load, and non-Defender process lineage for the driver.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "BTR.sys",
+      "context": "Windows Defender Boot-Time Removal driver",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "System32\\drivers\\<[a-z]{8}>.sys",
+      "context": "Randomized driver filename used by MpEngine.dll",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\system32\\drivers\\mzqnjtaq.sys",
+      "context": "Example randomly named dropped driver path",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ":changelist",
+      "context": "ADS suffix holding RC4-encrypted transaction config",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\system32\\drivers\\mzqnjtaq.sys:changelist",
+      "context": "Config ADS path in service Args value",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "Random.sys:Random.dat",
+      "context": "PoC feedback report ADS on the driver file",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\??\\C:\\ProgramData\\..\\mzqnjtaq.dat",
+      "context": "Feedback file path in Global Payload",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Microsoft\\Windows Defender\\Scans\\RebootActions\\",
+      "context": "Legitimate MpEngine.dll feedback directory",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\SystemRoot\\Temp\\BootClean.log",
+      "context": "Driver-written log, deleted as anti-forensics",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SYSTEM\\CurrentControlSet\\Services\\{Random}",
+      "context": "Transient service key for randomized driver",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Args = C:\\Windows\\system32\\drivers\\mzqnjtaq.sys:changelist",
+      "context": "Service Args pointing at encrypted config ADS",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Group = Boot Bus Extender",
+      "context": "Load-order group placing driver early in Phase 1",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "ImagePath = \\\\??\\C:\\Windows\\system32\\drivers\\mzqnjtaq.sys",
+      "context": "Driver image path with NT prefix",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "mzqnjtaq",
+      "context": "Randomized service name example",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SYSTEM\\CurrentControlSet\\Services\\WdFilter",
+      "context": "Defender filter service key deleted by driver",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SYSTEM\\CurrentControlSet\\Services\\WinDefend",
+      "context": "Defender service key targeted for deletion",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\drivers\\wd\\WdFilter.sys",
+      "context": "Defender minifilter binary deleted at boot",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26010.5-0\\MsMpEng.exe",
+      "context": "Defender service binary deleted at boot",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "MpEngine.dll",
+      "context": "Hosts embedded BTR.sys BOOTTIMETOOL resource",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Microsoft\\Windows Defender\\Definition Updates\\Default\\MpEngine.dll",
+      "context": "Location used by PoC to extract driver",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "BOOTTIMETOOL",
+      "context": "PE resource name holding embedded BTR.sys",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PACKEDBINARY",
+      "context": "PE resource type of embedded driver",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\jiseqkjb.sys",
+      "context": "Randomized driver drop path during PoC run",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mimidrv.sys",
+      "context": "Malicious driver moved into System32/drivers in demo",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\drivers\\mimidrv.sys",
+      "context": "Arbitrary write destination in demo",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "BTR_CLI.exe",
+      "context": "PoC tool driving BTR.sys transactions",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "BTR Completed Successfully",
+      "context": "Driver log string on success path",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Invalid magic number or version for file!\\n",
+      "context": "Driver log on bad config magic/version",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ DE AD E1 FE }",
+      "context": "Global Header Magic 0xFEE1DEAD little-endian",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "~CRC32 (CRC-32 polynomial 0xEDB88320, final XOR omitted, reset 0xFFFFFFFF per structure)",
+      "context": "Driver integrity check over header/payload/item",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "CRC32 modified (~CRC32)",
+      "hash_value": "0xEDB88320"
+    },
+    {
+      "kind": "other",
+      "value": "1E 87 78 1B 8D BB A8 44 CE 69 70 2C 0C 78 B7 86 A3 F6 23 B7 38 F4 ED F9 AF 83 53 0F B3 FC 54 FA A2 1E B9 CF 13 32 FD 0F 0D A9 54 F6 87 CB 9E 18 27 96 97 90 0E 54 FB 31 7C 9C BC E4 8E 23 D0 53 71 EC C1 59 51 B7 F3 64 9D 7C A3 3E D6 8D C9 04 7E 82 C9 BA AD 96 99 D0 D4 58 CB 84 7C A9 FF BE 3C 8A 77 52 33 55 7D DE 13 A8 B1 40 87 CC 1B C8 F1 0F 6E CD D0 83 A9 59 CF F8 4A 9D 1D 50 75 5E 3E 19 18 18 AF 23 E2 29 35 58 76 6D 2C 07 E2 57 12 B2 CA 0B 53 5E D8 F6 C5 6C E7 3D 24 BD D0 29 17 71 86 1A 54 B4 C2 85 A9 A3 DB 7A CA 6D 22 4A EA CD 62 1D B9 FB A2 2E D1 E9 E1 1D 75 BE D7 DC 0E CB 0A 8E 68 C2 FF 12 63 40 8D C8 08 DF FD 16 4B 11 67 74 CD 6B 9B 8D 05 41 1E D6 26 2E 42 9B A4 95 67 6B 83 98 DB 2F 35 D3 C1 B9 CE D5 26 36 F2 76 5E 1A 95 CB 7C A4 C3 DD AB DD BF F3 82 53",
+      "context": "Hard-coded 256-byte RC4 key in .rdata, all BTR.sys builds",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "BTR_CLI.exe -chain -item \"4|HKLM\\SYSTEM\\CurrentControlSet\\Services\\WdFilter\" -item \"4|HKLM\\SYSTEM\\CurrentControlSet\\Services\\WinDefend\" -trigger now",
+      "context": "Runtime Tamper Protection bypass; parent process not stated",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "BTR_CLI.exe -chain -item \"1|C:\\Windows\\System32\\drivers\\wd\\WdFilter.sys\" -item \"1|C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26010.5-0\\MsMpEng.exe\" -trigger boot",
+      "context": "Boot-time Defender binary deletion; parent process not stated",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "BTR_CLI.exe -a 3 -s \"C:\\Users\\admin\\Desktop\\mimidrv\\mimidrv.sys\" -d \"C:\\Windows\\System32\\drivers\\mimidrv.sys\"",
+      "context": "Action 3 arbitrary file move/write into System32\\drivers",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "BTR_CLI.exe -a 4 -s \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\WdFilter\" -trigger now",
+      "context": "Action 4 registry key deletion; parent process not stated",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [],
+  "samples": [
+    {
+      "sha256": "FE614205D911971F759FF890832230741F1DF03485CF0737F73FA3D1A6A1595F",
+      "description": "SHA256 of the RC4-encrypted :changelist ADS configuration stream captured by Sysmon Event 15 during BTR_CLI execution (MD5 7CEB7725DB88AED1F97B9C06F72C5F03)"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

@@ -1,0 +1,30 @@
+title: Kthreadd Kernel Process Spawning Shell
+id: b3e54b68-e35f-4613-896c-48ed2d987627
+status: experimental
+description: Detects the 'kthreadd' kernel process (typically PID 2) spawning a userland shell. This is highly anomalous behavior and a strong indicator of a kernel-level rootkit executing commands.
+references:
+    - https://www.elastic.co/security-labs/threat-command/linux-rootkits-2-caught-in-the-act
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.execution
+    - attack.t1059
+    - attack.privilege_escalation
+    - attack.t1068
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        ParentImage: '[kthreadd]'
+        Image|endswith:
+            - '/bash'
+            - '/sh'
+            - '/zsh'
+            - '/csh'
+            - '/ksh'
+            - '/dash'
+    condition: selection
+falsepositives:
+    - Extremely unlikely. This behavior violates the expected process hierarchy of the Linux kernel.
+level: critical

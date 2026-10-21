@@ -1,0 +1,31 @@
+title: WARMCOOKIE C2 Network Connections
+id: f5a98d33-4f1b-4b9d-b778-43962b80016a
+status: experimental
+description: Detects network connections to IP addresses known to be used by WARMCOOKIE for command and control.
+references:
+    - https://www.elastic.co/security-labs/threat-command/revisiting-warmcookie
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '38.180.91.117'
+            - '85.208.84.220'
+            - '87.120.126.32'
+            - '87.120.93.151'
+            - '109.120.137.42'
+            - '149.248.58.85'
+            - '155.94.155.155'
+            - '170.130.165.112'
+            - '192.36.57.164'
+            - '194.71.107.41'
+            - '195.82.147.3'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,34 @@
+title: WWAHost WinRT Abuse OAuth Token Theft via Suspicious User-Agent and URI Parameters
+id: 59711674-601e-451e-ad52-259160d5dd78
+status: experimental
+description: Detects the 'MSAppHost/3.0' user agent, associated with the WWAHost.exe AppX web host, making network connections containing OAuth parameters to non-Microsoft domains. This is a key indicator of an attacker abusing a sideloaded AppX package to steal OAuth tokens, as described by Huntress.
+references:
+    - https://www.huntress.com/blog/stealing-oauth-tokens-through-microsofts-front-door
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1528
+    - attack.t1550.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        UserAgent|contains: 'MSAppHost/3.0'
+        Url.Query|contains: 'state='
+    filter:
+        DestinationHostname|endswith:
+            - '.microsoft.com'
+            - '.microsoftonline.com'
+            - '.windows.com'
+            - '.windows.net'
+            - '.live.com'
+            - '.office.com'
+            - '.office365.com'
+            - '.msn.com'
+            - '.azure.com'
+            - '.azure-api.net'
+            - '.bing.com'
+    condition: selection and not filter
+falsepositives:
+    - Legitimate AppX applications that use OAuth with third-party providers.
+level: high

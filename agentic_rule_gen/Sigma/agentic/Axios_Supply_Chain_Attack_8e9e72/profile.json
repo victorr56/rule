@@ -1,0 +1,300 @@
+{
+  "malware_family": "Axios Supply Chain Attack",
+  "threat_actor": "Unknown",
+  "platforms": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "summary": "A compromised npm maintainer account was used to publish malicious versions (1.14.1, 0.30.4) of the popular 'axios' package. These versions introduced a dependency on 'plain-crypto-js', a trojanized package that acts as a dropper. The dropper downloads and executes platform-specific second-stage RATs for Windows, macOS, and Linux that beacon to a C2 server for remote command execution.",
+  "mitre_techniques": [
+    "T1547.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "com.apple.act.mond",
+      "context": "Stage 2 macOS Mach-O binary payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "stage2.ps1",
+      "context": "Stage 2 Windows PowerShell script.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ld.py",
+      "context": "Stage 2 Linux Python script.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "setup.js",
+      "context": "Dropper script within malicious npm package.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "system.bat",
+      "context": "Windows persistence batch script.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "6202033.ps1",
+      "context": "Downloaded second-stage PowerShell script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Library/Caches/com.apple.act.mond",
+      "context": "macOS persistence path for Stage 2 payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.XXXXXX.scpt",
+      "context": "macOS temporary script file pattern.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%PROGRAMDATA%\\wt.exe",
+      "context": "Windows artifact dropped by malware.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%PROGRAMDATA%\\system.bat",
+      "context": "Windows persistence batch script location.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\6202033.vbs",
+      "context": "Windows temporary VBS script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\6202033.ps1",
+      "context": "Windows temporary PowerShell script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/ld.py",
+      "context": "Linux script path.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "context": "Windows registry key used for persistence.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "MicrosoftUpdate",
+      "context": "Registry Run key name for persistence.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "%PROGRAMDATA%\\system.bat",
+      "context": "Registry Run key value pointing to persistence script.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "axios@1.14.1",
+      "context": "Malicious npm package version.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "axios@0.30.4",
+      "context": "Malicious npm package version.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "plain-crypto-js",
+      "context": "Malicious dependency package name.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "plain-crypto-js@4.2.1",
+      "context": "Trojanized npm package version.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "sfrclak.com",
+      "context": "C2 domain for downloading second-stage payloads.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "callnrwise.com",
+      "context": "C2 domain (pivot).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "142.11.206.73",
+      "context": "C2 server IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://sfrclak.com:8000/6202033",
+      "context": "C2 URL for second-stage payload download.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/6202033",
+      "context": "URI path used in C2 communications, corresponds to campaign.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "8000",
+      "context": "C2 communication port.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "92ff08773995ebc8d55ec4b8e1a225d0d1e51efa4ef88b8849d0071230c9645a",
+      "description": "com.apple.act.mond, Stage 2 (macOS), Mach-O binary"
+    },
+    {
+      "sha256": "617b67a8e1210e4fc87c92d1d1da45a2f311c08d26e89b12307cf583c900d101",
+      "description": "stage2.ps1, Stage 2 (Windows), PowerShell script"
+    },
+    {
+      "sha256": "fcb81618bb15edfdedfb638b4c08a2af9cac9ecfa551af135a8402bf980375cf",
+      "description": "ld.py, Stage 2 (Linux), Python script"
+    },
+    {
+      "sha256": "e10b1fa84f1d6481625f741b69892780140d4e0e7769e7491e5f4d894c2e0e09",
+      "description": "setup.js, Dropper script"
+    },
+    {
+      "sha256": "f7d335205b8d7b20208fb3ef93ee6dc817905dc3ae0c10a0b164f4e7d07121cd",
+      "description": "system.bat, Windows persistence script"
+    },
+    {
+      "sha256": "e49c2732fb9861548208a78e72996b9c3c470b6b562576924bcc3a9fb75bf9ff",
+      "description": "system.bat, Windows persistence script (variant)"
+    },
+    {
+      "sha256": "ed8560c1ac7ceb6983ba995124d5917dc1a00288912387a6389296637d5f815c",
+      "description": "6202033.ps1, PowerShell script"
+    }
+  ],
+  "file_types": [
+    "script",
+    "macho",
+    "pe"
+  ]
+}

@@ -1,0 +1,28 @@
+title: REF7707 FINALDRAFT Persistence via Scheduled Task
+id: a215d8f6-5e58-45a9-8350-a97926715f3f
+status: experimental
+description: Detects the creation of a scheduled task used by REF7707 to persist the FINALDRAFT malware. The task masquerades as a legitimate AppID policy manager task but executes a renamed CDB.exe.
+references:
+    - https://www.elastic.co/security-labs/threat-command/fragile-web-ref7707
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.persistence
+    - attack.t1053.005
+    - attack.execution
+    - attack.t1204.002
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn'
+            - '\Microsoft\Windows\AppID\EPolicyManager'
+            - 'C:\ProgramData\fontdrvhost.exe -cf C:\ProgramData\config.ini'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical
+logsource:
+    category: process_creation
+    product: windows

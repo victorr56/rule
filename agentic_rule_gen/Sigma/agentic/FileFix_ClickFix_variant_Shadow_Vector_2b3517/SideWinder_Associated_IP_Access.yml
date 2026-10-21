@@ -1,0 +1,21 @@
+title: SideWinder Associated IP Access
+id: 8527a26f-d38a-40a8-b67f-2736b449f874
+status: experimental
+description: Detects network connections to an IP address associated with SideWinder malware delivery infrastructure.
+references:
+    - https://blog.virustotal.com/2025/11/vtpractitioners-acronis.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1203
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '185.123.102.139'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

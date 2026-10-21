@@ -1,0 +1,21 @@
+title: UNC5221 C2 Activity via 'TIGHT_UNIVERSITY' URL Artifact
+id: 5e62f033-b9dc-46d5-91f9-86bd06c3a2f7
+status: experimental
+description: Detects C2 requests to a specific IP address with a URI path containing 'TIGHT_UNIVERSITY', a pattern associated with UNC5221.
+references:
+    - https://www.darktrace.com/blog/ivanti-under-siege-investigating-the-ivanti-endpoint-manager-mobile-vulnerabilities-cve-2025-4427-cve-2025-4428
+author: ioc-yara-daily (agentic)
+date: 2024-05-22
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        cs-host: '185.193.125.65'
+        c-uri|contains: '/TIGHT_UNIVERSITY'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

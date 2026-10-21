@@ -1,0 +1,34 @@
+title: BTMOB C2 IP Connections
+id: e8a7865c-3a61-420a-81a1-9a7447953229
+status: experimental
+description: Detects network connections to IP addresses associated with the BTMOB Android RAT infrastructure. While the malware targets Android, these connections may be observed from enterprise endpoints connected to the same network.
+references:
+    - https://www.welivesecurity.com/en/malware/btmob-stealthy-rat-burrowing-deep-android-devices/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1626
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '178.156.177.192'
+            - '191.101.131.250'
+            - '195.160.221.203'
+            - '191.96.224.87'
+            - '191.96.225.241'
+            - '191.96.78.172'
+            - '191.96.78.28'
+            - '191.96.79.133'
+            - '191.96.79.179'
+            - '191.96.79.41'
+            - '200.9.155.153'
+            - '78.135.93.123'
+            - '79.133.57.141'
+    condition: selection
+falsepositives:
+    - Connections to these IPs from non-Android devices are unexpected but possible if the infrastructure is shared or has been reallocated over time.
+level: high

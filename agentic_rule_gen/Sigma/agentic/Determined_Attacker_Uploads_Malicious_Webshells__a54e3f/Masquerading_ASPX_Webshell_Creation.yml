@@ -1,0 +1,25 @@
+title: Creation of ASPX File Masquerading as Other Asset Type
+id: 978f8e1a-c5c2-4876-96b4-6a2c16155ed1
+status: experimental
+description: Detects the creation of an ASPX file with a name that suggests it is a different type of web asset, such as a CSS or JavaScript file. This is a common technique for hiding webshells in plain sight.
+references:
+    - https://www.huntress.com/blog/parks-recreation-platform-webshell-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1505.003
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\w3wp.exe'
+        TargetFilename|endswith:
+            - 'css_bundle.aspx'
+            - 'jquery.validate.min.aspx'
+            - 'webresource.aspx'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

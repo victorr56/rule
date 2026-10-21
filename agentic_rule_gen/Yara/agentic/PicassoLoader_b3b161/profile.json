@@ -1,0 +1,380 @@
+{
+  "malware_family": "PicassoLoader",
+  "threat_actor": "FrostyNeighbor",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "FrostyNeighbor (aka Ghostwriter, UNC1151, TA445) ran a March 2026 campaign against Ukrainian governmental organizations using spearphishing PDFs that, after server-side victim validation, deliver a RAR with a first-stage JavaScript dropper and a JavaScript PicassoLoader downloader. PicassoLoader fingerprints the host over HTTPS, receives a scheduled-task XML template and a third stage that writes a base64 Cobalt Strike beacon to %ProgramData%\\ViberPC.dll, masquerading a copy of rundll32.exe as ViberPC.exe and persisting via a Run key and scheduled task. Detection can focus on the bespoke C2 URIs, the WinDataScope/ViberPC file and registry names, and the SettingTimeAPI DLL export.",
+  "mitre_techniques": [
+    "T1583",
+    "T1608",
+    "T1588.002",
+    "T1566.001",
+    "T1204.002",
+    "T1053.005",
+    "T1059",
+    "T1060",
+    "T1027",
+    "T1027.009",
+    "T1036.005",
+    "T1057",
+    "T1082",
+    "T1071.001",
+    "T1041"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "%AppData%\\WinDataScope\\Update.js",
+      "context": "Second-stage PicassoLoader JavaScript written to disk",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%AppData%\\WinDataScope\\WinUpdate.reg",
+      "context": "REG file dropped by first stage, imported by PicassoLoader",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%AppData%\\WinDataScope\\svhost.exe",
+      "context": "Masquerading svchost-like binary referenced in Run value",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%ProgramData%\\ViberPC.dll",
+      "context": "Base64-embedded Cobalt Strike beacon written to disk",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%ProgramData%\\ViberPC.exe",
+      "context": "Copy of legitimate rundll32.exe used as launcher",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%ProgramData%\\ViberPC.lnk",
+      "context": "LNK launched through shell32.dll ShellExec_RunDLL",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%ProgramData%\\ViberPC.reg",
+      "context": "REG file registering Run key persistence, imported then deleted",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "context": "Run key used for persistence by both stages",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "ViberPCService",
+      "context": "Run value launching ViberPC.lnk via ShellExec_RunDLL",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "UpdateService",
+      "context": "Run value from WinUpdate.reg running svhost.exe on Update.js --force",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "WindowsUpdate",
+      "context": "Task created from XML template downloaded from C&C",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "schtasks /create /xml <xmlPath> /tn \"WindowsUpdate\"",
+      "context": "Parent: wscript.exe executing first-stage JavaScript",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wscript <WScript.ScriptFullName> --headless --width 80 --height 30 --update 0x48c --server 0x488",
+      "context": "First-stage script self-execution with bespoke flags",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd /c cmd /c cmd /c cmd /c cmd /c <launcher> shell32.dll,ShellExec_RunDLL \"C:\\ProgramData\\ViberPC.lnk\"",
+      "context": "Launcher command written to ViberPCService Run value",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "reg import C:\\ProgramData\\ViberPC.reg",
+      "context": "Registry import triggered by third-stage dropper",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "SettingTimeAPI",
+      "context": "DLL export of ViberPC.dll called by copied rundll32.exe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Windows update task for system components.",
+      "context": "Description inside downloaded scheduled task XML template",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "53_7.03.2026_R.pdf",
+      "context": "Ukrtelecom-impersonating lure PDF in spearphishing email",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "53_7.03.2026_R.rar",
+      "context": "Lure archive delivering first-stage dropper",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "53_7.03.2026_R.js",
+      "context": "First-stage JavaScript dropper displaying decoy PDF",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "EdgeTaskMachine.js",
+      "context": "JavaScript PicassoLoader downloader from IOC table",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "EdgeSystemConfig.dll",
+      "context": "Cobalt Strike beacon from IOC table",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "certificate.js",
+      "context": "JavaScript PicassoLoader downloader from IOC table",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Сетифікат_CAF.js",
+      "context": "JavaScript dropper from IOC table",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://book-happy.needbinding.icu/wp-content/uploads/2023/10/1GreenAM.jpg",
+      "context": "Scheduled task XML template downloaded from C&C",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://book-happy.needbinding.icu/employment/documents-and-resources",
+      "context": "PicassoLoader C&C endpoint receiving victim fingerprint",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://nama-belakang.nebao.icu/statistics/discover.txt",
+      "context": "Cobalt Strike beacon C&C callback",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "book-happy.needbinding.icu",
+      "context": "PicassoLoader C&C server, first seen 2026-03-10",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "attachment-storage-asset-static.needbinding.icu",
+      "context": "PicassoLoader C&C server, first seen 2026-03-10",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "nama-belakang.nebao.icu",
+      "context": "Cobalt Strike C&C server, first seen 2026-03-10",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "easiestnewsfromourpointofview.algsat.icu",
+      "context": "PicassoLoader C&C server, first seen 2026-04-14",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mickeymousegamesdealer.alexavegas.icu",
+      "context": "PicassoLoader C&C server, first seen 2026-03-26",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hinesafar.sardk.icu",
+      "context": "PicassoLoader C&C server, first seen 2026-04-14",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "shinesafar.sardk.icu",
+      "context": "PicassoLoader C&C server, first seen 2026-04-14",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "best-seller.lavanille.buzz",
+      "context": "Cobalt Strike C&C server, first seen 2026-04-14",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Content-Disposition: attachment; filename=\"config.xml\"",
+      "context": "C&C response advertising XML task template as attachment",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Content-Type: application/xml",
+      "context": "C&C response header for task template disguised as JPG",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script",
+    "document",
+    "archive"
+  ]
+}

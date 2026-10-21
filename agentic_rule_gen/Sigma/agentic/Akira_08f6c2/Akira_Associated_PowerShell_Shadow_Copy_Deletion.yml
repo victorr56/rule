@@ -1,0 +1,25 @@
+title: Akira Associated PowerShell Shadow Copy Deletion
+id: 5b40cf09-ed71-46ab-85c1-e395ffad0eb8
+status: experimental
+description: Detects a specific PowerShell command line used to enumerate and then delete all volume shadow copies, a technique observed in Akira ransomware attacks to inhibit system recovery.
+references:
+    - https://www.huntress.com/blog/mapping-akira-ransomware-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1490
+    - attack.t1059.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'Get-WmiObject'
+            - 'Win32_Shadowcopy'
+            - 'Remove-WmiObject'
+    condition: selection
+falsepositives:
+    - 'Scripts used for system cleanup or maintenance, although this specific syntax is uncommon for legitimate use.'
+level: high

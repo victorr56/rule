@@ -1,0 +1,26 @@
+title: REF7707 C2 IP Address Activity
+id: e3c7a95b-064b-4b2e-a579-270ebc191a27
+status: experimental
+description: Detects network connections to command and control IP addresses associated with the REF7707 threat actor.
+references:
+    - https://www.elastic.co/security-labs/threat-command/fragile-web-ref7707
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1568.002
+detection:
+    selection:
+        DestinationIp:
+            - '47.83.8.198'
+            - '8.218.153.45'
+            - '45.91.133.254'
+            - '8.213.217.182'
+            - '47.239.0.216'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical
+logsource:
+    category: network_connection
+    product: windows

@@ -1,0 +1,22 @@
+title: EtherRAT/TONResolver Lure URL Access
+id: a8d531a7-cc74-4b5b-8608-251c6c547801
+status: experimental
+description: Detects access to malicious lure URLs used to deliver EtherRAT and TONResolver.
+references:
+    - https://cofense.com/blog/from-guest-complaints-to-malware-blockchain-abuse-targets-hotels
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.initial_access
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url.Full:
+            - 'https://share.google/jcH0iEr8DBNs0KT15'
+            - 'https://share.google/ut3woL0XFCVOUtCDo'
+            - 'https://vencycs.com/?confirm/6568438944267'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

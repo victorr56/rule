@@ -1,0 +1,25 @@
+title: Toy Ghouls Bird Agent Configuration File Creation
+id: c6f50535-4302-4ab6-87ca-d6f788b776f8
+status: experimental
+description: |
+    Detects the creation of 'config.toml' in specific subdirectories under '%PROGRAMDATA%', which is a behavior of the Bird Agent backdoor during its initial setup.
+references:
+    - https://securelist.com/toy-ghouls-new-hivemq-and-element-backdoors/121270/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith:
+            - '\cplsupport\config.toml'
+            - '\SynapseAgent\config.toml'
+        TargetFilename|contains: '\ProgramData\'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: medium

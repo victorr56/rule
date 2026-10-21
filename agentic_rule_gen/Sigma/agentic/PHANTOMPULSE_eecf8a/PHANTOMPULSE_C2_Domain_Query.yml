@@ -1,0 +1,24 @@
+title: PHANTOMPULSE C2 Domain Query
+id: 7c4e5d89-0b1a-4f5e-9e7f-5d22f1c8e9b3
+status: experimental
+description: Detects DNS queries for domains associated with PHANTOMPULSE command and control infrastructure.
+references:
+    - https://www.elastic.co/security-labs/threat-command/blockchain-c2-phantompulse-rat-sinkhole
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'panel.fefea22134.net'
+            - 'fea22134.net'
+            - '0x666.info'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

@@ -1,0 +1,24 @@
+title: Medusa RaaS Affiliate C2 Domain Query
+id: 8816c276-834c-4749-8e43-15797305d21a
+status: experimental
+description: Detects DNS queries for domains known to be used by Medusa RaaS affiliates for data exfiltration and command and control.
+references:
+    - https://www.darktrace.com/blog/under-medusas-gaze-how-darktrace-uncovers-rmm-abuse-in-ransomware-campaigns
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1105
+detection:
+    selection:
+        QueryName:
+            - 'erp.ranasons.com'
+            - 'pruebas.pintacuario.mx'
+            - 'lirdel.com'
+    condition: selection
+logsource:
+    category: dns_query
+    product: windows
+falsepositives:
+    - Unlikely, as these domains are specifically tied to attacker infrastructure.
+level: critical

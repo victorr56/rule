@@ -1,0 +1,22 @@
+title: Rogue ScreenConnect Client Execution with Specific ID
+id: 5dfa9a8f-518c-4f11-9a7c-a496b86411ab
+status: experimental
+description: Detects the execution of a specific rogue ScreenConnect client, identified by a unique client ID in its installation path and a specific C2 host parameter in its command line.
+references:
+    - https://www.huntress.com/blog/screenconnect-power-bi
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1219
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\ScreenConnect Client (43773b3da4ccb17b)\ScreenConnect.ClientService.exe'
+        CommandLine|contains: 'h=onthegotree.site'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

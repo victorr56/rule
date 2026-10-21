@@ -1,0 +1,602 @@
+{
+  "malware_family": "SparroWocky",
+  "threat_actor": "FamousSparrow",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "SparroWocky is the modular C++ backdoor that replaced SparrowDoor as FamousSparrow's flagship implant, deployed since at least August 2025 against governmental targets in Latin America. It is delivered by a trident loader (legitimate EXE plus side-loaded malicious DLL) that RC4-decrypts a .dat payload, uses TLS with RC4-encrypted command data over IP-based C2, and persists via a Windows service or a Run key. The backdoor supports command execution, in-memory PE and BOF loading, TCP proxying, screenshots and file exfiltration, with heavy anti-analysis (SilentMoonwalk, API hashing, LDR forging).",
+  "mitre_techniques": [
+    "T1583.003",
+    "T1587.001",
+    "T1608.001",
+    "T1190",
+    "T1059.003",
+    "T1569.002",
+    "T1106",
+    "T1559",
+    "T1574.001",
+    "T1547.001",
+    "T1543.003",
+    "T1134.002",
+    "T1140",
+    "T1480.002",
+    "T1564.010",
+    "T1027.007",
+    "T1620",
+    "T1070.004",
+    "T1070.009",
+    "T1036.001",
+    "T1036.004",
+    "T1083",
+    "T1680",
+    "T1082",
+    "T1033",
+    "T1120",
+    "T1005",
+    "T1113",
+    "T1573.002",
+    "T1573.001",
+    "T1090.001",
+    "T1090.002",
+    "T1095",
+    "T1041"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "config_marker",
+      "value": "0x11328712",
+      "context": "Four-byte magic at start of encrypted payload .dat header",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "MyMutexName",
+      "context": "Mutex used to synchronize backdoor instances",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "MyEventName",
+      "context": "Event used in custom IPC mechanism for instance synchronization",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "MySharedMemName",
+      "context": "Shared memory block used for instance synchronization",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "\\\\.\\pipe\\ccpipe",
+      "context": "Pipe redirecting stdin/stdout of spawned SparroWocky process (command 0x16)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "ProcAuditManager",
+      "context": "Service persistence name and display name",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Tracks process creation, termination, and related system audit events.",
+      "context": "Service persistence description used for masquerading",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "SnapCart",
+      "context": "Run key value name used for registry persistence",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "context": "Persistence key, HKLM or HKCU depending on privileges",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings",
+      "context": "Queried for system proxy in connection mode 0",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "ProxyServer",
+      "context": "Value read to retrieve the configured system proxy",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "acdbcnus",
+      "context": "Personalization string for Mbed TLS CTR_DRBG (figure literal; prose renders acdbenus)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "first stanza of Jabberwocky (Lewis Carroll)",
+      "context": "Poem stanza embedded in samples, from RFC 7539 test vectors",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "44 33 22 11",
+      "context": "Initial packet of new interactive session (0x11) / 0x11223344 ready marker",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "13 12 11 09",
+      "context": "First packet sent for each PortmapReverseServer forwarded connection",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "48 8b 05 0d 00 00 00",
+      "context": "Trampoline placed at AnimateWindow to execute original start address",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x40C004",
+      "context": "Flags set in forged LDR_DATA_TABLE_ENTRY (otherwise 0xC004)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "@echo off\ntimeout /t 2\ndel \"<legitimate_executable>\" /f /q\ndel \"<loader_library>\" /f /q\ndel \"<payload_filepath>\" /f /q\ndel \"%%0\" /f /q",
+      "context": "Batch file created and executed for self-deletion (command 0x13)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "c",
+      "context": "First argument: load/execute PE from stdin with timeout (used with command 0x16)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "s2",
+      "context": "First argument: instance started via service persistence",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "p",
+      "context": "First argument: sleep 5s, set persistence, run core logic",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "t",
+      "context": "First argument: set working directory to backdoor location, run core logic",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\en-US\\<exe_name>.mui",
+      "context": "English MUI file loaded to camouflage in-memory PE (argument c)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "winfsp-x64.dll",
+      "context": "SparroWocky loader DLL (DLL side-loading), two hashes listed",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DukeQt.dll",
+      "context": "SparroWocky loader DLL (DLL side-loading)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "<executable_name>.dat",
+      "context": "Encrypted payload file named after the legitimate executable",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "AnimateWindow",
+      "context": "Thread start address shown by MinHook patch; patched into a trampoline",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "CreateThread",
+      "context": "Hooked to conceal lpStartAddress of created threads",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "MinHook",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "RtlLoadString",
+      "context": "Hooked to redirect loaded PE resource lookups to the .mui data",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GetCommandline[AW]",
+      "context": "Hooked so a loaded PE reads spoofed command line from stdin",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "WinHandler",
+      "context": "RTTI class handling C2 commands, derived from ServerHandler",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ServerHandler",
+      "context": "Base class with virtual method for C2 command handling",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RunCOFF",
+      "context": "Slightly modified to load/execute BOFs (command 0x14)",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "COFF Loader",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PortmapReverseServer",
+      "context": "Internal name of reverse port-forwarding component (commands 0x1B-0x1D)",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "3209689E509205CCDB7E49062B7B407DDC23CAC1",
+      "context": "SparroWocky loader winfsp-x64.dll (Win64/Agent.HUP)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "SHA-1",
+      "hash_value": "3209689E509205CCDB7E49062B7B407DDC23CAC1"
+    },
+    {
+      "kind": "other",
+      "value": "52C6646759CF6037BB17466203631C4BD794532F",
+      "context": "SparroWocky loader winfsp-x64.dll (Win64/Agent.HUP)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "SHA-1",
+      "hash_value": "52C6646759CF6037BB17466203631C4BD794532F"
+    },
+    {
+      "kind": "other",
+      "value": "99E7070B5AF24A0FE1E6FEBE5954B03CB385E91F",
+      "context": "SparroWocky loader DukeQt.dll (Win64/Agent.ISF)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "SHA-1",
+      "hash_value": "99E7070B5AF24A0FE1E6FEBE5954B03CB385E91F"
+    },
+    {
+      "kind": "other",
+      "value": "44F0A22B143B79FA760BF31E14C8FFF714C8A2A1",
+      "context": "SparroWocky backdoor, in-memory (Win64/Agent.ASW), PE timestamp 2025-11-17",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "SHA-1",
+      "hash_value": "44F0A22B143B79FA760BF31E14C8FFF714C8A2A1"
+    },
+    {
+      "kind": "other",
+      "value": "9AA9FF61BC63CCAB9074FE837F39C980CA9DDC8C",
+      "context": "SparroWocky backdoor, in-memory (Win64/Agent.ASW)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "SHA-1",
+      "hash_value": "9AA9FF61BC63CCAB9074FE837F39C980CA9DDC8C"
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "216.238.110.120",
+      "context": "Configured C&C IP (config table) and C&C server, first seen 2025-12-11",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.54.57.17",
+      "context": "SparroWocky C&C server, first seen 2026-02-25",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.60.197.55",
+      "context": "SparroWocky C&C server, first seen 2026-03-16",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.60.209.106",
+      "context": "SparroWocky C&C server, first seen 2026-02-26",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.60.224.51",
+      "context": "SparroWocky C&C server, first seen 2026-02-25",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.60.224.235",
+      "context": "SparroWocky C&C server, first seen 2026-02-24",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.60.241.65",
+      "context": "SparroWocky C&C server, first seen 2026-03-10",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.60.241.127",
+      "context": "SparroWocky C&C server, first seen 2026-03-04",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.60.241.193",
+      "context": "SparroWocky C&C server, first seen 2026-01-22",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "77.111.101.40",
+      "context": "SparroWocky C&C server, first seen 2026-05-20",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "91.148.134.115",
+      "context": "SparroWocky C&C server, first seen 2026-06-17",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "130.94.101.82",
+      "context": "SparroWocky C&C server, first seen 2026-02-26",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "140.99.164.199",
+      "context": "SparroWocky C&C server, first seen 2026-02-26",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "149.104.87.228",
+      "context": "SparroWocky C&C server, first seen 2026-02-24",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "149.104.90.203",
+      "context": "SparroWocky C&C server, first seen 2026-01-22",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "216.238.92.2",
+      "context": "SparroWocky C&C server, first seen 2026-02-25",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "216.238.105.53",
+      "context": "SparroWocky C&C server, first seen 2026-01-22",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "216.238.121.164",
+      "context": "SparroWocky C&C server, first seen 2026-03-16",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0",
+      "context": "User-Agent used for HTTP proxy connection mode 1 (Negotiate/Basic)",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "443",
+      "context": "Default C&C port; 8080 also observed; TLS over TCP",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

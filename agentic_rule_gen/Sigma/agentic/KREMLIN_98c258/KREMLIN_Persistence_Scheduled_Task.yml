@@ -1,0 +1,27 @@
+title: KREMLIN Persistence via Scheduled Task
+id: 5b6c2f58-00d9-43c3-9828-569a7c36a43b
+status: experimental
+description: Detects the creation of scheduled tasks named "MicrosoftNodeRuntimeUpdater" or "AcrobatBrowserExtension" used by KREMLIN malware for persistence.
+references:
+    - https://www.elastic.co/security-labs/threat-command/malicious-browser-extension-kremlin-banking-malware
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn'
+        CommandLine|contains:
+            - ' MicrosoftNodeRuntimeUpdater'
+            - ' AcrobatBrowserExtension'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

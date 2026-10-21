@@ -1,0 +1,285 @@
+{
+  "malware_family": "",
+  "threat_actor": "",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "Rapid7's staged disclosure of five Zimbra Collaboration Suite account-boundary flaws: GraphQL batched authenticate aliases hide failed logins from the source-IP counter (CVE-2026-93637), LDAP filter injection (CVE-2026-93635), SaveDraftRequest sender impersonation (CVE-2026-73571), EWS FindItem cross-user mailbox reads via composite folder IDs (CVE-2026-10631), and a Sieve notify forwarding-policy bypass (CVE-2026-50055). Detection anchors are anonymous GraphQL requests carrying many authenticate aliases, EWS FindItem requests whose FolderId embeds another account's owner UUID, and stored filter rules using actionNotify with variable-expanded headers and body. Impersonated mail and notify exfiltration arrive through Zimbra's legitimate MTA path, so detection must key on the request bodies and saved rule state rather than transport artifacts.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "config_marker",
+      "value": "zimbraFeatureEwsEnabled=TRUE",
+      "context": "Account/COS attribute required for EWS cross-user mailbox reads (CVE-2026-10631)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "zimbraFeatureMailForwardingInFiltersEnabled=FALSE",
+      "context": "Admin policy blocking server-side forwarding, bypassed via Sieve notify (CVE-2026-50055)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "auth.failed",
+      "context": "Request attribute set by SoapEngine on failed SOAP login; never set on the GraphQL path",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AUTH_FAILED",
+      "context": "Request attribute read by ZimbraInvalidLoginFilter before incrementing the per-IP failure counter",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ZimbraInvalidLoginFilter",
+      "context": "Servlet filter wrapping public service endpoints that counts failed logins per source IP",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "XMLDocumentUtilities.executeDocumentAsGuest",
+      "context": "GraphQL helper that reaches the auth handler without passing through SoapEngine",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "SoapEngine.dispatchRequest",
+      "context": "SOAP path that sets the auth.failed attribute on AuthFailedServiceException",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "SaveDraft.handle",
+      "context": "Handler whose delegated branch sends as the account named in the From field (CVE-2026-73571)",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "isDelegatedReq",
+      "context": "SaveDraftRequest attribute selecting the unauthorized delegated-sending branch",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "delegateeAccountId",
+      "context": "Optional attacker-supplied account UUID that becomes the operation context in SaveDraft",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ItemUtil.getGrantorMailbox",
+      "context": "EWS helper resolving an attacker-supplied owner UUID to a victim mailbox (CVE-2026-10631)",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ItemOperation.ItemOperation",
+      "context": "Builds OperationContext from the selected mailbox instead of the signed-in account",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Mailbox.getAuthenticatedAccount",
+      "context": "Nulls the authenticated user when it matches the mailbox owner, granting owner access",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "DocumentHandler.checkForwardFilterAttr",
+      "context": "Forwarding-policy check that only rejects RedirectAction, not notify actions",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "FilterUtil.getVarsMap",
+      "context": "Populates Sieve notification variables with decoded headers and the selected text body",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Notify.executeBasic",
+      "context": "Expands attacker-selected variables into the outgoing notification subject and body",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "RedirectAction",
+      "context": "Only filter action type classified as forwarding by the policy check",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "{ownerUUID}_{numericId}",
+      "context": "EWS composite folder ID format: owner UUID plus numeric folder id",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "{uuid}_2 Inbox, {uuid}_5 Sent, {uuid}_6 Drafts, {uuid}_7 Contacts, {uuid}_10 Calendar",
+      "context": "Well-known folder IDs an attacker can read cross-user by swapping the owner UUID in FindItem",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "actionNotify",
+      "context": "Sieve rule action used to exfiltrate headers and body to an external address",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "actionKeep",
+      "context": "Filter action keeping the original message in the Inbox while notify exfiltrates a copy",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "From: ${from}&#10;To: ${to}&#10;Subject: ${subject}&#10;&#10;${body}",
+      "context": "Notify content template expanding victim headers and full text body",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "scanner/http/zimbra_graphql_brute",
+      "context": "Metasploit auxiliary module batching GraphQL authenticate aliases (1500 passwords in 15 requests)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Metasploit",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/service/extension/graphql",
+      "context": "Public GraphQL endpoint abused for batched, unthrottled authenticate mutations (CVE-2026-93637)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/service/extension/zimbraews",
+      "context": "EWS extension endpoint used for cross-user FindItem mailbox access (CVE-2026-10631)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/EWS/Exchange.asmx",
+      "context": "Standard EWS proxy path reaching the same vulnerable FindItem handler",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "mutation { a0: authenticate(authInput: {...}) a1: authenticate(...) ... }",
+      "context": "Single anonymous GraphQL request with many authenticate aliases to hide failed logins",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "<m:FindItem ...><t:FolderId Id=\"{ownerUUID}_{numericId}\"/></m:ParentFolderIds></m:FindItem>",
+      "context": "EWS request whose composite FolderId names another account's mailbox",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

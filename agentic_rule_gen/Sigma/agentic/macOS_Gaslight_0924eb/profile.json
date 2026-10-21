@@ -1,0 +1,289 @@
+{
+  "malware_family": "macOS.Gaslight",
+  "threat_actor": "DPRK-aligned (North Korean) macOS activity cluster",
+  "platforms": [
+    "macos"
+  ],
+  "summary": "macOS.Gaslight is a Rust macOS backdoor and infostealer that uses a Telegram Bot API getUpdates polling loop, AES-GCM payloads over certificate-pinned TLS, an interactive operator shell, and a com.apple.* LaunchAgent masquerade. It bundles a base64 Python stealer staged with a runtime-fetched standalone CPython interpreter and a 3.5 KB prompt-injection blob designed to derail LLM-assisted triage.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "service_name",
+      "value": "com.apple.system.services.activity",
+      "context": "LaunchAgent Label used for persistence masquerade",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "endpoint-macos-aarch64-5555494492fc075f441637fb9d894913dde3a2ea",
+      "context": "Ad hoc code-signing identifier of the Mach-O sample",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "file/token:redacted",
+      "context": "Hardcoded placeholder replacing Telegram bot token in URLs",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 66 69 6C 65 }",
+      "context": "4-byte literal 0x656c6966 little-endian triggers token redaction",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "{{DATA}}",
+      "context": "Delimiters around 38 fabricated prompt-injection system messages",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "tg_room_id",
+      "context": "serde config field baked into binary as plaintext",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "aes_key",
+      "context": "Runtime-supplied AES-GCM key field, not embedded",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "main_upload_url",
+      "context": "Operator config field baked into binary as plaintext",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "github_polling_interval",
+      "context": "Operator config field baked into binary as plaintext",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "init_python_enable",
+      "context": "Config field gating Python stealer and installer",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "persist_enable",
+      "context": "Config field controlling LaunchAgent persistence installation",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "persist_name_macos",
+      "context": "macOS persistence name config field in serde schema",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "payload_path_macos",
+      "context": "macOS payload path config field in serde schema",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PY_VERSION=3.10.18",
+      "context": "Literal constant in base64 bash CPython installer",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "BUILD_DATE=20250708",
+      "context": "Literal constant in base64 bash CPython installer",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "focus",
+      "context": "Possible undocumented seventh operator shell command verb",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "BotBlocked",
+      "context": "Telegram error code handled by C2 dispatch",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "InvalidToken",
+      "context": "Telegram error code handled by C2 dispatch",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Conflict",
+      "context": "Telegram error code used as implicit single-instance lock",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SecTrustSetAnchorCertificatesOnly",
+      "context": "TLS pinning API resolved at runtime via dlsym",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "__NSGetExecutablePath",
+      "context": "Resolves own executable path for plist ProgramArguments",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "temp/collected_data.zip",
+      "context": "Archive of collected stealer artifacts uploaded via Telegram",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ps aux",
+      "context": "Python stealer running-process snapshot collection",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "getUpdates",
+      "context": "Telegram Bot API polling loop for C2",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "attach://",
+      "context": "Telegram multipart file-upload exfiltration mechanism",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "astral-sh/python-build-standalone",
+      "context": "GitHub project fetched at runtime for standalone CPython",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "6328567511d88fdc2ae0939c5ef17b7a63d2a833881900de018a4f12f4982525",
+      "description": "macOS.Gaslight ad hoc signed Mach-O Rust implant/stealer"
+    },
+    {
+      "sha256": "77b4fd46994992f0e57302cfe76ed23c0d90101381d2b89fc2ddf5c4536e77ca",
+      "description": "Sibling BONZAI sample linked to DPRK-aligned activity"
+    },
+    {
+      "sha256": "baabf249c77bc54c54ab0e66e15af798bd28aa5b4683554456a8b73ab8741239",
+      "description": "Base64 Python collection/stealer payload script"
+    },
+    {
+      "sha256": "e4503e31d5a297d93ade64f50a5b5fe91e73dad251ac2615b4c975684f68e080",
+      "description": "Bash installer staging standalone CPython 3.10.18"
+    }
+  ],
+  "file_types": [
+    "macho",
+    "script"
+  ]
+}

@@ -1,0 +1,23 @@
+title: RansomHub C2 Network Connection
+id: 59a16f6b-7170-4e31-8f56-655f054705a6
+status: experimental
+description: Detects network connections to an IP address and port combination used by RansomHub for data exfiltration.
+references:
+    - https://www.darktrace.com/blog/ransomhub-revisited-new-front-runner-in-the-ransomware-as-a-service-marketplace
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.exfiltration
+    - attack.t1041
+    - attack.command_and_control
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '38.244.145.85'
+        DestinationPort: 448
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,26 @@
+title: Developer Mode Enabled via Reg.exe
+id: 597a7a2a-b611-4475-ac10-09a43a0d33e0
+status: experimental
+description: Detects the use of reg.exe to enable Windows Developer Mode. This is a prerequisite for sideloading certain types of applications and can be a precursor to an attack.
+references:
+    - https://www.huntress.com/blog/stealing-oauth-tokens-through-microsofts-front-door
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1528
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '\reg.exe'
+        CommandLine|contains|all:
+            - 'add'
+            - 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock'
+            - 'AllowDevelopmentWithoutDevLicense'
+            - '/d'
+            - '1'
+    condition: selection
+falsepositives:
+    - Software developers or system administrators legitimately enabling Developer Mode via command line.
+level: medium

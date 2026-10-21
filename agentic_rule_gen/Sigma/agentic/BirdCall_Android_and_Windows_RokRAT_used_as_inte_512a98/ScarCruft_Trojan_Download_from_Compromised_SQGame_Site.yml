@@ -1,0 +1,24 @@
+title: ScarCruft Trojan Download from Compromised SQGame Site
+id: f5d3a5e8-1d4e-4b2a-a92c-5678a3c0d1e5
+status: experimental
+description: Detects HTTP requests to the compromised sqgame.site domain for trojanized game clients (APKs) or update packages (ZIP), as part of a ScarCruft supply-chain attack.
+references:
+    - https://www.welivesecurity.com/en/eset-research/rigged-game-scarcruft-compromises-gaming-platform-supply-chain-attack/
+author: ioc-yara-daily (agentic)
+date: 2024-05-16
+tags:
+    - attack.initial_access
+    - attack.t1195.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname|endswith: 'sqgame.site'
+        Url|endswith:
+            - '/ybht.apk'
+            - '/sqybhs.apk'
+            - '/dating/20240429.zip'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

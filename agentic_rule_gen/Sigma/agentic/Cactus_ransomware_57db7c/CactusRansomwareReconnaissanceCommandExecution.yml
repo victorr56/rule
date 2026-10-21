@@ -1,0 +1,38 @@
+title: Cactus Ransomware Reconnaissance Command Execution
+id: f0e3f225-b1a9-4d69-a178-59c3a3754974
+status: experimental
+description: Detects the execution of reconnaissance commands with output redirected to a font file in the Qlik Sense directory, a known TTP of the Cactus ransomware group.
+references:
+    - https://blog.fox-it.com/2024/04/25/sifting-through-the-spines-identifying-potential-cactus-ransomware-victims/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1033
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\whoami.exe'
+            - '\quser.exe'
+            - '\systeminfo.exe'
+            - '\net.exe'
+            - '\net1.exe'
+            - '\ipconfig.exe'
+            - '\tasklist.exe'
+            - '\nltest.exe'
+            - '\dsquery.exe'
+        CommandLine|contains|all:
+            - ' > '
+            - '/Client/qmc/fonts/qle.'
+        CommandLine|contains:
+            # The command line artifact uses forward slashes in the path
+            # Example: whoami /all > ../Client/qmc/fonts/qle.ttf
+            - '.ttf'
+            - '.woff'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

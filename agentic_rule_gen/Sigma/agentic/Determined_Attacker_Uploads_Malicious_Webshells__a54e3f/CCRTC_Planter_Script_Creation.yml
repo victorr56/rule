@@ -1,0 +1,22 @@
+title: CCRTC-Related Planter Script Creation
+id: c6f53a71-d64e-4f32-8419-48281146c241
+status: experimental
+description: Detects the creation of specifically named planter scripts in the Windows Temp directory. The names contain the unique string "ccrtc" and are associated with a credential harvesting campaign.
+references:
+    - https://www.huntress.com/blog/parks-recreation-platform-webshell-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\Windows\Temp\'
+        TargetFilename|contains: 'ccrtc'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

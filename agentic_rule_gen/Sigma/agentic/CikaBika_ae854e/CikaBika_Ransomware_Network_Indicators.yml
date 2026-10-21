@@ -1,0 +1,27 @@
+title: CikaBika/Ransomware Group Network Indicators
+id: 9fd0734a-9524-4f24-9b36-53a55ed5993a
+status: experimental
+description: Detects network connections to IP addresses associated with CikaBika RAT C2 and data exfiltration infrastructure observed in a multi-stage ransomware attack.
+references:
+  - https://www.darktrace.com/blog/hiding-in-plain-sight-uncovering-a-multi-stage-ransomware-attack-through-behavioral-detection
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.command_and_control
+  - attack.t1071.001
+  - attack.exfiltration
+  - attack.t1041
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationIp:
+      - '137.220.59.55'  # Vultr, Sliver C2
+      - '38.27.106.117'  # Wasabi, Exfil
+      - '38.27.106.123'  # Wasabi, Exfil
+      - '38.27.106.128'  # Wasabi, Exfil
+  condition: selection
+falsepositives:
+  - These IPs could be reassigned to benign services in the future. The Wasabi IPs are part of a larger cloud storage provider range and may have legitimate uses.
+level: medium

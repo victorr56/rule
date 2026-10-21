@@ -1,0 +1,23 @@
+title: Data Exfiltration via Rclone in PerfLogs Staging Directory
+id: 59378c85-f5e2-45e0-9831-29e6ca3a2588
+status: experimental
+description: Detects the execution of 'rclone.exe' from the 'C:\PerfLogs' staging directory, particularly when launched by a command shell. This is indicative of data exfiltration preparation as seen in Akira intrusions.
+references:
+    - https://www.huntress.com/blog/mapping-akira-ransomware-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1567.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+        Image|endswith: '\PerfLogs\rclone.exe'
+    condition: selection
+falsepositives:
+    - Highly unusual but possible legitimate use of rclone from this directory by an administrator.
+level: high

@@ -1,0 +1,22 @@
+title: Lazarus RustyAttr C2 IP Addresses
+id: c4f248e3-0572-4638-aa21-bf96b27e6616
+status: experimental
+description: Detects network connections to IP addresses associated with the Lazarus RustyAttr C2 infrastructure.
+references:
+    - https://www.group-ib.com/blog/stealthy-attributes-of-apt-lazarus/
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '104.168.165.203'
+            - '104.168.157.45'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

@@ -1,0 +1,24 @@
+title: Balonx Sistema PhaaS API Endpoint Access
+id: a2420993-9c8f-4ed7-9430-c36b449102c9
+status: experimental
+description: Detects web requests to specific API endpoints used by the Balonx Sistema PhaaS backend.
+references:
+    - https://www.group-ib.com/blog/balonx-sistema-mexico-phaas/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1102
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|endswith:
+            - '/admin/api/api/gql'
+            - '/admin/api/api/rest'
+            - '/admin/api/api/token'
+        HttpMethod: 'POST'
+    condition: selection
+falsepositives:
+    - Legitimate applications that use the same API endpoint paths, although the '/admin/api/api/' structure is uncommon.
+level: high

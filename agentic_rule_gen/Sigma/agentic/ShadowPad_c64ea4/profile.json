@@ -1,0 +1,276 @@
+{
+  "malware_family": "ShadowPad",
+  "threat_actor": "Tick",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "CasperVMakerHTTPx86 (\"Maker 2021329\") is a ShadowPad builder that generates two files: a legitimate AppLaunch.exe copy that DLL side-loads a Casper Loader mscoree.dll, which decodes and executes embedded ShadowPad shellcode using a custom XOR/PRNG key schedule. The loader's exports (IEE2, LoadLibraryShim2, LoadStringRC2) and fixed crypto constants match Casper Loaders seen in Tick intrusions and the CVE-2021-44515 ManageEngine campaign.",
+  "mitre_techniques": [
+    "T1574.002",
+    "T1055",
+    "T1547.001",
+    "T1543.003",
+    "T1027",
+    "T1140"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "CasperVMakerHTTPx86",
+      "context": "ShadowPad builder self-name",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mscoree.dll",
+      "context": "Casper Loader DLL side-loaded next to AppLaunch.exe",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AppLaunch.exe",
+      "context": "Legitimate EXE abused for DLL side-loading",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%ALLUSERSPROFILE%\\MicroSoft.NET\\AppLaunch.exe",
+      "context": "Install tab CopyPath setting",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "Microsof t .NETClickOnceLaunchUtility",
+      "context": "Install tab ServiceName setting",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "SOFTWARE\\Microsof t\\Windows\\CurrentVersion\\Run",
+      "context": "Install tab KeyPath for persistence",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Microsof t .NETClickOnceLaunchUtility",
+      "context": "Install tab KeyName",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%windir%\\system32\\dwm.exe",
+      "context": "Inject tab InjectPath2 target",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%windir%\\system32\\wininit.exe",
+      "context": "Inject tab InjectPath3 target",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "IEE2",
+      "context": "Casper Loader export used in hunting query",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "LoadLibraryShim2",
+      "context": "Casper Loader export used in hunting query",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "LoadStringRC2",
+      "context": "Casper Loader export used in hunting query",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Maker 2021329",
+      "context": "Builder UI version marker",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "runcasper",
+      "context": "Builder-generated Casper dropper name in figure",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "resolve_api_by_ror7",
+      "context": "API resolution routine called with hash constant",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "0xEF64A41E",
+      "context": "Hash constant resolving VirtualProtect via MEMORY[] resolver",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": "0xEF64A41E"
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "0x7F07869D",
+      "context": "XOR key decrypting allocated buffer (v0[v1] ^ v6)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "0xDC9A08FD",
+      "context": "Key schedule multiplier constant in loader decryption loop",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "0x1CB712FB",
+      "context": "Key schedule subtraction constant in loader decryption loop",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "0x182B0000",
+      "context": "PRNG/LCG multiplier in string-byte decryption loop",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "0x1AD5E7D5",
+      "context": "PRNG constant in string-byte decryption loop",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "0x64D884E8",
+      "context": "PRNG constant in string-byte decryption loop",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "0x62D884E8",
+      "context": "PRNG constant as shown in the payload decryption listing",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "byte_18000C2C4",
+      "context": "Data-blob source byte XORed into decrypted payload buffer",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [],
+  "samples": [
+    {
+      "sha256": "b6d7c456423c871c7ffe418069a75c39055e4e3d023021c8b0885a02c7ce93c6",
+      "description": "ShadowPad builder (CasperVMakerHTTPx86)"
+    },
+    {
+      "sha256": "a77b04b1c809c837eafaa44b8457c230fdddd680c88990035439fc9ed2493804",
+      "description": "Casper (ShadowPad x86) generated by the builder"
+    },
+    {
+      "sha256": "e4ac9f5e4ab6b324e4dbb70feff4a17351c29ebce637d39d5a5197f07dd02b18",
+      "description": "Casper dropper (runcasper) generated by the builder"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

@@ -1,0 +1,23 @@
+title: GroundPeony C2 IPs
+id: 57ef99b0-4a8f-43e7-a988-349f7e8a93aa
+status: experimental
+description: Detects network connections to IP addresses known to be used by GroundPeony for C2 infrastructure.
+references:
+    - http://nao-sec.org/2023/08/groundpeony-crawling-with-malice.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '103.199.17.184'
+            - '160.20.145.111'
+            - '172.93.189.239'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

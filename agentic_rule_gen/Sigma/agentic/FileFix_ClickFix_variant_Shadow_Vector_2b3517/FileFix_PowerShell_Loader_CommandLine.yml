@@ -1,0 +1,26 @@
+title: FileFix PowerShell Loader Command Line
+id: a89d3111-e6e2-4148-8ec1-eb5779c1c4e7
+status: experimental
+description: Detects a specific PowerShell command line pattern used by the FileFix malware to download and execute a second-stage payload.
+references:
+    - https://blog.virustotal.com/2025/11/vtpractitioners-acronis.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - '$if=[System.IO.File]::ifr=$if::ReadAllBytes'
+            - '$cf=$c::FromBase64String'
+            - '$u='
+            - '.jpg'
+            - '|iex'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

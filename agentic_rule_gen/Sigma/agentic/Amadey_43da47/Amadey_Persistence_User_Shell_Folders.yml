@@ -1,0 +1,24 @@
+title: Amadey Persistence in User Shell Folders
+id: d684285e-9911-4a30-81f1-b94f31c54b67
+status: experimental
+description: Detects modification of the 'Startup' value in the 'User Shell Folders' registry key to point to an executable in the ProgramData folder, a technique used by Amadey for persistence.
+references:
+    - http://nao-sec.org/2019/04/Analyzing-amadey.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Startup'
+        Details|contains|all:
+            - 'C:\ProgramData\'
+            - '.exe'
+    condition: selection
+falsepositives:
+    - Rare legitimate software that installs itself for user startup in the ProgramData folder.
+level: medium

@@ -1,0 +1,22 @@
+title: Suspicious Use of Microsoft Dev Tunnels for C2
+id: 0e86b976-9c4c-4734-93e1-e6308a0d7a6e
+status: experimental
+description: Detects DNS queries for Microsoft Dev Tunnels ('devtunnels.ms'), which can be abused by threat actors like NightEagle for command and control.
+references:
+    - https://securelist.com/tr/nighteagle-apt-ghostcontainer-and-tunneling/121323/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1572
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith: '.devtunnels.ms'
+    condition: selection
+falsepositives:
+    - Legitimate use of Microsoft Dev Tunnels by developers for remote debugging or application sharing.
+level: medium

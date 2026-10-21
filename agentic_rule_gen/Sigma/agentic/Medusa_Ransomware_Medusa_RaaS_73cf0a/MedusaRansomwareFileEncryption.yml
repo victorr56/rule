@@ -1,0 +1,22 @@
+title: Medusa Ransomware File Encryption
+id: 978931ae-811c-4b5b-8eb5-a0f5e7a96a32
+status: experimental
+description: Detects files being renamed with the ".MEDUSA" extension, which is indicative of the Medusa ransomware encrypting files on a compromised host.
+references:
+    - https://www.darktrace.com/blog/under-medusas-gaze-how-darktrace-uncovers-rmm-abuse-in-ransomware-campaigns
+author: ioc-yara-daily (agentic)
+date: 2023-05-18
+tags:
+    - attack.impact
+    - attack.t1486
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|startswith: 'C:\Users\'
+        TargetFilename|endswith: '.MEDUSA'
+    condition: selection
+falsepositives:
+    - Legitimate use of the '.MEDUSA' file extension is highly unlikely.
+level: high

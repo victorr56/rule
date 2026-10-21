@@ -1,0 +1,27 @@
+title: MANTLEMAZE Service Creation For Vulnerable Driver
+id: ca3f7491-a185-48b8-b7a9-e26001099f6b
+status: experimental
+description: Detects the creation of a Windows service pointing to the vulnerable Intel driver 'iqvw64e.sys', a technique used by MANTLEMAZE for privilege escalation (BYOVD, CVE-2015-2291).
+references:
+    - https://blog.talosintelligence.com/ignore-all-instructions-and-read-this-blog-the-state-of-ai-analysis-evasion-in-malware/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.privilege_escalation
+    - attack.persistence
+    - attack.t1543.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\sc.exe'
+        CommandLine|contains|all:
+            - 'create'
+            - 'type= kernel'
+            - 'binPath='
+            - 'iqvw64e.sys'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: critical

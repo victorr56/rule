@@ -1,0 +1,400 @@
+{
+  "malware_family": "PAYLOAD ransomware",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "PAYLOAD ransomware operators hijacked Active Directory Group Policy, authoring a domain-root GPO named PAYLOAD that dropped ransom notes, replaced wallpaper/lock screen, enforced a logon banner and disabled local administrator accounts domain-wide without any malicious binary on endpoints. A second GPO ('win Firewall Off') disabled Windows Firewall, and data was exfiltrated before a one-day delayed detonation on reboot. Detection depends on directory service change auditing (5136/5137/5141) and SYSVOL integrity monitoring rather than file/process indicators.",
+  "mitre_techniques": [
+    "T1078",
+    "T1078.002",
+    "T1133",
+    "T1484.001",
+    "T1686",
+    "T1562.004",
+    "T1491.001",
+    "T1531",
+    "T1005",
+    "T1071",
+    "T1490",
+    "T1489",
+    "T1068",
+    "T1685.005",
+    "T1070.001",
+    "T1562.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "PAYLOAD",
+      "context": "Malicious GPO linked at domain root delivering ransom notes, wallpaper, banner",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "{C897F2C7-C2AC-4E6F-BF48-58036FF29E79}",
+      "context": "GUID of the malicious PAYLOAD GPO",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "win Firewall Off",
+      "context": "Second domain-root GPO disabling Windows Firewall on all profiles",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "{22099AD2-E062-4F56-B574-5099BBA4E7A6}",
+      "context": "GUID of the 'win Firewall Off' GPO",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "payload.jpg",
+      "context": "Ransom wallpaper and lock screen image staged in SYSVOL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "hello.txt",
+      "context": "Ransom note source staged in SYSVOL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "README-payload.txt",
+      "context": "Read-only ransom note dropped to desktop, C:\\ and D:\\",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\\\DC.THECOMPANY.local\\sysvol\\THECOMPANY.local\\",
+      "context": "SYSVOL location where payload.jpg and hello.txt were written",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\\\DC.THECOMPANY.local\\sysvol\\THECOMPANY.local\\Policies\\",
+      "context": "SYSVOL GPO templates; monitor for unexpected image/text files",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "killer.exe",
+      "context": "Process killer tool used in the incident, MD5 0108656A3E1ADE6CA4F21B084F5E1208",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "kill.exe",
+      "context": "Process killer tool used in the incident, MD5 BEA5E267F24D7DA59F6821BFFDBFF293",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "legalnoticecaption = Welcome to Payload!",
+      "context": "Logon banner caption set via Group Policy Registry CSE",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "legalnoticetext = The next 72 hours will determine certain factors in the life of your company:",
+      "context": "Ransom demand text shown in logon banner",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\",
+      "context": "Registry key modified by PAYLOAD GPO (legalnoticecaption/text)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "filteradministratortoken = 1",
+      "context": "UAC-related value configured by the PAYLOAD GPO registry.pol",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\...\\Group Policy\\Shadow\\{827D319E-6EAC-11D2-A4EA-00C04F79F83A}\\0",
+      "context": "Group Policy shadow key recording PAYLOAD application on 13 April",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\...\\Group Policy\\State\\Machine\\GPO-List\\7",
+      "context": "Group Policy state key showing applied malicious GPO",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\...\\Group Policy\\State\\S-1-5-21-...\\Loopback-GPO-List\\5",
+      "context": "Loopback processing entry forcing user wallpaper config on all logons",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "Accounts: Administrator account status = Disabled",
+      "context": "Local administrator disabled domain-wide via GPO Security Settings CSE",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "GptTmpl.inf",
+      "context": "Security Settings CSE file edited to disable the administrator account",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "registry.pol",
+      "context": "SYSVOL policy file to monitor for unexpected modification",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wevtapi.dll",
+      "context": "Runtime-loaded for event log clearing capability (family-level)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "EvtOpenChannelEnum",
+      "context": "Dynamically resolved API used to enumerate event log channels",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "EvtClearLog",
+      "context": "Dynamically resolved API used to clear individual event channels",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "EtwEventWrite",
+      "context": "ETW function overwritten in memory; ecosystem-relevant, not attributed to PAYLOAD",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".payload",
+      "context": "Ransomware file extension characteristic of PAYLOAD; none found in this incident",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "http://payload[REDACTED].onion",
+      "context": "Tor negotiation/leak site shown in ransom note",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "37.19.210.12",
+      "context": "IP address listed in incident IOC appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "146.70.117.239",
+      "context": "IP address listed in incident IOC appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "149.102.229.154",
+      "context": "IP address listed in incident IOC appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.164.55.46",
+      "context": "IP address listed in incident IOC appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.28.162.228",
+      "context": "IP address listed in incident IOC appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.28.163.162",
+      "context": "IP address listed in incident IOC appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "64.190.76.14",
+      "context": "IP address listed in incident IOC appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.42.116.50",
+      "context": "IP address listed in incident IOC appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.42.116.12",
+      "context": "IP address listed in incident IOC appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.42.116.56",
+      "context": "IP address listed in incident IOC appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.42.116.97",
+      "context": "IP address listed in incident IOC appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.42.116.52",
+      "context": "IP address listed in incident IOC appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "elf"
+  ]
+}

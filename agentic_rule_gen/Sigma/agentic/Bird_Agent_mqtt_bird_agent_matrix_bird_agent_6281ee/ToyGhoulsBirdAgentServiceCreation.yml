@@ -1,0 +1,31 @@
+title: Toy Ghouls Bird Agent Service Creation
+id: 110e527c-96b6-4ac8-b016-1600f682bb19
+status: experimental
+description: Detects the creation of Windows services used by the Bird Agent backdoors. This includes the 'cplsupport' service (display name 'Control Panel Support') and the 'wtas' service (display name 'WinTranslationAutoService').
+references:
+    - https://securelist.com/toy-ghouls-new-hivemq-and-element-backdoors/121270/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1543.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_cplsupport:
+        Image|endswith: '\sc.exe'
+        CommandLine|contains|all:
+            - 'create'
+            - 'cplsupport'
+            - 'Control Panel Support'
+    selection_wtas:
+        Image|endswith: '\sc.exe'
+        CommandLine|contains|all:
+            - 'create'
+            - 'wtas'
+            - 'WinTranslationAutoService'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate administrative activity that coincidentally uses these specific service name and display name combinations.
+level: high

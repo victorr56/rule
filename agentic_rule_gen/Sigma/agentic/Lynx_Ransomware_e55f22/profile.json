@@ -1,0 +1,104 @@
+{
+  "malware_family": "Lynx Ransomware",
+  "threat_actor": "Lynx",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Lynx is a Ransomware-as-a-Service (RaaS) that emerged in mid-2024, sharing significant source code with the INC ransomware variant. It employs a double extortion model, exfiltrating data to cloud storage like AWS S3 before encrypting files and appending the '.LYNX' extension. The group has been observed using compromised administrative credentials and legitimate remote access tools like AnyDesk for lateral movement.",
+  "mitre_techniques": [
+    "T1080",
+    "T1486",
+    "T1036.003"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "*.LYNX",
+      "context": "Extension appended to all encrypted files.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "*.Lynx",
+      "context": "Extension appended to files during SMB write operations.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "README.txt",
+      "context": "Base64 encoded ransom note dropped by the malware.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "admin",
+      "context": "Username credential used for lateral movement.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "administrator",
+      "context": "Username credential used during lateral movement and encryption.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "wt-prod-euwest1-storm.s3.eu-west-1.amazonaws.com",
+      "context": "External AWS S3 bucket used for data exfiltration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "relay-48ce591e.net.anydesk.com",
+      "context": "AnyDesk relay hostname observed for remote access.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "AnyDesk"
+    },
+    {
+      "kind": "domain",
+      "value": "relay-c9990d24.net.anydesk.com",
+      "context": "AnyDesk relay hostname observed for remote access.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "AnyDesk"
+    },
+    {
+      "kind": "domain",
+      "value": "relay-da1ad7b4.net.anydesk.com",
+      "context": "AnyDesk relay hostname observed for remote access.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "AnyDesk"
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "document"
+  ]
+}

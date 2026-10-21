@@ -1,0 +1,34 @@
+title: Midnight Blizzard CornFlake Service Creation
+id: e71168f4-6385-48b2-9a3d-4c3d820ff569
+status: experimental
+description: Detects the creation of a Windows service for the CornFlake backdoor, using its specific service name, binary path, and display name as observed in a Midnight Blizzard-linked campaign.
+references:
+    - https://www.reversinglabs.com/blog/how-rl-mapped-a-midnight-blizzard-linked-campaign-from-two-hashes
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.t1543.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_binpath:
+        Image|endswith: '\sc.exe'
+        CommandLine|contains|all:
+            - 'create'
+            - 'svchost32'
+            - 'binPath='
+            - '\svchost32\svchost32.exe'
+    selection_displayname:
+        Image|endswith: '\sc.exe'
+        CommandLine|contains|all:
+            - 'create'
+            - 'svchost32'
+            - 'DisplayName='
+            - 'Cloud Sync Service'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

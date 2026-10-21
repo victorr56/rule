@@ -1,0 +1,23 @@
+title: UAT-11587 Antino Backdoor DLL Sideloading via GatherOsState.exe
+id: 5a8a1c6a-6058-4796-9cfb-ab6e57ff3300
+status: experimental
+description: Detects the loading of the Antino backdoor DLL 'slc.dll' by the legitimate, signed Microsoft binary 'GatherOsState.exe', a specific DLL sideloading technique used by UAT-11587.
+references:
+    - https://blog.talosintelligence.com/china-nexus-uat-11587-targets-government-and-policy-organizations-across-asia-with-antino-backdoor/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1574.001
+    - detection.threat_hunting
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\GatherOsState.exe'
+        ImageLoaded|endswith: '\slc.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,28 @@
+title: ResumeLooters C2 Domains
+id: 56cc0e68-45e0-4966-8801-63b7e732cf0c
+status: experimental
+description: Detects DNS queries for domains known to be used by the ResumeLooters threat group.
+references:
+    - https://www.group-ib.com/blog/resumelooters/
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1583.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.8r.ae'
+            - '.8t.ae'
+            - '.7o.ae'
+            - '.9gp.cc'
+            - '.sb8.co'
+            - '.qu3.cc'
+            - 'admin.cloudnetsofe.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

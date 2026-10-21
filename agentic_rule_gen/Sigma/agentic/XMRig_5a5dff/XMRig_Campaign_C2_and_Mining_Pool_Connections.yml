@@ -1,0 +1,28 @@
+title: XMRig Campaign C2 and Mining Pool Connections
+id: f45681e5-8a21-4f9e-8c35-c351f0c2a2b7
+status: experimental
+description: Detects network connections to IP addresses observed being used for C2 or as a mining pool endpoint in an XMRig campaign.
+references:
+    - https://www.huntress.com/blog/ahsaycbs-flaws-exploit
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1105
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '51.195.127.124'
+            - '177.4.12.11'
+            - '38.60.252.110'
+            - '107.191.47.199'
+            - '185.220.236.49'
+            - '104.234.26.10'
+            - '123.202.208.37'
+    condition: selection
+falsepositives:
+    - Connections to legitimate services if the IP addresses are reallocated.
+level: high

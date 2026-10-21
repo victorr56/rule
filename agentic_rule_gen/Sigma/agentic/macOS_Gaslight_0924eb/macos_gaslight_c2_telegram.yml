@@ -1,0 +1,24 @@
+title: 'macOS.Gaslight C2 via Telegram API'
+id: e4f57c1a-29e1-45f8-8422-799d6389f4b3
+status: experimental
+description: 'Detects C2 communications patterns of macOS.Gaslight using the Telegram Bot API from its specific masqueraded process.'
+references:
+    - https://www.sentinelone.com/labs/macos-gaslight-rust-backdoor-turns-prompt-injection-on-the-analyst-not-the-sandbox/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - attack.t1102
+logsource:
+    category: proxy
+detection:
+    selection:
+        Image|endswith: '/Application Support/system-monitoring'
+        Url|contains|all:
+            - '/bot'
+            - '/getUpdates'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

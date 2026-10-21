@@ -1,0 +1,27 @@
+title: Atera RMM Agent Initialization
+id: 74d812e9-8e43-41c1-8408-250be875e533
+status: experimental
+description: |
+    Detects the command line used to initialize and configure the Atera RMM agent.
+    This event marks the setup of the agent on a host and is a critical point for investigation if Atera is not an authorized tool in the environment.
+references:
+    - https://redcanary.com/blog/security-operations/rmm-detection/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\AteraAgent.exe'
+        CommandLine|contains|all:
+            - 'init-settings'
+            - '--agent-id'
+            - '--account-id'
+    condition: selection
+falsepositives:
+    - Legitimate installation and configuration of the Atera RMM agent by administrators.
+level: medium

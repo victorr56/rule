@@ -1,0 +1,23 @@
+title: GroundPeony C2 Domains
+id: b5c0f1e2-b06c-4b53-91f8-0f0c0570b551
+status: experimental
+description: Detects DNS queries for domains known to be used by GroundPeony for C2 infrastructure.
+references:
+    - http://nao-sec.org/2023/08/groundpeony-crawling-with-malice.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1584.006
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.onedrivo.com'
+            - 'exchange.oufca.com.au'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

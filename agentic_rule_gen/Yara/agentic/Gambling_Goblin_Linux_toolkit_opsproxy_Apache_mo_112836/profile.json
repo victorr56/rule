@@ -1,0 +1,1068 @@
+{
+  "malware_family": "Gambling Goblin Linux toolkit (opsproxy Apache module, DownPro, ChUser, PasswordHarvester, AlphaAgent, oRAT, cam-agent)",
+  "threat_actor": "Gambling Goblin (Chinese-speaking cluster linked to Earth Berberoka)",
+  "platforms": [
+    "linux",
+    "web"
+  ],
+  "summary": "Gambling Goblin is a Chinese-speaking cybercrime cluster, tied to Earth Berberoka, that compromises Brazilian .gov.br web servers and installs custom Apache modules (opsproxy.c and a second RC4-configured filter module) which reverse-proxy selected paths to gambling and fake app-store pages while stripping CSP headers to hijack search traffic. The Linux toolkit includes the DownPro downloader, the setuid ChUser backdoor, the 3snake-based PasswordHarvester, the modular AlphaAgent backdoor with gRPC/DNS channels, oRAT, an SSH brute-forcer and Chinese-commented recon scripts, all masqueraded as kernel threads or legitimate system services.",
+  "mitre_techniques": [
+    "T1190",
+    "T1505",
+    "T1110.001",
+    "T1548.001",
+    "T1543.002",
+    "T1053.003",
+    "T1055.008",
+    "T1014",
+    "T1036.005",
+    "T1070.006",
+    "T1070.004",
+    "T1562.001",
+    "T1027",
+    "T1105",
+    "T1071.004",
+    "T1572",
+    "T1090",
+    "T1005",
+    "T1082",
+    "T1552.004",
+    "T1497.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "opsproxy.c",
+      "context": "Malicious Apache module C source downloaded and compiled on victim with apxs",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "script-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:",
+      "context": "Permissive CSP opsproxy sets after stripping upstream CSP",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ops_translate_name",
+      "context": "opsproxy hook registered at Apache name-translation stage",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<body.*?>",
+      "context": "Compiled-in regex of second Apache module used to locate injection point",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "{host} {hip} {url} {name}",
+      "context": "Placeholders expanded by second Apache module before fetching remote content",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "rule1, rule3, proxyurl, spiderua, body, data",
+      "context": "RC4-decrypted JSON rule fields of second Apache module",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "payload-run.log",
+      "context": "cam-agent log file under /tmp/asset-scan",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/asset-scan",
+      "context": "Default cam-agent working directory",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "cam-agent [-f] [-flog] [-h] [-v]",
+      "context": "cam-agent usage string in Go binary",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "cluster-asset-mapping",
+      "context": "Internal name of the Go recon/scan agent (cam-agent)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "{\"network_scan\":true,\"common_web_ports\":[80,443,8080,8443]}",
+      "context": "cam-agent network scan report policy embedded in binary",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "worker_endpoint, server_id, project, agent_token",
+      "context": "cam-agent config fields for gRPC authentication",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "batch_size, retry_count, retry_backoff_seconds, level",
+      "context": "cam-agent report policy fields",
+      "specificity": "low",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "命令输出:\\n%s\\n",
+      "context": "Chinese command-output format string in DownPro logic",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/local/bin/systemd-udevd",
+      "context": "DownPro root drop path masquerading as systemd component",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/local/bin/rsync-tsl",
+      "context": "DownPro root drop path masquerading as rsync utility",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/local/bin/tcp-tsl",
+      "context": "DownPro root drop path masquerading as network helper",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/local/bin/snapd-ext",
+      "context": "DownPro root drop path masquerading as snapd component",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/local/bin/fsck-disk",
+      "context": "DownPro root drop path masquerading as disk utility",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/local/bin/nftables-init",
+      "context": "DownPro root drop path masquerading as firewall init",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/php_sess_<32_hex_chars>",
+      "context": "DownPro non-root drop path mimicking PHP session file",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/private-tmp-<5_alnum_chars>",
+      "context": "DownPro non-root drop path mimicking temp artifact",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-si",
+      "context": "Argument DownPro appends when executing the downloaded main backdoor",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/bin/chuser",
+      "context": "ChUser setuid privilege-escalation backdoor installed 0755 root-owned",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/sbin/unix_updates",
+      "context": "PasswordHarvester payload path installed by DownPro",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-v FuckMe#988",
+      "context": "Arguments DownPro uses to launch the unix_updates PasswordHarvester",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "chuser no version",
+      "context": "Expected output of ChUser remote HTTP activation check",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "FuCkMe#",
+      "context": "Hardcoded salt in ChUser MD5 activation gate (secret + salt)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "0xA684E296",
+      "context": "CRC32 constant the PasswordHarvester -v argument gate is compared against",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "CRC32",
+      "hash_value": "0xA684E296"
+    },
+    {
+      "kind": "unique_string",
+      "value": "PROC_CN_MCAST_LISTEN",
+      "context": "Netlink process-event subscription used by PasswordHarvester",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "[kworker/1:2]",
+      "context": "Fake process name used by PasswordHarvester/AlphaAgent process disguise",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "[ksoftirqd/0]",
+      "context": "Fake process name used by PasswordHarvester process disguise",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "[watchdog/0]",
+      "context": "Fake process name used by PasswordHarvester process disguise",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "[systemd]",
+      "context": "Fake process name used by PasswordHarvester process disguise",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "[dbus-daemon]",
+      "context": "Fake process name used by PasswordHarvester process disguise",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "[journald]",
+      "context": "Fake process name used by PasswordHarvester process disguise",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "[migration/0]",
+      "context": "Fake process name used by PasswordHarvester process disguise",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "[ksmd]",
+      "context": "Fake process name used by PasswordHarvester process disguise",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "e*f#1%0d$6&5=6",
+      "context": "Hardcoded salt for AlphaAgent Device ID generation from username",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/usr/sbin/amazon-master",
+      "context": "AlphaAgent 'aws' profile process disguise",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/usr/local/sbin/amazon-proxy",
+      "context": "AlphaAgent 'aws' profile process disguise",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/usr/bin/google_user_agent",
+      "context": "AlphaAgent 'google' profile process disguise",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/usr/bin/google_proxy_agent",
+      "context": "AlphaAgent 'google' profile process disguise",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "rsyslogd",
+      "context": "AlphaAgent 'aliyun' profile process disguise",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "php-fpm: pool www",
+      "context": "AlphaAgent non-root fallback process disguise",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "nginx: worker process",
+      "context": "AlphaAgent non-root fallback process disguise",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ai_plugin_%s.sh",
+      "context": "AlphaAgent AI-plugin script name executed and results sent to C2",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/bin/sh -c",
+      "context": "AlphaAgent remote shell job execution path",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "HISTFILE=/dev/null",
+      "context": "AlphaAgent sets to suppress shell history for executed commands",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/local/bin/xtables-addons",
+      "context": "oRAT persistence install path masquerading as netfilter extension",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "xtables-addons",
+      "context": "systemd service oRAT registers for boot persistence as root",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.lock",
+      "context": "oRAT single-instance lock file",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "# GUID: <uuid>",
+      "context": "oRAT appends GUID comment line to /etc/protocols",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/protocols",
+      "context": "Legitimate system file used by oRAT to store its GUID",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "sshd: root@pts/0",
+      "context": "oRAT process disguising itself as interactive root SSH session",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/sbin/sshd",
+      "context": "oRAT build spoofs its executable path as sshd",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "setenforce 0",
+      "context": "oRAT preparation routine disables SELinux enforcement",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "res.txt",
+      "context": "BruteForcer plaintext results file for successful SSH credentials",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "info.sh",
+      "context": "Chinese-commented recon script harvesting SSH keys, history and mounts",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "findweb.sh",
+      "context": "Chinese-commented script mapping web servers, vhosts and proxy_pass rules",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/bin/ls",
+      "context": "Target whose timestamps ChUser/DownPro payloads are timestomped to match",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/wps",
+      "context": "Hardcoded URL prefix opsproxy reverse-proxies to attacker backend",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/bmw",
+      "context": "Hardcoded URL prefix opsproxy reverse-proxies to attacker backend",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/card",
+      "context": "Hardcoded URL prefix opsproxy reverse-proxies to attacker backend",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/jogos",
+      "context": "Path on compromised .gov.br sites serving attacker gambling pages",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/nova",
+      "context": "Path on compromised .gov.br sites serving attacker gambling pages",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/join",
+      "context": "oRAT registration endpoint posted over its multiplexed transport",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/agent/exec",
+      "context": "oRAT REST route for operator command execution",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/agent/upload",
+      "context": "oRAT REST route writing uploaded files to chosen path",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/agent/download",
+      "context": "oRAT REST route retrieving files from host",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/agent/proxy",
+      "context": "oRAT REST route opening SOCKS proxy through victim",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/agent/portscan",
+      "context": "oRAT REST route scanning hosts and ports from victim",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/agent/heartbeat",
+      "context": "AlphaAgent handler path dressed as Google notification traffic",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/notifications/v1/push",
+      "context": "AlphaAgent handler path mimicking Google push notification service",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.google.com",
+      "context": "Server name presented by AlphaAgent's uTLS-mimicking channel",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "_cf_auth_ts, _cf_auth_nonce, _cf_auth_method",
+      "context": "Cloudflare-style proof parameters carrying AlphaAgent authentication",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "NID, SID",
+      "context": "Decoy Google cookies set by AlphaAgent HTTPS heartbeats",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "playfootball.info",
+      "context": "Domain used by the second Apache module serving phishing page",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "github.la",
+      "context": "Lookalike Earth Berberoka-style domain in campaign infrastructure",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gitlab.bet",
+      "context": "Lookalike domain in campaign infrastructure (api.gitlab.bet)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "update.aliyun.la",
+      "context": "IOC domain impersonating Aliyun update service",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "up.443.team",
+      "context": "IOC domain from report appendix",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "404.443.team",
+      "context": "IOC domain from report appendix",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "80.443.team",
+      "context": "IOC domain from report appendix",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.onlinevrgame.com",
+      "context": "IOC domain from report appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "rb.aliyuntsl.com",
+      "context": "IOC domain from report appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "br.team-c2.com",
+      "context": "IOC C2 domain from report appendix",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "update.team-c2.com",
+      "context": "IOC C2 update domain from report appendix",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "data.mirrors-inc.com",
+      "context": "IOC domain from report appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "data.windows-update-cdn.com",
+      "context": "IOC domain impersonating Windows update CDN",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "microsoft-azure-loadbalance.com",
+      "context": "IOC domain impersonating Azure load balancing",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bageyi.kernel-lib.com",
+      "context": "IOC domain from report appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dnslog.kernel-lib.com",
+      "context": "IOC DNS channel domain from report appendix",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kerneltty.com",
+      "context": "IOC domain from report appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "js.ai-jquery.com",
+      "context": "IOC domain impersonating jQuery CDN",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "file.ijjjst23m.com",
+      "context": "IOC domain from report appendix",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tse-mm.bing.com",
+      "context": "Bing thumbnail service abused by phishing pages for imagery",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "154.84.62.160",
+      "context": "Upstream/phishing infrastructure IP from IOC list",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "154.84.62.128",
+      "context": "IP from IOC list",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "43.198.248.193",
+      "context": "IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "18.166.208.57",
+      "context": "IP from IOC list (Amazon AS16509 hosting)",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "202.146.222.18",
+      "context": "IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.80.8.202",
+      "context": "IP from IOC list",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "232ef6be134c2b7c14648aa193daf7e23e987477b8a40150dd77883947fdf017",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "088d0742a667f1acfc83edb94671a10b951f6745badec6d5c754ef594dddf815",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "88544d36beb6dc621c9376806836d0ad109ece64b589605d5674e0c86313d1c0",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "9d3085eac9a59a94f0473db5ec0173def8777d2f794da281fb1749389ae33cdb",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "263c14e84398339b25cd3e59da7e108340306fdbb8112bbe7dc0f07a71eb8a31",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "12af9d95c44e20a375148c25f8a2978a62ee95489134654c3537ccfb2d42120d",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "5af1bec4635e52da4909bf744ea4b7e4483ec944241218855212f4a9e3d48611",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "e8bb763bd10e727228ca9a8e3e6cf10bf4de4639b6be680a3abfb181a0adc052",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "fa7fc029ac13af2f3880151e9c408e9afadeba7b2cff01659806fb7c3c83288d",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "c3c09fe219e10808f053e580628aeb87b1f00fc683c810aa828905fe03cda98f",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "2567d6b42dac97a391217ad22ee375f504d541940d3fbb9436a3f5e9bb23ab91",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "1829efbf7946e1a958779a3e7f1e50ca63fe61c6a2ddc177c14a7b0c5e10020a",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "f025520d648c7799ca5bed4a9be5bee14ac33be1f1e9b20c090c8c6319404fcf",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "5a11ed7931fb6358846e0f3c8d69921f43f8ccade5937fc41e5c262cc49f82e8",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "0d4a28d5cf7b99f11ffe972abd0284d9e35b6858eeb288532a55633b3e29f9c7",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "5f6d112637545a2e8c1a9f260c39698852c7a22e83db5ccfc99b99d9f6274710",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "c4d2efa57eef0c5defc4ca708ebe35832f8b543cf764beebef56fef6d36d4f69",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "c3c6ab58514cd13638cf049332186ef6d4ec7b256913edb1cd66a19437608882",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "582ecca146a6aef478706e4b2774d6115a9220a18d1db8f92ee54a5118ecebd9",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    },
+    {
+      "sha256": "3a8f464f1f2b5c38173e2a96f95a690af327d85c13c04d37cf0a91893d487bdb",
+      "description": "Linux toolkit sample hash from report IOC appendix"
+    }
+  ],
+  "file_types": [
+    "elf",
+    "script"
+  ]
+}

@@ -1,0 +1,27 @@
+title: ClickFix RAT Silent MSI Installation
+id: 6f7a8b9c-1e2f-4a9b-c2d3-4e5f6a7b8c9d
+status: experimental
+description: Detects the silent installation of a ClickFix RAT-related MSI from the Temp directory, initiated by a PowerShell script.
+references:
+    - https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1218.007
+    - attack.t1059.001
+    - attack.execution
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\powershell.exe'
+        Image|endswith: '\msiexec.exe'
+        CommandLine|contains|all:
+            - '/i'
+            - '/qn'
+            - '_ISOSimple.msi'
+    condition: selection
+falsepositives:
+    - Legitimate deployment scripts that happen to use a similar naming convention.
+level: medium

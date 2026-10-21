@@ -1,0 +1,24 @@
+title: Tw-pkgprobe-7731 Malware Probing Twilio Internal Hosts
+id: 61e9b252-b1fd-4b07-bd45-b9f4a0a4c520
+status: experimental
+description: Detects DNS queries for Twilio-internal hosts that were probed by later versions of the 'tw-pkgprobe-7731' malicious npm package.
+references:
+    - https://www.reversinglabs.com/blog/malicious-npm-campaign-twilio
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1082
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'support-api.us1.twilio.com'
+            - 'kafka-ui.au1.twilio.com'
+            - 'litellm.ai-services.corp.twilio.com'
+    condition: selection
+falsepositives:
+    - Legitimate Twilio applications or developers interacting with these endpoints. This activity is primarily suspicious outside of the Twilio corporate environment.
+level: medium

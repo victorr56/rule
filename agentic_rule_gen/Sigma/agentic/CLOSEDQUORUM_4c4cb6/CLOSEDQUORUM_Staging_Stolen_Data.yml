@@ -1,0 +1,27 @@
+title: CLOSEDQUORUM Staging of Stolen Credential and Wallet Files
+id: b5058ed0-d7a8-479e-a841-f852e00858e9
+status: experimental
+description: Detects the creation of common credential and cryptocurrency wallet files in the C:\Windows\Temp directory, which is used by CLOSEDQUORUM as a staging area before exfiltration.
+references:
+    - https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.collection
+    - attack.t1005
+    - attack.t1555.003
+    - attack.t1552.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\Windows\Temp\'
+        TargetFilename|endswith:
+            - '\logins.json' # Firefox
+            - '\Login Data' # Chrome, Edge
+            - '\exodus.wallet' # Exodus Wallet
+    condition: selection
+falsepositives:
+    - Highly unlikely. Legitimate software should not be writing credential or wallet files directly to C:\Windows\Temp.
+level: high

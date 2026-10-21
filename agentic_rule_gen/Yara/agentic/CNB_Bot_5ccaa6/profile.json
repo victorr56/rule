@@ -1,0 +1,441 @@
+{
+  "malware_family": "CNB Bot",
+  "threat_actor": "REF1695",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A financially motivated actor, REF1695, has been active since late 2023 deploying RATs (CNB Bot, PureRAT) and cryptominers (XMRig, PureMiner) via fake installers. Infection chains leverage Themida/WinLicense and .NET Reactor packing, establish persistence via scheduled tasks, and monetize through both cryptomining and CPA fraud. The operation is notable for its use of the previously undocumented CNB Bot and a custom XMRig loader with anti-analysis features.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\HostData\\",
+      "context": "CNB Bot installation directory.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\HostData\\install.dat",
+      "context": "CNB Bot installation marker file.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "sysdata.exe",
+      "context": "CNB Bot executable name after installation.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "sysdata.vbs",
+      "context": "VBScript wrapper to launch CNB Bot.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "MLPCInstallHelper.exe",
+      "context": "Dropped CNB Bot instance, filename varies.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "MTXCNBV11000ERCXSWOLZNBVRGH",
+      "context": "CNB Bot mutex.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "HostDataProcess",
+      "context": "CNB Bot persistence task.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wscript.exe //nologo sysdata.vbs",
+      "context": "Command run by the 'HostDataProcess' scheduled task.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AnCnDai@4zDsxP!a3E",
+      "context": "CNB Bot communications AES key input (pre-hash).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0326GJSECMHSHOEYHQMKDZ",
+      "context": "CNB Bot authentication token.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "payload: \"fetch\"",
+      "context": "String in POST request to CNB Bot C2 for tasks.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tmp_updt236974520367.exe",
+      "context": "CNB Bot update staging file.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Aesthetics135",
+      "context": "PureRAT v3.0.1 mutex and C2 comms key.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "SVCConfig",
+      "context": "PureRAT persistence task.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%SystemDrive%\\Users\\%UserName%\\AppData\\Local\\SVCData\\Config",
+      "context": "PureRAT stage 3 drop location.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "4c271ad41ea2f6a44ce8d0",
+      "context": "PureMiner mutex and C2 comms key.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "WinRing0x64.sys",
+      "context": "Driver dropped by XMRig loader and SilentCryptoMiner for hardware access.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "WinRing0",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "procsrv.exe",
+      "context": "Renamed XMRig payload dropped by custom loader.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AsyncPrivateInputx64",
+      "context": "Hardcoded AES key for XMRig loader's remote config.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ztbpVbABSx1jDIKnWGbx1d_0",
+      "context": "Fallback XMRig configuration string.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powercfg /change standby-timeout-ac 0",
+      "context": "Disables sleep/hibernation for mining uptime.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powercfg /change hibernate-timeout-ac 0",
+      "context": "Disables sleep/hibernation for mining uptime.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "Appdata/Local/OptimizeMS/optims.exe",
+      "context": "SilentCryptoMiner masquerade installation path.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "explorer.exe",
+      "context": "SilentCryptoMiner injects miner payload into this process.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "87NnUp8GKVBZ8pFV75Gas4A5nMMH7gEeo8AXBhm9Q6vS5oQ6SzCYf1bJr7Lib35VN2UX271PAXeqRFDmjo5SXm3zFDfDSWD",
+      "context": "Monero (XMR) wallet address from malware config.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "89WoZKYoHhcNEFRV8jjB6nDqzjiBtQqyp4agGfyHwED1XyVAoknfVsvY1CwEHG6nwZFJGFTF5XbqC4tAQbnoFFCX8UQof3G",
+      "context": "Monero (XMR) wallet address from PureMiner config.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://tabbysbakescodes.ws/CNB/gate.php",
+      "context": "CNB Bot C2 URL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://tommysbakescodes.ws/CNB/gate.php",
+      "context": "CNB Bot C2 fallback URL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://win64autoupdates.top/CNB/l0g1n234.php",
+      "context": "Exposed CNB Bot C2 login panel.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "windirautoupdates.top",
+      "context": "PureRAT C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "winautordr.itemdb.com",
+      "context": "PureRAT C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wndlogon.hopto.org",
+      "context": "PureRAT, PureMiner, and AsyncRAT C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/lebnabar198/Hgh5gM99fe3dG/raw/refs/heads/main/MnrsInstllr_240126.exe",
+      "context": "XMRig loader download URL from PureRAT C2 task.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "github.com/lebnabar198",
+      "context": "GitHub profile hosting malware payloads.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "github.com/ugurlutaha6116",
+      "context": "GitHub profile hosting malware payloads.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://autoupdatewinsystem.top/MyMNRconfigs/0226.txt",
+      "context": "Hardcoded URL for custom XMRig loader remote config.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/UnamWebPanel7/api/endpoint.php",
+      "context": "SilentCryptoMiner C2 API endpoint path.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/UWP1/api/endpoint.php",
+      "context": "SilentCryptoMiner C2 API endpoint path.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/UWP1/cpu.txt",
+      "context": "SilentCryptoMiner configuration download path.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://tinyurl.com/cmvt944y",
+      "context": "CPA fraud lure shortlink.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://rapidfilesdatabaze.top/files/z872d515ea17b4e6c3abca9752c706242/",
+      "context": "CPA fraud lure landing page.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://unlockcontent.net/cl/i/me9mn2",
+      "context": "Downstream content locker site for CPA fraud.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "460203070b5a928390b126fcd52c15ed3a668b77536faa6f0a0282cf1c157162",
+      "description": "ISO dropper for CNB Bot (Campaign 1)."
+    },
+    {
+      "sha256": "7bb0e91558244bcc79b6d7a4fe9d9882f11d3a99b70e1527aac979e27165f1d7",
+      "description": "ISO dropper for PureRAT v3.0.1 (Campaign 2)."
+    },
+    {
+      "sha256": "f84b00fc75f183c571c8f49fcc1d7e0241f538025db0f2daa4e2c5b9a6739049",
+      "description": "ISO dropper for PureRAT, PureMiner, and XMRig loader (Campaign 3)."
+    },
+    {
+      "sha256": "0176ffaf278b9281aa207c59b858c8c0b6e38fdb13141f7ed391c9f8b2dc7630",
+      "description": "Custom .NET-based loader for XMRig."
+    },
+    {
+      "sha256": "1f7441d72eff2e9403be1d9ce0bb07792793b2cb963f2601ecfdf8c91cd9af73",
+      "description": "SilentCryptoMiner loader (Campaign 4)."
+    },
+    {
+      "sha256": "bb48a52bae2ee8b98ee1888b3e7d05539c85b24548dd4c6acc08fbe5f0d7631a",
+      "description": "Early 2025 build, PureRAT v0.3.9 dropper."
+    },
+    {
+      "sha256": "6a01cc61f367d3bae34439f94ff3599fcccb66d05a8e000760626abb9886beac",
+      "description": "Late 2023 build, PureRAT v0.3.8B dropper."
+    },
+    {
+      "sha256": "e1e87d11079d33ec1a1c25629cbb747e56fe17071bde5fd8c982461b5baa80a4",
+      "description": "PureRAT loader linked to github.com/ugurlutaha6116."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet",
+    "archive",
+    "script"
+  ]
+}

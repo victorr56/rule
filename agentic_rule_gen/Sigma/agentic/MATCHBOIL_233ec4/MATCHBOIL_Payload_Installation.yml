@@ -1,0 +1,26 @@
+title: MATCHBOIL Payload Execution
+id: 9789ce86-dc46-4c4f-bdce-cf1ac8037b60
+status: experimental
+description: Detects the execution of MATCHBOIL payloads from their specific installation directories.
+references:
+    - https://www.welivesecurity.com/en/eset-research/matchboil-new-tricks-same-old-evil-intentions/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_meow:
+        Image|endswith: '\MeowCheck\MeowMeowProgramm.exe'
+        OriginalFileName: 'MeowMeowProgramm.exe'
+    selection_smtp:
+        Image|endswith: '\SMTPClient\SMTPClientApplication.exe'
+        OriginalFileName: 'SMTPClientApplication.exe'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

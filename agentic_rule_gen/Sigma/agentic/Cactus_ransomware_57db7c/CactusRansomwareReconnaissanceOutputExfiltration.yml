@@ -1,0 +1,25 @@
+title: Cactus Ransomware Reconnaissance Output Exfiltration
+id: 994a32b2-658b-4b13-94c3-1d2a45d070b4
+status: experimental
+description: Detects web requests to retrieve font files (qle.ttf, qle.woff) from a Qlik Sense server's font directory. These files are known to contain the output of reconnaissance commands executed by the Cactus ransomware group, leading to a larger than expected file size.
+references:
+    - https://blog.fox-it.com/2024/04/25/sifting-through-the-spines-identifying-potential-cactus-ransomware-victims/
+author: ioc-yara-daily (agentic)
+date: 2024-04-25
+tags:
+    - attack.exfiltration
+    - attack.t1041
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url.Path|endswith:
+            - '/Client/qmc/fonts/qle.ttf'
+            - '/Client/qmc/fonts/qle.woff'
+        Http.Response.Body.Bytes|gt: 2048
+    condition: selection
+falsepositives:
+    - 'This detection relies on the response body size, which may not be available in all proxy logs.'
+    - 'Legitimate modification of these specific font files resulting in a larger size, which is highly unlikely.'
+level: high

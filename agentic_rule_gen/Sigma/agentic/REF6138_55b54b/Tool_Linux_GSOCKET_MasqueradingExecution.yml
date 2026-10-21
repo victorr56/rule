@@ -1,0 +1,30 @@
+title: Tool Linux GSOCKET Execution Masquerading as Kernel Process
+id: 59e55ec7-60e5-47e1-8843-f1af6dd0290e
+status: experimental
+description: Detects the execution of the GSOCKET tool masquerading as a kernel process '[raid5wq]' using 'exec -a'. This specific command line was observed in the REF6138 campaign.
+references:
+    - https://www.elastic.co/security-labs/threat-command/betting-on-bots
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1036.004
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/exec'
+        CommandLine|contains|all:
+            - '-a'
+            - '[raid5wq]'
+            - '/home/user/.config/htop/htop'
+            - '-s'
+            - '/home/user/.config/htop/defunct.dat'
+            - '-q'
+            - '-d'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

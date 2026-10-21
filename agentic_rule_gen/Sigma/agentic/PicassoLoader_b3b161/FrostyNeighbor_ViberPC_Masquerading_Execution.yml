@@ -1,0 +1,28 @@
+title: FrostyNeighbor PicassoLoader Masquerading as ViberPC
+id: 59a9333a-8610-449e-9d29-c8172c7a36f0
+status: experimental
+description: |-
+    Detects the execution of 'ViberPC.exe', a masqueraded copy of 'rundll32.exe', from the 'C:\ProgramData' directory.
+    This process is used to load the final Cobalt Strike payload 'ViberPC.dll'.
+references:
+    - https://www.welivesecurity.com/en/eset-research/frostyneighbor-fresh-mischief-digital-shenanigans/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+    - attack.execution
+    - attack.t1218.011
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\ViberPC.exe'
+        Image|startswith: 'C:\ProgramData\'
+        CommandLine|contains: '\ViberPC.dll'
+    condition: selection
+falsepositives:
+    - Legitimate 'Viber' software is unlikely to use this name and path combination for its core executable.
+level: high

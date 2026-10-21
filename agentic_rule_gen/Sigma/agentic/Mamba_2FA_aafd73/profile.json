@@ -1,0 +1,105 @@
+{
+  "malware_family": "Mamba 2FA",
+  "threat_actor": "",
+  "platforms": [
+    "web"
+  ],
+  "summary": "Mamba 2FA is a Phishing-as-a-Service (PhaaS) kit with Adversary-in-the-Middle (AiTM) capabilities targeting services like Microsoft 365. It uses convincing phishing pages with a distinct URL structure and HTML attachments to steal credentials and bypass MFA by capturing session data in real-time. Post-compromise actions include creating email rules and registering new authenticators for persistence.",
+  "mitre_techniques": [
+    "T1566",
+    "T1539",
+    "T1098",
+    "T1137.003",
+    "T1538",
+    "T1586",
+    "T1586.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "fdsdf",
+      "context": "Name of a new mailbox rule created by the attacker.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "User registered Authenticator App with Notification and Code",
+      "context": "SaaS setting update indicating a persistence attempt.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RE: Payments",
+      "context": "Subject of an outbound email from a compromised account.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "*.html",
+      "context": "Phishing emails use HTML attachments with hidden JavaScript.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://*/{m,n,o}/?*",
+      "context": "Phishing URL structure with a Base64-encoded parameter.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "2607:5500:3000:fea::2",
+      "context": "Possible Mamba 2FA relay server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "2607:5500:3000:1cab::2",
+      "context": "Possible Mamba 2FA relay server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.133.172.86",
+      "context": "Suspicious IP used for login after initial compromise.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "102.68.111.240",
+      "context": "Rare IP in Nigeria used for login after initial compromise.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

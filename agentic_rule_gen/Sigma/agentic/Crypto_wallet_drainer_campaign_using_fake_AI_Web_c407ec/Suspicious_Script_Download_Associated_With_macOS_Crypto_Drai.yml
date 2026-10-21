@@ -1,0 +1,25 @@
+title: Suspicious Script Download Associated With macOS Crypto Drainer
+id: f456a053-549b-4475-8167-17ed40f806ed
+status: experimental
+description: Detects the download of "install.sh" from a specific IP address known to be used in a crypto wallet drainer campaign to deploy second-stage malware on macOS.
+references:
+    - https://www.darktrace.com/blog/crypto-wallets-continue-to-be-drained-in-elaborate-social-media-scam
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image|endswith:
+            - '/curl'
+            - '/wget'
+        CommandLine|contains|all:
+            - '77.73.129.18'
+            - 'install.sh'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

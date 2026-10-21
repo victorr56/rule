@@ -1,0 +1,24 @@
+title: Persistence via Masquerading Service 'MicrosoftEdgeUpdateSvc'
+id: 5e61298c-2f22-487e-90f7-b2f72e379203
+status: experimental
+description: Detects the creation of a Windows service named 'MicrosoftEdgeUpdateSvc'. This specific name was used by attackers exploiting AhsayCBS to masquerade a persistence mechanism for an XMRig miner. The legitimate Microsoft Edge update services use different names (e.g., 'edgeupdate', 'MicrosoftEdgeUpdate').
+references:
+    - https://www.huntress.com/blog/ahsaycbs-flaws-exploit
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1543.003
+    - attack.t1036.004
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\sc.exe'
+        CommandLine|contains|all:
+            - 'create'
+            - 'MicrosoftEdgeUpdateSvc'
+    condition: selection
+falsepositives:
+    - Unlikely, as this service name is not a standard Microsoft service name but a close masquerade.
+level: high

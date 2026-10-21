@@ -1,0 +1,27 @@
+title: CikaBika Bot dbghelp.dll Sideload via Microsoft Edge
+id: 5698b5a0-9c2b-42f0-9b48-d36c243f6562
+status: experimental
+description: |
+    Detects the loading of a malicious 'dbghelp.dll' by Microsoft Edge from its main application directory.
+    This is a key indicator of the CikaBika Bot/RustBuster RAT, which uses this DLL search-order hijacking technique for persistence and privilege escalation.
+    The legitimate 'dbghelp.dll' is typically located in a versioned subdirectory, not directly in the 'Application' folder.
+references:
+    - https://www.darktrace.com/blog/applescript-abuse-unpacking-a-macos-phishing-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1574.001
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\msedge.exe'
+        ImageLoaded|endswith: '\Microsoft\Edge\Application\dbghelp.dll'
+    condition: selection
+falsepositives:
+    - Unlikely. The legitimate 'dbghelp.dll' for Edge is located in a version-specific subdirectory.
+level: critical

@@ -1,0 +1,221 @@
+{
+  "malware_family": "DYNOWIPER",
+  "threat_actor": "Static Tundra, Berserk Bear, Ghost Blizzard, Dragonfly",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "DYNOWIPER is a destructive wiper attributed to Static Tundra (Berserk Bear) used against Poland's energy sector. The malware is a standalone executable with no C2 or persistence, designed for rapid data destruction. It enumerates fixed and removable drives, corrupts files by overwriting their headers with random data, and forces a system reboot upon completion.",
+  "mitre_techniques": [
+    "T1053.005",
+    "T1222",
+    "T1680",
+    "T1485",
+    "T1529"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "pdb_path",
+      "value": "C:\\Users\\vagrant\\Documents\\Visual Studio 2013\\Projects\\Source\\Release\\Source.pdb",
+      "context": "Characteristic PDB path found in the binary.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dynacom_update.exe",
+      "context": "Filename for DYNOWIPER variant A.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Source.exe",
+      "context": "Filename for DYNOWIPER variant B.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dynacon_update.ps1",
+      "context": "Filename for distribution script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "$recycle.bin",
+      "context": "Directory exclusion list string from YARA rule.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "program files(x86)",
+      "context": "Directory exclusion list string from YARA rule.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "perflogs",
+      "context": "Directory exclusion list string from YARA rule.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "windows",
+      "context": "Directory exclusion list string from YARA rule.",
+      "specificity": "low",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Error opening file: ",
+      "context": "Error message string from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SeShutdownPrivilege",
+      "context": "Privilege requested for system reboot, from YARA rule.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "GetLogicalDrives",
+      "context": "API used to enumerate drives, from YARA rule.",
+      "specificity": "low",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "ExitWindowsEx",
+      "context": "API used to force reboot, from YARA rule.",
+      "specificity": "low",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "AdjustTokenPrivileges",
+      "context": "API used to enable privileges, from YARA rule.",
+      "specificity": "low",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "SetFileAttributesW",
+      "context": "API used to remove file protection attributes.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "185.200.177.10",
+      "context": "Used for VPN logins and direct DYNOWIPER execution.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "31.172.71.5",
+      "context": "Used as a reverse proxy for data exfiltration.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "193.200.17.163",
+      "context": "Used for VPN logins.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.82.127.20",
+      "context": "Used for VPN logins.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "72.62.35.76",
+      "context": "Used for VPN and O365 logins.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "835b0d87ed2d49899ab6f9479cddb8b4e03f5aeb2365c50a51f9088dcede68d5",
+      "description": "DYNOWIPER sample (variant A, dynacom_update.exe)"
+    },
+    {
+      "sha256": "65099f306d27c8bcdd7ba3062c012d2471812ec5e06678096394b238210f0f7c",
+      "description": "DYNOWIPER sample (variant B, Source.exe)"
+    },
+    {
+      "sha256": "8759e79cf3341406564635f3f08b2f333b0547c444735dba54ea6fce8539cf15",
+      "description": "Distribution script (dynacon_update.ps1)"
+    },
+    {
+      "sha256": "f4e9a3ddb83c53f5b7717af737ab0885abd2f1b89b2c676d3441a793f65ffaee",
+      "description": "Distribution script (exp.ps1)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

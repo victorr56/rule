@@ -1,0 +1,24 @@
+title: Mini Shai-Hulud NPM Payload File Creation
+id: 5b7d03a1-12c5-41e9-9743-f661ca39c5b2
+status: experimental
+description: Detects the creation of the malicious payload "Math_Symbol.js" in the "node_modules/keyv" directory, a specific indicator of compromise from the malicious keyv npm package.
+references:
+    - https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2023-07-26
+tags:
+    - attack.execution
+    - attack.t1195.002
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/node'
+            - '/npm'
+        TargetFilename|endswith: '/node_modules/keyv/Math_Symbol.js'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

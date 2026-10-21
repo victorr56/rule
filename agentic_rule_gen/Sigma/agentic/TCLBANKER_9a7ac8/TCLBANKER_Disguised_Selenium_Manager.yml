@@ -1,0 +1,23 @@
+title: TCLBANKER Disguised Selenium Manager Execution
+id: f5d3a042-4de9-4824-a55e-04663e0e7a64
+status: experimental
+description: Detects the execution of 'hostfxr.exe' from an unusual temporary directory '%TEMP%\msvc-rt14\bin\', a technique used by TCLBANKER to disguise its use of Selenium components for browser automation.
+references:
+    - https://www.elastic.co/security-labs/threat-command/tclbanker-brazilian-banking-trojan
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.defense_evasion
+    - attack.t1059.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\msvc-rt14\bin\hostfxr.exe'
+        Image|contains: '\AppData\Local\Temp\'
+    condition: selection
+falsepositives:
+    - Unlikely. While 'hostfxr.exe' is a legitimate .NET component, its execution from this specific subdirectory within the user's temporary folder is highly anomalous and characteristic of TCLBANKER.
+level: high

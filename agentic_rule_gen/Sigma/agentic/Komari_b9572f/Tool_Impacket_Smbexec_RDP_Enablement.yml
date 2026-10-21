@@ -1,0 +1,28 @@
+title: Impacket Smbexec-like RDP Enablement
+id: 03290022-7935-430b-93d3-7d2d3a3c94f0
+status: experimental
+description: Detects a command used to enable Remote Desktop Protocol (RDP) by modifying the 'fDenyTSConnections' registry value, and redirecting the output to a hidden share on localhost, which is characteristic of Impacket's smbexec.py.
+references:
+    - https://www.huntress.com/blog/komari-c2-agent-abuse
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.defense_evasion
+    - attack.t1112
+    - attack.lateral_movement
+    - attack.t1021.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - 'reg add'
+            - 'fDenyTSConnections'
+            - '/d 0'
+            - '> \\127.0.0.1\C$\__output' # Characteristic of smbexec.py
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

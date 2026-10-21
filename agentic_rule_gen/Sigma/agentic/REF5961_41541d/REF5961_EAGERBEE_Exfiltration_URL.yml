@@ -1,0 +1,28 @@
+title: REF5961 EAGERBEE Exfiltration via Compromised Mongolian Gov Sites
+id: f0205d15-28b9-4ac9-8e42-998845fc86e8
+status: experimental
+description: Detects potential data exfiltration via HTTP requests to a specific 'upload.php' path on compromised Mongolian government websites, a TTP associated with EAGERBEE.
+references:
+    - https://www.elastic.co/security-labs/threat-command/introducing-the-ref5961-intrusion-set
+author: ioc-yara-daily (agentic)
+date: 2024-04-18
+tags:
+    - attack.exfiltration
+    - attack.t1567
+logsource:
+    category: proxy
+detection:
+    selection_prez:
+        DestinationHostname|endswith:
+            - 'president.mn'
+            - '.president.mn'
+        Url|endswith: '/upload.php'
+    selection_intra:
+        DestinationHostname|endswith:
+            - 'intranet.gov.mn'
+            - '.intranet.gov.mn'
+        Url|endswith: '/upload.php'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate file uploads to these specific pages, if any exist.
+level: high

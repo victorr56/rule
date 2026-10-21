@@ -1,0 +1,26 @@
+title: MIMICRAT PowerShell Loader Execution
+id: 5040e676-e883-4a00-abf2-53b519c5a14d
+status: experimental
+description: Detects a highly specific and obfuscated PowerShell command line used in the initial stage of MIMICRAT malware delivery.
+references:
+    - https://www.elastic.co/security-labs/threat-command/mimicrat-custom-rat-mimics-c2-frameworks
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.execution
+    - attack.t1059.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - '-WInDo Min'
+            - '$RdLU=''aZmEwGEtHPckKyBXPxMRi.neTwOrkicsGf'''
+            - '$OnRa=($RdLU.Substring(17,12));'
+            - '.($TNNt.Remove(0,3).Remove(3))'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

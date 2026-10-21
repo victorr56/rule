@@ -1,0 +1,167 @@
+{
+  "malware_family": "ClickFix",
+  "threat_actor": "APT28, MuddyWater",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "ClickFix is a social engineering technique using fake prompts to trick users into running malicious PowerShell commands. This establishes C2 communication for reconnaissance and data exfiltration via HTTP. The tactic is used by actors like APT28 and MuddyWater to deliver malware payloads like XWorm, Lumma, and AsyncRAT.",
+  "mitre_techniques": [
+    "T1566.002",
+    "T1189",
+    "T1059.001",
+    "T1210",
+    "T1071.001",
+    "T1020.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "/174(\\d){7}/",
+      "context": "Regex for numerically named malicious file downloads.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "PowerShell",
+      "context": "New user agent indicating PowerShell abuse for C2 communications.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/1744205200",
+      "context": "Numeric URI path generated from current epoch time.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/init1234",
+      "context": "URI path indicating successful completion of the attack objective.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/ttt",
+      "context": "Possible malicious file path.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/1.php?s=527",
+      "context": "Possible malicious file path.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "193.36.38.237",
+      "context": "C2 server for system info exfiltration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "188.34.195.44",
+      "context": "C2 server for final data egress.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "138.199.156.22",
+      "context": "C2 endpoint blocked by Autonomous Response.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.250.151.155",
+      "context": "Malicious endpoint blocked by Autonomous Response.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "141.193.213.11",
+      "context": "Possible C2 Infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "141.193.213.10",
+      "context": "Possible C2 Infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "94.181.229.250",
+      "context": "Possible C2 Infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "rkuagqnmnypetvf.top",
+      "context": "C2 server.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://shorturl.at/UB6E6",
+      "context": "Possible C2 Infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tlgrm-redirect.icu",
+      "context": "Possible C2 Infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "diagnostics.medgenome.com",
+      "context": "Compromised Website.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "34ff2f72c191434ce5f20ebc1a7e823794ac69bba9df70721829d66e7196b044",
+      "description": "Possible malicious file"
+    }
+  ],
+  "file_types": [
+    "script"
+  ]
+}

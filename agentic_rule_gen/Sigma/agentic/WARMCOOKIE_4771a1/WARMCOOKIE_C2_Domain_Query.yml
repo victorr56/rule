@@ -1,0 +1,20 @@
+title: WARMCOOKIE C2 Domain Query
+id: 3c57700e-6f8a-441d-93d3-7de0d635c053
+status: experimental
+description: Detects DNS queries for a domain known to be used by WARMCOOKIE for command and control.
+references:
+    - https://www.elastic.co/security-labs/threat-command/revisiting-warmcookie
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'storsvc-win.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

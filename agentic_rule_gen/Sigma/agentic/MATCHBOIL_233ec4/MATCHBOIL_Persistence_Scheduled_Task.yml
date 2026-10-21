@@ -1,0 +1,28 @@
+title: MATCHBOIL Persistence via Scheduled Task
+id: e2b65590-b186-4e51-b0e2-d4b8fcf6cd36
+status: experimental
+description: Detects the creation of scheduled tasks with names known to be used by MATCHBOIL for persistence.
+references:
+    - https://www.welivesecurity.com/en/eset-research/matchboil-new-tricks-same-old-evil-intentions/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn'
+        CommandLine|contains:
+            - 'Updates\CheckTask'
+            - 'UpdateCheckers\DailyPlanner'
+            - 'MailClient\Checker'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,26 @@
+title: FrostyNeighbor PicassoLoader/Cobalt Strike C2 Domains
+id: 59381017-7683-4217-a068-d01f80f1d1e6
+status: experimental
+description: Detects DNS queries for domains known to be used by FrostyNeighbor's PicassoLoader and Cobalt Strike C2 infrastructure.
+references:
+    - https://www.welivesecurity.com/en/eset-research/frostyneighbor-fresh-mischief-digital-shenanigans/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'book-happy.needbinding.icu'
+            - 'hinesafar.sardk.icu'
+            - 'nama-belakang.nebao.icu'
+            - 'shinesafar.sardk.icu'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

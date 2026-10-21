@@ -1,0 +1,27 @@
+title: SonicWall Login Interface Reconnaissance
+id: 0325d2c2-8700-4b1d-8f27-5be3df7e74bb
+status: experimental
+description: Detects network reconnaissance activity targeting SonicWall login interfaces, including the NetExtender VPN and the management UI.
+references:
+    - https://www.greynoise.io/blog/active-reconnaissance-campaign-targets-sonicwall-firewalls-through-commercial-proxy-infrastructure
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.reconnaissance
+    - attack.t1595.002
+    - attack.initial_access
+    - attack.t1110
+logsource:
+    category: proxy
+detection:
+    selection_netextender:
+        Url|contains: '/cgi-bin/userLogin'
+        Http.Method: 'GET'
+    selection_ui:
+        Url|contains: '/sonicui/7/login/'
+        Http.Method: 'GET'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate users navigating to the login page, which typically involves a GET request.
+    - Vulnerability scanners.
+level: medium

@@ -1,0 +1,21 @@
+title: Outbound Connection To Boots Phishing Kit URL
+id: b4c9a59b-13e2-4c6e-8120-00d9d601d322
+status: experimental
+description: Detects outbound network traffic to a URL hosting a phishing kit impersonating the Boots pharmacy chain.
+references:
+    - https://www.huntress.com/blog/terminal-server-phishing-stager-exposed
+author: ioc-yara-daily (agentic)
+date: 2024-05-22
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname|endswith: 'ipelc.gob.bo'
+        UrlPath|startswith: '/boots_store/'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

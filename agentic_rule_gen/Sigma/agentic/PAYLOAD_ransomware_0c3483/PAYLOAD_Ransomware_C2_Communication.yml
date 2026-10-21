@@ -1,0 +1,33 @@
+title: PAYLOAD Ransomware C2 Communication
+id: 3c9d8a6e-4f5b-4c3d-8a9e-2b1c0d8e7f6a
+status: experimental
+description: Detects network connections to IP addresses associated with PAYLOAD ransomware infrastructure.
+references:
+    - https://securelist.com/tr/payload-ransomware-via-group-policy/121335/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '37.19.210.12'
+            - '146.70.117.239'
+            - '149.102.229.154'
+            - '104.164.55.46'
+            - '104.28.162.228'
+            - '104.28.163.162'
+            - '64.190.76.14'
+            - '192.42.116.50'
+            - '192.42.116.12'
+            - '192.42.116.56'
+            - '192.42.116.97'
+            - '192.42.116.52'
+    condition: selection
+falsepositives:
+    - Re-use of IP addresses by non-malicious services after the campaign concludes.
+level: medium

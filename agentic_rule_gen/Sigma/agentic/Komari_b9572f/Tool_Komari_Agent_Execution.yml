@@ -1,0 +1,25 @@
+title: Komari Agent Execution
+id: 593b4823-380d-4952-a50d-d42f5ac11ff0
+status: experimental
+description: Detects the execution of the Komari agent with command-line arguments used for configuration, which could indicate threat actor abuse of the tool for C2.
+references:
+    - https://www.huntress.com/blog/komari-c2-agent-abuse
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.execution
+    - attack.command_and_control
+    - attack.t1219
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image: 'C:\Windows\System32\komari-agent.exe'
+        CommandLine|contains|all:
+            - '-cid'
+            - '-token'
+    condition: selection
+falsepositives:
+    - Legitimate administrative activity involving manual execution of the Komari agent for configuration or troubleshooting.
+level: high

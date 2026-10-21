@@ -1,0 +1,29 @@
+title: Potential Rogue ScreenConnect Persistence via Service Creation
+id: f48b8744-8d4e-4f36-9b55-dd228d752f82
+status: experimental
+description: Detects the creation of a Windows service pointing to a ScreenConnect client executable in a suspicious, non-standard location.
+references:
+    - https://www.huntress.com/blog/phishing-bitb-rmm-attacks
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1543.003
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|startswith: 'HKLM\SYSTEM\CurrentControlSet\Services\'
+        TargetObject|endswith: '\ImagePath'
+        Details|contains: 'ScreenConnect.Client'
+    filter:
+        Details|startswith:
+            - 'C:\Program Files (x86)\ScreenConnect Client'
+            - '"C:\Program Files (x86)\ScreenConnect Client'
+            - 'C:\Program Files\ScreenConnect Client'
+            - '"C:\Program Files\ScreenConnect Client'
+    condition: selection and not filter
+falsepositives:
+    - Legitimate ScreenConnect installations in custom paths.
+level: medium

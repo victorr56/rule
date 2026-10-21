@@ -1,0 +1,21 @@
+title: RemControl Dropper Download
+id: f1c0e35f-155e-4444-93ad-3e8df31fd963
+status: experimental
+description: Detects download of the RemControl dropper APK from a known distribution URL.
+references:
+    - https://www.group-ib.com/blog/remcontrol-android-banking-trojan/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.initial_access
+    - attack.t1204.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname|endswith: 'tvtap-liveapp.com'
+        Url|endswith: '/dl.php'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

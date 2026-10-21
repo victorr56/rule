@@ -1,0 +1,521 @@
+{
+  "malware_family": "GOSAR",
+  "threat_actor": "REF3864",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "REF3864 uses a custom loader, SADBRIDGE, to deploy GOSAR, a Golang reimplementation of the Quasar RAT. The infection chain involves DLL side-loading, UAC bypass, and process injection to deliver the implant and establish persistence. GOSAR targets Chinese-speaking users for information theft, including keylogging, clipboard monitoring, and remote access via HVNC.",
+  "mitre_techniques": [
+    "T1574.002",
+    "T1056.001",
+    "T1055.001",
+    "T1057",
+    "T1564.003",
+    "T1543.003",
+    "T1548.002",
+    "T1027",
+    "T1562.001",
+    "T1497.003"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "x64bridge.dll",
+      "context": "Malicious DLL side-loaded by x64dbg.exe.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "BridgeInit",
+      "context": "Export called by x64dbg.exe from x64bridge.dll.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x4E67C6A7",
+      "context": "Magic seed used with hostname to generate a hash.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\Documents\\<hostname_hash>\\edbtmp.log",
+      "context": "Encrypted SADBRIDGE configuration file path.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DevQueryBroker.exe",
+      "context": "Renamed copy of MonitoringHost.exe used for side-loading.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Microsoft\\DeviceSync\\Device\\Stage\\Data\\DevQueryBroker\\",
+      "context": "Directory containing encrypted stages and SADBRIDGE components.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "HealthServiceRuntime.dll",
+      "context": "Malicious DLL side-loaded by DevQueryBroker.exe (MonitoringHost.exe).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "log<random_string>.tmp",
+      "context": "Filename format for shellcode dropped in %TEMP% directory.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x42",
+      "context": "Single-byte XOR key used to decrypt a PE file.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x80070057",
+      "context": "Return value (E_INVALIDARG) for patched AmsiScanBuffer/AmsiOpenSession.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Elevation:Administrator!new:{3E5FC7F9-9A51-4367-9063-A120244FBEC7}",
+      "context": "Moniker string to create CMSTPLUA object for UAC bypass.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "DevQueryBrokerService",
+      "context": "Service created for privilege escalation and persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DevQuery Background Discovery Broker Service",
+      "context": "Display name for the DevQueryBrokerService.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Enables apps to discover devices with a background task.",
+      "context": "Description for the DevQueryBrokerService and DevQueryBrokerServiceSvc.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "TP_DIRECT",
+      "context": "Structure used in PoolParty Variant 7 injection technique.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "PoolParty",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "DevQueryBrokerServiceSvc",
+      "context": "Final persistence service created by SADBRIDGE.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "SYSTEM\\CurrentControlSet\\Services\\DevQueryBrokerServiceSvc",
+      "context": "Registry key for the final persistence service.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Stationery\\<hostname_hash>\\DevQueryBrokerService.dll",
+      "context": "ServiceDll path for the svchost-based persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Svchost\\netsvcs",
+      "context": "Registry key modified to add service to netsvcs group.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "S-1-16-12288",
+      "context": "System integrity level SID used for token elevation.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "vibrant/config",
+      "context": "Reconstructed source path for GOSAR configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "vibrant/network",
+      "context": "Reconstructed source path for GOSAR networking.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "vibrant/msgs/resolvers",
+      "context": "Reconstructed source path for GOSAR command handlers.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "360tray.exe",
+      "context": "AV process checked by both SADBRIDGE and GOSAR.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\diagnostics",
+      "context": "Directory where GOSAR writes keylogger and clipboard data.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Distributed Transaction Coordinator (LAN)",
+      "context": "Translated name of firewall rule created by GOSAR.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Inbound rules for the core transaction manager of the Distributed Transaction Coordinator service are managed remotely through RPC/TCP.",
+      "context": "Description of the firewall rule created by GOSAR.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Roaming\\Microsoft\\Logs",
+      "context": "Directory for GOSAR's encrypted runtime logs.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "windows-update-log-<YearMonthDay>.log",
+      "context": "Filename format for GOSAR's runtime logs.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\policy-err.log",
+      "context": "Path where encrypted PE plugins are stored.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "plugins.dll",
+      "context": "Name of the embedded native DLL used for plugin execution.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "ExecPlugin",
+      "context": "Export from plugins.dll used to execute plugins.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "HiddenDesktop.dll",
+      "context": "Name of the embedded native DLL used for HVNC.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "ExcuteCommand",
+      "context": "Misspelled export from HiddenDesktop.dll that handles HVNC commands.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\system32\\rundll32.exe shell32.dll,#61",
+      "context": "HVNC command (0x402) to spawn a RUN dialog box.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\shell.log",
+      "context": "Path to a PE file executed by an HVNC command.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "schtasks /query /fo list /v",
+      "context": "Command executed by GOSAR to get scheduled tasks.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "select * from Win32_Service",
+      "context": "WMI query used by GOSAR to get a list of services.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "fSingleSessionPerUser",
+      "context": "Value set to 1 under TerminalServer key to disable multi-logon.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "opera-x.net",
+      "context": "Landing page domain masquerading as legitimate software.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "teledown-cn.com",
+      "context": "Landing page domain masquerading as legitimate software.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ferp.googledns.io",
+      "context": "GOSAR C2 server domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hk-dns.secssl.com",
+      "context": "GOSAR C2 server domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hk-dns.winsiked.com",
+      "context": "GOSAR C2 server domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hk-dns.wkossclsaleklddeff.is",
+      "context": "GOSAR C2 server domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hk-dns.wkossclsaleklddeff.io",
+      "context": "GOSAR C2 server domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "micrornetworks.com",
+      "context": "Domain added to the hosts file, pointing to 127.0.0.1.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/security.js",
+      "context": "URI path handled by the underdeveloped GOSAR HTTP listener.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "callback();",
+      "context": "HTTP response body from GOSAR's listener for /security.js.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "51756-51776",
+      "context": "Port range opened in firewall and used for HTTP listener.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "15af8c34e25268b79022d3434aa4b823ad9d34f3efc6a8124ecf0276700ecc39",
+      "description": "NetFxRepairTools.msi installer"
+    },
+    {
+      "sha256": "accd651f58dd3f7eaaa06df051e4c09d2edac67bb046a2dcb262aa6db4291de7",
+      "description": "SADBRIDGE loader (x64bridge.dll)"
+    },
+    {
+      "sha256": "7964a9f1732911e9e9b9e05cd7e997b0e4e2e14709490a1b657673011bc54210",
+      "description": "GOSAR implant"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "archive"
+  ]
+}

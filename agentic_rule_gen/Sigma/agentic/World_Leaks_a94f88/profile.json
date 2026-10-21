@@ -1,0 +1,260 @@
+{
+  "malware_family": "World Leaks",
+  "threat_actor": "World Leaks (rebrand of Hunters International; aka UNC6148)",
+  "platforms": [
+    "windows",
+    "network_device"
+  ],
+  "summary": "World Leaks, an affiliate-based extortion-as-a-service operation rebranded from Hunters International, was observed contradicting its encryption-free model by deploying a ransomware payload that encrypted a healthcare victim's data. The intrusion began with brute force against a Fortigate appliance in October 2025, used PsExec, WinRM and Cloudflare Tunnel for lateral movement and C2, exfiltrated 80+GB to MEGA and Backblaze via rclone, and ended with SMB-delivered world.exe/task.bat and a nine-character-prefixed README ransom note.",
+  "mitre_techniques": [
+    "T1190",
+    "T1078",
+    "T1588.001",
+    "T1590.005",
+    "T1592.004",
+    "T1595.001",
+    "T1595.002",
+    "T1595.003",
+    "T1018",
+    "T1046",
+    "T1083",
+    "T1135",
+    "T1219",
+    "T1219.002",
+    "T1571",
+    "T1572",
+    "T1573.001",
+    "T1110",
+    "T1110.001",
+    "T1006",
+    "T1564.005",
+    "T1564.012",
+    "T1047",
+    "T1569.002",
+    "T1021",
+    "T1021.001",
+    "T1021.002",
+    "T1021.006",
+    "T1080",
+    "T1210",
+    "T1570",
+    "T1039",
+    "T1074",
+    "T1041",
+    "T1048",
+    "T1567.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "world.exe",
+      "context": "SMB write with compromised 'localadmin' credential; likely ransomware payload",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "task.bat",
+      "context": "SMB write alongside world.exe; likely ransomware payload vector",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "^[A-Z][a-z]{3}[A-Z][a-z][A-Z]{3}[.]README[.]txt",
+      "context": "Ransom note filename: randomized nine-character string preceding README.txt",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "[.]^[A-Z][a-z]{3}[A-Z][a-z][A-Z]{3}",
+      "context": "Ransomware extension pattern appended to encrypted files, same nine characters",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "Windows\\Temp\\chromeremotedesktophost.msi",
+      "context": "Written over SMB from patient-zero device to another internal device for lateral movement",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "programdata\\syc\\OpenSSHUtils.psm1",
+      "context": "Script written over SMB from suspected patient-zero to internal domain controller",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "programdata\\syc\\ssh-sk-helper.exe",
+      "context": "Legitimate OpenSSH component written over SMB to internal domain controller",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "MegaClient/10.3.0/64",
+      "context": "User agent observed in MEGA data-transfer connections",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "rclone/v1.69.0",
+      "context": "Rclone user agent in MEGA data-transfer connections (known World Leaks TTP)",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "AS40401 BACKBLAZE",
+      "context": "Related user agent observed in Backblaze exfiltration activity",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "PsExec",
+      "context": "Used to launch activity on remote devices during lateral movement",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "rclone",
+      "context": "Command-line cloud storage tool used for MEGA exfiltration",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "administrator",
+      "context": "Compromised credential used for Fortigate brute force and SMB logins",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "localadmin",
+      "context": "Compromised credential used for SMB logins during ransomware file writes",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "51.15.109.222",
+      "context": "External IP reached over SSH; anomalous for environment; possible C2 infrastructure",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "193.161.193.99",
+      "context": "Probable C2 infrastructure; DNS server connections over port 1194 (OpenVPN)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "region2.v2.argotunnel.com",
+      "context": "Cloudflare Tunnel (Argo Tunnel) hostname used for tunnelling/C2",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "region1.v2.argotunnel.com",
+      "context": "Cloudflare Tunnel (Argo Tunnel) hostname used for tunnelling/C2",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "h2.cftunnel.com",
+      "context": "Cloudflare Tunnel hostname used for tunnelling/C2",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "remotedesktop-pa.googleapis.com",
+      "context": "Chrome Remote Desktop API endpoint contacted prior to exfiltration",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gfs302n520.userstorage.mega.co.nz",
+      "context": "MEGA cloud storage endpoint receiving 80+GB exfiltration",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "backblazeb2.com",
+      "context": "Backblaze cloud storage endpoint used for data exfiltration",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

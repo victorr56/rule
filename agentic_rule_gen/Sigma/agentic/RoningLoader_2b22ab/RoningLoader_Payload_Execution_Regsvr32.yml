@@ -1,0 +1,22 @@
+title: RoningLoader Payload Execution via Regsvr32
+id: 53a253bb-92dd-4e56-af87-ca631168f237
+status: experimental
+description: Detects the execution of a RoningLoader DLL payload from a specific path using regsvr32.exe.
+references:
+    - https://www.elastic.co/security-labs/threat-command/roningloader
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1218.010
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\regsvr32.exe'
+        CommandLine|contains: '\ProgramData\Roning\goldendays.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,25 @@
+title: Potential Diamorphine Rootkit Download
+id: 11c6d32f-4886-45ef-89a0-0773d1ca93a2
+status: experimental
+description: Detects the download of the Diamorphine rootkit, a tool used by the IcePeony actor.
+references:
+    - http://nao-sec.org/2024/10/IcePeony-with-the-996-work-culture.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.persistence
+    - attack.t1014
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/wget'
+            - '/curl'
+        CommandLine|contains: 'Diamorphine.tgz'
+    condition: selection
+falsepositives:
+    - Security researchers or system administrators downloading the tool for analysis.
+level: high

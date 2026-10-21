@@ -1,0 +1,24 @@
+title: REF5961 C2 Domain Query
+id: 5a8a1835-2630-4e5a-8b17-73d8b3c9ec72
+status: experimental
+description: Detects DNS queries for domains known to be used by the REF5961 intrusion set for command and control.
+references:
+    - https://www.elastic.co/security-labs/threat-command/introducing-the-ref5961-intrusion-set
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'paper.hosted-by-bay.net'
+            - 'news.hosted-by-bay.net'
+            - 'paypal.goodspaypal.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

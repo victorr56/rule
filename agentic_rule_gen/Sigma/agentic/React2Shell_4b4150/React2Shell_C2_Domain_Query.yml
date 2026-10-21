@@ -1,0 +1,25 @@
+title: React2Shell C2 Domain Query
+id: 9a7852c1-3d71-4ac4-9f79-c5c2fc930b80
+status: experimental
+description: |
+  Detects DNS queries for domains associated with infrastructure used in React2Shell post-exploitation, including cryptomining and Sliver C2.
+references:
+  - https://www.wiz.io/blog/nextjs-cve-2025-55182-react2shell-deep-dive
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+  - attack.command_and_control
+  - attack.t1071
+logsource:
+  category: dns_query
+detection:
+  selection:
+    QueryName|endswith:
+      - 'anywherehost.site'
+      - 'inerna1.site'
+      - 'keep.camdvr.org'
+      - 't.cnzzs.co'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: critical

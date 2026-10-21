@@ -1,0 +1,23 @@
+title: ShadowV2 ChromeDP Execution
+id: 5971a8e6-7b96-419b-a010-85f269a84497
+status: experimental
+description: Detects the execution of the bundled ChromeDP binary, likely for Cloudflare UAM bypass, by the main ShadowV2 implant.
+references:
+    - https://www.darktrace.com/blog/shadowv2-an-emerging-ddos-for-hire-botnet
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.impact
+    - attack.t1496
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        ParentImage: '/app/deployment'
+        Image|endswith: '/ChromeDP'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

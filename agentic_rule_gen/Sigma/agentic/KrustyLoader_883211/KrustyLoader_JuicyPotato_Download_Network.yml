@@ -1,0 +1,22 @@
+title: KrustyLoader JuicyPotato/SweetPotato Download Connection
+id: 6e9e51c8-ac0d-40c2-9d32-e065751915ea
+status: experimental
+description: Detects a network connection to an IP and an unusual port (666) known to be used by UNC5221 to download post-exploitation tools like JuicyPotato/SweetPotato.
+references:
+    - https://www.darktrace.com/blog/tracking-cve-2025-31324-darktraces-detection-of-sap-netweaver-exploitation-before-and-after-disclosure
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '23.95.123.5'
+        DestinationPort: 666
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

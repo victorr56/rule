@@ -1,0 +1,23 @@
+title: Amadey C2 Domain gohaiendo.com
+id: 5928d15c-3a83-4903-8890-8488e08d660e
+status: experimental
+description: Detects DNS queries for gohaiendo.com, a known command and control domain for the Amadey malware.
+references:
+    - http://nao-sec.org/2019/04/Analyzing-amadey.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1568.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith: '.gohaiendo.com'
+    filter:
+        QueryName: 'gohaiendo.com'
+    condition: selection and not filter
+falsepositives:
+    - Unlikely.
+level: high

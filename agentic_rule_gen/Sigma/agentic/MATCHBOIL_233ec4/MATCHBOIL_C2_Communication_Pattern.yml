@@ -1,0 +1,25 @@
+title: MATCHBOIL C2 Communication Pattern
+id: 489c7c29-3739-444f-b3a5-e3621ce33a01
+status: experimental
+description: Detects MATCHBOIL C2 communication based on a combination of a specific URI path, a hardcoded User-Agent, and custom HTTP headers.
+references:
+    - https://www.welivesecurity.com/en/eset-research/matchboil-new-tricks-same-old-evil-intentions/
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - attack.t1132.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|endswith: '/eventmanager'
+        UserAgent: 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.143 Safari/537.36'
+        HttpHeader|contains|all:
+            - 'Count:'
+            - 'Answer:'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

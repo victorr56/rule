@@ -1,0 +1,383 @@
+{
+  "malware_family": "GHOSTENGINE",
+  "threat_actor": "REF4578",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "GHOSTENGINE is a multi-stage crytomining malware targeting Windows systems. It uses vulnerable drivers to terminate EDR products, establishes persistence via scheduled tasks and a phantom DLL loaded by msdtc.exe, and ultimately deploys the XMRig miner for Monero.",
+  "mitre_techniques": [
+    "T1059.001",
+    "T1059.003",
+    "T1053.005",
+    "T1070.001",
+    "T1036",
+    "T1055",
+    "T1057",
+    "T1041",
+    "T1132",
+    "T1496",
+    "T1489"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "Tiworker.exe",
+      "context": "Initial stager masquerading as a legitimate Windows binary.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "get.png",
+      "context": "Orchestrator PowerShell script downloaded from C2.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "clearn.png",
+      "context": "Cleanup PowerShell script.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files\\Common Files\\System\\ado",
+      "context": "Path removed by cleanup script, indicating prior infection.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\windows\\ZAM.krnl.trace",
+      "context": "Trace file deleted by get.png script.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Fonts",
+      "context": "Primary download directory for modules.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$RECYCLE.BIN\\Fonts",
+      "context": "Alternate download directory if C: drive is full.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "OneDriveCloudSync",
+      "context": "Persistence task to run oci.dll via msdtc every 20 minutes.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "DefaultBrowserUpdate",
+      "context": "Persistence task to re-download and run get.png every 60 minutes.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "OneDriveCloudBackup",
+      "context": "Persistence task to execute smartsscreen.exe every 40 minutes.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "*get.png*",
+      "context": "String searched in PowerShell command lines to terminate other instances.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\drivers\\aswArPots.sys",
+      "context": "Vulnerable Avast driver used to terminate processes.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "Avast",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\drivers\\IObitUnlockers.sys",
+      "context": "Vulnerable IObit driver used to delete files.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "IObit",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Fonts\\smartsscreen.exe",
+      "context": "Core GHOSTENGINE payload for EDR termination and miner execution.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\oci.dll",
+      "context": "Phantom DLL loaded by msdtc.exe for persistence and updates.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "backup.png",
+      "context": "PowerShell backdoor module.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "kill.png",
+      "context": "PowerShell script module for terminating security sensors.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "taskhostw.png",
+      "context": "On-disk name for the downloaded XMRig client.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x7299C004",
+      "context": "IOCTL sent to aswArPots.sys to terminate a process by PID.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x222124",
+      "context": "IOCTL sent to iobitunlockers.sys to delete a file.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "468ED2Qcchk4shLbD8bhbC3qz2GFXqjAUWPY3VGbmSM2jfJw8JpSDDXP5xpkMAHG98FHLmgvSM6ZfUqa9gvArUWP59tEd3f",
+      "context": "Monero Payment ID / wallet address from XMRig config.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "XMRig",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "rx/0",
+      "context": "Algorithm specified in XMRig configuration.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "XMRig",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Microsoft-Windows-AppModel-Runtime/Operational",
+      "context": "Event log channel cleared by the malware.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Microsoft-Windows-Winlogon/Operational",
+      "context": "Event log channel cleared by the malware.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "download.yrnvtklot.com",
+      "context": "C2 server for downloading modules.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ftp.yrnvtklot.com",
+      "context": "Secondary FTP C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "online.yrnvtklot.com",
+      "context": "C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "111.90.158.40",
+      "context": "C2 server IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "93.95.225.137",
+      "context": "C2 server IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pool.supportxmr.com",
+      "context": "XMRig mining pool URL from configuration, over port 443.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "XMRig"
+    },
+    {
+      "kind": "ip",
+      "value": "1.1.1.1",
+      "context": "Hardcoded DNS server for C2 resolution.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "8.8.8.8",
+      "context": "Hardcoded DNS server for C2 resolution.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+      "context": "User-Agent hardcoded in the XMRig miner configuration.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "XMRig"
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "aac7f8e174ba66d62620bd07613bac1947f996bb96b9627b42910a1db3d3e22b",
+      "description": "Initial stager (Tiworker.exe)"
+    },
+    {
+      "sha256": "7c242a08ee2dfd5da8a4c6bc86231985e2c26c7b9931ad0b3ea4723e49ceb1c1",
+      "description": "GHOSTENGINE loader script (get.png)"
+    },
+    {
+      "sha256": "2fe78941d74d35f721556697491a438bf3573094d7ac091b42e4f59ecbd25753",
+      "description": "GHOSTENGINE EDR controller module (smartsscreen.exe)"
+    },
+    {
+      "sha256": "3ced0552b9ecf3dfecd14cbcc3a0d246b10595d5048d7f0d4690e26ecccc1150",
+      "description": "Update/Persistence module 64-bit (oci.dll)"
+    },
+    {
+      "sha256": "3b2724f3350cb5f017db361bd7aae49a8dbc6faa7506de6a4b8992ef3fd9d7ab",
+      "description": "Update/Persistence module 32-bit (oci.dll)"
+    },
+    {
+      "sha256": "6f3e913c93887a58e64da5070d96dc34d3265f456034446be89167584a0b347e",
+      "description": "GHOSTENGINE backdoor module (backup.png)"
+    },
+    {
+      "sha256": "cc4384510576131c126db3caca027c5d159d032d33ef90ef30db0daa2a0c4104",
+      "description": "GHOSTENGINE EDR termination module (kill.png)"
+    },
+    {
+      "sha256": "35eb368c14ad25e3b1c58579ebaeae71bdd8ef7f9ccecfc00474aa066b32a03f",
+      "description": "XMRig Miner client (taskhostw.exe)"
+    },
+    {
+      "sha256": "4b5229b3250c8c08b98cb710d6c056144271de099a57ae09f5d2097fc41bd4f1",
+      "description": "Vulnerable Avast driver (aswArPots.sys)"
+    },
+    {
+      "sha256": "2b33df9aff7cb99a782b252e8eb65ca49874a112986a1c49cd9971210597a8ae",
+      "description": "Vulnerable Iobit driver (IObitUnlockers.sys)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

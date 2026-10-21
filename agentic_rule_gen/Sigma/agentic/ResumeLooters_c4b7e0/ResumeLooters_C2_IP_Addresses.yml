@@ -1,0 +1,24 @@
+title: ResumeLooters C2 IP Addresses
+id: f456a048-c842-494b-9721-36e676137651
+status: experimental
+description: Detects network connections to IP addresses known to be used by the ResumeLooters threat group for C2 and hosting payloads.
+references:
+    - https://www.group-ib.com/blog/resumelooters/
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1583.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '139.180.137.107'
+            - '139.84.130.232'
+            - '139.84.168.189'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

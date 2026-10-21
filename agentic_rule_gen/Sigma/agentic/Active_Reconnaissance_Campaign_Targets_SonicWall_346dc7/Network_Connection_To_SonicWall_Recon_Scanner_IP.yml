@@ -1,0 +1,28 @@
+title: Network Connection to Known SonicWall Reconnaissance Scanner IP
+id: c358c283-e020-410e-8260-2df28330752b
+status: experimental
+description: Detects outbound network connections to IP addresses identified as high-volume scanners in a reconnaissance campaign targeting SonicWall firewalls.
+references:
+    - https://www.greynoise.io/blog/active-reconnaissance-campaign-targets-sonicwall-firewalls-through-commercial-proxy-infrastructure
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.reconnaissance
+    - attack.t1595
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '88.210.63.78'
+            - '185.156.73.19'
+            - '185.156.73.73'
+            - '88.210.63.77'
+            - '185.156.73.31'
+            - '88.210.63.79'
+            - '130.12.180.29'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

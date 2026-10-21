@@ -1,0 +1,28 @@
+title: ScreenConnect C2 Domain Query
+id: 8a7b6c5d-4e3f-4a2b-9c8d-7e6f5a4b3c2d
+status: experimental
+description: Detects DNS queries for domains known to be used as command and control (C2) servers for maliciously deployed ScreenConnect clients.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/09/29/phishing-abuses-rmm-tools-persistent-access/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.adswre.cfd'
+            - '.trews.cfd'
+            - '.swedcorry.stefneyv.com'
+            - '.ojsuyw.niyari.org'
+            - '.bunstar.harej.si'
+            - '.adsaw.cfd'
+            - '.sdfghj.rd-team.ru'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

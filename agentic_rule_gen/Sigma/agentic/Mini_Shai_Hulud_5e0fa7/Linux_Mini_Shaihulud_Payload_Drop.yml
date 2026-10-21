@@ -1,0 +1,24 @@
+title: Mini Shai-Hulud Payload Drop
+id: 3c9b7405-b3e6-429a-8c9a-c9d343ca151e
+status: experimental
+description: Detects the creation of the "math_init.js" payload file by a node or npm process, which is indicative of the malicious npm package installation.
+references:
+    - https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1195.002
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        TargetFilename|endswith: '/math_init.js'
+        Image|endswith:
+            - '/node'
+            - '/npm'
+    condition: selection
+falsepositives:
+    - Legitimate node packages that might create a file with this name during installation.
+level: medium

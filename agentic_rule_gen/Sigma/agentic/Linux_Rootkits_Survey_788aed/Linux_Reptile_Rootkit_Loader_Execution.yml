@@ -1,0 +1,24 @@
+title: Reptile Rootkit Loader Execution
+id: 59e211f4-3075-430c-ae74-9ec48259dfb7
+status: experimental
+description: Detects the execution of the Reptile rootkit loader from its default hardcoded path.
+references:
+    - https://www.elastic.co/security-labs/threat-command/linux-rootkits-2-caught-in-the-act
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.execution
+    - attack.defense_evasion
+    - attack.persistence
+    - attack.t1014
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image: '/lib/udev/reptile'
+        User: 'root'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

@@ -1,0 +1,29 @@
+title: Lumma Stealer C2 URL Access
+id: 9c0e5a8f-518f-4318-8f8d-488f54c979d3
+status: experimental
+description: Detects network traffic to URLs associated with Lumma Stealer C2 infrastructure.
+references:
+    - https://www.elastic.co/security-labs/threat-command/nightmare-on-0xelm-street
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url:
+            - 'https://mocadia.com/iuew'
+            - 'https://mastwin.in/qsaz'
+            - 'https://ordinarniyvrach.ru/xiur'
+            - 'https://yamakrug.ru/lzka'
+            - 'https://vishneviyjazz.ru/neco'
+            - 'https://yrokistorii.ru/uqya'
+            - 'https://stolevnica.ru/xjuf'
+            - 'https://visokiykaf.ru/mntn'
+            - 'https://kletkamozga.ru/iwqq'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

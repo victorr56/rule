@@ -1,0 +1,39 @@
+title: Komari Agent C2 Communication
+id: 5e62f6b8-a6b1-4191-881a-283e35183428
+status: experimental
+description: Detects HTTP requests to URI paths characteristic of the Komari agent's C2 communication protocol.
+references:
+    - https://www.huntress.com/blog/komari-c2-agent-abuse
+author: ioc-yara-daily (agentic)
+date: 2024-07-24
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection_report:
+        UserAgent|startswith: 'Go-http-client/'
+        Url|contains|all:
+            - '/api/clients/'
+            - '/report'
+    selection_terminal:
+        UserAgent|startswith: 'Go-http-client/'
+        Url|contains|all:
+            - '/api/clients/'
+            - '/terminal'
+    selection_task:
+        UserAgent|startswith: 'Go-http-client/'
+        Url|contains|all:
+            - '/api/clients/'
+            - '/task/result'
+    selection_info:
+        UserAgent|startswith: 'Go-http-client/'
+        Url|contains|all:
+            - '/api/clients/'
+            - '/uploadBasicInfo'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate installation of the Komari monitoring tool by an administrator.
+level: medium

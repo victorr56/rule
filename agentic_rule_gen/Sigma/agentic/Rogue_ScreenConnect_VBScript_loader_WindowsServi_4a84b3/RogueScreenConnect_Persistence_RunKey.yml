@@ -1,0 +1,22 @@
+title: Rogue ScreenConnect Persistence via WindowsServiceHost Run Key
+id: 56cc0c63-6e1d-4860-84c4-7faed0b8ac16
+status: experimental
+description: Detects the creation of a Run key persistence mechanism used by a rogue ScreenConnect VBScript loader. The malware creates a registry value named "WindowsServiceHost" to execute "WindowsServiceHost.vbs" at logon.
+references:
+    - https://www.huntress.com/blog/rogue-screenconnect-installations
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Software\Microsoft\Windows\CurrentVersion\Run\WindowsServiceHost'
+        Details|contains: 'WindowsServiceHost.vbs'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

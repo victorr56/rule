@@ -1,0 +1,514 @@
+{
+  "malware_family": "NJRAT, DCRAT, Mercurial Grabber, Chaos ransomware (used as wiper)",
+  "threat_actor": "ASHA HACKER TEAM (name displayed on ransomware wallpaper)",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "An ISO masquerading as a leaked Grand Theft Auto VI build, distributed via SEO poisoning, gaming forums and torrent sites, drops a fake GTA6 installer (gta6installer.exe) that unpacks multiple NJRAT copies, DCRAT, the Mercurial Grabber infostealer, a Yandex Browser installer and Chaos ransomware repurposed as a wiper into %TEMP%. NJRAT instances beacon to AWS-hosted IPs and an ngrok tunnel, DCRAT uses a Spybot Anti-Beacon hosts-file sinkhole list and a .xsph.ru C2, Mercurial Grabber exfiltrates to a Discord webhook, and the wiper only runs as administrator, encrypts files <=200MB and drops read_it.txt notes. Branded filenames (rockstar.exe, steam.exe, gta6.exe) and Russian-language installer/ransom text are the strongest host-side anchors.",
+  "mitre_techniques": [
+    "T1204.002",
+    "T1036.005",
+    "T1059.003",
+    "T1059.005",
+    "T1056.001",
+    "T1113",
+    "T1115",
+    "T1112",
+    "T1555.003",
+    "T1562.001",
+    "T1562.004",
+    "T1486",
+    "T1490",
+    "T1567.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "gta6installer.exe",
+      "context": "Fake GTA6 installer at root of ISO, uses GTA5 icon",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\checkinternetconnection.bat",
+      "context": "Launches Edge to clck.ru to confirm internet before unpacking payloads",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\find.vbs",
+      "context": "Run via WScript.exe to show fake 'License not found' error",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\licensechecker.exe",
+      "context": "NJRAT launcher, spawns %TEMP%\\any.ran.exe",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\rockstar.exe",
+      "context": "NJRAT launcher, spawns %TEMP%\\svchost.exe",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\steam.exe",
+      "context": "NJRAT launcher, spawns %TEMP%\\abc.exe",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\rockstargames.exe",
+      "context": "Drops DCRAT installer batch and sinks the hosts file",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\gta6.exe",
+      "context": "Chaos ransomware/wiper, runs only as administrator",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\YandexPackLoader.exe",
+      "context": "Installs Yandex Browser",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\license.exe",
+      "context": "NJRAT copy that stayed dormant",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\rockstargamescrashfixer.exe",
+      "context": "NJRAT copy that stayed dormant",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\rockstarservices.exe",
+      "context": "NJRAT copy that stayed dormant",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\adminapp.exe",
+      "context": "Mercurial Grabber infostealer binary",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\any.ran.exe",
+      "context": "NJRAT payload spawned by licensechecker.exe",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\svchost.exe",
+      "context": "NJRAT payload spawned by rockstar.exe",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\abc.exe",
+      "context": "NJRAT payload spawned by steam.exe",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\P3usMXh1h4.bat",
+      "context": "DCRAT installer, sets NTP to local then self-deletes",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Default\\Local Settings\\UserOOBEBroker.exe",
+      "context": "Randomly named DCRAT copy installed into Default profile dir",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%USERPROFILE%\\AppData\\Roaming\\svchost.exe",
+      "context": "Chaos ransomware/wiper executable created by gta6.exe",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "read_it.txt",
+      "context": "Ransom note dropped in every targeted folder",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "# Start of entries inserted by Spybot Anti-Beacon for Windows 10",
+      "context": "Comment header of hosts-file sinkhole block added by DCRAT",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "hello, your files has been encrypted by ach from achvzlom",
+      "context": "First line of the read_it.txt ransom note",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ach ransomware",
+      "context": "Sign-off line of the ransom note",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ВЫ ВЗЛОМАНЫ ХАКЕРСКОЙ КОМАНДОЙ АША!",
+      "context": "Russian message set as desktop wallpaper by the wiper",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "License not found",
+      "context": "Fake installer warning repeated by find.vbs error dialog",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "kanalwsegokrytow0555@gmail.com",
+      "context": "Contact address shown in the fake GTA6 installer prompt",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "установщик гта 6",
+      "context": "Russian heading of the fake installer dialog",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "licensechecker.exe -> %TEMP%\\any.ran.exe",
+      "context": "NJRAT launcher spawning its payload",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "rockstar.exe -> %TEMP%\\svchost.exe",
+      "context": "NJRAT launcher spawning its payload",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "steam.exe -> %TEMP%\\abc.exe",
+      "context": "NJRAT launcher spawning its payload",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "rockstargames.exe -> %TEMP%\\P3usMXh1h4.bat -> C:\\Users\\Default\\Local Settings\\UserOOBEBroker.exe",
+      "context": "DCRAT install chain",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "gta6.exe -> %USERPROFILE%\\AppData\\Roaming\\svchost.exe",
+      "context": "Wiper creates its own executable copy",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "WScript.exe -> find.vbs",
+      "context": "Final fake 'license not found' popup shown to the victim",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "checkinternetconnection.bat -> Microsoft Edge -> https://clck[.]ru/34uJnp",
+      "context": "Connectivity check before malware unpacking",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Windows Firewall rules created per NJRAT instance",
+      "context": "Each NJRAT copy adds firewall rules for itself",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "boot configuration modified to disable recovery and ignore boot failures",
+      "context": "Recovery inhibition by the wiper before encryption",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://clck.ru/34uJnp",
+      "context": "Shortener opened in Edge by checkinternetconnection.bat",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "35.157.111.131",
+      "context": "AWS-hosted NJRAT C2",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "3.68.56.232",
+      "context": "AWS-hosted NJRAT C2",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "3.67.15.169",
+      "context": "AWS-hosted NJRAT C2",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "7.tcp.eu.ngrok.io:12684",
+      "context": "ngrok tunnel used by NJRAT",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "a0700877.xsph.ru",
+      "context": "DCRAT C2 on long-standing blocklists",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "141.8.197.42",
+      "context": "IP for DCRAT C2 a0700877.xsph.ru",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://discord.com/api/webhooks/995445114254139543/NmpxQmuBCD6sm3UkVvupGtx-Y0M_A86oJHp00O-l8F4jakfVhqFXzMBoy1uBDdj2rBLc",
+      "context": "Discord webhook used by Mercurial Grabber to exfiltrate stolen data",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "telemetry.malwarebytes.com",
+      "context": "0.0.0.0 sinkhole entry added to hosts file by DCRAT",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ssl.google-analytics.com",
+      "context": "0.0.0.0 sinkhole entry added to hosts file by DCRAT",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "incoming.telemetry.mozilla.org",
+      "context": "0.0.0.0 sinkhole entry added to hosts file by DCRAT",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "analytics.ff.avast.com",
+      "context": "0.0.0.0 sinkhole entry added to hosts file by DCRAT",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "carcharodon.trendmicro.com",
+      "context": "0.0.0.0 sinkhole entry added to hosts file by DCRAT",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.mixpanel.com",
+      "context": "0.0.0.0 sinkhole entry added to hosts file by DCRAT",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "metrics.ol.epicgames.com",
+      "context": "0.0.0.0 sinkhole entry added to hosts file by DCRAT",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script",
+    "archive"
+  ]
+}

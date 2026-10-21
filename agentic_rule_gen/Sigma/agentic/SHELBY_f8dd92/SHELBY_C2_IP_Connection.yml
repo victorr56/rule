@@ -1,0 +1,25 @@
+title: SHELBY Malware C2 IP Connection
+id: 97818fa8-b2ef-4ac3-baea-41dd473c9f22
+status: experimental
+description: Detects network connections to IP addresses known to be used by SHELBY malware for command and control.
+references:
+    - https://www.elastic.co/security-labs/threat-command/the-shelby-strategy
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+logsource:
+    product: windows
+    category: network_connection
+detection:
+    selection:
+        DestinationIp:
+            - '2.56.126.151'
+            - '2.56.126.157'
+            - '2.56.126.188'
+            - '172.86.68.55'
+            - '195.16.74.138'
+    condition: selection
+falsepositives:
+    - These IPs could be reallocated to benign services in the future, especially if they are hosted on a shared VPS.
+level: medium

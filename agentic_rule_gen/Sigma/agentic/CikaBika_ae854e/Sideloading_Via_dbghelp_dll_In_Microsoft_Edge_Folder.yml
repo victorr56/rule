@@ -1,0 +1,24 @@
+title: Sideloading Via dbghelp.dll In Microsoft Edge Folder
+id: 3c85e26b-6967-4228-b0a5-a384358a9e67
+status: experimental
+description: Detects the loading of 'dbghelp.dll' from the Microsoft Edge application directory by 'msedge.exe'. This is indicative of a DLL sideloading attack where a malicious DLL is placed in the application's directory to be loaded instead of the legitimate one. This technique was observed being used by CikaBika RAT.
+references:
+  - https://www.darktrace.com/blog/hiding-in-plain-sight-uncovering-a-multi-stage-ransomware-attack-through-behavioral-detection
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.persistence
+  - attack.privilege_escalation
+  - attack.defense_evasion
+  - attack.t1574.001
+logsource:
+  category: image_load
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\msedge.exe'
+    ImageLoaded|endswith: '\Microsoft\Edge\Application\dbghelp.dll'
+  condition: selection
+falsepositives:
+  - Legitimate installers or debuggers loading a 'dbghelp.dll' from this path, which is highly unlikely as Microsoft Edge does not ship with this DLL in its application folder.
+level: high

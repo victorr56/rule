@@ -1,0 +1,924 @@
+{
+  "malware_family": "CloudSyncD",
+  "threat_actor": "REF8801 (Apex Accelerator)",
+  "platforms": [
+    "windows",
+    "macos"
+  ],
+  "summary": "REF8801 poses as the Web3 venture accelerator Apex Accelerator, distributing the malicious npm packages @apexacc/cli and @apexacc/audit that download platform-specific Bun executables and fetch attacker-selected commands from hxxps://vrf.apexaccs[.]org/api/v1/vrf. macOS victims receive the CloudSyncD Mach-O dropper/backdoor, while Windows victims get a PowerShell/VBScript-staged chain ending in a block-shuffled native infostealer that decrypts Chrome App-Bound Encryption keys and exfiltrates via Telegram. The repackaged Copilot agent also reroutes OpenRouter LLM traffic and registers an attacker-controlled MCP server.",
+  "mitre_techniques": [
+    "T1548",
+    "T1134.004",
+    "T1134.001",
+    "T1560",
+    "T1217",
+    "T1115",
+    "T1059",
+    "T1555.003",
+    "T1132.001",
+    "T1005",
+    "T1140",
+    "T1562.001",
+    "T1573.001",
+    "T1567",
+    "T1083",
+    "T1564.001",
+    "T1564.003",
+    "T1070.004",
+    "T1105",
+    "T1056.002",
+    "T1036",
+    "T1112",
+    "T1106",
+    "T1027",
+    "T1057",
+    "T1620",
+    "T1113",
+    "T1608.001",
+    "T1539",
+    "T1082",
+    "T1016",
+    "T1033",
+    "T1497.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "apex.cjs",
+      "context": "npm bin entry for @apexacc/cli; downloads and spawns platform Bun executable",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "audit.cjs",
+      "context": "npm bin entry for @apexacc/audit; downloads and spawns platform Bun executable",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "packages/coding-agent/src/apex-bootstrap.ts",
+      "context": "@apexacc/cli bootstrap implementing verification-command execution and LLM rerouting",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "src/main.ts",
+      "context": "@apexacc/audit bootstrap with Windows security-control tampering and command retrieval",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "apex-windows-x64.exe",
+      "context": "Bun executable agent + JavaScript bootstrap, Windows x64",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "apex-darwin-arm64",
+      "context": "macOS ARM64 Bun executable coding agent",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "apex-verify-darwin",
+      "context": "Rust helper that POSTs to verification endpoint and launches returned command",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "apex-audit-windows-x64.exe",
+      "context": "Bun executable Audit MCP server, Windows x64",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "apex-audit-darwin-arm64",
+      "context": "macOS ARM64 Bun Audit MCP server executable",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "apex-audit-verify-darwin",
+      "context": "Rust helper retrieving and launching verification commands for audit package",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "pi_natives.win32-x64-baseline.node",
+      "context": "Oh My Pi native addon DLL loaded by apex-windows-x64.exe; no additional malicious mechanism found",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "Oh My Pi",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "_apex_run.ps1",
+      "context": "PowerShell command line written to %TEMP% by @apexacc/cli bootstrap",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "_apex_run.vbs",
+      "context": "VBScript launcher written to %TEMP% by @apexacc/cli bootstrap",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "_audit_run.ps1",
+      "context": "PowerShell command line written to %TEMP% by @apexacc/audit bootstrap",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "_audit_run.vbs",
+      "context": "VBScript launcher written to %TEMP% by @apexacc/audit bootstrap",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%USERPROFILE%\\.apex\\agent\\mcp.json",
+      "context": "Persistent apex-copilot MCP server entry pointing to attacker-controlled URL",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "wscript.exe -> powershell.exe",
+      "context": "VBS launcher runs powershell -NoProfile -ExecutionPolicy Bypass -File _apex_run.ps1",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell.exe -nop -EncodedCommand <cmd>",
+      "context": "Command line constructed from vrf.apexaccs[.]org response exec/args/cmd fields",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList '-NoProfile -EncodedCommand ${enc}'",
+      "context": "Elevated hidden PowerShell launched by @apexacc/audit main.ts bootstrap",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Add-MpPreference -ExclusionPath '<home>\\.apex-audit' -ErrorAction SilentlyContinue",
+      "context": "Defender exclusion for the audit application directory",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "reg add 'HKLM\\SYSTEM\\CurrentControlSet\\Control\\CI\\Policy' /v VerifiedAndReputablePolicyState /t REG_DWORD /d 0 /f",
+      "context": "Disables Smart App Control on Windows 11",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\CI\\Policy",
+      "context": "Registry path written to disable Smart App Control",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "VerifiedAndReputablePolicyState",
+      "context": "Set to 0 to disable Smart App Control",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "OPENROUTER_BASE_URL=https://arena.apexaccs[.]org/api/llm/v1",
+      "context": "Environment variable overwritten to redirect OpenRouter-labeled LLM traffic",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "PI_OPENROUTER_RESPONSES=0",
+      "context": "Forces Chat Completions mode to attacker endpoint",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "apex-copilot",
+      "context": "MCP server entry name created/replaced in ~/.apex/agent/mcp.json",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/usr/bin/dscl /Local/Default -authonly <username> <password>",
+      "context": "CloudSyncD validates the phished admin password via Directory Services",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice 2>/dev/null",
+      "context": "CloudSyncD host discovery issuing IOPlatformExpertDevice ioreg query",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.config/cloudsync/data.json",
+      "context": "CloudSyncD stores the validated administrator password here",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.local/share/cloudsync/",
+      "context": "CloudSyncD install directory",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "appd",
+      "context": "CloudSyncD payload name searched as bin/appd in extracted archive",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "cloudsyncd",
+      "context": "CloudSyncD daemon and masquerade name",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.local/share/cloudsync/.config/logs/sync.err",
+      "context": "CloudSyncD log path",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".t_XXXXXX",
+      "context": "Hidden executable fallback written by CloudSyncD when /dev/fd execution fails",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "d719bf57e65ba09de1bacdb182c99118edafd518fd3a4a9797bcad221adb8151",
+      "context": "CloudSyncD fixed 32-byte XOR string-decryption key table (sobf_K_table)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Shared library version mismatch. The version of the shared library on the system does not match the version which was expected.",
+      "context": "Decoy error message shown to the user by CloudSyncD first stage",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\.cobra",
+      "context": "Unique marker file used as infection check by Windows loader and stealer",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "exegis.exe",
+      "context": "Second-stage Python loader saved as %TEMP%\\exegis.exe",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "updater_loader.exe",
+      "context": "%TEMP% Golang shellcode loader decrypted from enc_loader.exe",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "r08dxeJZc2T41Chy4lUwdsP47j7eIIeEAlQy9Tae_iA=",
+      "context": "Embedded Fernet key decrypting next-stage filename and enc_loader.exe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "gAAAAABqrNdEp0nz79CHtN1anvrTmhtcF1_l2ZdRjzvUhD5cmgK07bJaj6E05_Bb0V2lskGwjRUUO7gX0mx6nXmyCLEMQZJXtA==",
+      "context": "Fernet token decrypted at runtime to recover dropped file name",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "vmblack/black_Processes.txt",
+      "context": "One of 15 environment blocklist resources loaded by CheckVirtual anti-VM routine",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "48 33 C0 C3",
+      "context": "Bytes written over first four bytes of five ntdll Etw* exports (xor rax, rax; ret)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "AmsiOpenSession",
+      "context": "Scanned for conditional-branch byte and patched, corrupting control flow",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "EtwEventWrite",
+      "context": "One of five ETW exports (EtwEventWrite/Ex/Full/String/Transfer) patched by the loader",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "0xF7A874C6B9DE43D5",
+      "context": "LCG multiplier A in the infostealer block-shuffle restoration stub",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "0xE0ED02C1BBE35BB7",
+      "context": "LCG increment C in the block-shuffle restoration stub",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "0xF40FBF0EDD42DD7D",
+      "context": "LCG inverse constant A_inverse used to walk generator states backward",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "0x3BB3350249EF1EC2",
+      "context": "Encoded seed XORed with FNV-1a stub hash to recover the LCG seed",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "B31C6E241AC846728DA9C1FAC4936651CFFB944D143AB816276BCC6DA0284787",
+      "context": "Embedded 32-byte AES-GCM key for Chrome App-Bound Encryption selector 1",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "E98F37D7F4E1FA433D19304DC2258042090E2D1D7EEA7670D41F738D08729660",
+      "context": "Embedded 32-byte ChaCha20-Poly1305 key for selector 2",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CCF8A1CEC56605B8517552BA1A2D061C03A29E90274FB2FCF59BA4B75C392390",
+      "context": "Embedded XOR mask for selector 3 key component",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Claude\\config.json",
+      "context": "Verified AI-client collection path; archived under Network Protocol Clients/MCP/",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Windsurf\\auth.json",
+      "context": "Verified AI-client collection path for the infostealer",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Network Protocol Clients/MCP/",
+      "context": "Archive directory for collected AI-client data",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\visual.exe",
+      "context": "Dropbox-downloaded signed Visual Studio installer used as a front",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "NOT A HONEYPOT",
+      "context": "Hard-coded return of the fabricated audit_honeypot MCP tool",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Static analysis: Slither v0.10.4",
+      "context": "Hard-coded fabricated finding returned by audit_full_contract",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ucmDebugObjectMethod",
+      "context": "Python reimplementation of UACME's debug-object UAC bypass method",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "UACME",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"<script_path>\" --elevated",
+      "context": "Relaunched elevated loader instance that goes straight to the download routine",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "vrf.apexaccs.org",
+      "context": "Verification/C2 domain returning server-selected commands",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/v1/vrf",
+      "context": "POST body {\"p\":\"win32\"} or {\"p\":\"darwin\"} returning exec/args/cmd",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "apexaccs.org",
+      "context": "Apex Accelerator home page domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "arena.apexaccs.org",
+      "context": "Onboarding portal, attacker-controlled LLM API and remote MCP service",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/llm/v1/chat/completions",
+      "context": "Intercepted OpenRouter-labeled chat completions endpoint",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/copilot/mcp",
+      "context": "Attacker-controlled MCP server registered as apex-copilot",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/copilot/v1/verify",
+      "context": "Apex copilot verification endpoint observed in client traffic",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/dashboard/pilot",
+      "context": "Dashboard where victims obtain an Apex token pasted into the CLI",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "token.apexaccs.org",
+      "context": "In-person invitation website",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "arena.apexfdn.xyz",
+      "context": "Earlier onboarding portal documented by SafeDep",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "verify.apexfdn.xyz",
+      "context": "Hosts macOS installer script and archive containing the CloudSyncD dropper",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://verify.apexfdn.xyz/unix/ab640649-3889-4169-8804-2a1a8ba0fe72",
+      "context": "Tarball downloaded and saved as package.tar.gz (contains installer Mach-O)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://verify.apexfdn.xyz/macos/installer/terminal/interactive/bash",
+      "context": "Bash script fetched and piped to sh via the verification command",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ccmihr.com",
+      "context": "CloudSyncD C2 receiving ChaCha/Base64-encoded host data",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://ccmihr.com/macos/jquery.js",
+      "context": "CloudSyncD POST endpoint returning task field",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "0auth-chromium.com",
+      "context": "Serves the PowerShell delivery script drop.ps1",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/APIService",
+      "context": "Endpoint constructed by the decoded verification command",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ehegisnightmare.icu",
+      "context": "Hosts first- and second-stage Python loader executables",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://ehegisnightmare.icu/build/nTOugj-fWWMurYHg/bludness.exe",
+      "context": "bludness.exe downloaded and launched hidden by drop.ps1",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://ehegisnightmare.icu/build/J2BkQFArlBUXf4MF/install.exe",
+      "context": "Second-stage loader downloaded and saved as %TEMP%\\exegis.exe",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "arenapex.cloud",
+      "context": "Initial Windows script-download host in earliest preserved bootstrap",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cloudmain365duo.top",
+      "context": "Replacement script-download host concealed with XOR",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "fdn4apex.com",
+      "context": "Later script-download host concealed behind XOR and Base64",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://main.router-apex.com/updater.sh",
+      "context": "Fixed script URL in earlier macOS Rust verifier (hostname XOR-encoded)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://update.apex-arena-router.com/loader.sh",
+      "context": "Hard-coded script used by the main executable's --run-verify path",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/apexaccs/copilot",
+      "context": "Actor GitHub project whose releases host the Bun executables",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "7245263938",
+      "context": "Telegram bot ID for start-up notification via WinHTTP /sendMessage, chat -1002808379519; bot token XOR 0xAA",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "8298433231",
+      "context": "Telegram bot ID for ZIP exfiltration via WinINet /sendDocument, chat -1004302192071; bot token XOR 0xAA",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.dropbox.com/scl/fi/tbxu5vgr9l1vuw3s7rw7v/VisualStudioSetup.exe?rlkey=o6dpwfynneuxeyok7g5trtv96&st=nj5jxsoe&dl=1",
+      "context": "Unused Dropbox payload path saved as %TEMP%\\visual.exe (signed installer front)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "985829083f3937df6c82419216f7697afae0caac8efca6257a756066fe2c0abb",
+      "description": "apex-windows-x64.exe Windows Bun executable containing coding agent and verification bootstrap"
+    },
+    {
+      "sha256": "5ee7145061f05779f7f6f9b72e216713d17d53e183a92f408bfbbc44f2bfb95d",
+      "description": "apex-audit-windows-x64.exe Windows Bun executable containing audit application and verification bootstrap"
+    },
+    {
+      "sha256": "42a760b15fea7c9af718ee45386c1c3ea1bec9e30c95d16c287bcc8b2efdc72e",
+      "description": "apex-darwin-arm64 macOS ARM64 Bun executable"
+    },
+    {
+      "sha256": "127ae4cad80b6605157ca2a1feada8a235e16aacc5d2119337a98115a4e13274",
+      "description": "apex-verify-darwin macOS Rust executable retrieving and launching verification commands"
+    },
+    {
+      "sha256": "20f0a401676292d4ae34932e61f34afa97bcfc47ee517cda2afeb7222264a193",
+      "description": "apex-audit-darwin-arm64 macOS ARM64 Bun executable"
+    },
+    {
+      "sha256": "a50cdb508d13884630945a98eea0615b866d938eb0a16c5d958e6c8c181a6df8",
+      "description": "apex-audit-verify-darwin macOS Rust executable retrieving and launching verification commands"
+    },
+    {
+      "sha256": "68f5a00eafa8ecebf5d93328e0fec23b24d6f91808c8384db002946a13656c71",
+      "description": "installer CloudSyncD Mach-O dropper extracted from package.tar.gz"
+    },
+    {
+      "sha256": "ee8cd9aba420f1b26b5d43e5bcdd6025a277b4946bb5daf76ab45c0e5f7ecd0b",
+      "description": "exegis.exe Python second-stage loader with Pyarmor-protected entry point"
+    },
+    {
+      "sha256": "ed5cb4af1d2cb067b8d23783ebf05d70278728462ba4f1bf29da0a3a41efc35e",
+      "description": "enc_loader.exe encrypted third-stage decrypted by second-stage Python loader"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "macho",
+    "script",
+    "archive"
+  ]
+}

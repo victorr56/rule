@@ -1,0 +1,29 @@
+title: AuraStealer Payload Delivery Host Connection
+id: e7d1c4a6-9b32-4f85-a1c7-5d2e8b6f3c40
+status: experimental
+description: Detects outbound connections to the hardcoded delivery hosts that serve
+  AuraStealer installer executables from /files/ paths on non-standard staging IPs.
+references:
+  - https://www.reversinglabs.com/blog/infostealers-highlight-malware-as-a-service-trend
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.command_and_control
+  - attack.t1105
+  - attack.t1071.001
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationIp:
+      - '91.92.242.236'
+      - '91.92.241.243'
+      - '85.239.147.6'
+      - '158.94.208.7'
+      - '158.94.211.222'
+    Initiated: 'true'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high

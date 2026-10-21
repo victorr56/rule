@@ -1,0 +1,27 @@
+title: Balonx Sistema Phishing And C2 Domain Connections
+id: 4125b2f6-39f2-491c-b844-32c0d5fc2f99
+status: experimental
+description: Detects DNS queries for domains associated with the Balonx Sistema Phishing-as-a-Service platform.
+references:
+    - https://www.group-ib.com/blog/balonx-sistema-mexico-phaas-es/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.initial_access
+    - attack.t1566.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.callbalonx.info'
+            - '.panelbalonxfs.xyz'
+            - '.balonx.online'
+            - '.aclaraciones-digital.online'
+            - '.soporte-aclaracion.xyz'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

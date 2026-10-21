@@ -1,0 +1,22 @@
+title: AccountGuard ScreenConnect Masquerading Installation Path
+id: 298f24b0-a006-4444-a034-73c38b3687e8
+status: experimental
+description: Detects the ScreenConnect client service executable running from a non-standard 'C:\ProgramData\Windows Security\' path, a technique used by AccountGuard malware to hide the RMM tool.
+references:
+    - https://www.huntress.com/blog/bank-spam-rmm
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1548.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|startswith: 'C:\ProgramData\Windows Security\'
+        Image|endswith: '\ScreenConnect.ClientService.exe'
+    condition: all of selection
+falsepositives:
+    - Unlikely
+level: high

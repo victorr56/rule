@@ -1,0 +1,303 @@
+{
+  "malware_family": "RUSTBUCKET",
+  "threat_actor": "BlueNorOff",
+  "platforms": [
+    "macos"
+  ],
+  "summary": "A new variant of the RUSTBUCKET malware, attributed to BlueNorOff (Lazarus Group), targets macOS systems in financially motivated attacks. This version adds a persistence mechanism using a LaunchAgent plist to execute the malware on user login. The malware uses custom User-Agent strings to download subsequent stages and communicates with a dynamic C2 infrastructure.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "cur1-agent",
+      "context": "Stage 1 cURL request to download Stage 2 payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "mozilla/4.0 (compatible; msie 8.0; windows nt 5.1; trident/4.0)",
+      "context": "Stage 2 POST request to download Stage 3 payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)",
+      "context": "Stage 3 C2 communication.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "User-AgentMozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)",
+      "context": "Hardcoded string from Stage 3 binary, note the missing space.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "osascript:curl",
+      "context": "Stage 1 uses osascript to execute curl to download the next stage.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/users/shared/.pd",
+      "context": "Stage 2 binary saved to disk by Stage 1.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Users/<user>/Library/LaunchAgents/com.apple.systemupdate.plist",
+      "context": "Persistence plist file created by the malware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "com.apple.systemupdate.plist",
+      "context": "Persistence plist file name.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Users/<user>/Library/Metadata/System Update",
+      "context": "Path where the malware binary is copied for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "System Update",
+      "context": "Malware binary name used for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "com.apple.systemupdate",
+      "context": "The 'Label' key within the persistence plist file.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/Users/<user>/Library/Metadata/System Update https://webhostwatto.work.gd",
+      "context": "ProgramArguments from persistence plist, launching the malware with C2 URL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$TMPDIR/.<8 random digits>",
+      "context": "Stage 3 naming convention for uploaded payloads.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "pd",
+      "context": "String included in the body of the HTTP request for Stage 2.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "pw",
+      "context": "String included in the body of the HTTP request for Stage 3.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/var/log/install.log",
+      "context": "String from Stage 3 binary, likely for system info gathering.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x31",
+      "context": "C2 command ID to self-terminate.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x30",
+      "context": "C2 command ID to upload and execute files.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "webhostwatto.work.gd",
+      "context": "REF9135 C2 domain used in persistence mechanism.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "crypto.hondchain.com",
+      "context": "Initial REF9135 C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "starbucls.xyz",
+      "context": "REF9135 C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "jaicvc.com",
+      "context": "REF9135 C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "docsend.linkpc.net",
+      "context": "Associated REF9135 C2 domain (dynamic DNS).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "companydeck.online",
+      "context": "Domain associated by shared TLS fingerprint hash.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.168.167.88",
+      "context": "IP address for C2 domain webhostwatto.work.gd.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "64.44.141.15",
+      "context": "IP address for C2 domains crypto.hondchain.com, starbucls.xyz, etc.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "1031871a8bb920033af87078e4a418ebd30a5d06152cd3c2c257aecdf8203ce6",
+      "context": "TLS fingerprint hash for webhostwatto.work.gd and companydeck.online.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "788261d948177acfcfeb1f839053c8ee9f325bd6fb3f07637a7465acdbbef76a",
+      "context": "TLS fingerprint hash for starbucls.xyz and jaicvc.com.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "7887638bcafd57e2896c7c16698e927ce92fd7d409aae698d33cdca3ce8d25b8",
+      "description": "Stage 2 binary, downloaded as /Users/Shared/.pd."
+    },
+    {
+      "sha256": "9ca914b1cfa8c0ba021b9e00bda71f36cad132f27cf16bda6d937badee66c747",
+      "description": "Stage 3 FAT macOS binary (ARM/Intel), YARA reference sample."
+    },
+    {
+      "sha256": "7fccc871c889a4f4c13a977fdd5f062d6de23c3ffd27e72661c986fae6370387",
+      "description": "MacOS.Trojan.RustBucket sample from IOC list."
+    },
+    {
+      "sha256": "ec8f97d5595d92ec678ffbf5ae1f60ce90e620088927f751c76935c46aa7dc41",
+      "description": "MacOS.Trojan.RustBucket sample from IOC list."
+    },
+    {
+      "sha256": "de81e5246978775a45f3dbda43e2716aaa1b1c4399fe7d44f918fccecc4dd500",
+      "description": "MacOS.Trojan.RustBucket sample from IOC list, named ErrorCheck."
+    },
+    {
+      "sha256": "fe8c0e881593cc3dfa7a66e314b12b322053c67cbc9b606d5a2c0a12f097ef69",
+      "description": "MacOS.Trojan.RustBucket sample from IOC list."
+    }
+  ],
+  "file_types": [
+    "macho",
+    "script"
+  ]
+}

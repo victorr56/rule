@@ -1,0 +1,37 @@
+title: Potential Execution via FTP Banner Piped to Shell
+id: 597a7605-e4d6-4e50-a931-1f92e6211754
+status: experimental
+description: Detects a command line pattern where the output of the 'ftp.exe' client is piped to a command shell (`cmd.exe` or `powershell.exe`). This technique can be used as a dead-drop resolver to execute commands from an FTP server's welcome banner, as seen used by NOX Stealer operators.
+references:
+    - https://blog.virustotal.com/2026/10/internet-scanning-in-vt.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1059.003
+    - attack.command_and_control
+    - attack.t1071.002
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_cmd:
+        Image|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+        CommandLine|contains|all:
+            - 'ftp '
+            - '| cmd.exe'
+    selection_psh:
+        Image|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+        CommandLine|contains|all:
+            - 'ftp '
+            - '| powershell'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate administrative scripts might rarely use this pattern to parse FTP output.
+level: medium

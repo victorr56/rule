@@ -1,0 +1,27 @@
+title: Mirage Kitten (UNC1549) C2 Domain Queries
+id: 1152a5c5-1793-4e4f-b639-652a2221650b
+status: experimental
+description: |
+    Detects DNS queries for domains known to be used as C2 infrastructure by the Mirage Kitten (UNC1549) threat actor for the NodeRabbit and PollCat backdoors.
+references:
+    - https://securelist.com/mirage-kitten-new-backdoors-noderabbit-pollcat/121244/
+author: ioc-yara-daily (agentic)
+date: 2024-05-28
+tags:
+    - attack.command_and_control
+    - attack.t1568.002
+logsource:
+    category: dns_query
+    product: windows # To be adapted to the specific product
+detection:
+    selection:
+        QueryName|endswith:
+            - 'healthcomfsdpower.com'
+            - 'lifespotify.com'
+            - 'msmanagementgrp.com'
+            - 'sahi-finance.com'
+            - 'visitfinancedentists.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

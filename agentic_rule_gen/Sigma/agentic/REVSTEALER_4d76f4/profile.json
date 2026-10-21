@@ -1,0 +1,676 @@
+{
+  "malware_family": "REVSTEALER",
+  "threat_actor": "REF2859",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "REVSTEALER (tracked as REF2859) is an emerging Windows infostealer distributed through hijacked YouTube channels advertising free game cheats and through samples masquerading as recognizable software. It harvests browser, wallet, VPN, messaging and gaming-platform credentials, applies CIS locale exclusion and a ten-check sandbox scoring system, and uses Polygon smart-contract dead drops to retrieve fallback C2 addresses. Four C2-delivered modules (ProManager, WinUpdate, SoftManager, LockAppHost) extend it with phishing overlays, clipboard cryptocurrency swapping, SOCKS5 backconnect and XMRig deployment.",
+  "mitre_techniques": [
+    "T1020",
+    "T1115",
+    "T1555.003",
+    "T1083",
+    "T1070.004",
+    "T1106",
+    "T1113",
+    "T1082",
+    "T1204.002",
+    "T1497.003",
+    "T1102.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\Battle.net\\Battle.net.config",
+      "context": "Gaming credential/session theft target (Battle.net)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Battlestate Games\\BsgLauncher\\settings",
+      "context": "Gaming credential theft target; decrypted via ROR5 routine",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\Electronic Arts\\EA Desktop\\*.ini",
+      "context": "Gaming credential theft target (EA Desktop)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\Roblox\\LocalStorage\\RobloxCookies.dat",
+      "context": "Roblox session cookie decrypted with CryptUnprotectData",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\Steam\\local.vdf",
+      "context": "Steam credential/session theft target",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\Steam\\loginusers.vdf",
+      "context": "Steam credential/session theft target",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\.minecraft\\launcher_accounts.json",
+      "context": "Minecraft account theft target",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\.minecraft\\launcher_profiles_microsoft_store.json",
+      "context": "Minecraft account theft target",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\.minecraft\\TlauncherProfiles.json",
+      "context": "Minecraft account theft target",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\.minecraft\\meteor-client\\accounts.nbt",
+      "context": "Minecraft account theft target",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\.minecraft\\Impact\\alts.json",
+      "context": "Minecraft account theft target",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\.feather\\accounts.json",
+      "context": "Minecraft (Feather) account theft target",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Badlion Client\\accounts.json",
+      "context": "Minecraft (Badlion) account theft target",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%USERPROFILE%\\.lunarclient\\settings\\game\\accounts.json",
+      "context": "Minecraft (Lunar Client) account theft target",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%USERPROFILE%\\intentlauncher\\launcherconfig",
+      "context": "Minecraft launcher config theft target",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\ian\\Desktop\\mscoree.dll",
+      "context": "Observed DLL hijack/masquerading load event in Elastic telemetry",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
+      "context": "Enumerated to collect installed applications during victim profiling",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "resightloader.exe",
+      "context": "REVSTEALER Loader sample from IOC table",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "SoftManager72fb40.exe",
+      "context": "SoftManager module sample from IOC table",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "WinUpdate60e3a3.exe",
+      "context": "WinUpdate module sample from IOC table",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ProManagerServicedc894.exe",
+      "context": "ProManager module sample from IOC table",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "LockAppHost14a02b.exe",
+      "context": "LockAppHost module sample from IOC table",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "SteelSeriesGG.exe",
+      "context": "REVSTEALER build masquerading as SteelSeries GG, distributed via lure themes",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "slack.exe",
+      "context": "REVSTEALER build masquerading as Slack",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "qBittorrent.exe",
+      "context": "REVSTEALER build masquerading as qBittorrent",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "OSCrypt.AppBoundProvider.Decrypt.ResultCode",
+      "context": "Chrome App-Bound decryption string read from browser memory during ABE key theft",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "f07666ac22dfa1a361b8a8576baf69eadaf15431db9f3c34e93334d8d2f8d691",
+      "context": "Embedded AES key decrypting Polygon fallback C2 (SteelSeriesGG.exe config)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "5c30efd5b9ff75023c3813705f5c47feccc496f439b24b3e572db4c3b08dffe3",
+      "context": "Embedded AES key decrypting Polygon fallback C2 (slack.exe config)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "83f5b4ca629681abab2b9680472a304572a8c91b4a8ccc1189fbf58c6186db09",
+      "context": "Embedded AES key decrypting Polygon fallback C2 (qBittorrent.exe config)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Verification",
+      "context": "Watermark verification window prompting for six-character token before execution",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x936F",
+      "context": "ROR5 string decryption key passed to wstr_decrypt_ror5_sub for Battlestate path",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "sandbox score threshold >= 7",
+      "context": "Score at or above which REVSTEALER self-terminates (cmp eax, 7 on enc_sandbox_score)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "CIS locale exclusion via FNV-1a hash lookup",
+      "context": "Hashes user/system UI language and keyboard layout against embedded CIS table, then exits",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Chrome App-Bound Encryption bypass (debugger plus hardware breakpoint on decrypt code)",
+      "context": "Launches browser under debugger and reads decrypted App-Bound key from memory",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "ElevationKatz (ChromeKatz)",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "GetEnvironmentStringsW",
+      "context": "Used to dump the full environment block during victim profiling",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "OpenClipboard",
+      "context": "Clipboard collection during victim profiling",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "GetClipboardData",
+      "context": "Clipboard data retrieval during victim profiling",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "CryptUnprotectData",
+      "context": "Decrypts Roblox user session cookie for account takeover",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "invoke_indirect_syscall",
+      "context": "Central indirect-syscall dispatcher evading user-mode hooks (function name compiled away)",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "g_syscall_index_xor_key",
+      "context": "XOR key decoding syscall index at runtime (symbol name compiled away)",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "g_stub_ptr_xor_key",
+      "context": "XOR key decoding syscall stub pointer at runtime (symbol name compiled away)",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "enc_sandbox_score",
+      "context": "Encrypted/hashed sandbox score variable compared to 7 (symbol name compiled away)",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "wstr_decrypt_ror5_sub",
+      "context": "ROR5-based string decryption routine for target file paths (symbol name compiled away)",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "util_short_hash_lookup",
+      "context": "Hash-based lookup used for CIS locale exclusion checks (symbol name compiled away)",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x60806040",
+      "context": "EVM contract-creation bytecode prefix of the Polygon dead drop contract",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "monitor5.roast-core85.click",
+      "context": "REVSTEALER C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "config.hubdisplay.lol",
+      "context": "ProManager C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "health.journal-metric.lol",
+      "context": "WinUpdate C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "metric.gardenpark.click",
+      "context": "SoftManager C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "polygon.iwmukj.xyz:443",
+      "context": "Primary C2 in extracted config of SteelSeriesGG.exe sample",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "polygon.mnyhgxda.xyz:443",
+      "context": "Primary C2 in extracted config of slack.exe sample",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "static4.livelab.one:443",
+      "context": "Primary C2 in extracted config of qBittorrent.exe sample",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "elitecheatsx.live",
+      "context": "Game-cheat distribution domain promoted by hijacked YouTube channels",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "resight-cheats.net",
+      "context": "Game-cheat distribution domain promoted by hijacked YouTube channels",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.resight-cheats.net/",
+      "context": "Download link shown in YouTube video description advertising Albion Online cheat",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x7e4126ADFE6679B3613F629CD49162Fb08fc53Bd",
+      "context": "Polygon dead drop contract address in SteelSeriesGG.exe config",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x0EC6a6D31b36271eBD06450EA98c84eBa8a191d5",
+      "context": "Polygon dead drop contract address in slack.exe config",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x49cE5712164755ed212209bc71539bBc6fCFF541",
+      "context": "Polygon dead drop contract address in qBittorrent.exe config",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x98FF8e7cdC13AE46b83B7590B986F25f1560DF03",
+      "context": "ProManager Polygon contract address",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x0cF1Ec8B9551103de729c3b02D77221Da9d81Acc",
+      "context": "WinUpdate Polygon contract address",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x0E04c59f31E382D2B8A1637f4B9A5f04165EC48d",
+      "context": "SoftManager Polygon contract address",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xC4eC9B7be1c2A0B39Eca678673DcB9164CA5df53",
+      "context": "LockAppHost Polygon contract address",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "0xdbefdad6",
+      "context": "Polygon contract function selector in SteelSeriesGG.exe config",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "0xd21368b4",
+      "context": "Polygon contract function selector in slack.exe config",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "0x071258c6",
+      "context": "Polygon contract function selector in qBittorrent.exe config",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "4c897108e8e793d6904110928c996815c302d6975c9bc61162149e855a963d50",
+      "description": "REVSTEALER loader (resightloader.exe)"
+    },
+    {
+      "sha256": "adc4aa652965396b52e79435ca54987ae9eb21bf5e67de5e9461b09655165ee4",
+      "description": "REVSTEALER sample"
+    },
+    {
+      "sha256": "8b33e0f32c42a317e3d9cd67d5a6dc68e91a6cf9dd44742162858e7d83cf2073",
+      "description": "REVSTEALER payload themed as SteelSeriesGG.exe (config with Polygon dead drop)"
+    },
+    {
+      "sha256": "bd97d5cab2d09b001d1b9e08890bce1a2b2cf8542a4b31c86b2def59328cafb2",
+      "description": "REVSTEALER payload themed as slack.exe (config with Polygon dead drop)"
+    },
+    {
+      "sha256": "1617552169df805405b1bb70f742d6eac5af342f31c6e39ff6b9613bd2392354",
+      "description": "REVSTEALER payload themed as qBittorrent.exe (config with Polygon dead drop)"
+    },
+    {
+      "sha256": "14b2ac356ed75d10ef40bbaaa48e7dd9fff7de9719c2a43ad123fe843dd4e4e2",
+      "description": "SoftManager follow-on module (SoftManager72fb40.exe)"
+    },
+    {
+      "sha256": "7c08cf409194056a8517865e5d3433d1499bb8262263b55b49b8b07d9d182fcb",
+      "description": "WinUpdate follow-on module (WinUpdate60e3a3.exe)"
+    },
+    {
+      "sha256": "13d7237d7289e67c2d806a65d52580b453ce4987acbe2c4c4d04833f55ebccfa",
+      "description": "ProManager follow-on module (ProManagerServicedc894.exe)"
+    },
+    {
+      "sha256": "c66d2b77b9e85c53391891212413ad9a99eb66f4b11c6a431e78884a5b2651e5",
+      "description": "LockAppHost follow-on module (LockAppHost14a02b.exe)"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

@@ -1,0 +1,200 @@
+{
+  "malware_family": "SocGholish",
+  "threat_actor": "RansomHub affiliates",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "SocGholish loader is used for initial access, followed by credential harvesting using WebDAV and malicious SCF files for forced authentication. This access is passed to RansomHub operators who use a Python backdoor and port-hopping C2 communications before deploying ransomware.",
+  "mitre_techniques": [
+    "T1187",
+    "T1110",
+    "T1071.001",
+    "T1571",
+    "T1083",
+    "T1018",
+    "T1046",
+    "T1135",
+    "T1059.007",
+    "T1021.002",
+    "T1608.004"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "Microsoft-WebDAV-MiniRedir/10.0.19045",
+      "context": "WebDAV connection to trigger NTLM authentication.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Thumbs.scf",
+      "context": "Dropped on internal SMB shares for credential access.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[Shell]",
+      "context": "Section in Thumbs.scf file.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Command=2",
+      "context": "Command in Thumbs.scf file.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IconFile=\\\\\\\\161.35.56.33\\\\share\\\\icon.ico",
+      "context": "UNC path in Thumbs.scf to attacker-controlled server.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "garagebevents.com",
+      "context": "Possibly compromised website used for initial access.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "packedbrick.com",
+      "context": "Keitaro TDS domain for SocGholish delivery.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "rednosehorse.com",
+      "context": "Keitaro TDS domain for SocGholish delivery.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "blackshelter.org",
+      "context": "Keitaro TDS domain for SocGholish delivery.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "blacksaltys.com",
+      "context": "Keitaro TDS domain for SocGholish delivery.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "virtual.urban-orthodontics.com",
+      "context": "SocGholish distribution endpoint.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "msbdz.crm.bestintownpro.com",
+      "context": "SocGholish C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "161.35.56.33",
+      "context": "External endpoint for WebDAV/SCF NTLM hash theft.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.174.101.240",
+      "context": "RansomHub Python C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.174.101.69",
+      "context": "RansomHub Python C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "108.181.182.143",
+      "context": "RansomHub Python C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/s",
+      "context": "Targeted URI on WebDAV server for forced authentication.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "2308",
+      "context": "RansomHub C2 destination port (port-hopping).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "2311",
+      "context": "RansomHub C2 destination port (port-hopping).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "2313",
+      "context": "RansomHub C2 destination port (port-hopping).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script",
+    "pe"
+  ]
+}

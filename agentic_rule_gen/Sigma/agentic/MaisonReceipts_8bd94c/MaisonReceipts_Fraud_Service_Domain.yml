@@ -1,0 +1,24 @@
+title: MaisonReceipts Fraud Service Domain
+id: abdf9c97-6a56-43e8-8b09-b68ab36173a1
+status: experimental
+description: Detects DNS queries for domains associated with the MaisonReceipts fraud-as-a-service platform, which generates fake receipts.
+references:
+    - https://www.group-ib.com/blog/fake-receipts-generators/
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.resource_development
+    - attack.t1588.006
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith:
+            - 'maisonreceipts.cc'
+            - 'maison.sellsn.io'
+            - 'receiptified.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

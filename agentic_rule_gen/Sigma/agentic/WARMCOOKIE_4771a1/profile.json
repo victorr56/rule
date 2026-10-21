@@ -1,0 +1,322 @@
+{
+  "malware_family": "WARMCOOKIE",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "WARMCOOKIE is an actively developed backdoor with updated handlers for executing PE files, DLLs, and scripts. Newer versions use a 'string bank' of legitimate company names for evasion, a new command-line argument (/u), and embed campaign IDs. A default SSL certificate is used across some C2 infrastructure, providing a potential tracking mechanism.",
+  "mitre_techniques": [
+    "T1566",
+    "T1204.001",
+    "T1059.001",
+    "T1082",
+    "T1053.005",
+    "T1113",
+    "T1059.003",
+    "T1070.003"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\RtlUpd\\RtlUpd.dll",
+      "context": "Hardcoded path used in previous variants.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/u",
+      "context": "Command-line parameter to trigger scheduled task creation in new variants.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/p",
+      "context": "Command-line parameter to trigger scheduled task creation in older variants.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "Start",
+      "context": "Export used by one of the DLL execution handlers.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "traffic2",
+      "context": "Embedded campaign ID observed in a sample.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bing",
+      "context": "Embedded campaign ID keyword.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bing2",
+      "context": "Embedded campaign ID keyword.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bing3",
+      "context": "Embedded campaign ID keyword.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "aws",
+      "context": "Embedded campaign ID keyword.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "lod2lod",
+      "context": "Embedded campaign ID marker.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "capo",
+      "context": "Embedded campaign ID marker.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PrivateDLL",
+      "context": "Embedded campaign ID marker.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "83ddc084e21a244c",
+      "context": "Embedded RC4 key used to cluster operator builds.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "C=AU, ST=Some-State, O=Internet Widgits Pty Ltd",
+      "context": "Issuer for default C2 SSL certificate.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "8c5522c6f2ca22af8db14d404dbf5647a1eba13f2b0f73b0a06d8e304bd89cc0",
+      "context": "SHA256 fingerprint of default C2 certificate.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "rundll32.exe",
+      "context": "Used to execute malicious DLL payloads.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "PowerShell.exe",
+      "context": "Used to execute malicious PowerShell scripts.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "storsvc-win.com",
+      "context": "WARMCOOKIE C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "87.120.126.32",
+      "context": "WARMCOOKIE C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "85.208.84.220",
+      "context": "WARMCOOKIE C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "109.120.137.42",
+      "context": "WARMCOOKIE C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "195.82.147.3",
+      "context": "WARMCOOKIE C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "155.94.155.155",
+      "context": "WARMCOOKIE C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "87.120.93.151",
+      "context": "WARMCOOKIE C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "170.130.165.112",
+      "context": "WARMCOOKIE C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.36.57.164",
+      "context": "WARMCOOKIE C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "194.71.107.41",
+      "context": "WARMCOOKIE C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "149.248.58.85",
+      "context": "WARMCOOKIE C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.180.91.117",
+      "context": "WARMCOOKIE C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "c7bb97341d2f0b2a8cd327e688acb65eaefc1e01c61faaeba2bc1e4e5f0e6f6e",
+      "description": "WARMCOOKIE sample"
+    },
+    {
+      "sha256": "9d143e0be6e08534bb84f6c478b95be26867bef2985b1fe55f45a378fc3ccf2b",
+      "description": "WARMCOOKIE sample"
+    },
+    {
+      "sha256": "f4d2c9470b322af29b9188a3a590cbe85bacb9cc8fcd7c2e94d82271ded3f659",
+      "description": "WARMCOOKIE sample"
+    },
+    {
+      "sha256": "5bca7f1942e07e8c12ecd9c802ecdb96570dfaaa1f44a6753ebb9ffda0604cb4",
+      "description": "WARMCOOKIE sample"
+    },
+    {
+      "sha256": "b7aec5f73d2a6bbd8cd920edb4760e2edadc98c3a45bf4fa994d47ca9cbd02f6",
+      "description": "WARMCOOKIE sample"
+    },
+    {
+      "sha256": "e0de5a2549749aca818b94472e827e697dac5796f45edd85bc0ff6ef298c5555",
+      "description": "WARMCOOKIE sample"
+    },
+    {
+      "sha256": "169c30e06f12e33c12dc92b909b7b69ce77bcbfc2aca91c5c096dc0f1938fe76",
+      "description": "WARMCOOKIE sample"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

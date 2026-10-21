@@ -1,0 +1,22 @@
+title: 'macOS.Gaslight Persistence via LaunchAgent'
+id: 5698b6a3-2c1b-4f76-86f1-b99ab3df9ac0
+status: experimental
+description: 'Detects the creation of a specific LaunchAgent .plist file by the Gaslight malware binary for persistence. The malware masquerades as a system service.'
+references:
+    - https://www.sentinelone.com/labs/macos-gaslight-rust-backdoor-turns-prompt-injection-on-the-analyst-not-the-sandbox/
+author: ioc-yara-daily (agentic)
+date: 2024-10-16
+tags:
+    - attack.persistence
+    - attack.t1543.001
+logsource:
+    category: file_event
+    product: macos
+detection:
+    selection:
+        TargetFilename|endswith: '/Library/LaunchAgents/com.apple.system.services.activity.plist'
+        Image|endswith: '/Users/Shared/.system/com.apple.system.services.activity/system'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

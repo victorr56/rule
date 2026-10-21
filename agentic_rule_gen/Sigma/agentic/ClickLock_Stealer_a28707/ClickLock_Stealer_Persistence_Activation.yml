@@ -1,0 +1,29 @@
+title: ClickLock Stealer Persistence Activation via Launchctl
+id: 5747048f-36c5-4428-b016-ba92af25a2df
+status: experimental
+description: Detects the loading of malicious LaunchAgent .plist files used by ClickLock Stealer for persistence. The plist name 'com.authirity.plist' contains a characteristic typo.
+references:
+    - https://www.group-ib.com/blog/clicklock-stealer-macos-malware/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1543.001
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection_auth:
+        Image|endswith: '/launchctl'
+        CommandLine|contains|all:
+            - 'load'
+            - 'com.authirity.plist'
+    selection_chromer:
+        Image|endswith: '/launchctl'
+        CommandLine|contains|all:
+            - 'load'
+            - 'com.chromer.plist'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: critical

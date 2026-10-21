@@ -1,0 +1,25 @@
+title: XMRig Miner Masquerading As systemd-devd
+id: 0325d72f-22a0-47b3-ad53-066f2ed6279f
+status: experimental
+description: |
+  Detects a process named 'systemd-devd', which is a misspelling of the legitimate 'systemd-udevd' service. This specific name is used by XMRig cryptominers deployed in post-exploitation scenarios, such as after a React2Shell compromise.
+references:
+  - https://www.wiz.io/blog/nextjs-cve-2025-55182-react2shell-deep-dive
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+  - attack.t1496
+  - attack.t1036.005
+  - attack.impact
+  - attack.defense_evasion
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  selection:
+    Image|endswith: '/systemd-devd'
+    CommandLine|contains: ' -c /etc/config.json'
+  condition: selection
+falsepositives:
+  - This specific combination of a misspelled system binary name and command-line arguments is highly unlikely to occur in legitimate software.
+level: high

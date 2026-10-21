@@ -1,0 +1,839 @@
+{
+  "malware_family": "NodeRabbit, PollCat",
+  "threat_actor": "Mirage Kitten (UNC1549, Smoke Sandstorm, Nimbus Manticore)",
+  "platforms": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "summary": "Mirage Kitten delivers two new cross-platform implants, the Node.js NodeRabbit RAT and the obfuscated JavaScript PollCat RAT, through trojanized coding-challenge archives hosted on Amazon S3 and pitched by fake recruiters on job platforms. NodeRabbit wraps JSON C2 traffic in AES-256-GCM and reaches Azure-hosted endpoints, persisting via Edge/Intel DSA masquerades, Run keys, scheduled tasks, cron and LaunchAgents; PollCat beacons Base64 binary records to /beacon and /gate/* endpoints and adds fake VS Code extension and Git-hook persistence. Victims are aviation/aerospace and fintech organizations in Egypt, Ethiopia and Afghanistan.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "node_modules/.cache/.320697f1/index.js",
+      "context": "NodeRabbit v1 implant launched by trojanized colorized_terminal package import",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "colorized_terminal",
+      "context": "Trojanized npm package pinned to version 2.1.0, bundled in node_modules",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "pretty-log",
+      "context": "Second trojanized npm package pinned to version 2.1.0",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Microsoft\\EdgeUpdate\\msedge_update.js",
+      "context": "NodeRabbit v1 Windows persistence copy masquerading as Edge update",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "nodew.exe",
+      "context": "Clone of local node.exe with PE subsystem patched Console to GUI",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\MicrosoftEdgeUpdate",
+      "context": "NodeRabbit v1 Run key launching nodew.exe msedge_update.js",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "nodew.exe msedge_update.js",
+      "context": "Command stored in MicrosoftEdgeUpdate Run key",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.config/microsoft-edge-update/msedge_update.js",
+      "context": "NodeRabbit v1 Linux copy plus @reboot cron entry",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/LaunchAgents/com.microsoft.edgeupdate.plist",
+      "context": "NodeRabbit v1 macOS LaunchAgent with RunAtLoad and KeepAlive",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\Intel\\DSA\\idriver_support.js",
+      "context": "NodeRabbit v2 Windows persistence masquerading as Intel DSA",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "IntelDSA.exe",
+      "context": "Renamed node.exe with console subsystem patched, run by scheduled task",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "IntelDriverSupportUpdate",
+      "context": "Daily 10AM task executing IntelDSA.exe with dropped script",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.config/intel-dsa/idriver_support.js",
+      "context": "NodeRabbit v2 Linux copy with @reboot cron entry",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Application Support/Intel DSA/idriver_support.js",
+      "context": "NodeRabbit v2 macOS persistence copy",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/LaunchAgents/com.intel.dsa.helper.plist",
+      "context": "NodeRabbit v2 LaunchAgent, RunAtLoad and KeepAlive enabled",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "41984 + (value mod 5000)",
+      "context": "NodeRabbit v2 single-instance port derived from agent id, range 41984-46983",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "127.0.0.1:48739",
+      "context": "NodeRabbit v1 fixed single-instance TCP listener port",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "{\"d\":\"base64(IV || ciphertext || authentication_tag)\",\"_r\":\"8 hexadecimal characters\",\"_t\":\"epoch timestamp\"}",
+      "context": "NodeRabbit AES-256-GCM wrapped JSON request structure, fresh 12-byte IV",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "launcher.vbs",
+      "context": "NodeRabbit v3 WSL persistence script under Windows user profile, relaunched by wscript.exe",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".sv.json",
+      "context": "File where agent:servers can write the replaced in-memory C2 list",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "# shepherd-persist;",
+      "context": "Marker line prefixed to appended launcher in Git hooks",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".git/hooks/post-merge",
+      "context": "Git hook appended with marked payload launcher by persist:project:inject",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".git/hooks/post-checkout",
+      "context": "Second Git hook used for NodeRabbit launcher injection",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GitHub Copilot Helper",
+      "context": "Fake VS Code extension display name created by persist:vscode",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AI coding assistant helper service",
+      "context": "Description of the fake VS Code extension",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "StartupFinished",
+      "context": "Activation event of the fake VS Code extension",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "state.vscdb",
+      "context": "VS Code state DB read for trustedPublishers to borrow a publisher name",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "trustedPublishers",
+      "context": "Value in state.vscdb used to spoof extension publisher",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "129--<hostname>",
+      "context": "PollCat clientId format sent in beacon registration",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "requireObjects.js",
+      "context": "Component imported and started by requireAuth.js at PollCat lure app startup",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "requireAuth.js",
+      "context": "Loaded by app.js and immediately starting malicious requireObjects.js",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Microsoft\\Network",
+      "context": "PollCat Windows persistence dir with package.json and requireObject.js, runs npm install",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "NetSync_<username>",
+      "context": "PollCat daily 09AM task running the worker with Node.js",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.node_packages",
+      "context": "PollCat Linux/macOS worker directory with 09AM cron and @reboot line",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/LaunchAgents/com.harsh.requireobject.plist",
+      "context": "PollCat macOS LaunchAgent with RunAtLoad and daily 09AM trigger",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x1D4C0 / 0x1388 / 0xEA60",
+      "context": "Shared beacon poll 120000ms, jitter 5000ms, retry 60000ms defaults",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "'Google','Microsoft','Palo Alto Networks','Cisco','VMware','Fortinet','Citrix','CheckPoint','Juniper Networks','LogMeIn','Sophos','Symantec','Trend Micro','McAfee','Kaspersky Lab','ESET','Bitdefender','Avast Software','CrowdStrike','SentinelOne','Malwarebytes','BraveSoftware','Tencent','Naver'",
+      "context": "24 hardcoded security-vendor folder strings searched by PollCat SYSTEM_CHECK",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\Microsoft\\Olk\\Attachments",
+      "context": "Path enumerated by PollCat SYSTEM_CHECK inventory",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl.exe --proxy-anyauth --proxy-user",
+      "context": "NodeRabbit v2 delegates proxy NTLM/Negotiate auth to curl in victim logon session",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "dItekoCs",
+      "context": "Little-endian immediate 'socketId' in MiniFast/Retrograde handshake, attribution link",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "WindowsSecurityUpdate",
+      "context": "MiniFast/Retrograde PERSIST command (0xB1) creates this task; unimplemented in PollCat",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "JWT_SECRET=ctf-jwt-secret-change-this-in-production-2026",
+      "context": "JWT signing secret in bundled .env of PollCat coding-challenge project",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "OTP_CLIENT_ID=b879746e-fed9-4211-a6da-4d8223681267",
+      "context": "OTP client identifier in bundled .env of PollCat project",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CTF server running",
+      "context": "Backend banner printed by the PollCat React challenge project",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ctf-server",
+      "context": "Root package name of the PollCat challenge app, with ctf-* storage keys",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "plugplay.azurewebsites.net",
+      "context": "NodeRabbit v1 C2 endpoint 1",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "rgbteller.azurewebsites.net",
+      "context": "NodeRabbit v2 C2 endpoint (listed as Rgbteller)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wslwebui.azurewebsites.net",
+      "context": "NodeRabbit v2 C2 endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "visitfinancedentists.com",
+      "context": "NodeRabbit v3 Cloudflare-backed C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kyrasey-f8hfexa5cqamh7fk.westeurope-01.azurewebsites.net",
+      "context": "NodeRabbit v3 Azure C2 endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "healthcomfsdpower.com",
+      "context": "NodeRabbit v3 C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sahi-finance.com",
+      "context": "PollCat C2 endpoint 1",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gamebarappinformation.azurewebsites.net",
+      "context": "PollCat C2 endpoint 2 (GamebarAppinformation)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gamebarapp.azurewebsites.net",
+      "context": "PollCat C2 endpoint 3 (GamebarApp)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "msmanagementgrp.com",
+      "context": "Mirage Kitten C2 domain, pattern source for further infra discovery",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "lifespotify.com",
+      "context": "Attacker-managed OTP validation domain used by PollCat lure",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "oracle-challenge.s3.us-east-1.amazonaws.com",
+      "context": "Amazon S3 bucket hosting trojanized challenge archive",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "crossdwm.azurewebsites.net",
+      "context": "NodeRabbit C2 infrastructure, AS 8075",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wdisystem.azurewebsites.net",
+      "context": "NodeRabbit C2 infrastructure, AS 8075",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wslmenus.azurewebsites.net",
+      "context": "NodeRabbit C2 infrastructure, AS 8075",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dnshnsdev.azurewebsites.net",
+      "context": "NodeRabbit C2 infrastructure, AS 8075",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hpjumpsrv.azurewebsites.net",
+      "context": "NodeRabbit C2 infrastructure, AS 8075",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "storview.azurewebsites.net",
+      "context": "NodeRabbit C2 infrastructure, AS 8075",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hecowime-aqdphyd4bbdef6es.westeurope-01.azurewebsites.net",
+      "context": "NodeRabbit C2 endpoint, sample 7 infrastructure",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "naturalapplication.azurewebsites.net",
+      "context": "NodeRabbit sample 1 infrastructure, AS 8075",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/rabbit/checkin",
+      "context": "NodeRabbit v1 POST endpoint registering agent and host info",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/rabbit/task",
+      "context": "NodeRabbit v1 POST endpoint polling for commands",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/rabbit/result",
+      "context": "NodeRabbit v1 POST endpoint submitting results",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/sdk/v2/ready",
+      "context": "NodeRabbit v3 POST endpoint registering agent and host info",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/sdk/v2/config",
+      "context": "NodeRabbit v3 POST endpoint polling for commands",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/sdk/v2/events",
+      "context": "NodeRabbit v3 POST endpoint submitting results",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/beacon",
+      "context": "PollCat POST registration endpoint; success is HTTP 400",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/gate/hello",
+      "context": "PollCat POST host/user/domain/OS/privilege submission endpoint",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/gate/fetch?token=<socketId>",
+      "context": "PollCat GET command polling with socketId token",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/gate/submit",
+      "context": "PollCat POST Base64 command-result submission",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/vault/<uuid>",
+      "context": "PollCat GET retrieving C2-hosted file to victim",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/vault/push/",
+      "context": "PollCat PUT uploading local file or chunk to C2",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/gate/track",
+      "context": "PollCat POST chunk-upload progress reporting",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/system-details/result",
+      "context": "PollCat POST sending system inventory JSON",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/agent/init",
+      "context": "MiniFast/Retrograde host registration endpoint sharing PollCat handshake logic",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/agent/poll?token=<socketId>",
+      "context": "MiniFast/Retrograde command polling endpoint matching PollCat pattern",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/rg",
+      "context": "MiniFast/Retrograde handshake POST where 400 means success (socketId)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://oracle-challenge.s3.us-east-1.amazonaws.com/Front-Technical-Challenge.zip",
+      "context": "S3-hosted trojanized coding challenge archive lure",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://lifespotify.com/api/users/b879746e-fed9-4211-a6da-4d8223681267/otp/validate",
+      "context": "PollCat lure OTP validation request to attacker-managed domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "HTTP 400 treated as successful handshake (body carries socketId)",
+      "context": "Shared PollCat and MiniFast/Retrograde C2 session establishment quirk",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "1EA83E4E4592B01E4ACAB63EB867BEE5",
+      "description": "Front-Technical-Challenge.zip trojanized TaskFlow challenge archive carrying NodeRabbit (report lists MD5)"
+    },
+    {
+      "sha256": "CBAAF0900A13F28E380F49ADECEC932C",
+      "description": "FrontEnd-Task.zip trojanized coding challenge archive (report lists MD5)"
+    },
+    {
+      "sha256": "366515822D5AC1CC500711EF57A2E32E",
+      "description": "Task-FullStack.zip trojanized coding challenge archive (report lists MD5)"
+    },
+    {
+      "sha256": "CF449F1992C2819E62AC44A0B06AC2E7",
+      "description": "fullstack-1536.zip trojanized coding challenge archive (report lists MD5)"
+    },
+    {
+      "sha256": "E95A4366686E3F786EA3C056FAB5B0DA",
+      "description": "webapp76592.zip trojanized coding challenge archive (report lists MD5)"
+    },
+    {
+      "sha256": "DE5AF16A3757EF700B01DC34D67079AE",
+      "description": "webapp76531.zip trojanized coding challenge archive (report lists MD5)"
+    },
+    {
+      "sha256": "BE086789568441D0D7E4679AEE51F566",
+      "description": "challenges-17831.zip trojanized coding challenge archive (report lists MD5)"
+    },
+    {
+      "sha256": "E259C5EDF158AAC4CFE14F77DDD0B196",
+      "description": "challenges-17832.zip trojanized coding challenge archive (report lists MD5)"
+    },
+    {
+      "sha256": "291AC3ABE73C5158E59A437B75D5F0AA",
+      "description": "Project-1802.zip trojanized coding challenge archive (report lists MD5)"
+    },
+    {
+      "sha256": "0962F56D7EC69F4F2A0162DCBE22116B",
+      "description": "Case-34234.zip trojanized coding challenge archive (report lists MD5)"
+    },
+    {
+      "sha256": "795E053A990A1569FFDCB57F48F6D085",
+      "description": "RankChallenge-react-6uJSX3-main.zip PollCat React coding challenge archive (report lists MD5)"
+    },
+    {
+      "sha256": "810F8E3B88EB05F710C09552941D6F56",
+      "description": "Mirage Kitten Retrograde/MiniFast native DLL backdoor used for attribution (report lists MD5)"
+    }
+  ],
+  "file_types": [
+    "archive",
+    "script"
+  ]
+}

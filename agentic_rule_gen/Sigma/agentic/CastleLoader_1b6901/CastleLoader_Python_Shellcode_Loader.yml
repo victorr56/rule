@@ -1,0 +1,30 @@
+title: CastleLoader Python Shellcode Loader Execution
+id: f097c555-9005-4c01-a185-da259d041c2c
+status: experimental
+description: Detects the execution of a Python one-liner command used by CastleLoader to decode and execute a shellcode loader via subprocess.
+references:
+    - https://redcanary.com/blog/threat-intelligence/intelligence-insights-july-2026/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.006
+    - attack.defense_evasion
+    - attack.t1027
+    - attack.t1055
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\python.exe'
+        CommandLine|contains|all:
+            - '-c'
+            - 'import sys,subprocess'
+            - 'base64 as b,zlib as z'
+            - 'z.decompress(b.b64decode('
+            - 'creationflags='
+    condition: selection
+falsepositives:
+    - Custom data processing scripts might use this combination of libraries, but rarely in a one-liner with subprocess and specific creation flags.
+level: high

@@ -1,0 +1,233 @@
+{
+  "malware_family": "ARTEX",
+  "threat_actor": "",
+  "platforms": [
+    "unknown"
+  ],
+  "summary": "An unnamed, likely Chinese-speaking financially motivated threat actor used ARTEX, a Chinese-developed open-source agentic pentesting tool, together with Claude Code and multiple LLMs to breach South Korean financial organizations between late September and early October 2026. Threat actor-controlled open directories on two servers exposed Claude Code session histories, ARTEX configuration files and memory files, revealing proxy-based C2 infrastructure. Detection should focus on the ARTEX instance path /.claude/CLAUDE.md on port 18899 and the identified proxy/threat-actor IP addresses.",
+  "mitre_techniques": [
+    "T1583.003",
+    "T1588.007",
+    "T1090"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/.claude/CLAUDE.md",
+      "context": "Claude Code markdown file with Chinese pentesting prompt hosted on ARTEX open directory",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ARTEX",
+      "context": "String referenced in HTML files on threat actor-controlled server",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "ARTEX configuration files",
+      "context": "ARTEX config files found in threat actor open directories",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Claude Code session histories",
+      "context": "Exposed in attacker-controlled open directories, revealed two-server architecture",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Claude memory files",
+      "context": "Exposed in attacker-controlled open directories",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "DeepSeek v4.1-flash",
+      "context": "Primary LLM backend of the ARTEX instance",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "GLM-5.3",
+      "context": "Zhipu AI model used to supplement ARTEX LLM sessions",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "Grok 4.6",
+      "context": "LLM used for additional Claude Code sessions",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Telegram @YY520CN",
+      "context": "Telegram handle in Claude Code prompt and NFT marketplace research sessions",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "17820191556",
+      "context": "Phone number provided in résumé-creation prompt",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "YY",
+      "context": "Name used by user in Claude Code session prompt",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "38.244.50.120",
+      "context": "Threat actor-controlled IP hosting ARTEX instance and open directory",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://38.244.50.120:18899/.claude/CLAUDE.md",
+      "context": "Claude Code markdown document on ARTEX instance open directory",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/.claude/CLAUDE.md",
+      "context": "Path to pentesting prompt document on ARTEX instance port 18899",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "xcai.pro",
+      "context": "Likely LLM API proxy/reseller used to access DeepSeek",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "101.53.80.20",
+      "context": "Proxy IP address used during ARTEX-related activity",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "205.214.59.31",
+      "context": "Proxy IP address used during ARTEX-related activity",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "124.155.252.63",
+      "context": "Proxy IP address used during ARTEX-related activity",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "154.201.79.246",
+      "context": "Proxy IP address used during ARTEX-related activity",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "23.248.249.90",
+      "context": "Proxy IP address used during ARTEX-related activity",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "23.158.220.98",
+      "context": "Proxy IP address used during ARTEX-related activity",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.248.148.84",
+      "context": "Proxy IP address used during ARTEX-related activity",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "203.160.133.172",
+      "context": "Proxy IP address used during ARTEX-related activity",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "209.209.85.38",
+      "context": "Proxy IP address used during ARTEX-related activity",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

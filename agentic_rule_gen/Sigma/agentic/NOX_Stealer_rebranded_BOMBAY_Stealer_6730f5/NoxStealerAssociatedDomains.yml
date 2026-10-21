@@ -1,0 +1,26 @@
+title: NOX Stealer Associated C2 and Phishing Domains
+id: 9d1b0d2d-3c87-43a9-b1d7-219e8312017e
+status: experimental
+description: Detects DNS queries for domains associated with NOX Stealer infrastructure and related activities.
+references:
+    - https://blog.virustotal.com/2026/10/internet-scanning-in-vt.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1071.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'b4ck.my'
+            - '.b4ck.my'
+            - 'grabber.cy'
+            - '.grabber.cy'
+            - 'lumma.cy'
+            - '.lumma.cy'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

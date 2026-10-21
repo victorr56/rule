@@ -1,0 +1,25 @@
+title: SideWinder Spearphishing EML File Creation
+id: f6e8e89f-8898-4672-8f9f-b98f2441c9f4
+status: experimental
+description: Detects the creation of a uniquely named EML file used in SideWinder spear-phishing campaigns.
+references:
+    - https://blog.virustotal.com/2025/11/vtpractitioners-acronis.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1204.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\outlook.exe'
+            - '\msedge.exe'
+            - '\chrome.exe'
+            - '\firefox.exe'
+        TargetFilename|endswith: '\54th CISM World Military Naval Pentathlon 2025 - Invitation.eml'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

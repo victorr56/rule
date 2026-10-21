@@ -1,0 +1,28 @@
+title: Gambling Goblin AlphaAgent Masquerading Execution
+id: c5d62557-009d-47be-a5e2-e1a533da8b2d
+status: experimental
+description: Detects the execution of the AlphaAgent backdoor from one of its specific masquerading paths, typically launched from a shell.
+references:
+    - https://research.checkpoint.com/2026/gaming-the-system-how-a-chinese-speaking-actor-turned-brazilian-government-sites-into-an-seo-weapon/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        ParentImage|endswith:
+            - '/bash'
+            - '/sh'
+        Image|endswith:
+            - '/usr/sbin/amazon-master'
+            - '/usr/local/sbin/amazon-proxy'
+            - '/usr/bin/google_user_agent'
+            - '/usr/bin/google_proxy_agent'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

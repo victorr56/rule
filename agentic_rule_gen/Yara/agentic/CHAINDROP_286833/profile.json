@@ -1,0 +1,418 @@
+{
+  "malware_family": "CHAINDROP",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "summary": "CHAINDROP is a self-propagating npm supply-chain worm that trojanizes packages via a package.json preinstall hook running a setup.mjs dropper, which fetches the bun runtime to execute the heavily obfuscated Math_Symbol.js/math_init.js credential stealer. It harvests developer, cloud, and AI-tooling credentials, encrypts them with AES-256-GCM plus an RSA-wrapped key, and retrieves rotating C2 endpoints from an Ethereum smart contract or GitHub dead-drop.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "Math_Symbol.js",
+      "context": "Obfuscated payload (711 KB) in packages compromised directly from keyv monorepo",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "math_init.js",
+      "context": "Same payload (same SHA-256) in packages trojanized during worm propagation",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "setup.mjs",
+      "context": "Dropper that installs bun and executes the payload",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "node setup.mjs",
+      "context": "npm preinstall hook value in patched package.json; parent npm install",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "node .claude/setup.mjs",
+      "context": "Claude Code SessionStart hook in settings.json; parent Claude Code session start",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "node .vscode/setup.mjs",
+      "context": "VS Code folderOpen task in tasks.json; parent VS Code opening repo",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "preinstall",
+      "context": "package.json scripts key abused to auto-run dropper on install",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "SessionStart",
+      "context": "Claude settings.json hook injected by worm",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "folderOpen",
+      "context": "VS Code tasks.json task injected by worm",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "bypass_2fa",
+      "context": "Required npm token capability for worm propagation",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".claude/settings.json",
+      "context": "Malicious hook config committed to branches by worm",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".vscode/tasks.json",
+      "context": "Malicious task config committed to branches by worm",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IfYouBlockThisAPIKeyItWillCrashTheLiveProductionServersOfAllThirdPartyClients",
+      "context": "Commit message string accompanying stolen GitHub token",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "thebeautifulmarchoftime",
+      "context": "Cryptographically signed marker searched in GitHub commit history for C2 fallback",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Shai-Hulud: Here We Go Again",
+      "context": "Description of Dune-named GitHub exfil repository",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "chore: update config",
+      "context": "Worm commit message authored as claude@users.noreply.github.com",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "kanly",
+      "context": "Dune-themed string embedded in obfuscated payload",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ghola",
+      "context": "Dune-themed string embedded in obfuscated payload",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "sietch",
+      "context": "Dune-themed string embedded in obfuscated payload",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "sandworm",
+      "context": "Dune-themed string embedded in obfuscated payload",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "fedaykin",
+      "context": "Dune-themed string embedded in obfuscated payload",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "sardaukar",
+      "context": "Dune-themed string embedded in obfuscated payload",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ornithopter",
+      "context": "Dune-themed string embedded in obfuscated payload",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.claude/credentials.json",
+      "context": "AI tooling credential store targeted by collector component",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.codex/auth.json",
+      "context": "AI tooling credential store targeted by collector component",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.config/openai/auth.json",
+      "context": "AI tooling credential store targeted by collector component",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.anthropic/auth.json",
+      "context": "AI tooling credential store targeted by collector component",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.cursor/config.json",
+      "context": "AI tooling credential store targeted by collector component",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.gemini/.env",
+      "context": "AI tooling credential store targeted by collector component",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.openclaw/openclaw.json",
+      "context": "Credential store targeted by collector component",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.config/helm/repositories.yaml",
+      "context": "Credential store targeted by collector component",
+      "specificity": "low",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "bun v1.3.13",
+      "context": "Runtime downloaded from official release page if bun not installed, then used to run payload",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "collector",
+      "context": "Payload component that functions as credential harvester",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "npm-cache.com",
+      "context": "C2/dead-drop domain observed during detonation",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "awqhnjewqjkl.icu",
+      "context": "C2/dead-drop domain observed during detonation",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xE1f2395ee43e45A1556EC6438a88c31B83493103",
+      "context": "Ethereum smart contract queried at runtime for current C2 endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "eth.llamarpc.com",
+      "context": "Ethereum RPC provider used as fallback",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "go.getblock.io",
+      "context": "Ethereum RPC provider used as fallback",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "eth-mainnet.nodereal.io",
+      "context": "Ethereum RPC provider used as fallback",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "atreides-futar-498",
+      "context": "Dune-named GitHub repository used for exfiltration with victim account",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "9fc2570b7cef51c1b8df116d144d11ff4096357be7d2c4c6367cfc2509cf1bcc",
+      "description": "Obfuscated JavaScript payload (Math_Symbol.js / math_init.js) credential stealer and worm"
+    },
+    {
+      "sha256": "fd3ca4007b225fdf8de7af4345a19179d5efa8c4bb9205f88cda806e5684b1eb",
+      "description": "setup.mjs dropper that downloads bun and runs the payload"
+    },
+    {
+      "sha256": "54dc7ea54a1317cca0e890a2770630cf7fa6c97813e0cb9d2caa93012b350668",
+      "description": "setup.mjs dropper variant"
+    }
+  ],
+  "file_types": [
+    "script"
+  ]
+}

@@ -1,0 +1,24 @@
+title: BTMOB C2 and Phishing DNS Queries
+id: 5972886f-2191-4d1a-85d0-d85c13f63901
+status: experimental
+description: Detects DNS queries for domains associated with the BTMOB Android RAT infrastructure and phishing campaigns. While the malware targets Android, these queries may be observed from enterprise endpoints connected to the same network.
+references:
+    - https://www.welivesecurity.com/en/malware/btmob-stealthy-rat-burrowing-deep-android-devices/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.initial_access
+    - attack.t1626
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'arbsniper.com'
+            - 'afip-gob-ar.com'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

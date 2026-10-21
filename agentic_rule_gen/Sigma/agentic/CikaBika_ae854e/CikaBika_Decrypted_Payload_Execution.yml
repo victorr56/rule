@@ -1,0 +1,22 @@
+title: CikaBika Decrypted Payload Execution
+id: f4876b53-4ac9-4a0b-9dfc-2798835848fe
+status: experimental
+description: Detects the execution of 'IfyuUapz.txt', a randomly named file containing the decrypted CikaBika loader payload, executed via cmd.exe.
+references:
+  - https://www.darktrace.com/blog/hiding-in-plain-sight-uncovering-a-multi-stage-ransomware-attack-through-behavioral-detection
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.execution
+  - attack.t1059.003
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\IfyuUapz.txt'
+    ParentImage|endswith: '\cmd.exe'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: critical

@@ -1,0 +1,39 @@
+title: EtherRAT/TONResolver C2 DNS Query
+id: 3c965c40-f4b2-4d56-b072-a16b9b3e944d
+status: experimental
+description: Detects DNS queries for C2 domains used by EtherRAT and TONResolver malware families.
+references:
+    - https://cofense.com/blog/from-guest-complaints-to-malware-blockchain-abuse-targets-hotels
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'gateway001kir.com'
+            - 'sslgateway001.com'
+            - 'waygatterol002.com'
+            - 'perrine90-deltajohnsons.com'
+            - 'kadmecnp-643laolmd.com'
+            - 'lermontov-656idlop.com'
+            - 'fdffofofofo4.com'
+            - 'opencode-setup-al.com'
+            - 'dns1.southafricanorth.cloudapp.azure.com'
+            - 'update.norwayeast.cloudapp.azure.com'
+            - 'allres.southafricanorth.cloudapp.azure.com'
+            - 'synctimes.australiaeast.cloudapp.azure.com'
+            - 'luxmaxing.southafricanorth.cloudapp.azure.com'
+            - 'amanohuguta.cfd'
+            - 'hsaertyuoang34.sbs'
+            - 'zloapobikahy23.bond'
+            - 'tonajukbhuakpo2.shop'
+            - 'njzlopghznkamkl.cfd'
+            - 'nuypoiaklber.lol'
+    condition: selection
+falsepositives:
+    - Legitimate traffic to these domains if they are re-registered and repurposed after takedown.
+level: high

@@ -1,0 +1,399 @@
+{
+  "malware_family": "KANDYKORN",
+  "threat_actor": "Lazarus Group",
+  "platforms": [
+    "macos"
+  ],
+  "summary": "KANDYKORN is a memory-resident RAT used by the Lazarus Group in targeted attacks against blockchain engineers on macOS. Delivered via a multi-stage Python dropper, it uses reflective loading for evasion and features capabilities for system enumeration, file transfer, and remote command execution via an encrypted C2 channel. The malware establishes persistence by hijacking the legitimate Discord application.",
+  "mitre_techniques": [
+    "T1204.002",
+    "T1059.006",
+    "T1059.004",
+    "T1574",
+    "T1140",
+    "T1564.001",
+    "T1070.004",
+    "T1036.005",
+    "T1027.002",
+    "T1620",
+    "T1083",
+    "T1057",
+    "T1082",
+    "T1560.003",
+    "T1074",
+    "T1071.001",
+    "T1008",
+    "T1105",
+    "T1041"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "Cross-Platform Bridges.zip",
+      "context": "Initial ZIP archive delivered to victim.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Watcher.py",
+      "context": "Stage 0 Python script that downloads the next stage.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "testSpeed.py",
+      "context": "Stage 1 dropper Python script.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "FinderTools",
+      "context": "Stage 1 Python dropper that downloads SUGARLOADER.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Users/Shared/FinderTools",
+      "context": "Location where FinderTools is saved.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".sld",
+      "context": "SUGARLOADER payload name for initial execution.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Users/shared/.sld",
+      "context": "SUGARLOADER payload path for initial execution.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".log",
+      "context": "SUGARLOADER payload name used for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Library/Caches/com.apple.safari.ck",
+      "context": "Encrypted configuration file for SUGARLOADER and KANDYKORN.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".lock",
+      "context": "The legitimate Discord binary is renamed to this.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/tempXXXXXXX",
+      "context": "File pattern for temporary archives created for exfiltration.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "NSCreateObjectFileImageFromMemory-*",
+      "context": "Predictable temporary file created during in-memory Mach-O loading.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "python FinderTools http://tp-globa.xyz//OdhLca1mLUp/lZ5rZPxWsh/7yZKYQI43S/fP7savDX6c/bfC",
+      "context": "testSpeed.py launches FinderTools with a C2 URL argument.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": ".sld 23.254.226.90",
+      "context": "SUGARLOADER is executed with its C2 IP as an argument.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "Discord -> .log",
+      "context": "HLOADER (masquerading as Discord) executes SUGARLOADER (as .log).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "Discord -> .lock",
+      "context": "HLOADER (masquerading as Discord) executes renamed legitimate Discord.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "D9F936CE628C3E5D9B3695694D1CDE79E470E938064D98FBF4EF980A5558D1C90C7E650C2362A21B914ABD173ABA5C0E5837C47B89F74C5B23A7294CC1CFD11B",
+      "context": "Hardcoded RC4 key for SUGARLOADER and KANDYKORN configuration/C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x41C3372",
+      "context": "Constant sent by C2 to client on successful handshake.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "HLOADER-5555494485b460f1e2343dffaef9b94d01136320",
+      "context": "Self-signed adhoc identifier for HLOADER binary.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "__mod_init_func",
+      "context": "Mach-O section containing unpacking code for SUGARLOADER.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "NSCreateObjectFileImageFromMemory",
+      "context": "macOS API used for reflective binary loading.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "NSLinkModule",
+      "context": "macOS API used for reflective binary loading.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "resp_basicinfo",
+      "context": "KANDYKORN internal name for command 0xD2 (system info).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "resp_file_zipdown",
+      "context": "KANDYKORN internal name for command 0xD7 (archive and exfil).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "resp_cmd_create",
+      "context": "KANDYKORN internal name for command 0xDD (spawn shell).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "CN = bitscrunnch.linkpc.net",
+      "context": "TLS certificate subject for C2 domain tp-globa.xyz.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://drive.google.com/file/d1KW5nQ8MZccug6Mp4QtKyWLT3HIZzHNIL2",
+      "context": "Google Drive URL hosting initial malware archive.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://tp-globa.xyz//OdhLca1mLUp/lZ5rZPxWsh/7yZKYQI43S/fP7savDX6c/bfC",
+      "context": "FinderTools C2 URL for downloading SUGARLOADER.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tp-globa.xyz",
+      "context": "FinderTools C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.119.64.43",
+      "context": "IP resolving for tp-globa.xyz and other Lazarus C2 domains.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "23.254.226.90",
+      "context": "SUGARLOADER C2 IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/fP7savDX6c/bfC",
+      "context": "Last two subdirectories in C2 URL structure, shared across campaigns.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bitscrunnch.linkpc.net",
+      "context": "Domain in TLS certificate subject, attributed to Lazarus Group.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "jobintro.linkpc.net",
+      "context": "Additional C2 domain resolving to 192.119.64.43.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "coupang-networks.pics",
+      "context": "Additional C2 domain resolving to 192.119.64.43.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pesnam.publicvm.com",
+      "context": "Subdomain registered using the SUGARLOADER C2 IP.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "group.pro-tokyo.top",
+      "context": "Domain reported on Reddit with a similar C2 URL structure.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "3ea2ead8f3cec030906dcbffe3efd5c5d77d5d375d4a54cca03bfe8a6cb59940",
+      "description": "SUGARLOADER payload (.log, .sld)"
+    },
+    {
+      "sha256": "2360a69e5fd7217e977123c81d3dbb60bf4763a9dae6949bc1900234f7762df1",
+      "description": "HLOADER persistence loader (fake Discord)"
+    },
+    {
+      "sha256": "927b3564c1cf884d2a05e1d7bd24362ce8563a1e9b85be776190ab7f8af192f6",
+      "description": "KANDYKORN final stage RAT"
+    }
+  ],
+  "file_types": [
+    "macho",
+    "script"
+  ]
+}

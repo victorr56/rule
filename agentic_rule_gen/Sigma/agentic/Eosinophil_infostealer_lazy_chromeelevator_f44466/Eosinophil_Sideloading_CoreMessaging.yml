@@ -1,0 +1,29 @@
+title: Eosinophil Infostealer Sideloading via CoreMessaging.dll
+id: 3c5970c6-3023-4560-a292-0b29beaa3e97
+status: experimental
+description: Detects a process running from a non-standard or user-writable location that sideloads a malicious 'CoreMessaging.dll'. This technique is used by the Eosinophil infostealer.
+references:
+    - https://blog.virustotal.com/2026/01/malicious-infostealer-january-26.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.privilege_escalation
+    - attack.persistence
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        ImageLoaded|endswith: '\CoreMessaging.dll'
+        Image|startswith:
+            - 'C:\Users\'
+            - 'C:\ProgramData\'
+            - 'C:\Windows\Temp\'
+    filter_legit:
+        ImageLoaded|startswith: 'C:\Windows\System32\'
+    condition: selection and not filter_legit
+falsepositives:
+    - Legitimate software installers or updaters running from temporary or user-writable locations that bundle a private copy of CoreMessaging.dll.
+level: critical

@@ -1,0 +1,29 @@
+title: Phishing Campaign Staging Directory Activity
+id: e5288a8d-a417-48f0-b003-8208f8ca44e4
+status: experimental
+description: Detects file creation activity within a directory named 'dam pe uk puterniiicccc' used to stage phishing campaign materials. The name is Romanian for 'hit the UK hard'.
+references:
+    - https://www.huntress.com/blog/terminal-server-phishing-stager-exposed
+author: ioc-yara-daily (agentic)
+date: 2023-10-17
+tags:
+    - attack.t1074.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_specific_img:
+        TargetFilename|contains: '\dam pe uk puterniiicccc\'
+        Image|endswith:
+            - '\curl.exe'
+            - '\explorer.exe'
+            - '\rdpclip.exe'
+    selection_generic_img:
+        TargetFilename|contains: '\dam pe uk puterniiicccc\'
+        Image|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely, as the directory name is very specific.
+level: high

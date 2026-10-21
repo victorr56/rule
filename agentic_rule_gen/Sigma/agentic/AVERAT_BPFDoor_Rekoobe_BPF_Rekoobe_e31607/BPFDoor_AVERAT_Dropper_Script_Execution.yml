@@ -1,0 +1,22 @@
+title: BPFDoor/AVERAT Dropper Script Execution
+id: f1a951f3-d09e-4c74-9b2f-9810629c5ac8
+status: experimental
+description: Detects the execution of a shell command that runs a script from a specific, unusual path associated with the BPFDoor/AVERAT dropper.
+references:
+    - https://www.rapid7.com/blog/post/tr-smtp-is-the-key-bpfdoor-averat-hitting-the-network-edge
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.004
+detection:
+    selection:
+        Image|endswith: '/sh'
+        CommandLine|contains: '/HDD/ms6x2xTo64/updIptable.php'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
+logsource:
+    category: process_creation
+    product: linux

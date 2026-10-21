@@ -1,0 +1,28 @@
+title: FrostyNeighbor PicassoLoader Dropper Script Execution
+id: c6f157bb-8c17-494b-9e5c-04c995efb589
+status: experimental
+description: Detects the execution of the first-stage PicassoLoader JavaScript dropper via wscript.exe, identified by its unique command-line arguments.
+references:
+    - https://www.welivesecurity.com/en/eset-research/frostyneighbor-fresh-mischief-digital-shenanigans/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.007
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\wscript.exe'
+        CommandLine|contains|all:
+            - '--headless'
+            - '--width'
+            - '--height'
+            - '--update'
+            - '--server'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

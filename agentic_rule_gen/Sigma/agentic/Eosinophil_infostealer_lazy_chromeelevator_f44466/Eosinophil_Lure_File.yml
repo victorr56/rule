@@ -1,0 +1,22 @@
+title: Eosinophil Infostealer Lure File Creation
+id: 0a9314c4-722a-4389-9a7c-a49688de7861
+status: experimental
+description: Detects the creation of ZIP archives impersonating Malwarebytes, used as a lure to distribute the Eosinophil infostealer.
+references:
+    - https://blog.virustotal.com/2026/01/malicious-infostealer-january-26.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.initial_access
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'malwarebytes-windows-github-io-'
+        TargetFilename|endswith: '.zip'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: medium

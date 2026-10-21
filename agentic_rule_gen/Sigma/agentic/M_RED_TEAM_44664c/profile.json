@@ -1,0 +1,331 @@
+{
+  "malware_family": "M-RED-TEAM",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "summary": "The M-RED-TEAM campaign compromised the AsyncAPI project via a GitHub Actions 'pwn request' (pull_request_target checking out untrusted PR code), stealing an asyncapi-bot PAT to publish five malicious npm package versions under the @asyncapi namespace. The staged JavaScript payload runs on import, drops sync.js to a NodeJS folder, retrieves an encrypted bundle from IPFS, and installs a modular trojan framework with systemd persistence and multi-channel C2 (HTTP, Nostr, Ethereum, libp2p). It harvests browser credentials, SSH keys, npm/GitHub tokens, AWS credentials, macOS Keychain and crypto wallets.",
+  "mitre_techniques": [
+    "T1195.002",
+    "T1543.002",
+    "T1555",
+    "T1555.003",
+    "T1552.004",
+    "T1552.001",
+    "T1059.007",
+    "T1071.001",
+    "T1105"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "~/.local/share/NodeJS/sync.js",
+      "context": "Stage 2 payload dropped on Linux by Stage 1",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Application Support/NodeJS/sync.js",
+      "context": "Stage 2 payload dropped on macOS",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\NodeJS\\sync.js",
+      "context": "Stage 2 payload dropped on Windows",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "miasma-monitor.service",
+      "context": "Systemd user service persistence",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "M-RED-TEAM v6.4",
+      "context": "Stage 3 runtime self-identification in code comments",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "giteaPackagesOrg = \"miasma-test-org\"",
+      "context": "Value in extracted Stage 2 configuration",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "miasma",
+      "context": "Branded tags used by the Nostr relay C2",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Dirlist, GetFile, PutFile",
+      "context": "Framework remote command capabilities",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "javascript-obfuscator with custom base64 alphabet",
+      "context": "Obfuscation layer configuration",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "javascript-obfuscator",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "on: pull_request_target: ... ref: ${{ github.event.pull_request.head.sha }}",
+      "context": "Vulnerable asyncapi/generator docs-preview workflow checking out PR code",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "fetchRentryText()",
+      "context": "Function fetching server-controlled dead-drop response text",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SOURCE_EDIT_CODE",
+      "context": "Holds an obfuscated credential value in the PR payload",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "validator.js",
+      "context": "Malicious file in @asyncapi/generator (SHA1 22bf76fe317ea6769bd38619bd440e42d119bd6b)",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "22bf76fe317ea6769bd38619bd440e42d119bd6b"
+    },
+    {
+      "kind": "file_name",
+      "value": "utils.js",
+      "context": "Malicious file in @asyncapi/generator-helpers (SHA1 a7e18d96efd3cdb127ef4cdcad9e3ad26c482bf2)",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "a7e18d96efd3cdb127ef4cdcad9e3ad26c482bf2"
+    },
+    {
+      "kind": "file_name",
+      "value": "ErrorHandling.js",
+      "context": "Malicious file in @asyncapi/generator-components (SHA1 9890950adcbc2478e7a080234f053214adbad44e)",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "9890950adcbc2478e7a080234f053214adbad44e"
+    },
+    {
+      "kind": "file_name",
+      "value": "index.js",
+      "context": "Malicious file in @asyncapi/specs (SHA1 c70e105e212ff3c1daa04bb2a62507717f296b0b)",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "c70e105e212ff3c1daa04bb2a62507717f296b0b"
+    },
+    {
+      "kind": "file_name",
+      "value": "sync.js",
+      "context": "Stage 2 payload (SHA1 c8cb3f6d5b90c46686d2bf531dc1a5786e27edc5)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "c8cb3f6d5b90c46686d2bf531dc1a5786e27edc5"
+    },
+    {
+      "kind": "other",
+      "value": "@asyncapi/generator 3.3.1",
+      "context": "Malicious npm package version",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "@asyncapi/generator-helpers 1.1.1",
+      "context": "Malicious npm package version",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "@asyncapi/generator-components 0.7.1",
+      "context": "Malicious npm package version",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "@asyncapi/specs 6.11.2",
+      "context": "Malicious npm package version",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "@asyncapi/specs 6.11.2-alpha.1",
+      "context": "Malicious npm package version",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "malicious code hidden on first line of source files, padded with whitespace",
+      "context": "Payload injected into each compromised file",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "85.137.53.71",
+      "context": "C2 server on ports 8080 and 8081",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ipfs.io",
+      "context": "Stage 2 payload delivery",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "rentry.co",
+      "context": "Dead-drop URL for stolen token exfiltration",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "elzotebo",
+      "context": "Rentry dead-drop slug matching prt-scan campaign naming",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "QmQobZSp1wRPrpSEQ56qnyq7ecZh5Bg5k1fnjt4SUwwHb9",
+      "context": "IPFS hash of Stage 2 payload",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Qmet4fhsAaWMBUxNDfREHwgiyDeSWy4YSYs9wiKUW5jGyf",
+      "context": "IPFS hash of Stage 2 payload (react-sdk variant)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x12c37A86a0Ed0beBe5d1d6a43E42f07860eAc710",
+      "context": "Ethereum fallback C2 contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x1969ab05d67b67fdcaa26240f738ccb077e1cd84",
+      "context": "Ethereum backup C2 contract",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x92d4C5413e4F7B258a114964101F9e1C6d64C6Ba",
+      "context": "Ethereum deployer wallet",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

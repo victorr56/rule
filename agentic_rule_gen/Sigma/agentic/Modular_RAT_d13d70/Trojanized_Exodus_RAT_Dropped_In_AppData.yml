@@ -1,0 +1,21 @@
+title: Trojanized Exodus RAT Dropped In AppData
+id: 978917e9-a720-4e33-8ec2-1fa8d3283256
+status: experimental
+description: Detects the creation of a trojanized Exodus wallet executable in a suspicious AppData subdirectory named 'ExdBackupTool'.
+references:
+    - https://www.huntress.com/blog/exodus-crypto-wallet-installer-rat
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.persistence
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\AppData\Roaming\ExdBackupTool\'
+        TargetFilename|endswith: '\Exodus.exe'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

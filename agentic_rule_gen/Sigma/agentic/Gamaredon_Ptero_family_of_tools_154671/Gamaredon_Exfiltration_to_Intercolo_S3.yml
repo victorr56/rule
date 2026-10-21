@@ -1,0 +1,22 @@
+title: Gamaredon Exfiltration to Intercolo S3
+id: 9a04f32e-503c-47fc-b565-5c1284d7a8e8
+status: experimental
+description: Detects DNS queries for de-fra.i3storage.com, identified as a primary S3-compatible storage endpoint used by Gamaredon for data exfiltration.
+references:
+    - https://www.welivesecurity.com/en/eset-research/gamaredon-2025-leveraging-tunnels-workers-dead-drops-new-alliances/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.exfiltration
+    - attack.t1567.002
+    - attack.command_and_control
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'de-fra.i3storage.com'
+    condition: selection
+falsepositives:
+    - Legitimate, albeit uncommon, use of Intercolo S3-compatible storage services.
+level: high

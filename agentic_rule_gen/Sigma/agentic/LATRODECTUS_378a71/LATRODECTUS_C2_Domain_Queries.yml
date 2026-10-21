@@ -1,0 +1,23 @@
+title: LATRODECTUS C2 Domain Queries
+id: e4a2d1f9-6b8c-4a3d-b2c1-9a4f5d6d7c8e
+status: experimental
+description: Detects DNS queries for domains known to be used by the LATRODECTUS malware for command and control.
+references:
+    - https://www.elastic.co/security-labs/threat-command/spring-cleaning-with-latrodectus
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'aytobusesre.com'
+            - 'scifimond.com'
+    condition: selection
+falsepositives:
+    - Legitimate connections to these domains if they are sinkholed.
+level: high

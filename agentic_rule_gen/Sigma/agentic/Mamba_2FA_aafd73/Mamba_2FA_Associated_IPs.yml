@@ -1,0 +1,26 @@
+title: Mamba 2FA Associated IP Address
+id: f48b11c0-0f2b-4e6f-8a0b-1c5c4f3a2d7b
+status: experimental
+description: Detects network connections to IP addresses associated with the Mamba 2FA Phishing-as-a-Service infrastructure or post-compromise activity.
+references:
+    - https://www.darktrace.com/blog/a-snake-in-the-net-defending-against-aitm-phishing-threats-and-mamba-2fa
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1566
+    - attack.t1539
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '45.133.172.86'
+            - '102.68.111.240'
+            - '2607:5500:3000:fea::2'
+            - '2607:5500:3000:1cab::2'
+        DestinationPort: 443
+    condition: selection
+falsepositives:
+    - Benign traffic to these IPs if they are reallocated.
+level: high

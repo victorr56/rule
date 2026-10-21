@@ -1,0 +1,26 @@
+title: Potential Rogue ScreenConnect Second Stage Payload Download
+id: 610f69a5-7389-4081-817f-44a6cd2595f5
+status: experimental
+description: Detects a command line pattern used to download a second stage ScreenConnect client via cURL, typically executed from an existing rogue ScreenConnect session.
+references:
+    - https://www.huntress.com/blog/phishing-bitb-rmm-attacks
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1105
+    - attack.t1219
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith:
+            - '\ScreenConnect.Client.exe'
+            - '\ScreenConnect.WindowsClient.exe'
+        Image|endswith: '\curl.exe'
+        CommandLine|contains: 'wir.consultingics.com/Bin/ScreenConnect.ClientSetup.msi'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: critical

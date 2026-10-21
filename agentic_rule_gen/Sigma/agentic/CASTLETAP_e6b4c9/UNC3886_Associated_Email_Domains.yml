@@ -1,0 +1,25 @@
+title: DNS Query For UNC3886 Associated Email Domains
+id: 597a9f73-61b6-455b-86d3-2410a56e01eb
+status: experimental
+description: Detects DNS queries for domains used by UNC3886 to register malicious Single Sign-On (SSO) admin accounts on FortiGate devices.
+references:
+    - https://www.wiz.io/blog/agentless-threat-hunting-fortigate
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.initial_access
+    - attack.credential_access
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'tutamail.com'
+            - 'openmail.pro'
+            - 'mail.io'
+    condition: selection
+falsepositives:
+    - Legitimate use of these email services, although their use in a corporate environment may be unusual and warrant investigation.
+level: medium

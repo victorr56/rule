@@ -1,0 +1,27 @@
+title: SCMBANKER C2 Domain Query
+id: c5d8e7b6-9f8a-4d2c-9a1b-3f7c9e1b5d6e
+status: experimental
+description: Detects DNS queries for domains known to be used by the SCMBANKER malware for C2 communication and payload delivery.
+references:
+    - https://www.elastic.co/security-labs/threat-command/mexican-banking-fraud-scmbanker-ref6045
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - negratomasa2026.online
+            - gestionmontelavaria2026.online
+            - ratonvaquero2026.online
+            - osogransd.online
+            - ssinvestigaciones.com
+            - bancaporinternetbbmx.online
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

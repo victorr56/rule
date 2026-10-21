@@ -1,0 +1,26 @@
+title: .NET Loader Persistence via NVIDEO Run Key
+id: a818d6e3-14bc-4402-ae45-b4bb9f332219
+status: experimental
+description: Detects the creation of a registry run key used by a .NET loader for persistence, masquerading as an NVIDIA driver update.
+references:
+    - https://www.huntress.com/blog/malspam-to-loader-delivery-chain-analysis
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|startswith:
+            - 'HKCU\Software\Microsoft\Windows\CurrentVersion\Run\Update Drivers NVIDEO'
+            - 'HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce\Update Drivers NVIDEO'
+            - 'HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run\Update Drivers NVIDEO'
+            - 'HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce\Update Drivers NVIDEO'
+        Details|contains: '\winspool.drv\cscript.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,30 @@
+title: LATRODECTUS Persistence via "Updater" Scheduled Task
+id: a219a16a-0f1c-4b5d-9b88-14234771761e
+status: experimental
+description: Detects the creation of a scheduled task named "Updater", a persistence mechanism used by the LATRODECTUS malware loader.
+references:
+    - https://www.elastic.co/security-labs/threat-command/spring-cleaning-with-latrodectus
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.persistence
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn'
+            - 'Updater'
+    filter:
+        # Filter out paths that might include 'Updater' as a folder name in the command, not the task name.
+        CommandLine|contains:
+            - ' /tr '
+            - '\Updater\'
+    condition: selection and not filter
+falsepositives:
+    - Legitimate software may use a generic task name like "Updater", though it's uncommon for it to be created via command-line without more specific naming conventions.
+level: high

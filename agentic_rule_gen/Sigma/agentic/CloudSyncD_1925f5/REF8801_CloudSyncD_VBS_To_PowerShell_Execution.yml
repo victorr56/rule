@@ -1,0 +1,26 @@
+title: REF8801/CloudSyncD VBS to PowerShell Execution
+id: f450e18c-35cd-4581-8051-536411f32467
+status: experimental
+description: Detects the execution of a PowerShell script via wscript.exe, using temporary script names ('_apex_run.ps1' or '_audit_run.ps1') associated with the REF8801 malicious npm packages.
+references:
+    - https://www.elastic.co/security-labs/threat-command/apex-accelerator-malicious-npm-packages
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1059.005
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        ParentImage|endswith: '\wscript.exe'
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains:
+            - '_apex_run.ps1'
+            - '_audit_run.ps1'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

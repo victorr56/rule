@@ -1,0 +1,23 @@
+title: REF6138 C2 Domain Communication
+id: 11c6d394-1a3b-4835-ac71-15a0c33a27c7
+status: experimental
+description: Detects DNS queries for domains associated with the REF6138 campaign.
+references:
+    - https://www.elastic.co/security-labs/threat-command/betting-on-bots
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'nishabii.xyz'
+            - 'gcp.pagaelrescate.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

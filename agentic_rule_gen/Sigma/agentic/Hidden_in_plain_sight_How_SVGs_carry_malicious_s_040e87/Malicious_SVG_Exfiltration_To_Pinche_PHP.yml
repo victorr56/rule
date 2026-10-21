@@ -1,0 +1,21 @@
+title: Web Access to Malicious SVG Exfiltration Endpoint
+id: b34a02c3-9d0c-4475-8495-3b98e85871f1
+status: experimental
+description: Detects web requests to 'pinche.php', an endpoint observed being used for data exfiltration by malicious SVG files.
+references:
+    - https://www.reversinglabs.com/blog/how-svgs-carry-dangerous-scripts
+author: ioc-yara-daily (agentic)
+date: 2023-10-16
+tags:
+    - attack.t1041
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|endswith: '/pinche.php'
+        Http.Request.Method: 'POST'
+    condition: selection
+falsepositives:
+    - Legitimate, but poorly named, PHP files.
+level: medium

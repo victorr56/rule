@@ -1,0 +1,25 @@
+title: Qilin Actor C2 and Staging Server Network Connection
+id: 10a72635-c6cf-4467-9c9c-b16f3fd0d832
+status: experimental
+description: Detects network connections to IP addresses used by the Qilin actor for C2 and malware staging.
+references:
+    - https://www.wiz.io/blog/ai-infrastructure-honeypot
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.ingress_tool_transfer
+    - attack.t1105
+logsource:
+    category: network_connection
+    product: linux
+detection:
+    selection:
+        DestinationIp:
+            - '185.62.1.8' # Malware download server
+            - '185.84.98.85' # Cryptominer C2
+            - '94.26.106.29' # Langflow binary staging
+    condition: selection
+falsepositives:
+    - Unlikely, but IPs can be reallocated.
+level: high

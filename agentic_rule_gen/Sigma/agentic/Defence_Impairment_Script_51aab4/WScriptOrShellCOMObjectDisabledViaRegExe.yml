@@ -1,0 +1,27 @@
+title: WScript or Shell COM Object Disabled Via Reg.exe
+id: 87b4618e-4a6f-409e-b8d4-8742d4a6de15
+status: experimental
+description: 'Detects the use of reg.exe to delete registry keys corresponding to the CLSID of WScript.Shell or Shell.Application. This is a defense evasion technique to cripple scripting capabilities.'
+references:
+    - https://www.huntress.com/blog/mimikatz-credential-dumping-defence-impairment
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1112
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\reg.exe'
+        CommandLine|contains|all:
+            - 'delete'
+        CommandLine|contains:
+            - 'HKEY_CLASSES_ROOT\Wscript.shell'
+            - '\CLSID\{F935DC22-1CF0-11D0-ADB9-00C04FD58A0B}' # WScript.Shell
+            - '\CLSID\{13709620-C279-11CE-A49E-444553540000}' # Shell.Application
+    condition: selection
+falsepositives:
+    - Extremely unlikely. Manual uninstallation of components might trigger this, but it is highly abnormal.
+level: high

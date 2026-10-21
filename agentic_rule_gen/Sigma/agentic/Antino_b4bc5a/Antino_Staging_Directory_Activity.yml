@@ -1,0 +1,24 @@
+title: UAT-11587 Antino Backdoor Staging Directory File Creation
+id: 3c5e8840-0de5-4927-9923-d6c56e301297
+status: experimental
+description: Detects the creation of files within the '%LOCALAPPDATA%\Windows GatherOSStateKit\' directory, which is used by the Antino backdoor to stage its components for persistence and execution.
+references:
+    - https://blog.talosintelligence.com/china-nexus-uat-11587-targets-government-and-policy-organizations-across-asia-with-antino-backdoor/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\Windows GatherOSStateKit\'
+        TargetFilename|endswith:
+            - '\GatherOsState.exe'
+            - '\slc.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

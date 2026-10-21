@@ -1,0 +1,22 @@
+title: BADIIS Service DLL Dropped In Ringtones Folder
+id: 8b7d4d77-628d-4e9e-8c7c-b2657e28a501
+status: experimental
+description: Detects `svchost.exe` creating "CbsMsgApi.dll" in the unusual `C:\ProgramData\Microsoft\Windows\Ringtones` folder. This is a specific file placement used by the BADIIS backdoor.
+references:
+    - https://www.elastic.co/security-labs/threat-command/badiis-to-the-bone-new-insights-to-global-seo-poisoning-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.persistence
+    - attack.t1574.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename: 'C:\ProgramData\Microsoft\Windows\Ringtones\CbsMsgApi.dll'
+        Image|endswith: '\svchost.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

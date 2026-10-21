@@ -1,0 +1,26 @@
+title: CikaBika RAT PowerShell Stager Activity
+id: 111cbb0b-4bd2-4914-8f52-19e99a803f33
+status: experimental
+description: Detects a specific PowerShell command line pattern used by the CikaBika RAT to decode and execute a payload. The script reads bytes from a decoy PDF, uses a byte as an XOR key, and writes the decoded payload to a file in the TEMP directory.
+references:
+    - https://www.darktrace.com/blog/under-medusas-gaze-how-darktrace-uncovers-rmm-abuse-in-ransomware-campaigns
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - '.pdf.pdf'
+            - '[IO.File]::ReadAllBytes'
+            - '-bxor $key'
+            - 'IfyuUapz.txt'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

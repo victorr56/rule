@@ -1,0 +1,33 @@
+title: ScarCruft BirdCall C2 via Zoho WorkDrive
+id: 0c1b7a2d-9a6d-4f9e-a0e2-e8c1b6d0c2e3
+status: experimental
+description: Detects HTTP requests containing specific Zoho WorkDrive client IDs used by the BirdCall backdoor for command and control.
+references:
+    - https://www.welivesecurity.com/en/eset-research/rigged-game-scarcruft-compromises-gaming-platform-supply-chain-attack/
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.command_and_control
+    - attack.t1102.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname: 'workdrive.zoho.com'
+        Url|contains:
+            - '1000.AJUEYDUIQQ5G'
+            - '1000.INXKBHQ3698C'
+            - '1000.FYRJ46E75TUY'
+            - '1000.8QU6D2LJZ3RC'
+            - '1000.NT1QEE7V73IH'
+            - '1000.SKXUYYKYL06F'
+            - '1000.7BMBOS8GV1ZR'
+            - '1000.V0J0QN7SJ2N7'
+            - '1000.2IGB56IS1FHQ'
+            - '1000.W4V2XMB83C6V'
+            - '1000.LIUBF67S89H0'
+            - '1000.8BLOFSFU4WOF'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

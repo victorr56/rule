@@ -1,0 +1,23 @@
+title: SILENTCONNECT C2 DNS Queries
+id: 5ff8020a-66fe-498c-8f96-c67d3e421062
+status: experimental
+description: Detects DNS queries to domains known to be used by SILENTCONNECT for C2 and payload delivery.
+references:
+    - https://www.elastic.co/security-labs/threat-command/silentconnect-delivers-screenconnect
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1105
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'bumptobabeco.top'
+            - 'imansport.ir'
+    condition: selection
+falsepositives:
+    - 'Unlikely'
+level: critical

@@ -1,0 +1,23 @@
+title: ShadowSyndicate Associated C2 Domain DNS Query
+id: 8d7e6822-b5e8-466d-88f5-9614467aa796
+status: experimental
+description: Detects DNS queries for domains associated with the ShadowSyndicate infrastructure cluster.
+references:
+  - https://www.group-ib.com/blog/new-shadowsyndicate-infrastructure/
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+  - attack.command_and_control
+  - attack.t1071
+  - detection.threat_hunting
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    QueryName|endswith:
+      - '.fortiveme.net'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high

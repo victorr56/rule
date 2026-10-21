@@ -1,0 +1,22 @@
+title: Static Tundra DYNOWIPER Distribution Script
+id: 5937a098-b803-4f51-b856-2e8697acb070
+status: experimental
+description: Detects the execution of a PowerShell script named 'dynacon_update.ps1', used to distribute the DYNOWIPER malware.
+references:
+    - https://www.elastic.co/security-labs/blog/dynowiper
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.execution
+    - attack.t1059.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains: '\dynacon_update.ps1'
+    condition: selection
+falsepositives:
+    - Legitimate scripts named 'dynacon_update.ps1'.
+level: high

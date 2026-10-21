@@ -1,0 +1,583 @@
+{
+  "malware_family": "ChocoShell (PowerShell stager) and CornFlake (Go backdoor) — GTG-20006 / CaptiveCrunch cluster",
+  "threat_actor": "Midnight Blizzard (APT29, Cozy Bear, NOBELIUM; sub-cluster Storm-2945 / GTG-20006)",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A Midnight Blizzard-linked espionage cluster (GTG-20006 / Storm-2945) delivers ChocoShell, a PowerShell stager, and CornFlake, a Go backdoor, after Microsoft 365 device-code phishing and click-through Internet Shortcut lures. The stager hides its window, decodes Base64, collects browser history with PowerSploit/Empire code and beacons over HTTPS to a raw IP on /t/pixel.gif with operator-chosen stage labels, exfiltrating to /t/event. The Go backdoor persists as svchost32.exe from a fake LocalAppData\\Microsoft\\svchost32 folder via an HKCU Run value and a Schedule.Service COM object, then injects into a suspended process and harvests browser and Teams data.",
+  "mitre_techniques": [
+    "T1566.002",
+    "T1528",
+    "T1204.002",
+    "T1105",
+    "T1036",
+    "T1036.005",
+    "T1059.001",
+    "T1140",
+    "T1564.003",
+    "T1547.001",
+    "T1053.005",
+    "T1055.012",
+    "T1217",
+    "T1555.003",
+    "T1056.001",
+    "T1071.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "\\AppData\\Local\\Microsoft\\svchost32\\svchost32.exe",
+      "context": "Go backdoor install path; keyed by RL Sigma rule for process creation",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%32.exe",
+      "context": "Backdoor self-copy path per RL sandbox analysis",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%32.exe",
+      "context": "Microsoft-published CornFlake install path; differs one folder level from RL's",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "123.ps1",
+      "context": "RL file name of the Anthropic-listed PowerShell stager",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "123.exe",
+      "context": "RL file name of the Anthropic-listed Go backdoor",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "svchost32.exe",
+      "context": "Backdoor masquerades as svchost; name also in 14 unrelated malicious files",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "svchost32",
+      "context": "Windows service created by the backdoor (Microsoft CornFlake description)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "Cloud Sync Service",
+      "context": "Display name of the svchost32 service (Microsoft)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "HKCU Run value",
+      "context": "Backdoor autostart registry Run key value (path not specified in report)",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Schedule.Service",
+      "context": "COM object instantiated by the backdoor as a second persistence path",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "stage2_entry",
+      "context": "Operator-chosen beacon query-string stage label; in YARA rule and stager script",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "stage2_ctx_",
+      "context": "Operator-chosen beacon query-string context label prefix",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "m=collecting",
+      "context": "Beacon status label observed in stager sandbox network references",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "m=key_abe_",
+      "context": "Beacon status label observed in stager sandbox network references",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ctx_admin_la_true",
+      "context": "Beacon context flag in IOC section E URL; may report local admin context",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".svchost32mid",
+      "context": "Marker-file name in backdoor YARA rule; confirm it is a static string",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".svchost32ul",
+      "context": "Marker-file name in backdoor YARA rule; confirm it is a static string",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "github.com/kardianos/service",
+      "context": "Go module used for service install; common in legitimate Go service agents",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "kardianos/service",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "github.com/fsnotify/fsnotify",
+      "context": "Go module identified by static decomposition of the backdoor",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "github.com/go-ole/go-ole",
+      "context": "Go module identified by static decomposition of the backdoor",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "4e2bd2c481372f7ab13b83b63b424e97",
+      "context": "Go backdoor imphash; toolchain-generic, matches 12.0K goodware and 6.9K malicious files in a year",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "213.145.86.112",
+      "context": "Staging server / ChocoShell C2 on Latitude.sh bare metal (AS396356), New York",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.145.210.184",
+      "context": "Device-code phishing VPS (Ultahost); resolved by ms365-live.com",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "31.57.243.154",
+      "context": "Phishing host at Latitude.sh LTDA; resolved by owa-ms365.com",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.194.151.133",
+      "context": "Primary C2 VPS (Tornado Datacenter, UK)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.194.159.55",
+      "context": "C2 holding exfiltrated browser-data zips (RouterHosting, DE)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.146.28.75",
+      "context": "Notifier C2 for the phishing console (Cogent, US)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "107.189.26.194",
+      "context": "Microsoft-listed second ChocoShell C2 and DNS resolver; not enriched by RL",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.194.159.150",
+      "context": "Microsoft-listed CaptiveCrunch AitM infrastructure",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.146.28.132",
+      "context": "Microsoft-listed CaptiveCrunch DNS resolver",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.142.52.31",
+      "context": "Hunting lead (Ultahost, Madrid) listed under Files Communicating with IP for the backdoor; validate before blocking",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ms365-live.com",
+      "context": "Microsoft 365 lookalike, device-code redirect host; created 2026-05-14",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "owa-ms365.com",
+      "context": "Outlook Web Access lookalike phishing host; created 2026-07-16",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ms365-device.com",
+      "context": "Microsoft 365 lookalike; Microsoft attributes to AitM infrastructure",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "m365-owa.com",
+      "context": "Microsoft 365 lookalike; Microsoft attributes to AitM infrastructure",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wa-meeting.com",
+      "context": "WhatsApp Web pairing-code phishing lookalike; RL first seen 2025-03-25",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "chathamhouse.eu",
+      "context": "Chatham House think-tank lookalike; classified suspicious, Web.Hyperlink.Spam",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "chamber-ua.org",
+      "context": "Ukrainian chamber of commerce lookalike at RouterHosting",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cdncounter.net",
+      "context": "Actor infrastructure listed by Anthropic; RL first seen 2026-03-16",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://213.145.86.112/t/pixel.gif?r=&m=stage2_entry",
+      "context": "Stage-2 beacon from the PowerShell stager",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://213.145.86.112/t/pixel.gif?m=stage2_ctx_admin_la_true&r=r=",
+      "context": "Stage-2 beacon with context flag",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://213.145.86.112/s",
+      "context": "Stager download path still serving HTTP 200 on 2026-10-05",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://213.145.86.112/s?r=0f511e19",
+      "context": "Stager download with session token, retrieved by RL 2026-07-20",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://213.145.86.112/s?r=7ed4bb1d",
+      "context": "Shortcut target; opened by .url shortcut 9c5c539138df6cfcd854c55316bb527520025928",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://213.145.86.112/cdn/chunks/vendor-9f3a1c.min.js?ref=0f511e19&stub=1",
+      "context": "Stager disguised as a JavaScript bundle",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://213.145.86.112/cdn/chunks/vendor-9f3a1c.min.js?ref=95766022&stub=1",
+      "context": "Shortcut target; opened by .url shortcut e82a7c86677c5752dceb6b848754698571fb0aa8",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://213.145.86.112/cdn/chunks/polyfill-7e2b.min.js",
+      "context": "Polyfill library fetched by stager (goodware file), Microsoft 'tooling fetch'",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://213.145.86.112/t/event",
+      "context": "ChocoShell HTTPS POST exfiltration endpoint (Microsoft); not observed by RL",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/t/pixel.gif",
+      "context": "Tracking-pixel beacon path, keyed by YARA and Sigma rules",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cdn/chunks/vendor-9f3a1c.min.js",
+      "context": "Fake JavaScript bundle path serving the stager",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/t/event",
+      "context": "Exfiltration POST path on the staging server",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cdn/chunks/polyfill-7e2b.min.js",
+      "context": "Genuine polyfill library path served alongside the stager",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/s",
+      "context": "Short stager download path on the raw-IP staging server",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/WZ",
+      "context": "Additional stager sandbox network path on the staging server",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "ms365-live.com -> 104.145.210.184",
+      "context": "Resolution link between phishing domain and device-code phishing server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "owa-ms365.com -> 31.57.243.154",
+      "context": "Resolution link between phishing domain and phishing host",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "anna.manager@russianearabroad.net",
+      "context": "Phishing persona sender address impersonating a Russian expatriate organization",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "events@embassy-protocol.int",
+      "context": "Phishing persona sender address impersonating an embassy protocol office",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "be99857449d2856dd5a84e21c8a3d5e0e01456adb44062ddec5a6b4970d8d42c",
+      "description": "Anthropic-listed PowerShell stager (ChocoShell), RL file name 123.ps1"
+    },
+    {
+      "sha256": "918fa52ae45ed60ba7cc8bdc99c3cbe9ab92e0375ec31fc05d0d4513be11c593",
+      "description": "Anthropic-listed Go backdoor (CornFlake), RL file name 123.exe"
+    },
+    {
+      "sha256": "ca3be5885afb3eb3bb19341e2653212200c568f3f900e0b2f04de9ba209aed25",
+      "description": "Rebuilt PowerShell stager retrieved from hxxps://213.145.86.112/s on 2026-07-15"
+    },
+    {
+      "sha256": "20e20b074967ed6f6e04d609ccec5ff7492665ef25f894c90c2ddc92fa47ac38",
+      "description": "Rebuilt PowerShell stager, no network link observed"
+    },
+    {
+      "sha256": "1e3ee845fde739fcd3ca9ce62c7f142a7c501d11db4c4fb294d4939f12d0f916",
+      "description": "Rebuilt PowerShell stager retrieved from /s and the fake JS bundle on 2026-07-20"
+    },
+    {
+      "sha256": "403b624e35777cbc07dbe66398b21bba70396a20b859c880732338ce1dd1f41f",
+      "description": "Rebuilt PowerShell stager, no network link observed"
+    },
+    {
+      "sha256": "6f7090895c1c3dee30de6b3f098ca3a788dc198646e5293a8b1210430b0add97",
+      "description": "Rebuilt PowerShell stager, ssdeep variant B"
+    },
+    {
+      "sha256": "28f622028e690c943f7fa9aca426c07cab52b5aaba757ef8a3328609c0b3bec3",
+      "description": "Seventh YARA retro-hunt match, second build of the variant-B stager, no network link"
+    },
+    {
+      "sha256": "5bc3c615da8dd7ef45e421d26a97644679ba0a0647b24efc96ebed8348f403d2",
+      "description": "60-byte Windows Internet Shortcut lure opening https://213.145.86.112/s?r=7ed4bb1d"
+    },
+    {
+      "sha256": "92cf0b883d220ba37f5ab378920fefdfdddc4fa76ee6c046696a7e5853a95c33",
+      "description": "60-byte Windows Internet Shortcut lure opening the fake JS bundle stager path"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script",
+    "unknown"
+  ]
+}

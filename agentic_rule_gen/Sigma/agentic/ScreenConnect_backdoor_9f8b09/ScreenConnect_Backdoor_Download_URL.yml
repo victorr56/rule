@@ -1,0 +1,26 @@
+title: ScreenConnect Backdoor Download URL
+id: b32a818c-c46b-4e63-bfb7-0466c0714ed9
+status: experimental
+description: Detects the download of a file from a URL path known to be used to deliver a malicious ScreenConnect client.
+references:
+    - https://www.malware-traffic-analysis.net/2026/09/14/index.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url.Original|contains: '/xgov/social_secur1tiy_administr3tion.php'
+        Http.Response.ContentType|contains:
+            - 'application/octet-stream'
+            - 'application/x-msdownload'
+            - 'application/vnd.microsoft.portable-executable'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

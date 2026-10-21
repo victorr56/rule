@@ -1,0 +1,22 @@
+title: NOVABLIGHT - Disable Task Manager via Registry
+id: 1a590131-4171-4770-9833-289bb6616147
+status: experimental
+description: Detects a registry modification used by NOVABLIGHT to disable the Windows Task Manager.
+references:
+    - https://www.elastic.co/security-labs/threat-command/maas-appeal-an-infostealer-rises-from-the-ashes
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskMgr'
+        Details: '1'
+    condition: selection
+falsepositives:
+    - Can be set by administrators or group policy in controlled environments to restrict user actions.
+level: medium

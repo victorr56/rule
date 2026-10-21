@@ -1,0 +1,22 @@
+title: REMCOS RAT Screenshot File Creation
+id: 3c623910-c11c-43da-910f-611ec5b26f5e
+status: experimental
+description: Detects the creation of screenshot files with a specific naming convention `time_YYYYMMDD_HHMMSS.jpg` used by REMCOS RAT.
+references:
+    - https://www.elastic.co/security-labs/threat-command/dissecting-remcos-rat-part-four
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.collection
+    - attack.t1113
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\Temp\'
+        TargetFilename|re: '\\time_\d{8}_\d{6}\.jpg$'
+    condition: selection
+falsepositives:
+    - Legitimate software that may create files with this naming scheme in a temporary directory.
+level: high

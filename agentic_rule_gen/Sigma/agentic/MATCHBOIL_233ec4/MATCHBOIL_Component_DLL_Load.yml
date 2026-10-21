@@ -1,0 +1,24 @@
+title: MATCHBOIL Component DLL Load
+id: 792b0c1b-e522-4467-8d00-4740f9076f8e
+status: experimental
+description: Detects a main MATCHBOIL executable loading the 'AdditionalLib.dll' component.
+references:
+    - https://www.welivesecurity.com/en/eset-research/matchboil-new-tricks-same-old-evil-intentions/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1106
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - 'MeowMeowProgramm.exe'
+            - 'SMTPClientApplication.exe'
+        ImageLoaded|endswith: '\AdditionalLib.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

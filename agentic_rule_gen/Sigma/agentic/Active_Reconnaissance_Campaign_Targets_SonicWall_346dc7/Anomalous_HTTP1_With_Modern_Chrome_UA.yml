@@ -1,0 +1,23 @@
+title: Anomalous HTTP/1.0 Usage with Modern Chrome User-Agent
+id: 3c5e8d9c-f9e4-4d8b-90f7-ebf0e4b8555e
+status: experimental
+description: Detects a behavioral anomaly where a modern Chrome 119 User-Agent is paired with an outdated HTTP/1.0 protocol version. Legitimate modern browsers do not use HTTP/1.0. This combination was a key feature of the scanning tools used in the campaign.
+references:
+    - https://www.greynoise.io/blog/active-reconnaissance-campaign-targets-sonicwall-firewalls-through-commercial-proxy-infrastructure
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.reconnaissance
+    - attack.t1595
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        UserAgent|contains: 'Chrome/119'
+        HttpVersion: 'HTTP/1.0'
+    condition: selection
+falsepositives:
+    - Custom or misconfigured clients.
+    - Non-standard automation or testing tools.
+level: medium

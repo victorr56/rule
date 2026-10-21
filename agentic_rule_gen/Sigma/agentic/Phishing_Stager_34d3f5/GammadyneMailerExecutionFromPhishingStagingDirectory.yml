@@ -1,0 +1,22 @@
+title: Gammadyne Mailer Execution From Phishing Staging Directory
+id: 934d40b8-c89b-449e-b7d8-11881ec31f28
+status: experimental
+description: Detects the execution of Gammadyne Mailer (gm.exe) from a specific staging directory 'dam pe uk puterniiicccc' observed in a large-scale phishing campaign.
+references:
+    - https://www.huntress.com/blog/terminal-server-phishing-stager-exposed
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1566
+    - attack.t1074.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|contains: '\dam pe uk puterniiicccc\'
+        Image|endswith: '\gm.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

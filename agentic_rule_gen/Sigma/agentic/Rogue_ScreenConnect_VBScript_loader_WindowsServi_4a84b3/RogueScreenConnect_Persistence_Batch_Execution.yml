@@ -1,0 +1,23 @@
+title: Rogue ScreenConnect Persistence Batch File Execution
+id: f02f2324-7ef8-4e09-b3a6-80540452d3a3
+status: experimental
+description: 'Detects the execution of "WindowsServiceHost.bat" via "wscript.exe", a step in the persistence mechanism of the rogue ScreenConnect loader.'
+references:
+    - https://www.huntress.com/blog/rogue-screenconnect-installations
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1059.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\wscript.exe'
+        CommandLine|contains: 'WindowsServiceHost.bat'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

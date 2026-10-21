@@ -1,0 +1,29 @@
+title: Axios Supply-Chain RAT Linux Payload Download and Execution
+id: 3c57a2bd-29e2-45e5-827c-dd38bfa780d6
+status: experimental
+description: Detects the command line pattern used by the Axios supply-chain RAT on Linux to download a Python payload with curl and execute it via nohup.
+references:
+    - https://www.elastic.co/security-labs/blog/axios-supply-chain-compromise-detections
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.execution
+    - attack.defense_evasion
+    - attack.t1059.006
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        ParentImage|endswith:
+            - /bash
+            - /sh
+        CommandLine|contains|all:
+            - 'curl -o /tmp/ld.py'
+            - '&&'
+            - 'nohup python3 /tmp/ld.py'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

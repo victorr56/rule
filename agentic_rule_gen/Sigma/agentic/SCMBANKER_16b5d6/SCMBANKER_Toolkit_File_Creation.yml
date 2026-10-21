@@ -1,0 +1,31 @@
+title: SCMBANKER Toolkit File Creation in Public Folder
+id: a2d1e0c5-5d9f-4b0e-8c3b-2856c4d7d9a1
+status: experimental
+description: Detects the creation of specific SCMBANKER toolkit files in the C:\Users\Public\ directory, which is used as a staging area for its components.
+references:
+    - https://www.elastic.co/security-labs/threat-command/mexican-banking-fraud-scmbanker-ref6045
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.execution
+    - attack.t1547.001
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\Users\Public\'
+        TargetFilename|endswith:
+            - '\run.vbs'
+            - '\id.txt'
+            - '\invi.cur'
+            - '\key.ps1'
+            - '\screen2.ps1'
+            - '\comando.txt'
+            - '\99.kut'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

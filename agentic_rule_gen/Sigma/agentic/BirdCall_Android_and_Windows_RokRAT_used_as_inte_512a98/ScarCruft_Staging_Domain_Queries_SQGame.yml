@@ -1,0 +1,29 @@
+title: ScarCruft Staging Domain Queries (SQGame)
+id: c3f7b88e-c90a-4a25-a4f6-8c4369e38d7b
+status: experimental
+description: Detects DNS queries for domains known to be compromised by ScarCruft to host malware or configuration files for the BirdCall backdoor, as part of a supply-chain attack against the sqgame platform.
+references:
+    - https://www.welivesecurity.com/en/eset-research/rigged-game-scarcruft-compromises-gaming-platform-supply-chain-attack/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith:
+            - '.sqgame.net'
+            - '.sqgame.com.cn'
+            - '.1980food.co.kr'
+            - '.inodea.com'
+            - '.lawwell.co.kr'
+            - '.colorncopy.co.kr'
+            - '.swr.co.kr'
+            - '.sejonghaeun.com'
+            - '.cndsoft.co.kr'
+    condition: selection
+falsepositives:
+    - Legitimate traffic to these domains if they have been cleaned of malicious content.
+level: high

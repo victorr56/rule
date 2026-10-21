@@ -1,0 +1,28 @@
+title: TELEPUZ Persistence via CipherAllocator Service
+id: 5b4e8d3c-9149-4eb0-a50d-b4b600985223
+status: experimental
+description: Detects the creation or modification of the 'CipherAllocator' Windows service and associated svchost group 'KngWrk', used by TELEPUZ malware for persistence.
+references:
+    - https://www.elastic.co/security-labs/threat-command/telepuz-maas-malware-clickfix
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1543.003
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_servicedll:
+        TargetObject|endswith: '\SYSTEM\CurrentControlSet\Services\CipherAllocator\Parameters\ServiceDll'
+        Details|contains: '\ProgramData\XeroxPrint\Temp\Worker\grpeng.dll'
+    selection_svchost_group:
+        TargetObject|endswith: '\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Svchost\KngWrk'
+        Details|contains: 'CipherAllocator'
+    selection_imagepath:
+        TargetObject|endswith: '\SYSTEM\CurrentControlSet\Services\CipherAllocator\ImagePath'
+        Details|contains: 'svchost.exe -k KngWrk'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

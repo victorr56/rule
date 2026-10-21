@@ -1,0 +1,29 @@
+title: ClickFix RAT Persistence via Scheduled Task
+id: 4d5e6f7a-9c0d-4e7f-a0b1-2c3d4e5f6a7b
+status: experimental
+description: Detects the creation of scheduled tasks with specific names used by the ClickFix RAT for persistence.
+references:
+    - https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1053.005
+    - attack.persistence
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_v1:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn "Canon Configuration Reader"'
+    selection_v2:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn "Stardock DeElevation Tool"'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

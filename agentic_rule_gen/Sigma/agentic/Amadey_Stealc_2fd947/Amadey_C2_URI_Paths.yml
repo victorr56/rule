@@ -1,0 +1,33 @@
+title: Amadey C2 Communication via Specific URI Paths
+id: 5b6c310c-99d6-444f-a89a-4122d640989f
+status: experimental
+description: Detects HTTP requests to specific URI paths known to be used by Amadey C2 servers for command and control.
+references:
+    - https://www.welivesecurity.com/en/eset-research/eset-takes-part-operation-endgame-disrupt-amadey-stealc/
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|contains:
+            - '/d19ku38f/index.php'
+            - '/di9ku38f/index.php'
+            - '/kawT2QXfpPueNM/index.php'
+            - '/cvdfnaFJBmC0/index.php'
+            - '/cvdfnaFJBmC1/index.php'
+            - '/cvdfnaFJBmC2/index.php'
+            - '/g7hen3xxf/index.php'
+            - '/bVoZEtTa1/index.php'
+            - '/te4h2nus/index.php'
+            - '/so57Nst/index.php'
+            - '/tu3d2rom/index.php'
+            - '/8bdDsv3dk2FF/index.php'
+        http.request.method: 'POST'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

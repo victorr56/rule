@@ -1,0 +1,25 @@
+title: Mirage Kitten NodeRabbit C2 URI Paths
+id: 5ec1c13c-c820-4e78-8edb-f350ed813336
+status: experimental
+description: Detects HTTP POST requests to specific URI paths used by the NodeRabbit backdoor for C2 communications.
+references:
+    - https://securelist.com/mirage-kitten-new-backdoors-noderabbit-pollcat/121244/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url.Path|startswith:
+            - '/api/rabbit/checkin'
+            - '/api/rabbit/task'
+            - '/api/rabbit/result'
+        Http.Method: 'POST'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

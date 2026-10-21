@@ -1,0 +1,480 @@
+{
+  "malware_family": "AuraStealer, ACRStealer (Amatera), Remus Stealer",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "ReversingLabs profiles three actively maintained infostealer malware-as-a-service families active between June and August 2026: AuraStealer (now virtualized and 10MB in size), ACRStealer/Amatera, and Remus Stealer, a 64-bit LummaStealer-like stealer that uniquely uses Etherhiding for C2. All three harvest browser credentials and crypto wallet data, rely on heavy anti-analysis and self-deletion, and are distributed through ClickFix, ClearFake, SEO poisoning and malvertising. The report provides hashes, download URLs and C2 domains for each family.",
+  "mitre_techniques": [
+    "T1055",
+    "T1497.001",
+    "T1555.003"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "pxDpRf",
+      "context": "AuraStealer anti-analysis prompt asking user to re-enter randomized string to continue",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Remus",
+      "context": "Family name derived from log identification strings in Remus Stealer code",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Ameday",
+      "context": "Loader currently dropping Remus Stealer samples",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Gcleaner",
+      "context": "Loader currently dropping Remus Stealer samples",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "OffLoader",
+      "context": "Loader currently dropping Remus Stealer samples",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "VMProtect",
+      "context": "Protector used by Remus Stealer delivery samples",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "c4831ec2b68c576199245eb877e83f9b5e83dd3f",
+      "context": "AuraStealer dropped/downloaded file (SHA1)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "1c24da264bce471366156b4721bacb83201ba759",
+      "context": "AuraStealer dropped/downloaded file (SHA1)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "7c0f669cd06e5ba8fdcdba107b9519fe73519368",
+      "context": "AuraStealer dropped/downloaded file (SHA1)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "http://91.92.242.236/files-129312398/files/file_03e1dd22b8ec149f.exe",
+      "context": "AuraStealer download/source location",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://91.92.241.243/files/file_391c1e83ac309020.exe",
+      "context": "AuraStealer download/source location",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://85.239.147.6/files/Leetootoo/random.exe",
+      "context": "AuraStealer download/source location",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://85.239.147.6/files/5851730241/IQEr4wy.exe",
+      "context": "AuraStealer download/source location",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://158.94.208.7/files/8705834433/8njNDcy.exe",
+      "context": "AuraStealer download/source location",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://158.94.211.222/files/1660459253/W3Trdgs.exe",
+      "context": "AuraStealer download/source location",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://158.94.211.222/files/bur/fast.exe",
+      "context": "AuraStealer download/source location",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "aimemtools.cfd",
+      "context": "AuraStealer C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "softwareguard.cfd",
+      "context": "AuraStealer C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "zkevopenanu.cfd",
+      "context": "AuraStealer C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dev-tools.cfd",
+      "context": "AuraStealer C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sys-tools.cfd",
+      "context": "AuraStealer C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "aewaterdelivery.com",
+      "context": "AuraStealer C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "secupd.cfd",
+      "context": "AuraStealer C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "memaiagent.cfd",
+      "context": "AuraStealer C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gw.portallbridge.cc",
+      "context": "ACRStealer/Amatera C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "login.metricsdashboard.cc",
+      "context": "ACRStealer/Amatera C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "static.quorashift.cc",
+      "context": "ACRStealer/Amatera C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "data.nomadhive.cc",
+      "context": "ACRStealer/Amatera C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "auth.automationportal.cc",
+      "context": "ACRStealer/Amatera C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wss.vectorplatform.cc",
+      "context": "ACRStealer/Amatera C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "edge.kernelmonitor.cc",
+      "context": "ACRStealer/Amatera C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "stream.pawpalace.cc",
+      "context": "ACRStealer/Amatera C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "res.explicittweak.cc",
+      "context": "ACRStealer/Amatera C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://azurhay.shop:8539",
+      "context": "Remus Stealer C2 URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://carogra.biz:4219",
+      "context": "Remus Stealer C2 URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://fimmora.surf:6504",
+      "context": "Remus Stealer C2 URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://freshis.biz:7752",
+      "context": "Remus Stealer C2 URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://hooiuse.click:4938",
+      "context": "Remus Stealer C2 URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://myrtler.biz:9549",
+      "context": "Remus Stealer C2 URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://onesdto.shop:2535",
+      "context": "Remus Stealer C2 URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://slyfogx.shop:5776",
+      "context": "Remus Stealer C2 URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://topxgax.click:4930",
+      "context": "Remus Stealer C2 URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://tzpx.courses:4437",
+      "context": "Remus Stealer C2 URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://uiccvbk.click:8839",
+      "context": "Remus Stealer C2 URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://youngel.biz:8768",
+      "context": "Remus Stealer C2 URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://zelpx.garden:9895",
+      "context": "Remus Stealer C2 URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "5b5434cc8bb3556075c6967d2ffee5a6b33793de07b9d4701bc63d369de63861",
+      "description": "AuraStealer sample observed July 2026"
+    },
+    {
+      "sha256": "bfad1100bc3054dd26151c7acea412960ece04c3aa075ba323c10cf75c31a9a4",
+      "description": "AuraStealer sample observed July 2026"
+    },
+    {
+      "sha256": "b8663c9c2832b92095660d1c674835acb12804e56839451e6ad9e78ed3c6d5df",
+      "description": "AuraStealer sample observed July 2026"
+    },
+    {
+      "sha256": "134ab4b33ab555f3a77d43e94891698834a9b739b065764a702c7c52e3f4c15b",
+      "description": "AuraStealer sample observed July 2026"
+    },
+    {
+      "sha256": "0843ddfbe1908c5151495295ff7d1007b3c8bca287a766c437cea6b0e3f72f4d",
+      "description": "ACRStealer/Amatera packed sample, July 2026"
+    },
+    {
+      "sha256": "e96c774b2c8425ab237b0fb36f57a7d8cc7e782b6d4e9a99434f3d21c93d5128",
+      "description": "ACRStealer/Amatera packed sample, July 2026"
+    },
+    {
+      "sha256": "1019d8a20bd7732b2c2747b30646a5d10725fd5ee532b5e858dab27ba150db1e",
+      "description": "ACRStealer/Amatera packed sample, July 2026"
+    },
+    {
+      "sha256": "d7979fb0377c30a5361cd3f2f934c1e058a5c86031792dc66eeb24d6d7569661",
+      "description": "ACRStealer/Amatera unpacked sample"
+    },
+    {
+      "sha256": "4332227474b0d7db91a1e156ac3afa58ea4973ff00cb455dfd073fa1ec6dabcd",
+      "description": "ACRStealer/Amatera unpacked sample"
+    },
+    {
+      "sha256": "28d1f5d695ed65461b36f032f057a2d48b97ea68f149c73ea3401bf9ec0576cb",
+      "description": "Remus Stealer sample observed August 2026"
+    },
+    {
+      "sha256": "450216a711f8b3371a2936923201f204fa1c686a2b831dac4a1c0094c105a5fd",
+      "description": "Remus Stealer sample observed August 2026"
+    },
+    {
+      "sha256": "000b7533d53d0feed7cd995043a4298fe2b8c5767c1ffff7710f446c682928cb",
+      "description": "Remus Stealer sample observed August 2026"
+    },
+    {
+      "sha256": "2f029858b8ecca8fb6c156eb2d046a2463e8b67d356c1003e5567339681a71be",
+      "description": "Remus Stealer sample observed August 2026"
+    },
+    {
+      "sha256": "48b82c79a90ed401449260948b269d0909bbdb53847678dfbba09c368016bd7e",
+      "description": "Remus Stealer sample observed August 2026"
+    },
+    {
+      "sha256": "608057bea6ee1cc68c1f1bdcbe702a3558270d8f19cc329b8b34bcd133984da8",
+      "description": "Remus Stealer sample observed August 2026"
+    },
+    {
+      "sha256": "6f737981ac722be8ae1c05a295667d050abe1b45dd946e1dbf4c46467c517c5f",
+      "description": "Remus Stealer sample observed August 2026"
+    },
+    {
+      "sha256": "55fd126063af89eb1c5639a56dcf365f2e817813a45758b3f12a18f12d5561d1",
+      "description": "Remus Stealer sample observed August 2026"
+    },
+    {
+      "sha256": "47d5a5ef1afe3d1b8dbfde026a80d97ed0e012c144fa3940bb39758de75ca842",
+      "description": "Remus Stealer sample observed August 2026"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

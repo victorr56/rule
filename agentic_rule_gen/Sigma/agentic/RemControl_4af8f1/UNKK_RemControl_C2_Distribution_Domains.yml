@@ -1,0 +1,30 @@
+title: UNKK RemControl C2 and Distribution Domains
+id: 593a6503-cf70-4f51-b845-a9c6bb11158a
+status: experimental
+description: Detects DNS queries for domains associated with the RemControl Android trojan C2 and distribution infrastructure.
+references:
+    - https://www.group-ib.com/blog/remcontrol-android-banking-trojan/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1568.002
+    - attack.initial_access
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'tvtap-liveapp.com'
+            - 'tvtap-hd.app'
+            - 'vpn.doneplay.site'
+            - 'ff-de.shutgpt.ir'
+            - 'vpn.askarzadeh.com'
+            - 'cdn.dlmafi.top'
+            - 'bnbnhura.top'
+            - 'definatelynoone.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,27 @@
+title: MacSync C2 Communication URI Paths
+id: b9d921e1-e6b0-4613-81b8-3e4726b2163b
+status: experimental
+description: Detects HTTP requests to MacSync C2 servers, identified by a combination of specific URI paths and destination IPs.
+references:
+    - https://securelist.com/macsync-new-version/121383/
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|contains:
+            - '/v1/agent/'
+            - '/v1/asset/'
+            - '/v1/loader/'
+        DestinationIp:
+            - '194.163.172.211'
+            - '103.141.50.84'
+            - '79.110.62.228'
+    condition: selection
+falsepositives:
+    - Unlikely, as the combination of these URI paths and C2 IPs is specific to this threat.
+level: high

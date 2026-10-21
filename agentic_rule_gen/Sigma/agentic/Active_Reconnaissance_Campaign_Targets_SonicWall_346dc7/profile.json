@@ -1,0 +1,198 @@
+{
+  "malware_family": "",
+  "threat_actor": "",
+  "platforms": [
+    "network_device"
+  ],
+  "summary": "A four-day reconnaissance campaign (Feb 22-25, 2026) generated 84,142 sessions from 4,305 IPs against exposed SonicWall SonicOS firewalls, with 92% of traffic probing the SSL VPN status-check API to build a target list for later credential attacks. Activity was delivered by four infrastructure clusters, including a commercial proxy service (ByteZero) that supplied 27,119 sessions from 4,102 rotating exit IPs and a single mega-scanner cycling 26 user agents. Detection should focus on management/VPN endpoint URIs, the HTTP/1.0-with-modern-Chrome-UA mismatch, and the listed scanning infrastructure ranges.",
+  "mitre_techniques": [
+    "T1595",
+    "T1595.002",
+    "T1110",
+    "T1590"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "7.1.1-7058, 7.1.2-7019, 8.0.0-8035",
+      "context": "SonicOS firmware versions vulnerable to CVE-2024-53704",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/api/sonicos/is-sslvpn-enabled",
+      "context": "SonicOS REST API VPN status check; 77,253 sessions (91.8%)",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cgi-bin/userLogin",
+      "context": "NetExtender VPN credential testing endpoint; 6,629 sessions",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/sonicui/7/login/",
+      "context": "SonicWall management interface login path probed by campaign",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bytezero.io",
+      "context": "Commercial proxy service delivering 32% of campaign volume",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Chrome 119 on Linux",
+      "context": "Fake modern-browser UA paired with HTTP/1.0 in 58,510 sessions",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "HTTP/1.0",
+      "context": "Protocol version never used by legitimate Chrome; 69.5% of sessions",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "88.210.63.78",
+      "context": "NL VPN hunters cluster, AS211736, 4,669 sessions, also scans Cisco ASA",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.156.73.19",
+      "context": "NL VPN hunters cluster, AS211736, 4,620 sessions",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.156.73.73",
+      "context": "NL VPN hunters cluster, AS211736, 4,491 sessions",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "88.210.63.77",
+      "context": "NL VPN hunters cluster, AS211736, 4,340 sessions",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.156.73.31",
+      "context": "NL VPN hunters cluster, AS211736, 4,333 sessions",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "88.210.63.79",
+      "context": "NL VPN hunters cluster, AS211736, 1,341 sessions",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "130.12.180.29",
+      "context": "Mega-scanner on AS202412 (Omegatech), 18,763 sessions, 26 rotating UAs",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "154.208.64.0/21",
+      "context": "ByteZero proxy exit node range, AS3257, 27,119 sessions",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.156.73.0/24",
+      "context": "Scanner fleet range recommended for blocking",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "88.210.63.0/24",
+      "context": "Scanner fleet range recommended for blocking",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.177.72.0/24",
+      "context": "Bullet-proof hosting range recommended for blocking",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "204.76.203.0/24",
+      "context": "Scanning with credential collection indicators; recommended for blocking",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "AS211736",
+      "context": "Ukrainian-registered AS hosting the NL VPN hunters cluster",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "AS3257",
+      "context": "GTT Communications AS transiting ByteZero proxy traffic",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "AS202412",
+      "context": "Omegatech (Seychelles) AS hosting the mega-scanner IP",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

@@ -1,0 +1,22 @@
+title: Suspected ChatGPT Phishing Domain Query (nxcli.io)
+id: 5b4c194e-152e-4360-8488-842279b90059
+status: experimental
+description: Detects DNS queries for domains hosted on nxcli.io that are associated with a ChatGPT-themed credential phishing campaign.
+references:
+    - https://cofense.com/blog/chatbot-conundrum-phishing-attempts-of-openai-s-chatgpt
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith:
+            - '9527db6e1a.nxcli.io'
+            - 'e83cedb076.nxcli.io'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

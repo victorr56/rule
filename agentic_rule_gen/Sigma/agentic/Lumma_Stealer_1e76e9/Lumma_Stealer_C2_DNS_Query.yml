@@ -1,0 +1,30 @@
+title: Lumma Stealer C2 DNS Query
+id: 4c3a270a-04b7-4c75-9c99-b1480f7d5843
+status: experimental
+description: Detects DNS queries for domains associated with Lumma Stealer C2 infrastructure.
+references:
+    - https://www.elastic.co/security-labs/threat-command/nightmare-on-0xelm-street
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'mocadia.com'
+            - 'mastwin.in'
+            - 'ordinarniyvrach.ru'
+            - 'yamakrug.ru'
+            - 'vishneviyjazz.ru'
+            - 'yrokistorii.ru'
+            - 'stolevnica.ru'
+            - 'visokiykaf.ru'
+            - 'kletkamozga.ru'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

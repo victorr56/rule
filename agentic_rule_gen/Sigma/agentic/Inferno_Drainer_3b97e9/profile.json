@@ -1,0 +1,278 @@
+{
+  "malware_family": "Inferno Drainer",
+  "threat_actor": "",
+  "platforms": [
+    "web"
+  ],
+  "summary": "A phishing campaign impersonates European tax authorities, such as the Dutch Belastingdienst, using urgent emails to lure victims to fake government portals. These sites aim to steal cryptocurrency by either tricking users into submitting their wallet's seed phrase or by having them approve malicious transactions via WalletConnect, leveraging the Inferno Drainer kit.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "md4.php",
+      "context": "Stores Telegram token for exfiltration of stolen seed phrases.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/include_admin",
+      "context": "The path to the phishing kit's admin panel.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "check.js",
+      "context": "Phishing kit script for anti-analysis and anti-debugging.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "document.body.innerHTML = '';",
+      "context": "Code from check.js used to wipe page content on inspection attempts.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wallet-connect-v4.js",
+      "context": "Updated wallet-connect script used in the Belastingdienst phishing sites.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Inferno Drainer",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "onboard.js",
+      "context": "Script implementing account draining logic.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ba378635-89bf-43cd-955e-74d306dbe19c.js",
+      "context": "Example of a unique-per-site script used for draining.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "globalScript.js",
+      "context": "Script that collects and validates inputs from the phishing form.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "postman.js",
+      "context": "Script that sends collected PII to the attacker's backend.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VITE_API_URL",
+      "context": "Variable name in postman.js holding the C2 API URL.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/api/main/add",
+      "context": "Endpoint in postman.js for exfiltrating collected victim data.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mijnoverheid-nl.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cryptoaangifteportaal.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "6rbcc.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "securedauth-nl.su",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mijnaangifte-2025.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "belastingcryptotoeslagen.info",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "securedauth-no.su",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "nlweb-wetgeving.dnsrd.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mijnoverheld-app.duckdns.org",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "25280-6588.s3.webspace.re",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sheckautnl.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "digid-online.nl",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "clientennota-webnl.ddns.info",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "crypto-aangifte.mljnoverheldportaal.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "176-65-134-35.cprapid.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "66-63-187-130.cprapid.com",
+      "context": "Phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "96cdbb9f0456d0c46889ac322e434de40edf18974a7c887490c409779234a356",
+      "description": "check.js anti-analysis script"
+    },
+    {
+      "sha256": "5e73f708c447d1843ced8f884dc7f58a496f23a237955266bbf87b8977a04cce",
+      "description": "wallet-connect-v4.js script"
+    },
+    {
+      "sha256": "f8226ca8f41f616dc7773ba37d7b73197eb7674954597dbeda5ee8ed91f4e275",
+      "description": "onboard.js draining logic script"
+    },
+    {
+      "sha256": "1649ad550c63513e4b3f77e23ecac040890192c70381ea350d699162ba9626d9",
+      "description": "ba378635-89bf-43cd-955e-74d306dbe19c.js unique draining script"
+    },
+    {
+      "sha256": "342336d738165a465820f98e730cc39aeacfb47f90d7c09e4ec66bf5312e7e6f",
+      "description": "globalScript.js form input collector"
+    },
+    {
+      "sha256": "de94e8790ca66cde0920b7dd4e7a32f400400275326e4918096316180ad93c74",
+      "description": "postman.js data exfiltration script"
+    }
+  ],
+  "file_types": [
+    "script"
+  ]
+}

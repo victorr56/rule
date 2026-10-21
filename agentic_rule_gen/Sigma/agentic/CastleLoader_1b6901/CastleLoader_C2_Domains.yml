@@ -1,0 +1,28 @@
+title: CastleLoader C2 and Lure Domains
+id: 546f63aa-2fa8-4221-8302-36c84c160868
+status: experimental
+description: Detects DNS queries to domains associated with CastleLoader C2 infrastructure and lure campaigns.
+references:
+    - https://redcanary.com/blog/threat-intelligence/intelligence-insights-july-2026/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1568.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'cheeshomireciple.com'
+            - 'mirtona.com'
+            - 'ai-scan.digital'
+            - 'bg-transparency.online'
+            - 'linkedall.org'
+            - 'golinked.net'
+            - 'indeed-jobs.net'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

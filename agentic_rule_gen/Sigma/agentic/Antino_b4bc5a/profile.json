@@ -1,0 +1,731 @@
+{
+  "malware_family": "Antino",
+  "threat_actor": "UAT-11587",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "UAT-11587 is a China-nexus intrusion set targeting government, defense and policy organizations across Asia with a five-stage spear-phishing chain that ultimately delivers the Rust-compiled Antino backdoor via signed-host DLL sideloading of slc.dll through GatherOsState.exe. Antino performs host reconnaissance, command/PowerShell execution, file transfer, in-memory shellcode loading and registry Run-key persistence, and uses Microsoft 365 (Outlook and OneDrive via Microsoft Graph) as dead-drop C2 to blend into legitimate cloud traffic.",
+  "mitre_techniques": [
+    "T1059.001",
+    "T1059.003",
+    "T1059.007",
+    "T1071.001",
+    "T1102",
+    "T1218.005",
+    "T1547.001",
+    "T1567.002",
+    "T1574.001",
+    "T1620"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "slc.dll",
+      "context": "Antino backdoor DLL sideloaded from local directory by signed GatherOsState.exe",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "GatherOsState.exe",
+      "context": "Legitimate Microsoft-signed ADK binary abused as sideloading host for slc.dll",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "TestAssembly.dll",
+      "context": "Stage 4 .NET downloader/launcher loaded in-memory into mshta.exe via BinaryFormatter",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "OsGather.dat",
+      "context": "Calculator decoy PE dropped alongside sideload bundle; no execution observed",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\Windows GatherOSStateKit\\",
+      "context": "Antino run=true installation staging directory for persistent payload files",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "SLOpen",
+      "context": "Export of slc.dll called by GatherOsState.exe to start Antino",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AntinoApp",
+      "context": "Windows application manifest name identifying Antino builds",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "b2b3adb0-1669-4b94-86cb-6dd682ddbea3",
+      "context": "AssemblyAttribute GUID shared by all recovered TestAssembly.dll downloader builds",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "command_req_[session_id]",
+      "context": "Subject prefix of Outlook command emails pulled by Antino",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "command_res_[session_id]",
+      "context": "Subject prefix of Antino command response emails",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "D:\\a\\antino\\antino\\target\\x86_64-pc-windows-msvc\\release\\deps\\antino_client_template.pdb",
+      "context": "Antino 64-bit build PDB path recovered from multiple variants",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "D:\\a\\antino\\antino\\target\\i686-pc-windows-msvc\\release\\deps\\antino_client_template.pdb",
+      "context": "Antino 32-bit build PDB path recovered from multiple variants",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "D:\\a\\antino\\antino\\target\\x86_64-pc-windows msvc\\release\\deps\\slc_template.pdb",
+      "context": "Antino slc.dll template PDB path",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "D:\\a\\antino\\antino\\client\\src\\core.rs",
+      "context": "Rust source path embedded in Antino client builds",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "D:\\a\\antino\\antino\\client\\src\\artillery\\run.rs",
+      "context": "Rust source path embedded in Antino client builds",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "D:\\a\\antino\\antino\\shared\\src\\command\\add_to_run.rs",
+      "context": "Rust source path for Antino add_to_run command handler",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "D:\\a\\antino\\antino\\shared\\src\\command\\load.rs",
+      "context": "Rust source path for Antino shellcode load command handler",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": ".cfg",
+      "context": "Custom PE section holding length-prefixed JSON config XORed with alternating key",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0xAB 0xCD",
+      "context": "Alternating XOR key applied to Antino .cfg configuration bytes",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "l7qYtFZVM3v5gErxcmwVHoxKyWEUI2az",
+      "context": "Embedded key passed to textTransform() to decrypt Stage 2 JScript payloads",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "COMPLUS_Version",
+      "context": "Environment variable checked by Stage 2 downloader for .NET version 4.0.30319",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "System.Windows.Forms.AxHost+State",
+      "context": "Deserialization gadget used by Stage 3 stage_2 resource",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ActivitySurrogateSelector",
+      "context": "Gadget chain used to drive execution during BinaryFormatter deserialization",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "System.Runtime.Serialization.Formatters.Binary.BinaryFormatter",
+      "context": ".NET class instantiated by the JScript orchestrator to deserialize gadget resources",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "mshta.exe",
+      "context": "Executes HTA stager and hosts Stage 2 JScript and Stage 3 deserialization chain",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "GatherOsState.exe -> slc.dll (SLOpen)",
+      "context": "Signed host loads Antino backdoor DLL from its local directory",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "%windir%\\SysWOW64\\sdiagnhost.exe -Embedding",
+      "context": "Scripted Diagnostics native host executing attacker PowerShell via PCW package",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "New-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run' -Name $name -PropertyType String -Value $value -ErrorAction Stop",
+      "context": "PowerShell generated by Antino add_to_run command for persistence",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "context": "Run key written through the Scripted Diagnostics workflow for Antino persistence",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\diagnostics\\system\\PCW",
+      "context": "Legitimate PCW troubleshooting package abused by Antino via sdiageng.dll",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\SDIAG_<GUID>",
+      "context": "Temporary working copy directory where Antino writes result.ps1",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "result.ps1",
+      "context": "Attacker-controlled PowerShell script executed by sdiagnhost.exe",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "{1F3D8AA5-9EBF-4EE4-85C2-EA40379AEDE8}",
+      "context": "CLSID of CScriptedDiag in sdiageng.dll activated via CoCreateInstance",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "sdiagnhost.exe",
+      "context": "Scripted Diagnostics native host used to proxy attacker PowerShell execution",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "osc-cdn.com",
+      "context": "Actor-controlled RFC5321 envelope sender domain used for spoofed spear-phishing",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "oisadjfoinsiduhfnoisdnfosdnoifnsoid.pages.dev",
+      "context": "Fixed Cloudflare Pages execution-tracking hostname across HTA/WSF variants",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "d2nq35tel3ucuo.cloudfront.net",
+      "context": "CloudFront staging domain for Stage 2 scripts and decoy content",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pub-abfa7742e315485a98a5fafd6dbfb68e.r2.dev",
+      "context": "Cloudflare R2 bucket staging Antino chain stages and sideload bundle",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pub-0173d1566dcd4fd49fa25f11f14bfe4c.r2.dev",
+      "context": "Cloudflare R2 bucket staging Antino chain stages and sideload bundle",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "my-3lyt6wcp.pages.dev",
+      "context": "Cloudflare Pages lures delivery domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "my-qc39r814.pages.dev",
+      "context": "Cloudflare Pages lures delivery domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "my-662ylt3w.pages.dev",
+      "context": "Cloudflare Pages lures delivery domain (HTA/WSF)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "my-6g16qsfe.pages.dev",
+      "context": "Cloudflare Pages lures delivery domain (HTA/WSF)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "my-goq6xmbm.pages.dev",
+      "context": "Cloudflare Pages lures delivery domain (HTA/WSF)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "my-h3qli6kq.pages.dev",
+      "context": "Cloudflare Pages lures delivery domain (HTA/WSF)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "my-sv7c1fzs.pages.dev",
+      "context": "Cloudflare Pages lures delivery domain (HTA/WSF)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "my-u0up9qri.pages.dev",
+      "context": "Cloudflare Pages lures delivery domain (HTA/WSF)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "my-vtsdod2n.pages.dev",
+      "context": "Cloudflare Pages lures delivery domain (HTA/WSF)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "my-wgoxp32b.pages.dev",
+      "context": "Cloudflare Pages lures delivery domain (HTA/WSF)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "microsoft-flash.com",
+      "context": "Software-themed domain hosting standalone Antino fake installers",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wps-cn.com",
+      "context": "Software-themed domain hosting standalone Antino fake installers",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "graph.microsoft.com",
+      "context": "Legitimate Microsoft Graph endpoint used as Antino dead-drop C2",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "login.microsoftonline.com",
+      "context": "Microsoft 365 OAuth token endpoint used by Antino Gen2 client-credentials flow",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.27.110.220",
+      "context": "Historical serving IP for Antino payload hosted on wps-cn.com",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://microsoft-flash.com/download/flashcenter_pp_ax_install_en.exe",
+      "context": "Standalone Antino fake-installer delivery URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.wps-cn.com/downloads/flashcenter_pp_ax_install_en.exe",
+      "context": "Standalone Antino fake-installer delivery URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://my-662ylt3w.pages.dev/Institutional_Disciplinary_Action_Report_May_2026.hta",
+      "context": "Malicious HTA delivery URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://my-h3qli6kq.pages.dev/CrossBorder_Repression_Seminar_Agenda.hta",
+      "context": "Malicious HTA delivery URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://my-u0up9qri.pages.dev/UO%20-C-DAC%20%281%29.hta",
+      "context": "Malicious HTA delivery URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://d2nq35tel3ucuo.cloudfront.net/9q9OlLKCm0an2ct1.js",
+      "context": "Antino-chain encrypted JScript orchestrator URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://pub-abfa7742e315485a98a5fafd6dbfb68e.r2.dev/HeiqAW6Zslc.dll.pzs",
+      "context": "Antino backdoor delivery URL using randomized .pzs extension",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://pub-abfa7742e315485a98a5fafd6dbfb68e.r2.dev/HeiqAW6ZGatherOsState.exe.luy",
+      "context": "Antino sideload-package URL using randomized .luy extension",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://pub-0173d1566dcd4fd49fa25f11f14bfe4c.r2.dev/VD7F3Wxnslc.dll.fsc",
+      "context": "Antino backdoor delivery URL using randomized .fsc extension",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "//my-<project>.pages.dev/File_download?m=<target-identifier>",
+      "context": "Protocol-relative Cloudflare Pages URL pattern in spoofed Gmail attachment card",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1.0/users/<redacted>/messages?$filter=subject+eq+'command_req_[compromised_UUID]'",
+      "context": "Microsoft Graph GET used by Antino to pull command emails",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/antino/heartbeats/{id}.json",
+      "context": "OneDrive folder path for Antino heartbeat/check-in uploads",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/antino_downloads/{file}",
+      "context": "OneDrive folder path for data exfiltrated from victims",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/antino_uploads/{file}",
+      "context": "OneDrive folder path for toolkit files pushed to victims",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "<lure_title>?track",
+      "context": "Tracking request appended to Cloudflare Pages tracking hostname for lure correlation",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "09ef7c736bccfafefc44d9910d499173b88063b73b221fc0dc9e9105107e5cff",
+      "description": "Antino Gen 2 slc.dll backdoor"
+    },
+    {
+      "sha256": "e2eb7703047b37b28dc34e6990205d758a2454b39bc655b460606745fadcb530",
+      "description": "Antino Gen 2 slc.dll backdoor"
+    },
+    {
+      "sha256": "e7e3b0bcd6798634adf8b49d305f3a7b7682e4b76db549682a183c5a186df4bb",
+      "description": "Antino Gen 2 slc.dll backdoor"
+    },
+    {
+      "sha256": "fdbd047031c13a17c9f491c9355f44d587584ebe2b8927be8482e6c236c8e1c1",
+      "description": "Antino Gen 2 slc.dll backdoor"
+    },
+    {
+      "sha256": "1fadc90b61ce536abda78eb387a7f3d745f00c16775d3f762845ccc0fde567da",
+      "description": "Antino Gen 1 slc.dll backdoor"
+    },
+    {
+      "sha256": "0c39264337a1186b2e765e24073399cbdcba118306614eb411e315887af578bd",
+      "description": "Antino Gen 2 standalone fake-installer backdoor"
+    },
+    {
+      "sha256": "40e7e77aff603f4c2ef17b3bc8ea836e714d0734a1e5b946e52f95536ec5c91d",
+      "description": "Configured Antino Gen 1 standalone backdoor"
+    },
+    {
+      "sha256": "5c5c060b272cd4a5c3767edc0e9478bd35b7e1756e183d0446a5491bd65519cb",
+      "description": "Configured Antino standalone backdoor"
+    },
+    {
+      "sha256": "ca14ad0344dc7216f6da29a5cbe4237d886cc5257e8c3a48fb4885a311c9b800",
+      "description": "Post-unpack Antino standalone backdoor memory image"
+    },
+    {
+      "sha256": "d753a615aedf8e58ffc75b2b7ebd320c0cbe6bcb5cbb885db749a2a85c55d3bf",
+      "description": "Antino-chain TestAssembly.dll downloader"
+    },
+    {
+      "sha256": "133a46ba41136ca21c93fb08c28446826d8c0d9b7923a16f2d152d595a710098",
+      "description": "Antino-chain TestAssembly.dll downloader"
+    },
+    {
+      "sha256": "9fc50cf28f86201fda8306926817b1ede41fdd993202515905dd072f6803542f",
+      "description": "Antino-chain TestAssembly.dll downloader"
+    },
+    {
+      "sha256": "d4cb2f5df16ec9b9c5b796ae55848534e15d4f8b8806f0431108fc7a99a2548a",
+      "description": "Antino-chain TestAssembly.dll downloader"
+    },
+    {
+      "sha256": "131ac3e0df777910e0a32e43d5744bccb0490750d4c2adc359da41d76d383c46",
+      "description": "Antino-chain TestAssembly.dll downloader"
+    },
+    {
+      "sha256": "61a8f5add6c35f99c389012dbb2343061fd0b54611b40490b9a7f0b49d707da0",
+      "description": "Antino-chain Stage 2 JScript downloader and decryptor"
+    },
+    {
+      "sha256": "747b1d13bdf06956b5da5f47250fefd5284ebcf7961971732c3d348aa1a2d533",
+      "description": "Antino-chain Stage 2 JScript downloader and decryptor"
+    },
+    {
+      "sha256": "f0c1dc6d6daa4d010932c7818ed5f22929c182f58e5f495fabe2fb3cfc835b97",
+      "description": "Antino-chain encrypted JScript orchestrator"
+    },
+    {
+      "sha256": "5555e904101689351a2a1359c9c06da0a57139a9470df7d26823c1b75db55041",
+      "description": "Antino-chain encrypted BinaryFormatter gadget resource"
+    },
+    {
+      "sha256": "e809da86bd81463347fa7f922d3e088755a94a331889d32acb55aa8f57778a34",
+      "description": "Malicious HTA stager (CSIS Indo-Pacific lure)"
+    },
+    {
+      "sha256": "484ab497072ea09f12187b349f5b1c80754e4942408a009cccb20a2a3c8c6506",
+      "description": "Malicious WSF stager (institutional disciplinary-action lure)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet",
+    "script"
+  ]
+}

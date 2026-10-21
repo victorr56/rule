@@ -1,0 +1,242 @@
+{
+  "malware_family": "tw-pkgprobe-7731",
+  "threat_actor": "",
+  "platforms": [
+    "multi"
+  ],
+  "summary": "A malicious npm package, tw-pkgprobe-7731, posed as an authorized Twilio HackerOne bug-bounty research probe while targeting Twilio developers. After checking for a Twilio developer environment it collected environment variables, system details, working directory and hostname, and exfiltrated Twilio ACCOUNT_SID and AUTH_TOKEN credentials over a webhook, later probing Twilio-internal hosts and the AWS metadata endpoint. Detection can key on the package name, the npm publisher account, the deamon.js component, the embedded bug-bounty probe comments and references to process.env.ACCOUNT_SID/AUTH_TOKEN.",
+  "mitre_techniques": [
+    "T1195.002",
+    "T1082"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "tw-pkgprobe-7731",
+      "context": "Malicious npm package impersonating an authorized Twilio security research tool",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "twdepprobe7731",
+      "context": "npm account that published the malicious tw-pkgprobe-7731 packages",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "deamon.js",
+      "context": "File in v1.0.1+ that scans folders named after Twilio SIDs and injects PoC package",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Authorized bug-bounty research probe (Twilio HackerOne program)",
+      "context": "Comment inside first version describing the package as a security probe",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "runs only inside Twilio's serverless packager sandbox",
+      "context": "Comment inside first version describing fake sandbox confinement",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "collects local process/host context and writes it next to itself; no destructive action",
+      "context": "Comment inside first version describing the intended probe behaviour",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "process.env.ACCOUNT_SID",
+      "context": "Twilio API credential environment variable exfiltrated over webhook from v1.0.4",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "process.env.AUTH_TOKEN",
+      "context": "Twilio API credential environment variable exfiltrated over webhook from v1.0.4",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ea40177789e7a1b972c27c61dffff195dd85c544",
+      "context": "SHA1 of tw-pkgprobe-7731 npm package version 1.0.0",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "ea40177789e7a1b972c27c61dffff195dd85c544"
+    },
+    {
+      "kind": "other",
+      "value": "3fb29cf1ef3ce6b187e724c8e7dc4b6a5dfefa50",
+      "context": "SHA1 of tw-pkgprobe-7731 npm package version 1.0.1",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "3fb29cf1ef3ce6b187e724c8e7dc4b6a5dfefa50"
+    },
+    {
+      "kind": "other",
+      "value": "7108c1079ac0de030902b049770e8cb822e82055",
+      "context": "SHA1 of tw-pkgprobe-7731 npm package version 1.0.2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "7108c1079ac0de030902b049770e8cb822e82055"
+    },
+    {
+      "kind": "other",
+      "value": "985c294988e80f17414fb371b690080ee57387ea",
+      "context": "SHA1 of tw-pkgprobe-7731 npm package version 1.0.3",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "985c294988e80f17414fb371b690080ee57387ea"
+    },
+    {
+      "kind": "other",
+      "value": "35b21553837b74e1fc5ac43efd839cdc28109fdf",
+      "context": "SHA1 of tw-pkgprobe-7731 npm package version 1.0.4",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "35b21553837b74e1fc5ac43efd839cdc28109fdf"
+    },
+    {
+      "kind": "other",
+      "value": "19c886b57a0c86e1efc82f4c4f2691f3ddc9f92c",
+      "context": "SHA1 of tw-pkgprobe-7731 npm package version 1.0.5",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "19c886b57a0c86e1efc82f4c4f2691f3ddc9f92c"
+    },
+    {
+      "kind": "other",
+      "value": "fbc422912fa5af59ba278b30d8c1707e0fd1711b",
+      "context": "SHA1 of tw-pkgprobe-7731 npm package version 1.0.6",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "fbc422912fa5af59ba278b30d8c1707e0fd1711b"
+    },
+    {
+      "kind": "other",
+      "value": "fe4b42d7cf37ef2137fe5259626d51cb9922309e",
+      "context": "SHA1 of tw-pkgprobe-7731 npm package version 1.0.7",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "fe4b42d7cf37ef2137fe5259626d51cb9922309e"
+    },
+    {
+      "kind": "other",
+      "value": "d11da34ecdc3ff768fbe79a0aaf12f2340c2dd90",
+      "context": "SHA1 of tw-pkgprobe-7731 npm package version 1.0.8",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "d11da34ecdc3ff768fbe79a0aaf12f2340c2dd90"
+    },
+    {
+      "kind": "other",
+      "value": "16574bd0538e6ae0ad4b7c73cd85c1232478f57d",
+      "context": "SHA1 of tw-pkgprobe-7731 npm package version 1.1.0",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "16574bd0538e6ae0ad4b7c73cd85c1232478f57d"
+    },
+    {
+      "kind": "other",
+      "value": "c87db83ee84ae03b97b3cb11b07ad75a6c2a39ae",
+      "context": "SHA1 of tw-pkgprobe-7731 npm package version 1.1.1",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "sha1",
+      "hash_value": "c87db83ee84ae03b97b3cb11b07ad75a6c2a39ae"
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "support-api.us1.twilio.com",
+      "context": "Twilio-related host probed during OSINT gathering in final package versions",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kafka-ui.au1.twilio.com",
+      "context": "Twilio-related host probed during OSINT gathering in final package versions",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "litellm.ai-services.corp.twilio.com",
+      "context": "Twilio-related host probed during OSINT gathering in final package versions",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://169.254.169.254/latest/meta-data/",
+      "context": "AWS instance metadata endpoint fetched by one package version but not exfiltrated",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

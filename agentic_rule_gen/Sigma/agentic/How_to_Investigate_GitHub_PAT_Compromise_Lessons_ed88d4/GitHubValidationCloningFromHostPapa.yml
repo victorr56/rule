@@ -1,0 +1,25 @@
+title: GitHub Validation Cloning Activity From HostPapa IP
+id: f42f8849-c43e-47f2-9844-4861215b0266
+status: experimental
+description: >-
+  Detects validation cloning of GitHub repositories from a specific HostPapa IP using the 'git/2.25.1' user agent,
+  as observed in a campaign leveraging compromised GitHub Personal Access Tokens in late May 2026.
+references:
+  - https://www.wiz.io/blog/investigating-github-pat-compromise
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.collection
+  - attack.t1213.002
+  - attack.credential_access
+  - attack.t1078
+logsource:
+  category: proxy
+detection:
+  selection:
+    HttpUserAgent: 'git/2.25.1'
+    SourceIp: '107.174.201.183'
+  condition: selection
+falsepositives:
+  - Legitimate git activity originating from this specific IP. Unlikely given it is associated with a specific malicious campaign.
+level: high

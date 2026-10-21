@@ -1,0 +1,337 @@
+{
+  "malware_family": "NOVABLIGHT",
+  "threat_actor": "Sordeal Group",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "NOVABLIGHT is a NodeJS-based Malware-as-a-Service (MaaS) infostealer, distributed via platforms like Telegram and Discord. It features extensive data theft capabilities, sandbox evasion, system sabotage, and injection modules for Electron applications. The malware is under active development and uses heavy, multi-layered obfuscation to hinder analysis.",
+  "mitre_techniques": [
+    "T1027",
+    "T1057",
+    "T1059.001",
+    "T1059.007",
+    "T1074.001",
+    "T1082",
+    "T1083",
+    "T1113",
+    "T1115",
+    "T1125",
+    "T1497.001",
+    "T1531",
+    "T1555.003",
+    "T1562.001",
+    "T1567.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Administrateur\\Desktop\\Nova\\",
+      "context": "Hardcoded build path found in a sample.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[+] Recording...",
+      "context": "Hardcoded string literal found in a sample.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "vFAjbQox\\>5?4K$m=83GYu.nBIh\\<drPaN\\^@%Hk:D_sSyz\"ER9/p,(*JwtfO)iUl&C\\[~\\}\\{|Z+gX1MqL;60!e]T#2cVW7",
+      "context": "Custom Base91 alphabet used for string decoding.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "__p_xIFu_MAIN_STR_decode",
+      "context": "Name of the Base91 string decoding routine.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "empretecerian.js",
+      "context": "Script filename and prefix for obfuscated property names.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "__p_jGTR_dispatcher_26",
+      "context": "Central dispatcher function for obfuscated control flow.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DisableWD.bat",
+      "context": "Script downloaded from GitHub to disable Windows Defender.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\DisableTaskMgr = 1",
+      "context": "Value set to disable the Task Manager.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "reagentc /disable",
+      "context": "Command to disable the Windows Recovery Environment.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "vssadmin delete shadows /all",
+      "context": "Command to delete all Volume Shadow Copies.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "icacls “${filePath}” /deny ${currentUser}:(DE,DC)",
+      "context": "Command to make the malware's executable undeletable.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Administrateurs",
+      "context": "System group from which the victim's account is removed.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "account.js",
+      "context": "Mullvad VPN client file overwritten during injection.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "decrypt.exe",
+      "context": "Chrome decryption tool, part of a PoC project.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "xaitax-chrome-decrypter",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Bighead.avi",
+      "context": "Default filename for webcam recording output.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "tasklist /FO CSV /NH",
+      "context": "Command to list running processes.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct | Format-List",
+      "context": "PowerShell command to identify installed antivirus products.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "motdepasse",
+      "context": "French keyword used to search for sensitive files to exfiltrate.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "flow/grabb",
+      "context": "Internal code structure directory for data harvesting.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "http://gonefishe.com",
+      "context": "Initial access lure URL for a fake game installer.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.nova-blight.top",
+      "context": "NOVABLIGHT dashboard and API endpoint.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "shadow.nova-blight.top",
+      "context": "NOVABLIGHT dashboard.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "nova-blight.site",
+      "context": "NOVABLIGHT dashboard.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bamboulacity.nova-blight.xyz",
+      "context": "NOVABLIGHT dashboard and exfiltration proxy.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://raw.githubusercontent.com/Mynva/sub/main/json/blocked_ips.json",
+      "context": "Remote blacklist of IP addresses used for anti-analysis.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://raw.githubusercontent.com/Mynva/sub/main/json/blocked_progr.json",
+      "context": "Remote blacklist of programs used for anti-analysis.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://api.nova-blight.top/injections/mullvad/dVukBEtL8rW2PDgkwdwfbNSdG3imwU8bZhYUygzthir66sXXUuyURunOin9s",
+      "context": "Endpoint to fetch payload for Mullvad VPN client injection.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/Hyutop/pandakmc-auto-vote/blob/main/bin.zip",
+      "context": "URL hosting a zip file with a Chrome data decryption tool.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://bamboulacity.nova-blight.xyz/req/dVukBEtL8rW2PDgkwdwfbNSdG3imwU8bZhYUygzthir66sXXUuyURunOin9s",
+      "context": "Example of a configured proxy URL for Telegram exfiltration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://bamboulacity.nova-blight.xyz/file/",
+      "context": "Dedicated backend exfiltration endpoint.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://litterbox.catbox.moe/resources/internals/api.php",
+      "context": "Third-party file-hosting service used for exfiltration.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "ed164ee2eacad0eea9dc4fbe271ee2b2387b59929d73c843281a8d5e94c05d64",
+      "description": "NOVABLIGHT VERSION 2.2"
+    },
+    {
+      "sha256": "39f09771d70e96c7b760b3b6a30a015ec5fb6a9dd5bc1e2e609ddf073c2c853d",
+      "description": "NOVABLIGHT VERSION 2.1"
+    },
+    {
+      "sha256": "97393c27195c58f8e4acc9312a4c36818fe78f2ddce7ccba47f77a5ca42eab65",
+      "description": "NOVABLIGHT VERSION 2.0"
+    },
+    {
+      "sha256": "d806d6b5811965e745fd444b8e57f2648780cc23db9aa2c1675bc9d18530ab73",
+      "description": "NOVABLIGHT reference sample from YARA rule"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

@@ -1,0 +1,26 @@
+title: Silent ScreenConnect Installation via PowerShell
+id: c4a5b6c7-8d9e-4f0a-b1c2-d3e4f5a6b7c8
+status: experimental
+description: Detects the silent installation of a ConnectWise ScreenConnect MSI file, initiated by a PowerShell process. This TTP was used by attackers to install a redundant remote access tool after compromising a system with MSP360 RMM.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/09/29/phishing-abuses-rmm-tools-persistent-access/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1218.007
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\powershell.exe'
+        Image|endswith: '\msiexec.exe'
+        CommandLine|contains|all:
+            - '/qn'
+            - 'ClientSetup.msi'
+    condition: selection
+falsepositives:
+    - Legitimate, scripted remote deployment of ConnectWise ScreenConnect by administrators.
+level: high

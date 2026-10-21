@@ -1,0 +1,40 @@
+title: TELEPUZ Payload DLL Side-Loading
+id: 853a8123-1d0d-4566-a36c-2f9247cd5142
+status: experimental
+description: Detects the DLL side-loading technique used by TELEPUZ. A legitimate executable is abused and run from a specific, unusual directory to load a malicious payload DLL.
+references:
+    - https://www.elastic.co/security-labs/threat-command/telepuz-maas-malware-clickfix
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1574.002
+    - attack.t1036.005
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|contains:
+            - '\DCFG\Runtime\Themes\Processor\'
+            - '\StateRepository\Host\Recovery\'
+            - '\MiravaDevices\'
+            - '\ProgramData\XeroxPrint\Temp\Worker\'
+            - '\ProgramData\Jundrax\Tracker\'
+            - '\ProgramData\QualcommRF\'
+            - '\ProgramData\BrevixCore\'
+        ImageLoaded|endswith:
+            - '\etwhost.dll'
+            - '\twhost.dll'
+            - '\systemreset.dll'
+            - '\noraxrecovery.dll'
+            - '\grpeng.dll'
+            - '\IrenScanner.dll'
+            - '\dsp_agent.dll'
+            - '\drx_curator.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

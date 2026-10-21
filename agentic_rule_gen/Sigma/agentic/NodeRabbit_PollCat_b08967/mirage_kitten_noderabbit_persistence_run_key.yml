@@ -1,0 +1,27 @@
+title: Mirage Kitten NodeRabbit Persistence via Run Key
+id: 56930d63-2b22-4467-8bd6-c40d0246a482
+status: experimental
+description: |
+    Detects the creation of a suspicious 'MicrosoftEdgeUpdate' Run key used by the NodeRabbit backdoor for persistence.
+    The key is configured to launch 'nodew.exe' (a modified Node.js binary) with the 'msedge_update.js' script.
+references:
+    - https://securelist.com/mirage-kitten-new-backdoors-noderabbit-pollcat/121244/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1547.001
+    - detection.threat_hunting
+logsource:
+    product: windows
+    category: registry_set
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Microsoft\Windows\CurrentVersion\Run\MicrosoftEdgeUpdate'
+        Details|contains|all:
+            - 'nodew.exe'
+            - 'msedge_update.js'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

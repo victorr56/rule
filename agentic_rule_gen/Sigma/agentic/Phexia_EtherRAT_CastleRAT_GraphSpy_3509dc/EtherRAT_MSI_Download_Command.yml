@@ -1,0 +1,27 @@
+title: EtherRAT MSI Download Command
+id: 59a1f2de-5c74-42b7-90c0-622f6d28913d
+status: experimental
+description: Detects a command line used by EtherRAT to download its MSI installer via a paste-and-run lure. This involves cmd.exe spawning curl.exe to download a file from a malicious domain.
+references:
+  - https://redcanary.com/blog/threat-intelligence/intelligence-insights-august-2026/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.execution
+  - attack.t1204.002
+  - attack.t1059.003
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    ParentImage|endswith: '\cmd.exe'
+    Image|endswith: '\curl.exe'
+    CommandLine|contains|all:
+      - '-o'
+      - '.msi'
+      - 'reeemso.forwardbox.co.uk'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high

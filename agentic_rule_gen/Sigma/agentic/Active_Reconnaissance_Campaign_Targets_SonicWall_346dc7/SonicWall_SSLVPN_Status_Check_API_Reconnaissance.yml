@@ -1,0 +1,21 @@
+title: SonicWall SSLVPN Status Check API Reconnaissance
+id: 5a8a1b5c-43f1-4b14-8f4f-40e104533036
+status: experimental
+description: Detects network reconnaissance activity targeting the SonicWall SonicOS REST API endpoint '/api/sonicos/is-sslvpn-enabled' used to check if the SSL VPN service is enabled.
+references:
+    - https://www.greynoise.io/blog/active-reconnaissance-campaign-targets-sonicwall-firewalls-through-commercial-proxy-infrastructure
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.reconnaissance
+    - attack.t1595.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|endswith: '/api/sonicos/is-sslvpn-enabled'
+        HttpMethod: 'GET'
+    condition: selection
+falsepositives:
+    - Legitimate administrative or monitoring tools querying this endpoint.
+level: high

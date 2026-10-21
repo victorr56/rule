@@ -1,0 +1,22 @@
+title: Mini Shai-Hulud macOS Persistence via LaunchAgent
+id: 504ff8df-f2f2-49bb-b1d5-b223d6a9a3f2
+status: experimental
+description: Detects the creation of the specific LaunchAgent .plist file by the Mini Shai-Hulud payload for persistence on macOS.
+references:
+    - https://www.wiz.io/blog/mini-shai-hulud-strikes-again-tanstack-more-npm-packages-compromised
+author: ioc-yara-daily (agentic)
+date: 2023-10-17
+tags:
+    - attack.persistence
+    - attack.t1543.001
+logsource:
+    category: file_event
+    product: macos
+detection:
+    selection:
+        Image|endswith: '/tmp/id_ed25519'
+        TargetFilename|endswith: '/Library/LaunchAgents/com.user.gh-token-monitor.plist'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,22 @@
+title: SHELBY Malware C2 Domain Query
+id: 5937cd37-e547-4cf3-a75d-6c1671932371
+status: experimental
+description: Detects DNS queries for domains known to be used by SHELBY malware for command and control.
+references:
+    - https://www.elastic.co/security-labs/threat-command/the-shelby-strategy
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+logsource:
+    product: windows
+    category: dns_query
+detection:
+    selection:
+        QueryName:
+            - 'arthurshelby.click'
+            - 'speed-test.click'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

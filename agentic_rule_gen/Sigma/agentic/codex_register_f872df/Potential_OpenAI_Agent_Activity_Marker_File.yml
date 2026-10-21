@@ -1,0 +1,25 @@
+title: Potential OpenAI Agent Activity Marker File
+id: 3c597ebf-a031-417d-94ae-bd5a54388e63
+status: experimental
+description: Detects the creation of 'REQUEST_softtrace_target_missing.txt', a file name associated with OpenAI agent activity. The file is downloaded by a malicious Python script, often as part of a malicious pickle payload. Its presence on a host outside of OpenAI's infrastructure is highly anomalous.
+references:
+    - https://www.sentinelone.com/labs/agents-at-large-tracing-illicit-openai-agent-activity-on-hugging-face/
+author: ioc-yara-daily (agentic)
+date: 2024-06-14
+tags:
+    - attack.execution
+    - attack.t1204.002
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\python.exe'
+            - '\python3.exe'
+        TargetFilename|endswith: '\REQUEST_softtrace_target_missing.txt'
+    condition: selection
+falsepositives:
+    - Legitimate use of this filename outside of OpenAI's infrastructure is not expected.
+level: high

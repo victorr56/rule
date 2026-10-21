@@ -1,0 +1,24 @@
+title: Trojanized Exodus Wallet Execution by RAT
+id: d76b38c2-3e21-4f7f-bf61-3a055375d8c3
+status: experimental
+description: Detects the execution of a trojanized version of the Exodus wallet from a suspicious AppData path. This is characteristic of a modular RAT campaign that drops its payload in '\AppData\Roaming\ExdBackupTool\'.
+references:
+    - https://www.huntress.com/blog/exodus-crypto-wallet-installer-rat
+author: ioc-yara-daily (agentic)
+date: 2023-11-28
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\AppData\Roaming\ExdBackupTool\Exodus.exe'
+        ParentImage|endswith:
+            - '\explorer.exe'  # Direct user execution
+            - '\svchost.exe'  # Scheduled task execution
+    condition: selection
+falsepositives:
+    - Unlikely, as the legitimate application does not use this installation path.
+level: high

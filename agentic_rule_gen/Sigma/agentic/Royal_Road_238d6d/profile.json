@@ -1,0 +1,411 @@
+{
+  "malware_family": "Royal Road",
+  "threat_actor": "Multiple China-nexus groups: Temp.Conimes, Tonto, TA428, Naikon, Higaisa, Vicious Panda, FunnyDream, TA410",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Royal Road is an RTF weaponizer that exploits the Microsoft Office Equation Editor vulnerabilities (CVE-2017-11882, CVE-2018-0798, CVE-2018-0802) and is shared among multiple China-nexus targeted-attack groups. RTF files it generates carry a shellcode-decoded embedded object (classically named \"8.t\") whose leading bytes identify the encoding variant used for the payload. Observed payloads include AttackBot, Chinoxy, FlowCloud and the unknown XLBug RAT, along with the dropped loader intel.wll and Startup-folder shortcuts.",
+  "mitre_techniques": [
+    "T1203",
+    "T1547.001",
+    "T1055"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "8.t",
+      "context": "RTF object name whose presence defines a Royal Road-generated RTF",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "F2 A3 20 72",
+      "context": "Leading bytes of encoded embedded object variant",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "B2 A6 6D FF",
+      "context": "Leading bytes of encoded embedded object variant",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "B0 74 77 46",
+      "context": "Most used encoded object header in 2020 samples; decoded at runtime",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "B2 5A 6F 00",
+      "context": "Leading bytes of encoded embedded object variant",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "A9 A4 6E FE",
+      "context": "New 2020 encoding of embedded object, decoded before injection",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "94 5F DA D8",
+      "context": "New 2020 encoding of embedded object, decoded at runtime",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "((int.from_bytes(byte,'little') ^ 0x7b) + 0x7b) % 256",
+      "context": "Decoder for A9 A4 6E FE encoded object",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "xor_key = 1387678300",
+      "context": "PRNG seed/constant in decoder for 94 5F DA D8 encoding",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "intel.wll",
+      "context": "Dropped/loded by WINWORD.exe after shellcode execution",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "SecurityProfile.lnk",
+      "context": "Startup shortcut created by intel.wll",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "360ShellPro.exe",
+      "context": "Valid application abused as masquerade alongside AttackBot",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "FileSmasher.exe",
+      "context": "Dropped AttackBot payload (Higaisa campaign)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "bss.vbs",
+      "context": "VBS executed via WScript.exe in Chinoxy chain",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "faxprint.dll",
+      "context": "Chinoxy DLL executed via rundll32.exe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Tendyron.exe",
+      "context": "Valid application loaded before FlowCloud execution",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "OnKeyToken_KEB.dll",
+      "context": "DLL loaded by Tendyron.exe and decoded/executed",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Tendyron.conf",
+      "context": "Config file downloaded and decoded to run FlowCloud",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wd4sx.wmf",
+      "context": "OLE Package object embedded in lure document (Japan Nov 2020)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\wd4sx.wmf",
+      "context": "Source/temp path of dropped OLE Package object",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Equation.2\\x00\\x124Vx\\x90\\x124VxvT2",
+      "context": "OLE class name of malicious Equation.2 object",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "OSE[0-9]{4}.exe",
+      "context": "Dropped executable naming pattern of XLBug chain",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "0Lz81p4eF.exe",
+      "context": "Dropped and executed XLBug executable",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "XLBugHandler.dll",
+      "context": "Exported WORKNOW invoked by rundll32.exe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "WORKNOW",
+      "context": "Export of XLBugHandler.dll executed via rundll32.exe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "rundll32.exe",
+      "context": "Executes XLBugHandler.dll WORKNOW and faxprint.dll",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "WScript.exe",
+      "context": "Executes bss.vbs in Chinoxy chain",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "WINWORD.exe",
+      "context": "Loads intel.wll / opens lure DOCX document",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "iexplore.exe",
+      "context": "Target process for decode-and-inject step (TA410 case)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MYAAAAArq+wvbK1vbKwva6xtamnr58=",
+      "context": "Embedded Base64 string decoded then +'z' and ^0x19",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MYBBBB5PH88u+unw==",
+      "context": "Embedded Base64 string decoded then +'z' and ^0x19",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MYCCCC0Lz81p4eF",
+      "context": "Embedded string decoding to dropped executable name 0Lz81p4eF",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MYDDDD/f76Aq6f",
+      "context": "Embedded Base64 string decoded then +'z' and ^0x19",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "base64_decode -> byte + 'z' -> byte ^ 0x19",
+      "context": "XLBug RAT string/config decoding routine",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Group1",
+      "context": "String in XLBug RAT decompilation near C2 address",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "name1",
+      "context": "String in XLBug RAT decompilation near C2 address",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "9a67a7ccace7d8f788663077d57d6811",
+      "context": "MD5 of embedded OLE Package object wd4sx.wmf",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "00b38c4c02dcda01f8abea580c95a919",
+      "context": "MD5 of embedded Equation.2 OLE object",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "103.56.53.126:80",
+      "context": "XLBug RAT C2 address and port from decoded config",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "document",
+    "script"
+  ]
+}

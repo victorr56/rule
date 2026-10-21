@@ -1,0 +1,21 @@
+title: BITSLOTH Data Staging File aghzyxklg
+id: 3c8a9949-a28a-493e-868d-8a6c8e3129e1
+status: experimental
+description: Detects the creation of the temporary file "aghzyxklg" used by BITSLOTH to stage data from directory listings.
+references:
+    - https://www.elastic.co/security-labs/threat-command/bits-and-bytes-analyzing-bitsloth
+author: ioc-yara-daily (agentic)
+date: 2024-07-26
+tags:
+    - attack.t1083
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\AppData\Local\Temp\'
+        TargetFilename|endswith: '\aghzyxklg'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

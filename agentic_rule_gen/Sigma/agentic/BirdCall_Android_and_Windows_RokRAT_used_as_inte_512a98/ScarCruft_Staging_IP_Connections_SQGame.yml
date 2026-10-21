@@ -1,0 +1,27 @@
+title: ScarCruft Staging IP Connections (SQGame)
+id: 9b2d3e1a-1d5f-4a3b-9a1d-d248b120c9e7
+status: experimental
+description: Detects network connections to IP addresses associated with domains compromised by ScarCruft to host malware or configuration files for the BirdCall backdoor.
+references:
+    - https://www.welivesecurity.com/en/eset-research/rigged-game-scarcruft-compromises-gaming-platform-supply-chain-attack/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+detection:
+    selection:
+        DestinationIp:
+            - '39.106.249.68'
+            - '211.239.117.117'
+            - '114.108.128.157'
+            - '221.143.43.214'
+            - '222.231.2.20'
+            - '222.231.2.23'
+            - '222.231.2.41'
+    condition: selection
+falsepositives:
+    - Connections to these IPs if they are reassigned to benign services.
+level: high

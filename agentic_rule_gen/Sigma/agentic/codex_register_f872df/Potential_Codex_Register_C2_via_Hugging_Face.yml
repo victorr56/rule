@@ -1,0 +1,21 @@
+title: Potential Codex-Register C2 via Hugging Face
+id: e317a3a9-b39b-4395-8e3b-9e4c1f6d3381
+status: experimental
+description: Detects traffic to a '/do' endpoint on a Hugging Face Space subdomain (*.hf.space). This pattern matches the C2 channel of the Flask-wrapped 'codex-register' tool.
+references:
+    - https://www.sentinelone.com/labs/agents-at-large-tracing-illicit-openai-agent-activity-on-hugging-face/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname|endswith: '.hf.space'
+        Url|endswith: '/do'
+    condition: selection
+falsepositives:
+    - A legitimate Hugging Face application might use a '/do' endpoint, although it is uncommon.
+level: high

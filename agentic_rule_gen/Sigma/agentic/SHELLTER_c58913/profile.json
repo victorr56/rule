@@ -1,0 +1,255 @@
+{
+  "malware_family": "SHELLTER",
+  "threat_actor": "Multiple financially motivated groups",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "SHELLTER is a commercial evasion framework (Shellter Elite v11.0) observed being used by multiple infostealer campaigns since April 2025. It employs advanced techniques including API hashing from time-based seeds, indirect syscalls, unhooking ntdll.dll, and Vectored Exception Handler (VEH) based API proxying to evade detection. A consistent license expiry timestamp across samples suggests a single illicitly obtained copy is in use.",
+  "mitre_techniques": [
+    "T1071",
+    "T1055.003",
+    "T1027.016",
+    "T1588"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "hex_pattern",
+      "value": "{ c7 84 24 70 07 00 00 70 5e 2c d2 c7 84 24 74 07 00 00 9e ce dc 01 }",
+      "context": "YARA rule for hardcoded license expiry FILETIME (2026-04-17 19:17:24.055000)",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "e1e2e3e4e5e6e7e8",
+      "context": "Magic placeholder value in VEH handler template, replaced with context pointer.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "fdb00e52-a214-4aa1-8fba-4357bb0072ec",
+      "context": "CLSID_Antimalware GUID constant searched for in amsi.dll to sabotage lookup.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "seeded-ROR13",
+      "context": "Hashing algorithm used on API names for runtime resolution.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "kern3l32.dll",
+      "context": "Decoy module name (with typo) resolved for unlinking from PEB LDR.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ntll.dll",
+      "context": "Clean DLL (with typo) loaded from KnownDLLs for unhooking.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IAntimalware::Scan",
+      "context": "Vtable function pointer overwritten with address of a ret gadget.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "--Force-PreloadModules-Basic",
+      "context": "Configurable option for preloading 16 general-purpose modules.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "--Force-PreloadModules-Networking",
+      "context": "Configurable option for preloading 5 network-specific modules.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x7FFE0014",
+      "context": "Address of KUSER_SHARED_DATA.SystemTime used to derive dynamic XOR key.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 89 4C 24 08 48 83 EC 18 48 B8 E8 E7 E6 E5 E4 E3 E2 E1 48 89 04 24 48 8B 44 24 20 48 8B 00 81 38 05 00 00 C0 }",
+      "context": "YARA signature for the Vectored Exception Handler.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 8B 49 30 8B 49 70 8B 40 74 0B C1 25 70 00 00 40 85 C0 75 22 B8 D4 02 00 00 48 05 00 00 FE 7F }",
+      "context": "YARA signature for the debugger detection routine.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 8B 44 24 ?? 0F BE 00 85 C0 74 ?? 48 8B 44 24 ?? 0F BE 00 89 44 24 ?? 48 8B 44 24 ?? 48 FF C0 48 89 44 24 ?? 8B 04 24 C1 E8 ?? 8B 0C 24 C1 E1 ?? 0B C1 }",
+      "context": "YARA signature for the API hashing routine.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "2026-04-17 19:17:24.055000",
+      "context": "License expiry FILETIME, constant across observed illicit samples.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "AES-128 CBC",
+      "context": "Payload encryption algorithm.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "LZNT1",
+      "context": "Default payload compression algorithm before encryption.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AMSI",
+      "context": "String in AMSI functions overwritten with null bytes to patch.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "KdDebuggerEnabled",
+      "context": "Flag checked via _KUSER_SHARED_DATA for kernel-mode debugger detection.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "185.156.72.80",
+      "context": "ARECHCLIENT2 C&C server. Port seen: 15847.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "eaglekl.digital",
+      "context": "LUMMA C&C server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "94.141.12.182",
+      "context": "RHADAMANTHYS C&C server (plotoraus.shop server)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "c865f24e4b9b0855b8b559fc3769239b0aa6e8d680406616a13d9a36fbbc2d30",
+      "description": "SHELLTER-protected RHADAMANTHYS (Endorphin.exe)"
+    },
+    {
+      "sha256": "da59d67ced88beae618b9d6c805f40385d0301d412b787e9f9c9559d00d2c880",
+      "description": "SHELLTER-protected LUMMA (Branster.exe)"
+    },
+    {
+      "sha256": "b3e93bfef12678294d9944e61d90ca4aa03b7e3dae5e909c3b2166f122a14dad",
+      "description": "SHELLTER-protected ARECHCLIENT2 (Aac3572DramHal_x64.exe)"
+    },
+    {
+      "sha256": "7d0c9855167e7c19a67f800892e974c4387e1004b40efb25a2a1d25a99b03a10",
+      "description": "SHELLTER-protected UNKNOWN (SUPERAntiSpyware.exe)"
+    },
+    {
+      "sha256": "70ec2e65f77a940fd0b2b5c0a78a83646dec17583611741521e0992c1bf974f1",
+      "description": "SHELLTER-protected UNKNOWN (IMCCPHR.exe)"
+    },
+    {
+      "sha256": "263ab8c9ec821ae573979ef2d5ad98cda5009a39e17398cd31b0fad98d862892",
+      "description": "Lure archive (Pinnacle Studio Advertising materials.rar)"
+    },
+    {
+      "sha256": "748149df038a771986691e3f54afea609ceb9fbfcbec92145beb586bec039e6a",
+      "description": "Underlying executable from lure archive."
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

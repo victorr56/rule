@@ -1,0 +1,24 @@
+title: AMOS Infostealer Payload Download via Proxy
+id: 8871882d-4598-466d-88b6-eb19bd2354c4
+status: experimental
+description: Detects web requests to specific URLs known to be used by an AMOS infostealer campaign to download payloads.
+references:
+    - https://www.huntress.com/blog/google-doc-sidebar-malware-mac-windows
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: proxy
+detection:
+    selection_apple:
+        DestinationHostname: 'apple-googleapi.com'
+        UriPath: '/i'
+    selection_eu:
+        DestinationHostname: 'eu03hub.com'
+        UriPath: '/get_file'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

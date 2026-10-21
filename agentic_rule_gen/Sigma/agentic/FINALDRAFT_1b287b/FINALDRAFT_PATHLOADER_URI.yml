@@ -1,0 +1,22 @@
+title: FINALDRAFT/PATHLOADER Shellcode Download URI
+id: 45e2197f-8e5c-43f1-b9d2-5a67c00e122b
+status: experimental
+description: Detects web requests to a URI path used by PATHLOADER to download shellcode. This path is also used as an AES key.
+references:
+    - https://www.elastic.co/security-labs/threat-command/finaldraft
+author: ioc-yara-daily (agentic)
+date: 2023-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|endswith: '/nzoMeFYgvjyXK3P'
+        HttpMethod: 'GET'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

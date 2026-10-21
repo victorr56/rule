@@ -1,0 +1,201 @@
+{
+  "malware_family": "Akira",
+  "threat_actor": "Akira affiliate",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "An Akira affiliate gained access to a Windows endpoint over RDP, disabled Bitdefender services, dumped LSASS with procdump.exe, exfiltrated data with Rclone, and deployed a GOST tunneling tool (masquerading as C:\\PerfLogs\\Temp\\svchost.exe with config.dll) before encrypting Shares and removing volume shadow copies via PowerShell. Detection opportunities center on the PerfLogs staging directory, the GOST config/tunnel artifacts, and Akira log files paired with shadow-copy deletion.",
+  "mitre_techniques": [
+    "T1021.001",
+    "T1562.001",
+    "T1003.001",
+    "T1490",
+    "T1567.002",
+    "T1572",
+    "T1059.001",
+    "T1036.005"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "\"C:\\Perflogs\\Temp\\svchost.exe\" -C \"C:\\Perflogs\\Temp\\config.dll\"",
+      "context": "GOST tunnel launched from PerfLogs under SYSTEM",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "gost",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\PerfLogs\\Temp\\config.dll",
+      "context": "GOST tunnel config holding C2 chain node",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "gost",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\PerfLogs\\Temp\\svchost.exe",
+      "context": "GOST tunnel EXE masquerading as svchost.exe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\storage\\win.exe",
+      "context": "Akira ransomware EXE",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\PerfLogs",
+      "context": "Staging folder for procdump, Rclone and GOST",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "procdump.exe",
+      "context": "Executed from C:\\PerfLogs to dump lsass.exe",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "RClone",
+      "context": "Launched from C:\\PerfLogs for cloud data exfiltration",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell.exe -Command Get-WmiObject Win32_Shadowcopy , Remove-WmiObject",
+      "context": "Shadow copy removal logged alongside Akira encryption",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "C1IFRYXI",
+      "context": "Threat actor workstation name",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "Shares",
+      "context": "Folder targeted by Akira and browsed via Explorer",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "rtcp://:20001/:15673",
+      "context": "GOST relay serve node",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "gost",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "Bitdefender Endpoint Update Service",
+      "context": "Stopped before payload deployment",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "Bitdefender Endpoint Integration Service",
+      "context": "Stopped before payload deployment",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "Bitdefender Endpoint Protected Service",
+      "context": "Stopped before payload deployment",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "Bitdefender Endpoint Security Service",
+      "context": "Stopped before payload deployment",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "64.227.4.134",
+      "context": "GOST tunnel C2, forward+ssh on port 443",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "forward+ssh://64.227.4.134:443",
+      "context": "GOST chain node to external C2",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "gost"
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "1f1bb322591b6d27fd2946e373d7d2efc2f4e1e66818846060d391600b600fba",
+      "description": "Akira ransomware EXE dropped as C:\\storage\\win.exe"
+    },
+    {
+      "sha256": "d00833318a04caa019c6f95dcb3598ad947d405010bfb2f3cbd04530a00bc3a4",
+      "description": "GOST tunnel EXE (gost-windows-amd64.exe) dropped as C:\\PerfLogs\\Temp\\svchost.exe"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

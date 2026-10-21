@@ -1,0 +1,25 @@
+title: Attempt to Stop Bitdefender Service via Command Line
+id: a01c0b11-9a99-4d6d-8dd1-10cbb29c0177
+status: experimental
+description: Detects attempts to stop Bitdefender services using 'net.exe' or 'sc.exe', a common defense evasion technique employed by malware and ransomware like Akira.
+references:
+    - https://www.huntress.com/blog/mapping-akira-ransomware-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1562.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\net.exe'
+            - '\sc.exe'
+        CommandLine|contains|all:
+            - 'stop'
+            - 'Bitdefender'
+    condition: selection
+falsepositives:
+    - Legitimate administrative activity, although stopping security services is highly suspicious and should be investigated.
+level: medium

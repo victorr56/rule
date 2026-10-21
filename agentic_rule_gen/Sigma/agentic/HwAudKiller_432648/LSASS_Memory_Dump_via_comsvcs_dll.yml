@@ -1,0 +1,25 @@
+title: LSASS Memory Dump via comsvcs.dll Ordinal
+id: d5d3f11c-c2a4-4e2b-b9d9-c0c20e53a35a
+status: experimental
+description: Detects a command line used by the HwAudKiller operator to dump LSASS process memory using rundll32.exe and a specific ordinal function call in comsvcs.dll.
+references:
+    - https://www.huntress.com/blog/w2-malvertising-to-kernel-mode-edr-kill
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.credential_access
+    - attack.t1003.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains|all:
+            - 'comsvcs.dll'
+            - '#24'
+            - 'full'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

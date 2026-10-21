@@ -1,0 +1,31 @@
+title: ACRStealer Amatera C2 Domain Resolution
+id: c2a7d5e8-3f91-4b6a-8d24-7e0f91c3b5a2
+status: experimental
+description: Detects DNS lookups of ACRStealer (Amatera) C2 hostnames, which host the
+  stealer panel endpoints used for credential and wallet collection upload.
+references:
+  - https://www.reversinglabs.com/blog/infostealers-highlight-malware-as-a-service-trend
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.command_and_control
+  - attack.t1071.004
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    QueryName:
+      - 'gw.portallbridge.cc'
+      - 'login.metricsdashboard.cc'
+      - 'static.quorashift.cc'
+      - 'data.nomadhive.cc'
+      - 'auth.automationportal.cc'
+      - 'wss.vectorplatform.cc'
+      - 'edge.kernelmonitor.cc'
+      - 'stream.pawpalace.cc'
+      - 'res.explicittweak.cc'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: critical

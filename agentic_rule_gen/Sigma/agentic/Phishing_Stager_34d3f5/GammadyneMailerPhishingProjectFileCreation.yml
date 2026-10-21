@@ -1,0 +1,21 @@
+title: Gammadyne Mailer Phishing Project File Creation
+id: 3f99e4f2-eb9f-4318-8f59-a2c3a51f3ef4
+status: experimental
+description: Detects the creation of a Gammadyne Mailer project file named 'dracii.mmp'. The name 'dracii' is Romanian for 'the devils' and was used in a large-scale phishing campaign.
+references:
+    - https://www.huntress.com/blog/terminal-server-phishing-stager-exposed
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1074.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\gds.exe'
+        TargetFilename|endswith: '\dracii.mmp'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

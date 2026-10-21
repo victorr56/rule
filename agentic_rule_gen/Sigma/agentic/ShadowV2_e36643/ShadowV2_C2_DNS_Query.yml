@@ -1,0 +1,21 @@
+title: ShadowV2 C2 DNS Query
+id: 8b067a31-b847-4971-87ab-8980b19280d0
+status: experimental
+description: Detects DNS queries for the ShadowV2 C2 domain.
+references:
+    - https://www.darktrace.com/blog/shadowv2-an-emerging-ddos-for-hire-botnet
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'shadow.aurozacloud.xyz'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

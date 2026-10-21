@@ -1,0 +1,24 @@
+title: TCLBANKER Execution via Sideloaded LogiAiPromptBuilder.exe
+id: b5e4125b-24ca-430c-9a4f-5fd6a95cd9c7
+status: experimental
+description: Detects the execution of the signed 'LogiAiPromptBuilder.exe' from a non-standard path in the user's AppData directory, a technique used by TCLBANKER to sideload its malicious 'screen_retriever_plugin.dll' payload.
+references:
+    - https://www.elastic.co/security-labs/threat-command/tclbanker-brazilian-banking-trojan
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1218.007
+    - attack.defense_evasion
+    - attack.t1574.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\LogiAiPromptBuilder.exe'
+        Image|contains: '\AppData\Local\LogiAI\'
+    condition: selection
+falsepositives:
+    - Unlikely. Legitimate Logitech software is typically installed in 'Program Files' or 'ProgramData' directories, not the user's 'AppData\Local' folder.
+level: high

@@ -1,0 +1,216 @@
+{
+  "malware_family": "Mini Shai-Hulud",
+  "threat_actor": "TeamPCP",
+  "platforms": [
+    "linux",
+    "macos",
+    "multi"
+  ],
+  "summary": "A credential-stealing worm that spreads via compromised npm and PyPi packages. The malware exfiltrates stolen cloud, CI/CD, and registry tokens over a typosquatted domain, the Session P2P network, or GitHub dead drops. A persistence mechanism on macOS/Linux wipes the user's home directory if a stolen GitHub token is revoked.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "router_init.js",
+      "context": "Primary obfuscated payload in @tanstack packages.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "setup.mjs",
+      "context": "Payload installer script for @uipath packages.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "transformers.pyz",
+      "context": "Python payload downloaded by malicious PyPI packages.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "router_runtime.js",
+      "context": "Runtime artifact, may persist in IDE directories.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tanstack_runner.js",
+      "context": "Runtime artifact dropped by the malware.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/LaunchAgents/com.user.gh-token-monitor.plist",
+      "context": "macOS persistence for wiper daemon.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.config/systemd/user/gh-token-monitor.service",
+      "context": "Linux persistence for wiper daemon.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "gh-token-monitor",
+      "context": "Persistence daemon name on macOS and Linux.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rm -rf ~/",
+      "context": "Destructive command executed by wiper daemon.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "node setup.mjs",
+      "context": "Execution via `preinstall` hook in package.json.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Shai-Hulud: Here We Go Again",
+      "context": "Description of GitHub repositories created for exfiltration.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PUSH UR T3MPRR",
+      "context": "GitHub repo description used by Python variant for exfiltration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "github:tanstack/router#79ac49eedf774dd4b0cfa308722bc463cfe5885c",
+      "context": "Malicious orphan commit in `optionalDependencies`.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/proc/<pid>/mem",
+      "context": "Read from to steal OIDC tokens from GitHub Actions runner.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "git-tanstack.com",
+      "context": "Primary C2 and payload-hosting domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "83.142.209.194",
+      "context": "C2 IP address for Python variant.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://git-tanstack.com/tmp/transformers.pyz",
+      "context": "URL for downloading the Python payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "05f9e609d79eed391015e11380dee4b5c9ead0b6e2e7f0134e6e51767a87323026",
+      "context": "Session messenger recipient ID for data exfiltration.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "*.getsession.org",
+      "context": "Session network used for C2 and data exfiltration.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "ab4fcadaec49c03278063dd269ea5eef82d24f2124a8e15d7b90f2fa8601266c",
+      "description": "router_init.js payload (2,341,681 bytes)"
+    },
+    {
+      "sha256": "2ec78d556d696e208927cc503d48e4b5eb56b31abc2870c2ed2e98d6be27fc96",
+      "description": "router_init.js payload variant (2,339,346 bytes)"
+    },
+    {
+      "sha256": "2258284d65f63829bd67eaba01ef6f1ada2f593f9bbe41678b2df360bd90d3df",
+      "description": "setup.mjs preinstall script (5,047 bytes)"
+    },
+    {
+      "sha256": "1e8538c6e0563d50da0f2e097e979ebd5294ce1defe01d0b9fe361ba3bed1898",
+      "description": "Trojanized npm package tarball"
+    }
+  ],
+  "file_types": [
+    "script"
+  ]
+}

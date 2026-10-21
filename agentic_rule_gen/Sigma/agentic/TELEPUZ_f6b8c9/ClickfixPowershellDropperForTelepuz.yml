@@ -1,0 +1,38 @@
+title: ClickFix PowerShell Dropper for TELEPUZ
+id: f1a6d953-b29c-473d-82d2-ca4b4d6b67b6
+status: experimental
+description: Detects the execution of a specific ClickFix PowerShell command used to download the TELEPUZ malware, characterized by string concatenation and specific URL patterns.
+references:
+    - https://www.elastic.co/security-labs/threat-command/telepuz-maas-malware-clickfix
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_ps:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'memsho'
+            - 'wblob.forum'
+            - 'Down'
+            - 'loadFile'
+            - 'Zone.Identifier'
+            - 'api/index.php?a=grab'
+    selection_pwsh:
+        Image|endswith: '\pwsh.exe'
+        CommandLine|contains|all:
+            - 'memsho'
+            - 'wblob.forum'
+            - 'Down'
+            - 'loadFile'
+            - 'Zone.Identifier'
+            - 'api/index.php?a=grab'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

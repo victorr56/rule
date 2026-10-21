@@ -1,0 +1,20 @@
+title: Suspected CI/CD Exfiltration Domain Query
+id: 9c0e5a8f-0744-4866-9e62-bbac44358a9d
+status: experimental
+description: Detects DNS queries for a domain observed being used as an exfiltration endpoint in CI/CD pipeline attacks associated with DPRK-linked actors.
+references:
+    - https://www.elastic.co/security-labs/threat-command/detecting-cicd-pipeline-abuse-with-llm-augmented-analysis
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1552
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith: 'deploy-tracker.external-service.io'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

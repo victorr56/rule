@@ -1,0 +1,148 @@
+{
+  "malware_family": "AsyncRAT",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "AsyncRAT is an open-source Remote Access Trojan observed establishing C2 communications over non-standard TCP ports (e.g., 6606, 7707, 8808) using self-signed SSL certificates. These certificates commonly use \"CN=AsyncRAT Server\" for both the issuer and subject. The malware performs anti-VM checks and establishes persistence through scheduled tasks or registry modifications.",
+  "mitre_techniques": [
+    "T1053",
+    "T1497",
+    "T1057",
+    "T1082",
+    "T1021.001",
+    "T1056",
+    "T1125",
+    "T1105",
+    "T1219",
+    "T1041"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "Select * from Win32_ComputerSystem",
+      "context": "WMI query for VM detection.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VMware",
+      "context": "String checked in WMI result for VM detection.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VirtualBox",
+      "context": "String checked in WMI result for VM detection.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "CN=AsyncRAT Server",
+      "context": "SSL certificate subject for C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "CN=AsyncRAT Server",
+      "context": "SSL certificate issuer for C2.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "185.49.126.50",
+      "context": "AsyncRAT C2 Endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "195.26.255.81",
+      "context": "AsyncRAT C2 Endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "191.96.207.246",
+      "context": "Likely AsyncRAT C2 Endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kashuub.com",
+      "context": "Likely AsyncRAT C2 Endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "6606",
+      "context": "Default C2 port from source code.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "7707",
+      "context": "Default C2 port from source code.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "8808",
+      "context": "Default C2 port from source code.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "2106",
+      "context": "Observed C2 port.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "8041",
+      "context": "Observed C2 port.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

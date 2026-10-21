@@ -1,0 +1,24 @@
+title: Global Ransomware Encrypted File Extension
+id: 6a3f338d-195f-4d43-9828-569b0b4526d7
+status: experimental
+description: Detects files being created or renamed with the ".nZASJgT" extension, which is an activity associated with the Global Group ransomware, often executed via msiexec.exe.
+references:
+    - https://cofense.com/blog/from-payment-plan-to-ransomware-inside-a-global-group-attack
+author: ioc-yara-daily (agentic)
+date: 2024-06-26
+tags:
+    - attack.t1486
+    - attack.impact
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\msiexec.exe'
+        TargetFilename|endswith: '.nZASJgT'
+    filter:
+        TargetFilename|endswith: '\README.nZASJgT.txt' # Exclude the ransom note itself
+    condition: selection and not filter
+falsepositives:
+    - Unlikely
+level: critical

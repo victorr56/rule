@@ -1,0 +1,24 @@
+title: RoningLoader Persistence Service 'MicrosoftSoftware2ShadowCop4yProvider'
+id: 38e12140-fdc8-47ac-9df0-7d84f88046b4
+status: experimental
+description: Detects the creation of a Windows service with a specific typosquatted name 'MicrosoftSoftware2ShadowCop4yProvider' used by RoningLoader for persistence.
+references:
+    - https://www.elastic.co/security-labs/threat-command/roningloader
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.persistence
+    - attack.t1543.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\sc.exe'
+        CommandLine|contains|all:
+            - 'create'
+            - 'MicrosoftSoftware2ShadowCop4yProvider'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

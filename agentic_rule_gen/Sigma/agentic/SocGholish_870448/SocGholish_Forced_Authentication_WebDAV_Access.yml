@@ -1,0 +1,23 @@
+title: SocGholish Forced Authentication WebDAV Access
+id: d1d2008f-255d-45a8-9d29-c0c16922b988
+status: experimental
+description: Detects WebDAV access patterns associated with SocGholish forced authentication for NTLM hash theft. This specific activity was observed connecting to an actor-controlled IP with a specific URI path.
+references:
+    - https://www.darktrace.com/blog/socgholish-from-loader-and-c2-activity-to-ransomhub-deployment
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.credential_access
+    - attack.t1187
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationIp: '161.35.56.33'
+        Url|endswith: '/s'
+    condition: selection
+falsepositives:
+    - Unlikely, as this rule combines a specific IP known to be controlled by the actor with a specific (though short) URI path.
+level: high

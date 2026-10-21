@@ -1,0 +1,21 @@
+title: REF3864/SADBRIDGE Encrypted Config File Creation
+id: 7b6a5c4d-3e2f-4a1b-9c8d-5e6f7a8b9c0d
+status: experimental
+description: Detects the creation of the encrypted SADBRIDGE configuration file 'edbtmp.log' in a subdirectory of 'C:\Users\Public\Documents\'.
+references:
+    - https://www.elastic.co/security-labs/threat-command/under-the-sadbridge-with-gosar
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.defense_evasion
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\Users\Public\Documents\'
+        TargetFilename|endswith: '\edbtmp.log'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

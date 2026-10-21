@@ -1,0 +1,24 @@
+title: NightEagle GhostContainer Backdoor DLL Load
+id: 6e9e49c7-2c5e-4d5c-9c76-508b5f3a0a38
+status: experimental
+description: Detects the loading of the GhostContainer backdoor DLL by the w3wp.exe process.
+references:
+    - https://securelist.com/tr/nighteagle-apt-ghostcontainer-and-tunneling/121323/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1505.003
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\w3wp.exe'
+        ImageLoaded|endswith:
+            - '\App_Web_Container_1.dll'
+            - '\3ecd1cd627d0340c92901a478a7caad8.dll'
+    condition: selection
+falsepositives:
+    - Legitimate but unusually named ASP.NET temporary assemblies.
+level: high

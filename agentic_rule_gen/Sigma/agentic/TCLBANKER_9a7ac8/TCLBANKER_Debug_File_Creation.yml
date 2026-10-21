@@ -1,0 +1,22 @@
+title: TCLBANKER Debug File Creation
+id: 59714856-11f8-45a7-965a-063f2d2449ca
+status: experimental
+description: Detects the creation of 'tcl-debug.txt' in the C:\temp directory, a specific debug artifact left by the TCLBANKER malware.
+references:
+    - https://www.elastic.co/security-labs/threat-command/tclbanker-brazilian-banking-trojan
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.discovery
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\LogiAiPromptBuilder.exe'
+        TargetFilename: 'C:\temp\tcl-debug.txt'
+    condition: selection
+falsepositives:
+    - Unlikely. This is a highly specific file path and name associated with a developer artifact from the malware.
+level: high

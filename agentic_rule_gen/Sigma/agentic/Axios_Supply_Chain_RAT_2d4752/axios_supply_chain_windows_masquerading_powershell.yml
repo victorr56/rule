@@ -1,0 +1,24 @@
+title: Axios Supply-Chain RAT Masquerading PowerShell Execution
+id: da80d859-a5c2-4115-be86-d24269e8f4fd
+status: experimental
+description: Detects the execution of 'wt.exe' from the 'C:\ProgramData' directory, which is a renamed copy of PowerShell used by the Axios supply-chain RAT. The legitimate 'wt.exe' (Windows Terminal) does not reside in this location.
+references:
+    - https://www.elastic.co/security-labs/blog/axios-supply-chain-compromise-detections
+author: ioc-yara-daily (agentic)
+date: 2023-10-27
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+    - attack.execution
+    - attack.t1059.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\ProgramData\wt.exe'
+        OriginalFileName: 'powershell.exe'
+    condition: selection
+falsepositives:
+    - Unlikely, as this specific combination of a file named 'wt.exe' in 'C:\ProgramData' that is actually a renamed 'powershell.exe' is highly anomalous.
+level: high

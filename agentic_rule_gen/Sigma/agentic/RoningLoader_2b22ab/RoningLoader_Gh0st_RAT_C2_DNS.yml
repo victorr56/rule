@@ -1,0 +1,21 @@
+title: RoningLoader Gh0st RAT C2 DNS Query
+id: 1735a22d-6e9f-4318-8f83-e12eb7607730
+status: experimental
+description: Detects DNS queries for a domain known to be used as a command and control (C2) server by the RoningLoader's final Gh0st RAT payload.
+references:
+    - https://www.elastic.co/security-labs/threat-command/roningloader
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'qaqkongtiao.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: medium

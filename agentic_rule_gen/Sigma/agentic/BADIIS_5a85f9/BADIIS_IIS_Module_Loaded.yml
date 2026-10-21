@@ -1,0 +1,25 @@
+title: BADIIS IIS Module Loaded
+id: 2f7c0a9e-f8d4-4a5c-9d6a-939e1e9a3d4f
+status: experimental
+description: Detects the loading of BADIIS IIS modules (WsmRes64.dll, WsmRes32.dll, or the older ul_cache.dll) by the IIS worker process (w3wp.exe), which is the core behavior of this malware on compromised web servers.
+references:
+    - https://www.elastic.co/security-labs/threat-command/badiis-to-the-bone-new-insights-to-global-seo-poisoning-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.persistence
+    - attack.t1547.015
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\w3wp.exe'
+        ImageLoaded|endswith:
+            - '\WsmRes64.dll'
+            - '\WsmRes32.dll'
+            - '\ul_cache.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

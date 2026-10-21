@@ -1,0 +1,22 @@
+title: SILENTCONNECT C2 IP Address
+id: cb21666e-c90a-4226-acb5-d146973e6601
+status: experimental
+description: Detects network connections to an IP address known to be used by SILENTCONNECT for C2 communications.
+references:
+    - https://www.elastic.co/security-labs/threat-command/silentconnect-delivers-screenconnect
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1105
+    - detection.threat_hunting
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '86.38.225.59'
+    condition: selection
+falsepositives:
+    - 'Unlikely, but IP addresses can be re-allocated over time.'
+level: critical

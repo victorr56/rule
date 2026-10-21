@@ -1,0 +1,25 @@
+title: .NET Loader C2 DNS Queries
+id: 3e83f4f1-5ab9-4824-a74e-5e26b1d4c22b
+status: experimental
+description: Detects DNS queries for domains associated with the .NET loader C2 and payload delivery infrastructure.
+references:
+    - https://www.huntress.com/blog/malspam-to-loader-delivery-chain-analysis
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - fostercareintheus.optimizationprime.com
+            - bth.startthewave.org
+            - pengajian.muliastudy.com
+            - catalogo.castrouria.com
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

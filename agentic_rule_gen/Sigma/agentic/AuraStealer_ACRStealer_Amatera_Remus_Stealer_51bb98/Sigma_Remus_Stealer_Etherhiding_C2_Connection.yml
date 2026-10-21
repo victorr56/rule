@@ -1,0 +1,38 @@
+title: Remus Stealer C2 Hostname Connection
+id: 4b9e6f17-2d58-4a3c-9e71-6c8b0d5f2a93
+status: experimental
+description: Detects outbound network connections to Remus Stealer C2 hostnames. Remus
+  Stealer is a 64-bit LummaStealer-like stealer that resolves its second-stage C2 through
+  abused smart-contract infrastructure (Etherhiding), so the resulting hostnames are
+  short-lived but actor-registered.
+references:
+  - https://www.reversinglabs.com/blog/infostealers-highlight-malware-as-a-service-trend
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.command_and_control
+  - attack.t1071.001
+  - attack.t1102.001
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationHostname|endswith:
+      - 'azurhay.shop'
+      - 'carogra.biz'
+      - 'fimmora.surf'
+      - 'freshis.biz'
+      - 'hooiuse.click'
+      - 'myrtler.biz'
+      - 'onesdto.shop'
+      - 'slyfogx.shop'
+      - 'topxgax.click'
+      - 'tzpx.courses'
+      - 'uiccvbk.click'
+      - 'youngel.biz'
+      - 'zelpx.garden'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: critical

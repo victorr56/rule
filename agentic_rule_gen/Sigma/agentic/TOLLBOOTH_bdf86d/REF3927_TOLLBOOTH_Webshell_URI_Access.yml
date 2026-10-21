@@ -1,0 +1,23 @@
+title: REF3927 TOLLBOOTH Webshell or SEO URI Access
+id: 1152a5c4-2391-4e4f-b673-a859d0426d83
+status: experimental
+description: Detects web requests containing URI paths associated with TOLLBOOTH webshell access or SEO page generation.
+references:
+    - https://www.elastic.co/security-labs/threat-command/tollbooth
+author: ioc-yara-daily (agentic)
+date: 2023-10-17
+tags:
+    - attack.persistence
+    - attack.t1505.003
+logsource:
+    category: proxy
+detection:
+    selection:
+        cs-method: 'GET'
+        c-uri|contains:
+            - '/mywebdll'
+            - '/market-outlook'
+    condition: selection
+falsepositives:
+    - The URI path '/market-outlook' could be present on legitimate financial or trading websites.
+level: medium

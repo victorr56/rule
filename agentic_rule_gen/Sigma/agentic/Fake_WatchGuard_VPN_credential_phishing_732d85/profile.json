@@ -1,0 +1,214 @@
+{
+  "malware_family": "Fake WatchGuard VPN credential phishing",
+  "threat_actor": "Storm-2561",
+  "platforms": [
+    "windows",
+    "web"
+  ],
+  "summary": "SEO-poisoning credential phish that pushes the lookalike domain watchguard-vpn[.]net as a WatchGuard Mobile VPN with SSL download site. A plain JavaScript modal (popup.js) posts the victim's VPN server, login and password as JSON to watchguard-ssl[.]online, deliberately rejecting the first submission to harvest a second set. After the second attempt the page downloads the genuine, validly signed WatchGuard installer from WatchGuard's own CDN, so no malicious file ever lands on the endpoint.",
+  "mitre_techniques": [
+    "T1608.006",
+    "T1056.003",
+    "T1583.001",
+    "T1078"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "popup.js",
+      "context": "Credential capture modal script (~150 lines of plain, unobfuscated JavaScript)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Incorrect data, please enter again to start installation",
+      "context": "Red header forced after the first credential submission to harvest a second set",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "attempt = 2;",
+      "context": "Attempt counter set after the first submission is rejected",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "To install WatchGuard SSL VPN, please enter your connection details",
+      "context": "Popup prompt requesting Server, Login and Password",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VPN client installation has started",
+      "context": "Green success message shown after the second submission",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "An independent English-language fan site about WatchGuard Mobile VPN. Not an official sales, download, or support channel.",
+      "context": "Disclaimer text at the bottom of the fake WatchGuard site",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "WatchGuard Firebox VPN Client",
+      "context": "Page title of the lookalike site at www.watchguard-vpn[.]net",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "server, login, password, attempt",
+      "context": "JSON field names posted by popup.js to the collection domain",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "aHR0cHM6Ly93d3cud2F0Y2hndWFyZC12cG4ubmV0Lw",
+      "context": "Bing bing.com/ck/a redirect u= parameter, base64 of https://www.watchguard-vpn[.]net/",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "WG-MVPN-SSL_12_11_5.exe",
+      "context": "Genuine signed WatchGuard Mobile VPN with SSL client 12.11.5 pulled from official CDN",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "WatchGuard Technologies, Inc.",
+      "context": "Authenticode signer of the delivered installer, issued by Sectigo Public Code Signing CA R36",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "watchguard-vpn.net",
+      "context": "Lookalike WatchGuard VPN download page hosting the credential modal",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "watchguard-ssl.online",
+      "context": "Credential collection endpoint receiving JSON POSTs",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "watchguard-vpn.com",
+      "context": "Related lookalike domain Microsoft attributed to Storm-2561",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "firebox-ssl.org",
+      "context": "Additional lookalike WatchGuard/Firebox client site shown in search results",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "80.249.132.140",
+      "context": "Lure hosting, Site BV / LeaseWeb Netherlands (AS60781)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "158.94.209.19",
+      "context": "Collector hosting, Omegatech LTD (AS202412), Amsterdam",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "74.208.236.39",
+      "context": "January 2026 resolution of watchguard-vpn[.]net reported by Secplicity",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cdn.watchguard.com/SoftwareCenter/Files/MUVPN_SSL/12_11_5/WG-MVPN-SSL_12_11_5.exe",
+      "context": "Hardcoded DOWNLOAD_FILE constant in popup.js; official WatchGuard CDN installer",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.watchguard-vpn.net/",
+      "context": "Lure landing page decoded from the Bing redirect u= parameter",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.watchguard-vpn.net/index.php",
+      "context": "Fake 'WatchGuard Support Page' with per-OS download options",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

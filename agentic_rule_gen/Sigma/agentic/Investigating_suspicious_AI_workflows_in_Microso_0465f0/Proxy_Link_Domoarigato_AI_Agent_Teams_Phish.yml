@@ -1,0 +1,25 @@
+title: Outbound HTTP Request to Phishing Domain domoarigato.ai
+id: 3f7c1a92-5d64-4e0b-9c2a-8b1f6d4e7a35
+status: experimental
+description: >
+  Detects proxy traffic to domoarigato.ai, the link domain embedded in a Microsoft Teams
+  channel message posted by a suspicious Entra Agent ID agent user. The message was sent
+  through the Microsoft Graph teams/channels/messages endpoint using an agent-user OAuth
+  token, and the link is the credential-harvesting payload users are directed to click.
+references:
+  - https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-teams/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.initial_access
+  - attack.t1566.002
+  - detection.threat_hunting
+logsource:
+  category: proxy
+detection:
+  selection:
+    DestinationHostname|endswith: 'domoarigato.ai'
+  condition: selection
+falsepositives:
+  - Unlikely. The domain is not a legitimate enterprise service, although a user who received the Teams message may browse it out of curiosity, which is the behaviour this rule is meant to surface.
+level: medium

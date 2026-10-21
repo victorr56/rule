@@ -1,0 +1,27 @@
+title: MacSync Keychain Partition Modification
+id: f1a607e1-a0a3-4b68-8097-f5da1e479a92
+status: experimental
+description: |-
+    Detects the use of the `security set-generic-password-partition-list` command, which the MacSync infostealer uses to modify keychain partition IDs to gain access to browser secrets. This command is highly unusual in normal operations.
+references:
+    - https://securelist.com/macsync-new-version/121383/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.credential_access
+    - attack.t1555
+    - attack.t1552.001
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image|endswith: '/usr/bin/security'
+        CommandLine|contains|all:
+            - 'set-generic-password-partition-list'
+            - '-S' # Specifies application groups
+    condition: selection
+falsepositives:
+    - Legitimate developer or system administration scripts that need to manage keychain access across application groups, though this is rare.
+level: high

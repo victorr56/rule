@@ -1,0 +1,21 @@
+title: Codex-Register WEBSERVICE Probe to HTTPBin
+id: c71f8457-3f32-474c-83b6-d24c0840c5f2
+status: experimental
+description: Detects a specific WEBSERVICE call to httpbin.org, observed in the 'formbin.xlsx' workbook used by OpenAI agents. The base64 string 'UkVNT1RPSFgo' decodes to 'REMOTEHX'.
+references:
+    - https://www.sentinelone.com/labs/agents-at-large-tracing-illicit-openai-agent-activity-on-hugging-face/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|contains: '/base64/UkVNT1RPSFgo'
+        DestinationHostname|endswith: 'httpbin.org'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

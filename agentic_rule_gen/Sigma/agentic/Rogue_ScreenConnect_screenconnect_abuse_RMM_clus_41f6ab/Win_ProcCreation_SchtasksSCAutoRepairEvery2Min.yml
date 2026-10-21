@@ -1,0 +1,24 @@
+title: Scheduled Task SCAutoRepairEvery2Min Creation
+id: 04e9a0de-8c88-4663-8a9d-b631d1d86d67
+status: experimental
+description: Detects the creation of the 'SCAutoRepairEvery2Min' scheduled task used for persistence by a rogue ScreenConnect variant. This task is configured to run the SCAutoFix.ps1 script.
+references:
+    - https://www.huntress.com/blog/screenconnect-power-bi
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn SCAutoRepairEvery2Min'
+            - 'SCAutoFix.ps1'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

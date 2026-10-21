@@ -1,0 +1,24 @@
+title: React2Shell XMRig Staging Server Connection
+id: 382b619a-9e0a-4a25-83e9-a414731a5fa6
+status: experimental
+description: Detects network connections to known XMRig staging servers used in React2Shell (CVE-2025-55182) campaigns.
+references:
+    - https://www.greynoise.io/blog/react2shell-exploitation-consolidates
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.resource_hijacking
+    - attack.t1496
+    - attack.t1190
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '205.185.127.97'
+            - '176.65.132.224'
+    condition: selection
+falsepositives:
+    - These IPs might be shared or re-allocated in the future.
+level: high

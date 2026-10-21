@@ -1,0 +1,25 @@
+title: DarkMe RAT Staging via WScript and Rundll32
+id: 9a38096f-c1f0-4560-9159-4ac9a6ec8912
+status: experimental
+description: Detects the command line executed by prnfig.wsf to import registry settings and launch the DarkMe COM object via rundll32.
+references:
+    - https://www.huntress.com/blog/darkme-rat-abandons-exploits
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.005
+    - attack.t1218.011
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\wscript.exe'
+        CommandLine|contains|all:
+            - 'reg.exe import'
+            - 'rundll32.exe /sta {CFDC57BA-1705-45AF-BA10-EFC3D592982B}'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

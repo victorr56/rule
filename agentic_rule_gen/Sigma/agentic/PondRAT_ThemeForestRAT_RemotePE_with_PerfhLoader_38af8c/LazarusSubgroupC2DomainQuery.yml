@@ -1,0 +1,40 @@
+title: Lazarus Subgroup C2 Domain Query
+id: 978912e7-0eb2-432d-ae4c-357564d63503
+status: experimental
+description: Detects DNS queries for domains known to be used by a Lazarus subgroup for C2 communications for PondRAT, ThemeForestRAT, and RemotePE malware.
+references:
+    - https://blog.fox-it.com/2025/09/01/three-lazarus-rats-coming-for-your-cheese/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.aes-secure.net'
+            - '.arcashop.org'
+            - '.azuredeploypackages.net'
+            - '.azureglobalaccelerator.com'
+            - '.calendly.live'
+            - '.dpkgrepo.com'
+            - '.ftxstock.com'
+            - '.jdkgradle.com'
+            - '.keondigital.com'
+            - '.latamics.org'
+            - '.lmaxtrd.com'
+            - '.nansenpro.com'
+            - '.natefi.org'
+            - '.oncehub.co'
+            - '.paxosfuture.com'
+            - '.picktime.live'
+            - '.plexisco.com'
+            - '.pypilibrary.com'
+            - '.pypistorage.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

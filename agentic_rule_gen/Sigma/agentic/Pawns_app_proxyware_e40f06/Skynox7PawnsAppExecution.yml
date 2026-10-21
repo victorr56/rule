@@ -1,0 +1,28 @@
+title: Skynox7 Pawns.app Proxyware Execution
+id: daf5d137-b6fd-45d2-a720-6d0d2105151b
+status: experimental
+description: Detects the execution of the Pawns.app proxyware client as used by the skynox7 actor.
+references:
+    - https://www.greynoise.io/blog/proxyjacking-edge-devices-residential-proxies
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.resource_hijacking
+    - attack.t1496
+    - attack.proxy
+    - attack.t1090
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/tmp/gs'
+        CommandLine|contains|all:
+            - '-email='
+            - '-password='
+            - '-device-name='
+            - '-accept-tos'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

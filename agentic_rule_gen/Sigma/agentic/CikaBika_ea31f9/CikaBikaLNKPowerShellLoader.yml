@@ -1,0 +1,29 @@
+title: CikaBika LNK PowerShell Loader
+id: 97893a77-9df1-4340-9a29-052a65d752dd
+status: experimental
+description: Detects the specific PowerShell command line used by the CikaBika LNK dropper. The script reads bytes from a decoy PDF, XOR-decrypts them, writes them to a file in the TEMP directory, and executes it.
+references:
+    - https://www.darktrace.com/blog/when-ai-infrastructure-becomes-part-of-the-attack-surface
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.defense_evasion
+    - attack.t1027
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - '[IO.File]::ReadAllBytes'
+            - 'ForEach-Object { $_ -bxor $key }'
+            - '[IO.File]::WriteAllBytes'
+            - '.pdf'
+            - '$env:TEMP'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical
+logsource:
+    category: process_creation
+    product: windows

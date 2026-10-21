@@ -1,0 +1,24 @@
+title: ClickFix Initial C2 Beacon
+id: 593a105f-2b28-4034-8c83-097ed4debe30
+status: experimental
+description: Detects the initial C2 beaconing pattern of the ClickFix social engineering tactic, which involves an HTTP request from a PowerShell User-Agent to a URI path matching a specific numeric pattern.
+references:
+    - https://www.darktrace.com/blog/unpacking-clickfix-darktraces-detection-of-a-prolific-social-engineering-tactic
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - detection.threat_hunting
+logsource:
+    category: proxy
+    product: any
+detection:
+    selection:
+        UserAgent: 'PowerShell'
+        # The numeric path is generated from the current epoch time, with '174' as a prefix. e.g., /1744205200
+        Url|re: '/174\d{7}'
+    condition: selection
+falsepositives:
+    - Custom scripts using PowerShell for HTTP requests with a similar URI naming convention.
+level: high

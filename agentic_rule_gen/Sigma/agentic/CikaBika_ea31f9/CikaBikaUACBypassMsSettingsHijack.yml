@@ -1,0 +1,23 @@
+title: CikaBika UAC Bypass via ms-settings Handler Hijack
+id: 298f2441-1793-41c1-8bb2-fc06e0018d45
+status: experimental
+description: Detects the modification of the 'ms-settings' protocol handler command key, a technique used by CikaBika to perform a UAC bypass and move its malicious DLL into a protected directory.
+references:
+    - https://www.darktrace.com/blog/when-ai-infrastructure-becomes-part-of-the-attack-surface
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1548.002
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Classes\ms-settings\shell\open\command'
+        Details|contains: 'cmd.exe /c move'
+    condition: selection
+falsepositives:
+    - Unlikely. Legitimate software should not be modifying this protocol handler to execute `cmd.exe`.
+level: high

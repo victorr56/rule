@@ -1,0 +1,20 @@
+title: ARTEX Related DNS Query for xcai.pro
+id: 8887413d-d602-4fc9-b6b6-97621c0e35fa
+status: experimental
+description: Detects DNS queries for xcai.pro, a domain associated with an ARTEX-related campaign as a likely LLM API proxy.
+references:
+    - https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1090
+    - attack.t1583.003
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith: '.xcai.pro'
+    condition: selection
+falsepositives:
+    - Legitimate use of the xcai.pro service, if any exists.
+level: medium

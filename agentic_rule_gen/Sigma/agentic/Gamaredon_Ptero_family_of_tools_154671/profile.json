@@ -1,0 +1,394 @@
+{
+  "malware_family": "Gamaredon (Ptero family of tools)",
+  "threat_actor": "Gamaredon (aka Aqua Blizzard; attributed by SSU to Russia's FSB 18th Center of Information Security)",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Gamaredon targeted Ukrainian governmental and military institutions throughout 2025 with 35 spearphishing campaigns delivering HTA downloaders, VBScript downloaders (PteroSand), and six new PowerShell tools, plus weaponizers for lateral movement. The group hid C&C behind third-party tunnels, serverless workers, PaaS and DDNS, abused legitimate messaging, blogging, paste and social services as dead drops, and moved data exfiltration to S3-compatible cloud storage. Detection should focus on the Ptero* tool names, the abused third-party service domains, and cloud-storage exfiltration endpoints.",
+  "mitre_techniques": [
+    "T1566.001",
+    "T1566.002",
+    "T1204.002",
+    "T1059.001",
+    "T1059.005",
+    "T1547.001",
+    "T1091",
+    "T1567.002",
+    "T1105",
+    "T1102",
+    "T1027.006",
+    "T1568",
+    "T1203"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "PteroDee",
+      "context": "New 2025 PowerShell downloader that fetches and executes PowerShell payloads in memory",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PteroCache",
+      "context": "New 2025 PowerShell downloader fetching and executing PowerShell payloads in memory",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PteroDum",
+      "context": "New 2025 downloader for VBScript payloads, writes them to disk, executes, then deletes",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PteroOdd",
+      "context": "Tiny downloader retrieving a single PowerShell payload via the Telegra.ph API",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PteroEffigy",
+      "context": "Lightweight downloader using GoFile cloud storage to obtain the next C&C server",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PteroPaste",
+      "context": "Most complex new tool: downloader, USB weaponizer and runner for persistence/orchestration",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PteroSetup",
+      "context": "Resurrected VBScript weaponizer replacing installer-like executables with malicious self-extracting archives",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PteroSand",
+      "context": "VBScript downloader fetched by HTA downloaders in spearphishing chains",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PteroVDoor",
+      "context": "File stealer upgraded to exfiltrate to S3-compatible cloud storage",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PteroPSDoor",
+      "context": "File stealer upgraded to exfiltrate to S3-compatible cloud storage",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PteroBox",
+      "context": "Continued uploading files to Dropbox; newer variant uses rclone",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PteroLNK",
+      "context": "Previously known tool with important updates documented in the white paper",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PteroPSLoad",
+      "context": "Previously known tool with important updates documented in the white paper",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "rclone",
+      "context": "Newer PteroBox variant uses rclone to upload stolen files to Dropbox",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "CVE-2025-8088",
+      "context": "WinRAR vulnerability abused from 2025-09-26 to drop HTA downloader into victim Startup folder",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "Startup folder",
+      "context": "HTA downloader placed in Startup folder via CVE-2025-8088 for execution at next login",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "self-extracting archive",
+      "context": "PteroSetup replaces installer executables with malicious self-extracting archives containing original installer plus VBScript downloader",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "trycloudflare.com",
+      "context": "Cloudflare tunnels used to conceal C&C servers since 2024 and expanded in 2025",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "workers.dev",
+      "context": "Cloudflare workers hiding C&C servers, observed from May 2025",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "devtunnels.ms",
+      "context": "Microsoft tunnel service added as C&C fallback in June 2025",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "loophole.site",
+      "context": "Loophole tunnel service added as C&C fallback in June 2025",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "loca.lt",
+      "context": "Tunnel service experimented with in a few isolated cases",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bore.pub",
+      "context": "Tunnel service experimented with in a few isolated cases",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cleverapps.io",
+      "context": "Clever Cloud PaaS abused in several campaigns",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "supabase.co",
+      "context": "Supabase PaaS abused in several campaigns",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "t.me",
+      "context": "Telegram channels used as dead drops for C&C resolution",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "telegra.ph",
+      "context": "Dead drop platform and API used by PteroOdd to retrieve payloads",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "teletype.in",
+      "context": "Teletype posts abused as dead drops for C&C information or payloads",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "rentry.co",
+      "context": "Rentry used as intermediary staging point for encrypted payloads in early PteroPaste versions",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "write.as",
+      "context": "Write.as abused as dead drop for C&C information or payloads",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dev.to",
+      "context": "DEV Community social network abused as dead drop",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mastodon.social",
+      "context": "Mastodon social network abused as dead drop",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "lesma.eu",
+      "context": "Lesma service abused as dead drop",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "nopaste.net",
+      "context": "Paste service abused as dead drop",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pastee.dev",
+      "context": "Paste.ee abused as dead drop",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wasabisys.com",
+      "context": "Wasabi S3-compatible storage used for stolen-file exfiltration earlier in 2025",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tebi.io",
+      "context": "Tebi S3-compatible storage used for exfiltration after Wasabi",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "de-fra.i3storage.com",
+      "context": "Intercolo S3-compatible storage, primary exfiltration destination by December",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Dropbox",
+      "context": "Dead drop and PteroBox exfiltration destination; PteroPaste retrieves encrypted C&C hostname from it",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "GoFile",
+      "context": "Cloud storage service used by PteroEffigy to obtain the next C&C server",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "No-IP domains",
+      "context": "Dynamic DNS provider domains reused across multiple tools, especially HTA downloaders",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script",
+    "archive"
+  ]
+}

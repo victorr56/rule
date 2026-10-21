@@ -1,0 +1,24 @@
+title: Midnight Blizzard CornFlake Persistence via Run Key
+id: 64f1d46f-ef07-4ba3-ab14-1e0e890a5e84
+status: experimental
+description: Detects the creation of a registry Run key pointing to the CornFlake backdoor's specific masquerading path, a technique used by a Midnight Blizzard-linked cluster for persistence.
+references:
+    - https://www.reversinglabs.com/blog/how-rl-mapped-a-midnight-blizzard-linked-campaign-from-two-hashes
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith:
+            - '\Software\Microsoft\Windows\CurrentVersion\Run'
+            - '\Software\Microsoft\Windows\CurrentVersion\RunOnce'
+        Details|contains: '\svchost32\svchost32.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

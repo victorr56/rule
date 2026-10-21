@@ -1,0 +1,23 @@
+title: Potential UNC5221 Payload Drop in Root Directory
+id: a23b4991-6677-49f3-8f0a-ddb4de219800
+status: experimental
+description: Detects the creation of a file with a randomly generated 10-12 character alphanumeric name directly in the root directory by a web server process. This pattern has been observed in attacks exploiting vulnerabilities in Ivanti Endpoint Manager Mobile (EPMM).
+references:
+    - https://www.darktrace.com/blog/ivanti-under-siege-investigating-the-ivanti-endpoint-manager-mobile-vulnerabilities-cve-2025-4427-cve-2025-4428
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.initial_access
+    - attack.t1190
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/httpd'
+        TargetFilename|re: '^\/[a-zA-Z0-9]{10,12}$'
+    condition: selection
+falsepositives:
+    - Legitimate web server activity, although writing a file with a random name directly to the root directory is highly unusual.
+level: high

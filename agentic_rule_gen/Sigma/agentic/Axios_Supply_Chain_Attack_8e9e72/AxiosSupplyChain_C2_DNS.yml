@@ -1,0 +1,22 @@
+title: Axios Supply Chain Attack C2 DNS Query
+id: 3c6b29d4-c918-4e8a-8644-8d4e5f7a2d1e
+status: experimental
+description: Detects DNS queries to command and control (C2) domains associated with the Axios supply chain attack.
+references:
+    - https://www.wiz.io/blog/axios-npm-compromised-in-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - sfrclak.com
+            - callnrwise.com
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

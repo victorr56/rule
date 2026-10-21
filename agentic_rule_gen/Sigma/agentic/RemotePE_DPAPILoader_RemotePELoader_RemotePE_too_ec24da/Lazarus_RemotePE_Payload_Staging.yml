@@ -1,0 +1,26 @@
+title: Lazarus RemotePE Payload Staging in DeviceMetadataStore
+id: 11f5d60a-1e6b-4cc4-b778-0c679a86b361
+status: experimental
+description: Detects the creation of '.devicemetadata-ms' files in the 'DeviceMetadataStore' directory, a location used by Lazarus RemotePE to store its encrypted payload.
+references:
+    - https://blog.fox-it.com/2026/05/22/remotepe-the-lazarus-rat-that-lives-in-memory/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1070.004
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\ProgramData\Microsoft\Windows\DeviceMetadataStore\en-US\'
+        TargetFilename|endswith: '.devicemetadata-ms'
+    filter_legit_process:
+        Image|endswith:
+            - '\svchost.exe'
+            - '\dasHost.exe' # Device Association Framework Provider Host
+    condition: selection and not filter_legit_process
+falsepositives:
+    - The Windows Device Metadata service legitimately writes to this directory. This rule filters for common legitimate processes to reduce noise, but other system components or third-party software interacting with device management could cause false positives.
+level: medium

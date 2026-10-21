@@ -1,0 +1,25 @@
+title: Execution of SCAutoFix.ps1 Persistence Script
+id: 7999ce20-f56f-4a0d-8551-7681c4e7ab56
+status: experimental
+description: Detects the execution of the SCAutoFix.ps1 PowerShell script used to download and deploy a secondary RMM client.
+references:
+    - https://www.huntress.com/blog/screenconnect-power-bi
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1059.001
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_ps:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains: 'SCAutoFix.ps1'
+    selection_pwsh:
+        Image|endswith: '\pwsh.exe'
+        CommandLine|contains: 'SCAutoFix.ps1'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate administration scripts that happen to have the same name.
+level: medium

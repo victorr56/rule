@@ -1,0 +1,409 @@
+{
+  "malware_family": "Modular RAT",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A modular RAT is delivered via a tampered installer for the Exodus crypto wallet, masquerading as a background service from 'Apple Inc'. The malware persists via a scheduled task, launching an invisible instance of the wallet which loads the in-memory payload. The RAT features VNC, SOCKS proxy, and credential theft capabilities, using Azure Table Storage as a C2 dead drop.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "msiexec /i \"%TEMP%\\jn0101.msi\" /quiet /norestart",
+      "context": "JS dropper running the malicious MSI installer.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c chcp 65001 >nul 2>&1 & systeminfo",
+      "context": "Recon command run by the in-memory payload.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "[WindowsFolder]explorer.exe \"[INSTALLDIR]Exodus.exe\"",
+      "context": "MSI custom action to launch the trojanized application.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\ExdBackupTool\\",
+      "context": "Installation directory for the trojanized Exodus wallet.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\123\\exodusUpdater",
+      "context": "Attacker build path found in a leaked debug.log file.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "C:\\Users\\root\\node_modules\\@intelcorp\\wmi-native-module\\build\\Release\\wmi_native_module.pdb",
+      "context": "PDB path from a module used for WMI reconnaissance.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "@intelcorp/wmi-native-module",
+      "context": "Fake npm scope impersonating Intel used for host reconnaissance.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "ExodusHelper",
+      "context": "Mutex created by the in-memory payload to ensure single instance.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "ExdBackupTool",
+      "context": "Persistence task launching the trojanized Exodus.exe hourly.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "INetHealth",
+      "context": "Persistence task to clear system proxy settings on a schedule.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SXD9WPcPiVBt76Y09wg/YLDTk/uOOrKWbSmMSrystI8=",
+      "context": "Static AES-256 key for decrypting the main payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "3ssyBCFqLnkYA2aJ70rxRw==",
+      "context": "Static AES-256 IV for decrypting the main payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "BrowserWindow.prototype.show = function () {};",
+      "context": "JavaScript code used to prevent the wallet's UI from appearing.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "svchost.exe -> Exodus.exe",
+      "context": "Task Scheduler launching the trojanized wallet from its hourly task.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "explorer.exe -> Exodus.exe",
+      "context": "MSI custom action re-parenting the process to hide its origin.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "dll4_cmd.dll",
+      "context": "Exported name of the remote command execution module.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "dll4_fileman.dll",
+      "context": "Exported name of the file management module.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "dll4_browser.dll",
+      "context": "Exported name of the browser credential theft module.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "dll4_socks.dll",
+      "context": "Exported name of the SOCKS proxy module.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "dll4_vnc.dll",
+      "context": "Exported name of the hidden VNC module.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "dll4_script.dll",
+      "context": "Exported name of the script execution module.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "DisplayName: Background Service",
+      "context": "Fake product name in the MSI installer metadata.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Publisher: Apple Inc",
+      "context": "Fake publisher in the MSI installer metadata.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "flxaoko4",
+      "context": "MSI table short name for the installation directory.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "RtlAddFunctionTable",
+      "context": "Import used to register exception tables for the manually mapped payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "src/app/main/exodus_patch.js",
+      "context": "Malicious JS file added to the asar archive to suppress the UI.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "src/app/keyviewer/keystorage.js",
+      "context": "Legitimate JS file replaced with payload loader.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "35.212.159.20",
+      "context": "Delivery IP hosting the MSI installer and resolving us05.org.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "us05.org",
+      "context": "Domain that redirects to a malicious search-ms URI for WebDAV delivery.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "search-ms:displayname=Search Results in update (\\\\us05.org@8080)&crumb=&crumb=location:\\\\us05.org@8080\\update",
+      "context": "Malicious search-ms protocol handler URI for WebDAV delivery.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "lgapistorage123.table.core.windows.net",
+      "context": "Azure Table Storage dead drop used for C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "winapi.table.core.windows.net",
+      "context": "Secondary/fallback Azure Table Storage C2 dead drop.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "ftable434",
+      "context": "Table name used within the Azure Table Storage C2 channel.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.elcaminodesermadre.com",
+      "context": "Hardcoded C2 domain found in payload configuration (not observed used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "app.micheladafestelpaso.com",
+      "context": "Hardcoded C2 domain found in payload configuration (not observed used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "auth.SecureSwallow.com",
+      "context": "Hardcoded C2 domain found in payload configuration (not observed used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cdn.ShinoZen.com",
+      "context": "Hardcoded C2 domain found in payload configuration (not observed used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "static.TurboLeadSlab.com",
+      "context": "Hardcoded C2 domain found in payload configuration (not observed used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "c513a7346484ee69a2931c4a89956ee50aa63e4366ef989315e669d8f10d7485",
+      "description": "Fake \"Exodus Backup Tool\" MSI installer (jn0101.msi)."
+    },
+    {
+      "sha256": "8c3b41ea5a85778145a6e5772bfee2eb0f8b027d0af199fb71a76dfb8bb29e5a",
+      "description": "Decrypted memory-resident modular RAT payload."
+    },
+    {
+      "sha256": "fdd376562aac4be64fb635546a61e1912ff2c353360db73d2c553dcbb5a44f54",
+      "description": "RAT's remote file manager module (dll4_fileman.dll)."
+    },
+    {
+      "sha256": "2f47cfbb13f7a8a2d30d287f4ddd974fabea6762ad9781d438eb53da41b4582d",
+      "description": "RAT's SOCKS proxy module (dll4_socks.dll)."
+    },
+    {
+      "sha256": "84437d4239d2a3d90c4faad0a3c0630b2f61a40f7bbd12109bef74d7613b8756",
+      "description": "RAT's remote shell module (dll4_cmd.dll)."
+    },
+    {
+      "sha256": "5274e93e35586a341d14b50cdf8413d59c51fd94f32bdc70bfdfb77198367603",
+      "description": "RAT's LuaJIT script execution engine (dll4_script.dll)."
+    },
+    {
+      "sha256": "7e74f6e2eb7a17a8d25bb322a14c392c9d92c6ab29fc66b50221da134a1bdba8",
+      "description": "RAT's browser credential stealer module (dll4_browser.dll)."
+    },
+    {
+      "sha256": "5fe753945da0eaac2c2ef3845cba603dea6c3e8529fa581d7e0192f8af60391a",
+      "description": "RAT's hidden VNC module (dll4_vnc.dll)."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

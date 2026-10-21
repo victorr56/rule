@@ -1,0 +1,286 @@
+{
+  "malware_family": "REF5961",
+  "threat_actor": "REF5961",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "REF5961 is a China-nexus intrusion set primarily targeting government entities in Southern and Southeastern Asia. The actors deploy three new malware families—EAGERBEE, RUDEBIRD, and DOWNTOWN—for initial access, persistence, reconnaissance, and execution of additional payloads. The tooling often exhibits unsophisticated development practices, such as leaving debug strings and using suboptimal coding techniques, which provide unique detection opportunities.",
+  "mitre_techniques": [
+    "T1027",
+    "T1082",
+    "T1041",
+    "T1090",
+    "T1055",
+    "T1083",
+    "T1059",
+    "T1570",
+    "T1005"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "mutex",
+      "value": "mstoolFtip32W",
+      "context": "EAGERBEE mutex to prevent multiple instances.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0-5:00:23;6:00:23;",
+      "context": "EAGERBEE's hardcoded operational schedule string.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "c:\\users\\public\\iconcache.mui",
+      "context": "EAGERBEE XOR-encrypted C2 configuration file.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DONNECT",
+      "context": "EAGERBEE typo in HTTP proxy request string instead of CONNECT.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\help\\RVTDM.exe",
+      "context": "RUDEBIRD initial execution file masquerading as ZoomIt.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "w3wp.exe>RVTDM.exe",
+      "context": "RUDEBIRD initial execution from Microsoft Exchange application pool.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"C:\\windows\\help\\exec.exe\" /accepteula \\\\{victim-1} -d -s C:\\windows\\debug\\RVTDM.EXE",
+      "context": "RUDEBIRD uses PsExec for lateral movement.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Windows API names",
+      "context": "RUDEBIRD API hashing to resolve imports.",
+      "specificity": "medium",
+      "evidence": "hash_gated",
+      "origin_tool": "OALabs",
+      "hash_algo": "mult21_add",
+      "hash_value": "0x21"
+    },
+    {
+      "kind": "mutex",
+      "value": "VV.0",
+      "context": "RUDEBIRD initial synchronization mutex.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "GetPluginInfomation",
+      "context": "DOWNTOWN plugin export with typo, shared with SManager/PhantomNet.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SendFileBuffer error -1 !!!",
+      "context": "DOWNTOWN debug error string.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ScheduledDownloadTasks CODE_FILE_VIEW ",
+      "context": "DOWNTOWN debug string.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ExplorerManagerC.dll",
+      "context": "DOWNTOWN plugin name found in strings.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "DeletePluginObject",
+      "context": "DOWNTOWN plugin export.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "CN=shop.REDACTED.mn",
+      "context": "Self-signed wildcard cert on shared C2 infrastructure IP.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 FF C0 8D 51 FF 44 30 00 49 03 C4 49 2B D4 ?? ?? 48 8D 4F 01 48 }",
+      "context": "EAGERBEE config file decryption routine.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 40 53 48 83 EC 20 48 8B D9 B9 D8 00 00 00 E8 FD C1 FF FF 48 8B C8 33 C0 48 85 C9 74 05 E8 3A F2 }",
+      "context": "RUDEBIRD YARA signature.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "http://www.president.mn/upload.php",
+      "context": "Data exfiltration C2 URL used by EAGERBEE-related Mongolian campaign.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://intranet.gov.mn/upload.php",
+      "context": "Data exfiltration C2 URL used by EAGERBEE-related Mongolian campaign variant.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "paper.hosted-by-bay.net",
+      "context": "EAGERBEE C2 domain with expired TLS certificate.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "news.hosted-by-bay.net",
+      "context": "RUDEBIRD C2 domain.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.82.217.164",
+      "context": "EAGERBEE C2 IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "195.123.245.79",
+      "context": "EAGERBEE C2 IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.90.58.103",
+      "context": "RUDEBIRD C2 IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.195.237.123",
+      "context": "RUDEBIRD C2 IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "paypal.goodspaypal.com",
+      "context": "Malicious domain hosted on shared C2 infrastructure IP.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "09005775fc587ac7bf150c05352e59dc01008b7bf8c1d870d1cea87561aa0b06",
+      "description": "EAGERBEE YARA reference sample"
+    },
+    {
+      "sha256": "339e4fdbccb65b0b06a1421c719300a8da844789a2016d58e8ce4227cb5dc91b",
+      "description": "EAGERBEE YARA reference sample"
+    },
+    {
+      "sha256": "ce4dfda471f2d3fa4e000f9e3839c3d9fbf2d93ea7f89101161ce97faceadf9a",
+      "description": "EAGERBEE shellcode (iconcaches.mui)"
+    },
+    {
+      "sha256": "29c90ac124b898b2ff2a4897921d5f5cc251396e8176fc8d6fa475df89d9274d",
+      "description": "DOWNTOWN in-memory DLL"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

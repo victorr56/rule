@@ -1,0 +1,659 @@
+{
+  "malware_family": "",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A suspected China-based actor compromised three servers of a shared parks-and-recreation management platform by registering member accounts and abusing the member file upload feature to drop .aspx webshells, then used cmd.exe and PowerShell to enumerate IIS and hunt cardholder data. On return visits the actor renamed webshells as legitimate assets, timestomped them, and injected an obfuscated dropper into a jQuery file loaded by the authentication page to harvest credentials into WebRTC/WebSocket C2. Detection should focus on IIS worker processes spawning cmd.exe/PowerShell, webshell-named .aspx files, and the attacker's workers.dev C2 endpoints.",
+  "mitre_techniques": [
+    "T1190",
+    "T1505.003",
+    "T1136",
+    "T1059.001",
+    "T1059.003",
+    "T1082",
+    "T1083",
+    "T1057",
+    "T1016",
+    "T1552.001",
+    "T1070.006",
+    "T1036",
+    "T1005",
+    "T1056.003"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/documents/MemberFiles/",
+      "context": "Member files upload directory abused to plant webshells",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "E:\\Content\\info\\includes\\css_bundle.aspx",
+      "context": "Uploaded webshell copied and renamed as CSS bundle",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "E:\\Content\\info\\master\\jquery.validate.min.aspx",
+      "context": "Uploaded webshell masquerading as jQuery asset",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "E:\\Content\\management\\includes\\css_bundle.aspx",
+      "context": "Webshell planted in management includes directory",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "E:\\Websites\\REDACTED.com\\http\\css_bundle.aspx",
+      "context": "Webshell planted in site http root",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "E:\\Websites\\REDACTED.com\\http\\Images\\webresource.aspx",
+      "context": "Webshell masquerading as image resource",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\plant_ccrtc_mousewheel.ps1.b64",
+      "context": "Base64-encoded recursive planter staged in Temp",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\plant_ccrtc_mousewheel.ps1",
+      "context": "Decoded recursive filesystem scanner planter",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\plant_ccrtc_fast.ps1.ps1.b64",
+      "context": "Base64-encoded low-noise planter",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\plant_ccrtc_fast.ps1.ps1",
+      "context": "Decoded shallow-search planter script",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\ccrtc_sdk_init.js.b64",
+      "context": "Base64-encoded browser agent payload",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\ccrtc_sdk_init.js",
+      "context": "Decoded browser agent dropper script",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "*\\includes\\jquery\\jquery.mousewheel-3.0.6.pack.js",
+      "context": "Legitimate jQuery asset trojanized by planter scripts",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "E:\\Websites\\REDACTED.com\\http\\web.config",
+      "context": "Reference file whose timestamps were copied to webshells",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\drivers\\etc\\hosts",
+      "context": "Hosts file read for hostname-to-IP mapping",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\inetpub\\temp\\appPools",
+      "context": "IIS AppPool temp directory enumerated by attacker",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "wf9x",
+      "context": "Webshell key used during first act",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "m7Qx2pL9",
+      "context": "Webshell key used in second, third and fourth acts",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "function _0x9d66",
+      "context": "Idempotency guard preventing duplicate jQuery writes",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<script data-crtc-core-sdk=\"1\">",
+      "context": "Marker inserted with injected core SDK script tag",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "$env:CRTC_PAYLOAD",
+      "context": "Environment variable holding dropped JS payload path",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "# Fast plant: candidate paths only, no drive recurse. Run ON web host.",
+      "context": "AI-generated comment inside planter script",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "# append only -  do not rewrite head/structure",
+      "context": "AI-generated comment inside planter script",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "::$DATA",
+      "context": "NTFS alternate data stream suffix appended to filenames",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "w3wp.exe -> cmd.exe",
+      "context": "IIS worker process spawning command shell for enumeration",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "w3wp.exe -> powershell.exe",
+      "context": "IIS worker process spawning PowerShell for planting",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"cmd.exe\" /c sqlcmd -S <Redacted SQL server> -U <Redacted user> -P <Redacted password> -d <Redacted database> -Q \"SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%Card%' OR COLUMN_NAME LIKE '%CVV%' OR COLUMN_NAME LIKE '%CVC%' OR COLUMN_NAME LIKE '%Expire%' OR COLUMN_NAME LIKE '%ExpMonth%' OR COLUMN_NAME LIKE '%ExpYear%' OR COLUMN_NAME LIKE '%LastFour%' OR COLUMN_NAME LIKE '%Last4%' OR COLUMN_NAME LIKE '%vault%' OR COLUMN_NAME LIKE '%PaymentProfile%' OR COLUMN_NAME LIKE '%PAN%' OR COLUMN_NAME LIKE '%AccountNumber%' ORDER BY TABLE_NAME, COLUMN_NAME\" -W -s\"|\"",
+      "context": "Parent w3wp.exe; sqlcmd queries schema for cardholder columns",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"cmd.exe\" /c whoami&hostname&echo.~&cd",
+      "context": "Parent w3wp.exe; IIS worker spawning cmd.exe recon",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c %windir%\\system32\\inetsrv\\appcmd.exe list sites",
+      "context": "IIS site enumeration (also list vdirs and list app)",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -NoProfile -Command \"Import-Module WebAdministration -ErrorAction SilentlyContinue; Get-Website | Format-List *; Get-WebBinding | Format-Table -AutoSize\"",
+      "context": "PowerShell enumerates IIS sites and bindings",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c wmic process where \"name='w3wp.exe'\" get ProcessId,CommandLine /format:list",
+      "context": "Enumerates IIS worker process command lines",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c tasklist /fi \"imagename eq w3wp.exe\"",
+      "context": "Lists IIS worker processes",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c netstat -ano | findstr LISTENING",
+      "context": "Network connection discovery on web server",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c type C:\\Windows\\System32\\drivers\\etc\\hosts",
+      "context": "Reads hosts file to map hostnames to IPs",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c findstr /i /c:\"connectionString\" /c:\"ConnectionString\" /c:\"password\" /c:\"Password\" /c:\"Data Source\" E:\\Content\\info\\web.config",
+      "context": "Searches web.config for DB credentials",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c findstr /s /i /n \"connectionString ConnectionString SqlConnection Data Source Initial Catalog\" E:\\Content\\info\\App_Code\\*.cs",
+      "context": "Greps C# source for connection string details",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c findstr /s /i /m \"AuthorizeNet Fortis CardConnect BluePay PayPal Braintree Stripe\" E:\\Content\\info\\*.*",
+      "context": "Hunts payment processor integrations",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c findstr /s /i /c:\"CVV\" /c:\"CardNumber\" /c:\"CreditCard\" E:\\Content\\info\\*.config 2>nul",
+      "context": "Searches config files for cardholder keywords",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c dir /o-d /b E:\\Content\\info\\_fortis\\Webhooks\\*.txt",
+      "context": "Lists Fortis webhook logs newest first",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c findstr /i \"exp_date exp_month exp_year expiration cvv first_six last_four card_number\" E:\\Content\\info\\_fortis\\Webhooks\\2026_09_08_REDACTED.txt",
+      "context": "Extracts card fields from Fortis webhook log",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd /c if not exist \"<dir>\" mkdir \"<dir>\" & copy /y \"<shell>\" \"<target>\"",
+      "context": "Creates target dir and copies webshell under new name",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "dir /b \"E:\\Websites\\secure.REDACTED.com\\http\\mxmerchant\" 2>nul",
+      "context": "Probes for mxmerchant payment module folder",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "dir /b \"E:\\Websites\\secure.REDACTED.com\\http\\fortis\" 2>nul",
+      "context": "Probes for Fortis payment module folder",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -NoProfile -Command \"Get-ChildItem E:\\Websites\\REDACTED -Recurse -Filter <redacted accountID>_<redacted memberID>_*.aspx -EA 0 | Select -Expand FullName\"",
+      "context": "Finds own uploaded webshell by account/member ID naming",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c dir /s /b E:\\Websites\\REDACTED\\*78099729* 2>nul",
+      "context": "Locates uploaded shell filename on disk",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "dir /b C:\\inetpub\\temp\\appPools 2>nul",
+      "context": "Enumerates IIS AppPool temp files",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "findstr /s /i /m \"secure.REDACTED\" E:\\Content\\info\\App_Code\\*.cs 2>nul",
+      "context": "Searches source for secure tenant references",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c dir /b E:\\Content\\info\\App_Code\\*DB* E:\\Content\\info\\App_Code\\*Sql* E:\\Content\\info\\App_Code\\*Data* 2>nul",
+      "context": "Enumerates database-related source files",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c echo %APP_POOL_ID%",
+      "context": "Identity/execution context enumeration command set",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://chat.ririmochii.workers.dev/core.js",
+      "context": "Second-stage core payload injected by trojanized jQuery",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "chat.ririmochii.workers.dev",
+      "context": "Host serving second-stage core payload",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://fk.bubuneeko.workers.dev/_cf/rel",
+      "context": "WebRTC signaling/relay C2 endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://fk.bubuneeko.workers.dev/_cf/ice",
+      "context": "ICE/TURN credential fetch endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "wss://fk.bubuneeko.workers.dev/_cf/soc",
+      "context": "WebSocket C2 fallback channel",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "fk.bubuneeko.workers.dev",
+      "context": "Attacker-controlled C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/_cf/rel",
+      "context": "WebRTC relay path on C2 host",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/_cf/ice",
+      "context": "ICE credential path on C2 host",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/_cf/soc",
+      "context": "WebSocket C2 path on C2 host",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/core.js",
+      "context": "Core payload path fetched by browser agent",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0+(Windows+NT;+Windows+NT+10.0;+zh-CN)+WindowsPowerShell/5.1.22621.1037",
+      "context": "Attacker user agent indicating zh-CN locale",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/auth/default.aspx",
+      "context": "Authentication page whose jQuery asset was trojanized",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/management/login.aspx",
+      "context": "Admin login page targeted by brute force",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/info/household/login.aspx",
+      "context": "Member login page targeted by brute force",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "0d8f7bf30aa1ac95d59fed24c433dd2b3d57767f38c088721699c841c6e861d3",
+      "description": "PowerShell planter script plant_ccrtc_mousewheel.ps1 (recursive jQuery dropper)"
+    },
+    {
+      "sha256": "5f69ff7a2e024f94cc5f816fa16c90054b09d9ac430b1f8b0631dfdd4472905e",
+      "description": "Base64-encoded plant_ccrtc_mousewheel.ps1.b64"
+    },
+    {
+      "sha256": "e9dee286069afb6b411febb96b91a963cd16baffbf8b6aa951e0ef1a7e0e3879",
+      "description": "PowerShell planter script plant_ccrtc_fast.ps1 (low-noise variant)"
+    },
+    {
+      "sha256": "0d93c3a8ded46887f79ac4ca7f238c458de2231243176f6c05062e34f238d19a",
+      "description": "Base64-encoded plant_ccrtc_fast.ps1.b64"
+    },
+    {
+      "sha256": "b06b581d91f4108900d188c3ee1af18502a8cb65d4e101663b791bd670867485",
+      "description": "JavaScript browser agent ccrtc_sdk_init.js"
+    },
+    {
+      "sha256": "7bb594a77f726bf21a49f717024f2915f82f47eb623d2ad305259301de1f1ab4",
+      "description": "Base64-encoded ccrtc_sdk_init.js.b64"
+    }
+  ],
+  "file_types": [
+    "script"
+  ]
+}

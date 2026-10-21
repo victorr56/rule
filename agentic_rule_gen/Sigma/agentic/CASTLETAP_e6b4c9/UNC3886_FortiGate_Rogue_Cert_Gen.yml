@@ -1,0 +1,25 @@
+title: UNC3886 FortiGate Rogue VPN Certificate Generation
+id: 86b4d320-eb76-4f40-8ab4-3e9a7e871e41
+status: experimental
+description: Detects the command used by UNC3886 to generate a rogue local VPN certificate on a FortiGate device. This technique is used to establish persistent and covert access.
+references:
+    - https://www.wiz.io/blog/agentless-threat-hunting-fortigate
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.defense_evasion
+    - attack.t1553
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/clish'
+        CommandLine|contains|all:
+            - 'execute vpn certificate local generate'
+            - 'Attacker Org'
+            - 'attacker.local'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

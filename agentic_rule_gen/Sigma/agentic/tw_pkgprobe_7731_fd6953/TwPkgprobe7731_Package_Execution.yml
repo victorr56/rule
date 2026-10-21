@@ -1,0 +1,32 @@
+title: Malicious NPM Package Execution 'tw-pkgprobe-7731'
+id: 3c79c8d5-103f-42a9-b3a6-5ed7f1ecb254
+status: experimental
+description: Detects the installation or execution of the malicious 'tw-pkgprobe-7731' npm package. This package impersonated a Twilio security tool to steal credentials.
+references:
+    - https://www.reversinglabs.com/blog/malicious-npm-campaign-twilio
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.t1195.002
+    - attack.t1082
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_install:
+        Image|endswith: '\npm.cmd'
+        CommandLine|contains|all:
+            - 'install'
+            - 'tw-pkgprobe-7731'
+    selection_install_alt:
+        Image|endswith: '\npm.cmd'
+        CommandLine|contains|all:
+            - ' i ' # Spaces to avoid matching other words containing 'i'
+            - 'tw-pkgprobe-7731'
+    selection_run:
+        Image|endswith: '\node.exe'
+        CommandLine|contains: 'tw-pkgprobe-7731'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,25 @@
+title: Tycoon 2FA AiTM Rogue Device Registration With Axios User-Agent
+id: 5df9e51b-19dc-4610-8b65-bd42fec758a0
+status: experimental
+description: Detects device registration events in Entra ID where the user agent is 'axios', a behavior associated with the Tycoon 2FA AiTM phishing kit.
+references:
+    - https://www.elastic.co/security-labs/threat-command/tycoon-2fa-aitm-detection-engineering
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+    - attack.persistence
+    - attack.t1539
+    - attack.t1078.004
+logsource:
+    category: cloud
+    product: azure
+detection:
+    selection:
+        OperationName: 'Register device'
+        UserAgent|startswith: 'axios/'
+    condition: selection
+falsepositives:
+    - Legitimate applications using the axios library for device registration, though this is uncommon for Entra ID integrations.
+level: high

@@ -1,0 +1,29 @@
+title: JadeProx/TriBack C2 Domain Query
+id: a8c6301a-8c38-4034-8c8a-7808298816ac
+status: experimental
+description: Detects DNS queries for domains associated with JadeProx and the TriBack loader C2 infrastructure.
+references:
+    - https://www.group-ib.com/blog/jadeprox-china-nexus-triback-loader/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'sylverixstrategy.com'
+            - 'gouvvbo.top'
+            - 'license.claude-pro.com'
+            - 'claude-pro.com'
+            - 'update-trellix.com'
+            - 'update-crowdstrike.com'
+            - 'update-sentinelone.com'
+            - 'vertextrust-advisors.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

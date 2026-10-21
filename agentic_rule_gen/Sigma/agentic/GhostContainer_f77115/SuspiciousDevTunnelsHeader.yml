@@ -1,0 +1,21 @@
+title: Suspicious 'X-TunnelSkipAntiPhishingPage' Header
+id: 114532b2-5707-4e9f-af6e-b1523c99a093
+status: experimental
+description: Detects the presence of the 'X-TunnelSkipAntiPhishingPage' header, used by a NightEagle tunneling tool when connecting to Microsoft Dev Tunnels.
+references:
+    - https://securelist.com/tr/nighteagle-apt-ghostcontainer-and-tunneling/121323/
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.command_and_control
+    - attack.t1572
+logsource:
+    category: proxy
+detection:
+    selection:
+        HttpHeader|contains: 'X-TunnelSkipAntiPhishingPage'
+        DestinationHostname|endswith: '.devtunnels.ms'
+    condition: selection
+falsepositives:
+    - Legitimate but undocumented or niche use of Microsoft Dev Tunnels.
+level: high

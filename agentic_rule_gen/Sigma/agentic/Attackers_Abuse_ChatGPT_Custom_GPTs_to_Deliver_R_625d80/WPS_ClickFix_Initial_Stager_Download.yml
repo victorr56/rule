@@ -1,0 +1,26 @@
+title: ClickFix RAT Initial Stager Download
+id: 1f1a0c8b-6f8e-4a1b-8c1d-9f2e3d7b4a01
+status: experimental
+description: Detects the initial PowerShell command used to download the ClickFix RAT stager, which notably uses a decimal IP address to evade simple IP-based detections.
+references:
+    - https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1059.001
+    - attack.t1105
+    - attack.execution
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'irm '
+            - '1614733393/'
+            - 'Out-File'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

@@ -1,0 +1,22 @@
+title: JSCeal Stealer Crypto Vault Check
+id: e474f880-3306-44c0-84a1-b84457e5e347
+status: experimental
+description: Detects JSCeal stealer making DNS queries to check cryptocurrency vault balances. The malware was observed using the filename 'Setup.exe'.
+references:
+    - https://research.checkpoint.com/2024/breaking-the-seal-static-deobfuscation-of-jsceals-compiled-v8-bytecode/
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\Setup.exe'
+        QueryName|contains: '.phantom-labs.vault.'
+    condition: selection
+falsepositives:
+    - Legitimate software named 'Setup.exe' is common. However, it is highly unlikely to make DNS queries containing '.phantom-labs.vault.'.
+level: high

@@ -1,0 +1,24 @@
+title: REF1695/PureRAT Persistence Creation Via Scheduled Task
+id: 28bb0f14-bd1a-4d2c-8a27-0c156f2f9f59
+status: experimental
+description: Detects the creation of a scheduled task named "SVCConfig", which is used by PureRAT for persistence.
+references:
+    - https://www.elastic.co/security-labs/threat-command/fake-installers-to-monero
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.persistence
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn SVCConfig'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

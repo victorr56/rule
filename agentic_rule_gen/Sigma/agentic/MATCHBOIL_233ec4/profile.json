@@ -1,0 +1,416 @@
+{
+  "malware_family": "MATCHBOIL",
+  "threat_actor": "UAC-0099",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "MATCHBOIL is a custom C# downloader used by the Russia-aligned UAC-0099 group to retrieve a hex-encoded payload from its C&C server over HTTPS, install it under %LOCALAPPDATA% and persist it via Run registry values or scheduled tasks. Between 2024 and 2026 it evolved from a Unicode-obfuscated one-shot downloader into .NET Reactor-obfuscated variants with sandbox checks, a mutex-gated execution argument, a decoy GUI and a two-minute C&C polling timer. This profile captures its install paths, filenames, mutex, HTTP headers, scheduled task names and C&C infrastructure.",
+  "mitre_techniques": [
+    "T1588.002",
+    "T1583.003",
+    "T1587.003",
+    "T1583.001",
+    "T1587.001",
+    "T1106",
+    "T1047",
+    "T1547.001",
+    "T1053.005",
+    "T1622",
+    "T1678",
+    "T1140",
+    "T1497.001",
+    "T1036.005",
+    "T1573.002",
+    "T1132.001",
+    "T1071.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\DeviceMonitor",
+      "context": "Payload installation directory used by 2024 samples",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "config.ini",
+      "context": "File holding C&C third-request response next to payload (2024/July 2025)",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "context": "Run key used for payload persistence in 2024 and July 2025 samples",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "DeviceMonitor",
+      "context": "Run key value created for payload persistence (2024 samples)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "Updates\\CheckTask",
+      "context": "Scheduled task created for payload persistence in 2024 samples",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-auto",
+      "context": "Argument required for malicious execution; otherwise decoy GUI is shown",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-plans",
+      "context": "Argument added alongside -auto in February 2026 sample",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-renew",
+      "context": "Argument used to trigger malicious activity in later Feb 2026 sample",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Global\\PlannerAssistant",
+      "context": "Mutex created when -auto argument is present (late 2025 samples)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\MeowCheck\\",
+      "context": "Payload installation directory in late 2025 samples",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "MeowMeowProgramm.exe",
+      "context": "Installed payload filename in late 2025 samples",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "*[System/EventID=6013]",
+      "context": "WMI/EventLogReader query used to read system uptime for sandbox evasion",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "uptime\\sis\\s(\\d+)\\sseconds",
+      "context": "Regex parsing Event ID 6013 uptime log entries",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "работоспособного\\sсостояния\\s(\\d+)\\sсек",
+      "context": "Russian-language regex parsing uptime log entries",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AdditionalLib.dll",
+      "context": "DLL containing C&C and persistence logic, installed beside MATCHBOIL",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\<username>\\Pictures\\WallpappersSet.jpg",
+      "context": "Temporary file where second-request payload is saved (late 2025 samples)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\Libraries\\config.library-ms",
+      "context": "File storing third-request response in late 2025 samples",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "UpdateCheckers\\DailyPlanner",
+      "context": "Scheduled task created every seven minutes for payload persistence (late 2025)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\SMTPClient",
+      "context": "Payload installation directory in April 2026 variant",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "SMTPClientApplication.exe",
+      "context": "Installed payload filename in April 2026 variant",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "Checker",
+      "context": "Scheduled task named Checker under directory MailClient for persistence (2026)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Thumbs.db",
+      "context": "Filename used by MATCHBOIL for its downloaded payload",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<script>(.*?)</script>",
+      "context": "Regex extracting hex-encoded payload from HTML C&C response",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SELECT ProcessorId FROM Win32_Processor",
+      "context": "WMI query via ManagementObjectSearcher to collect victim CPUID",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "PlannerLibrary.dll",
+      "context": "MATCHBOIL DLL with C&C and payload persistence logic (sample)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AnimalUpdater.exe",
+      "context": "MATCHBOIL downloader sample filename",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "bootloader.exe",
+      "context": "MATCHBOIL downloader sample filename",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "PlannerAssistantManager.exe",
+      "context": "MATCHBOIL downloader sample filename",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "RegularExpressionExplorer.exe",
+      "context": "MATCHBOIL downloader sample filename (2026)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "HelpersLibraries.dll",
+      "context": "MATCHBOIL DLL-version downloader sample filename",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "virtualdailyplanner.pro",
+      "context": "MATCHBOIL C&C server hidden behind Cloudflare, first seen 2025-11-10",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "telemetry-conf.com",
+      "context": "MATCHBOIL C&C server hidden behind Cloudflare, first seen 2025-08-12",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "flycloud-service.com",
+      "context": "MATCHBOIL C&C domain on VPS 64.95.10.223 (BL Networks), first seen 2026-03-03",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "airarticlegenerate.com",
+      "context": "MATCHBOIL C&C domain on VPS 64.95.13.210 (BL Networks), first seen 2025-05-07",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "64.95.10.223",
+      "context": "MATCHBOIL C&C VPS IP (BL Networks)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "64.95.13.210",
+      "context": "MATCHBOIL C&C VPS IP (BL Networks)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/eventmanager",
+      "context": "Path appended to C&C URL in the second HTTPS request",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "SN",
+      "context": "Custom header carrying victim machine info in C&C requests (all versions)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Count",
+      "context": "Header carrying numeric value from first C&C response (2024 samples)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Answer",
+      "context": "Header carrying numeric value from first C&C response (late 2025 samples)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "dotnet"
+  ]
+}

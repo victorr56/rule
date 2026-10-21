@@ -1,0 +1,24 @@
+title: ARECHCLIENT2 C2 Domain Query
+id: 3c577002-ac42-4f3a-a15e-a60d0061e3d3
+status: experimental
+description: Detects DNS queries for domains associated with ARECHCLIENT2 initial access and command and control infrastructure.
+references:
+    - https://www.elastic.co/security-labs/threat-command/a-wretch-client
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1105
+    - attack.t1566
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'clients.dealeronlinemarketing.com'
+            - 'clients.contology.com'
+            - 'koonenmagaziner.click'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

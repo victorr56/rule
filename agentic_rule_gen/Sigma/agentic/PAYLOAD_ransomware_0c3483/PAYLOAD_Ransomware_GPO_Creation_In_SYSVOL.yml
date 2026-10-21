@@ -1,0 +1,26 @@
+title: PAYLOAD Ransomware GPO Creation In SYSVOL
+id: b6e5b31f-4b0d-4b85-a7c8-3c3ed639e7c3
+status: experimental
+description: Detects the creation of the malicious 'PAYLOAD' Group Policy Object folder structure in SYSVOL, identified by its unique GUID. This activity is a precursor to domain-wide ransomware deployment.
+references:
+    - https://securelist.com/tr/payload-ransomware-via-group-policy/121335/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.impact
+    - attack.t1484.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\lsass.exe'
+            - '\dfsrc.exe'
+        TargetFilename|contains|all:
+            - '\sysvol\'
+            - '\Policies\{C897F2C7-C2AC-4E6F-BF48-58036FF29E79}'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

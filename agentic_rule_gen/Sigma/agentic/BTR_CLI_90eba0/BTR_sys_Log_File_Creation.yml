@@ -1,0 +1,25 @@
+title: BTR.sys Log File Creation
+id: 97891823-3881-426b-871d-d9b846e4fd3a
+status: experimental
+description: >-
+    Detects the creation of the 'BootClean.log' file in the Windows Temp directory by the System process.
+    The weaponized BTR.sys driver writes its operational logs to this file, which is then typically deleted as an anti-forensics measure.
+references:
+    - https://research.checkpoint.com/2026/btr-reforged-weaponizing-defenders-remediation-driver-as-a-kernel-operation-primitive/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.privilege_escalation
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        # The driver runs as part of the kernel, so operations are attributed to PID 4.
+        Image: 'System'
+        TargetFilename|endswith: '\Temp\BootClean.log'
+    condition: selection
+falsepositives:
+    - Unlikely. The combination of this specific log file name and creation by the 'System' process is a strong indicator of this technique.
+level: high

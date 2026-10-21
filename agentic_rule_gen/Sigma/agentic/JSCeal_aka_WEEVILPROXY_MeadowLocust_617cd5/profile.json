@@ -1,0 +1,367 @@
+{
+  "malware_family": "JSCeal (aka WEEVILPROXY, MeadowLocust)",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "macos"
+  ],
+  "summary": "JSCeal is a cryptocurrency-focused stealer delivered as Brotli-compressed, javascript-obfuscator-protected V8 bytecode (.jsc) executed by a bundled Node.js runtime. It steals browser cookies and saved credentials, keylogs, captures screenshots, targets crypto wallets and Telegram/installed applications, and intercepts HTTPS locally through a MITM proxy with its own generated certificate. The payload is launched by a PowerShell stage via node.exe -r preflight.js app.jsc, which decompresses and loads the malware.",
+  "mitre_techniques": [
+    "T1056.001",
+    "T1113",
+    "T1539",
+    "T1555.003",
+    "T1557",
+    "T1059.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": ".\\node.exe -r .\\preflight.js .\\app.jsc",
+      "context": "Final PowerShell stage loads payload; -r runs preflight.js before the main module",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "powershell.exe -> node.exe",
+      "context": "Loading of app.jsc triggered by the last PowerShell script in the chain",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "app.jsc",
+      "context": "JSCeal payload, Brotli-compressed V8 code cache inside build.zip",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "preflight.js",
+      "context": "Decompression script that unpacks the Brotli-compressed JSC payload",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "winpty-agent.exe",
+      "context": "Agent for a hidden Windows console, bundled in build.zip",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "winpty",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "winpty.dll",
+      "context": "Module allowing interaction with the hidden console, bundled in build.zip",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "winpty",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "node.zip",
+      "context": "Downloaded archive containing the packaged Node.js runtime",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "build.zip",
+      "context": "Downloaded archive with final payload and supporting components",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-----BEGIN PUBLIC KEY-----\\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtRdWl/ucoH+ZnVuxHrx2\\ncTbwEY2LucyUqEJVl6trmNYaJTFX9qDYA8Z4VOaFO86MHg0cY1mJ8NALzTqDt20C\\nlnqYtLEuo0Fqg9pJMhnEb078F31dilgdK+5bK7LgwXps06KQ+Dk7XxaqkbPFa7oZ\\n73/q4FhrYEtBxFno0WJla7mq49/W4wJb753WYWTjRMjBKVaUIOtAtGdBp8Li2WX2\\nPDqxftDcvT8hJf5H6tMJ3tQRpyHu7ljkwdivamG/labZpzKhijK7BMgrd7251sjh\\n7zD6prnafayjK+nfD1dvok7Rd8TV8sa1FK8T0uMmGFdUVGK+X4f45AwNWn8OINLE\\nVwIDAQAB\\n-----END PUBLIC KEY-----",
+      "context": "Attacker's embedded RSA public key recovered by string deobfuscation",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "powershell -NoProfile -WindowStyle Hidden -Command \\\"",
+      "context": "Fragment used to deploy hidden PowerShell content",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Invoke-Expression ([System.Text.Encoding]::",
+      "context": "Base64 blob execution fragment alongside the hidden PowerShell command",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "iterInstalledBrowsers",
+      "context": "Bespoke function name for installed-browser enumeration",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "withCreateProcessUser",
+      "context": "Bespoke helper string in browser-launch logic",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "listTelegramSessions",
+      "context": "Targets Telegram account data",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "listInstalledApplications",
+      "context": "Enumerates installed applications",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "findInstalledBrowser",
+      "context": "Browser discovery helper",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "getPasswords",
+      "context": "Browser saved-credential theft",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "getCookies",
+      "context": "Browser cookie theft",
+      "specificity": "low",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "saveOAuthToken",
+      "context": "OAuth token collection from browsers",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "createBrowserContext",
+      "context": "Puppeteer-driven browser automation",
+      "specificity": "low",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "--user-data-dir=",
+      "context": "Chromium user-data-dir argument used against installed browsers",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "--profile-directory=",
+      "context": "Chromium profile-directory argument used against installed browsers",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "3|2|1|0|4",
+      "context": "Control-flow-flattening state order string inside a flattened function",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Invalid protocol",
+      "context": "Error string thrown by the recovered getGlobalAgent function",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Worker root already configured",
+      "context": "Error string in the primary-cluster/worker setup function",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Process exited with code ",
+      "context": "Spawned-process exit reporting",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "customer_account_USDT_balance_available",
+      "context": "Crypto-exchange balance-query string",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "totalBalanceInUSDT",
+      "context": "Cryptocurrency wallet balance check",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "free_margin_usd",
+      "context": "Trading-account balance check",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "historical_balances_per_asset_category",
+      "context": "Crypto portfolio balance query",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "127.0.0.1",
+      "context": "Local MITM proxy listener created by the payload with its own certificate",
+      "specificity": "low",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "1.1.1.1",
+      "context": "DNS server set via dns.setServers in the start function",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "8.8.8.8",
+      "context": "DNS server set via dns.setServers in the start function",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "/oauth2/:version/token?grant_type=authorization_code&client_id=",
+      "context": "OAuth token-exchange endpoint used for stolen-token refresh",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": ".phantom-labs.vault.",
+      "context": "URL fragment of a cryptocurrency vault used for balance checks",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script",
+    "unknown"
+  ]
+}

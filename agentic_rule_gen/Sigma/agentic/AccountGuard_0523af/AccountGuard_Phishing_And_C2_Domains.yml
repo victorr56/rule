@@ -1,0 +1,23 @@
+title: AccountGuard Phishing and C2 DNS Queries
+id: 03194a2b-a01a-49da-8ca0-681648a73a38
+status: experimental
+description: Detects DNS queries for domains associated with AccountGuard phishing, redirection, and malware delivery.
+references:
+    - https://www.huntress.com/blog/bank-spam-rmm
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'bkofamerica.com'
+            - 'sectioncompil.com'
+            - 'kleinschnitg.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,27 @@
+title: Mirage Kitten NodeRabbit Curl Proxy Authentication
+id: 9a70f7d8-11d5-4702-861f-135a519890a5
+status: experimental
+description: |
+    Detects the use of 'curl.exe' with specific command-line arguments '--proxy-anyauth' and '--proxy-user'.
+    This technique is used by NodeRabbit v2 to delegate proxy authentication.
+references:
+    - https://securelist.com/mirage-kitten-new-backdoors-noderabbit-pollcat/121244/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - detection.threat_hunting
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '\curl.exe'
+        CommandLine|contains|all:
+            - '--proxy-anyauth'
+            - '--proxy-user'
+    condition: selection
+falsepositives:
+    - Custom scripts using curl for proxy authentication in enterprise environments.
+level: medium

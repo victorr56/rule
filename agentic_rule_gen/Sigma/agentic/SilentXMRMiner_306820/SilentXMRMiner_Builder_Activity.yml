@@ -1,0 +1,30 @@
+title: SilentXMRMiner Builder Spawning Compilers
+id: 593b4a2d-b0a1-4fd3-a60d-771a39f1e149
+status: experimental
+description: Detects the Silent XMR Miner Builder tool spawning various compilers to build a cryptominer on the host.
+references:
+    - https://www.huntress.com/blog/threat-actor-compiles-cryptominer
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.defense_evasion
+    - attack.t1140
+    - attack.resource_hijacking
+    - attack.t1496
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\Silent XMR Miner Builder.exe'
+        Image|endswith:
+            - '\csc.exe'
+            - '\cvtres.exe'
+            - '\donut.exe'
+            - '\tcc.exe'
+            - '\cc1.exe'
+            - '\gcc.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,36 @@
+title: REF6138 Download and Pipe to Interpreter
+id: a242a356-990c-4340-bbd8-3069c9b596de
+status: experimental
+description: Detects a shell command that downloads a file from a REF6138-controlled domain and pipes it directly to an interpreter like bash or python3.
+references:
+    - https://www.elastic.co/security-labs/threat-command/betting-on-bots
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.execution
+    - attack.t1059.004
+    - attack.t1059.006
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_bash:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+        CommandLine|contains|all:
+            - 'gcp.pagaelrescate.com'
+            - '|bash'
+    selection_python:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+        CommandLine|contains|all:
+            - 'gcp.pagaelrescate.com'
+            - '|python3'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,24 @@
+title: CHAINDROP Payload Execution With Bun
+id: d769c3a3-a6da-4929-a1d2-0f56a93eb460
+status: experimental
+description: Detects the execution of CHAINDROP's main payload (`Math_Symbol.js` or `math_init.js`) using the 'bun' JavaScript runtime.
+references:
+    - https://www.elastic.co/security-labs/threat-command/shai-hulud-chaindrop-npm-supply-chain
+author: ioc-yara-daily (agentic)
+date: 2024-05-22
+tags:
+    - attack.execution
+    - attack.t1059.007
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\bun.exe'
+        CommandLine|contains:
+            - 'Math_Symbol.js'
+            - 'math_init.js'
+    condition: selection
+falsepositives:
+    - Legitimate use of the bun runtime with files that coincidentally match these specific names.
+level: high

@@ -1,0 +1,23 @@
+title: KANDYKORN SUGARLOADER Execution on macOS
+id: 8c6a0c5c-755d-4f24-9bca-c73663a4dfa9
+status: experimental
+description: Detects the execution of the SUGARLOADER payload, which is named ".sld" and is executed with its C2 IP address as a command-line argument.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-catches-dprk-passing-out-kandykorn
+author: ioc-yara-daily (agentic)
+date: 2026-10-18
+tags:
+    - attack.execution
+    - attack.t1059.006
+    - attack.command_and_control
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image|endswith: '/.sld'
+        CommandLine|re: '\b(?:\d{1,3}\.){3}\d{1,3}\b'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

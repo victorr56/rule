@@ -1,0 +1,31 @@
+title: FINALDRAFT Linux OAuth Token File Creation
+id: d8b51c8a-c60f-48d6-953e-b5fc57d0a2fe
+status: experimental
+description: Detects the creation of files in specific paths used by the FINALDRAFT ELF variant to store OAuth tokens for C2 communication.
+references:
+    - https://www.elastic.co/security-labs/threat-command/finaldraft
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1567.002
+    - attack.exfiltration
+    - attack.command_and_control
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        TargetFilename|startswith:
+            - '/var/log/installlog.log.'
+            - '/mnt/hgfsdisk.log.'
+        Image|endswith:
+            - '/systemd-udevd'
+            - '/update'
+    filter:
+        Image|startswith:
+            - '/usr/lib/systemd/systemd-udevd'
+            - '/lib/systemd/systemd-udevd'
+    condition: selection and not filter
+falsepositives:
+    - Legitimate software is unlikely to match this specific combination of file creation and process image.
+level: high

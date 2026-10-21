@@ -1,0 +1,315 @@
+{
+  "malware_family": "Rogue ScreenConnect RMM (BiTB phishing delivery)",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Phishing emails redirect victims to browser-in-the-browser pages impersonating Adobe, which trick users into installing ScreenConnect installers disguised as Adobe Reader updates. Each installer drops two rogue ScreenConnect clients that register as Windows services for persistent remote access, after which cmd.exe/curl retrieve and execute the defense-evasion binaries HideCursor.exe and HideUL.exe.",
+  "mitre_techniques": [
+    "T1566.002",
+    "T1204.002",
+    "T1219",
+    "T1059.003",
+    "T1105",
+    "T1543.003",
+    "T1562"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "HideCursor.exe",
+      "context": "Defense-evasion binary executed via rogue ScreenConnect session to hide on-screen activity",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\REDACTED\\Documents\\ScreenConnect\\Temp\\HideCursor.exe",
+      "context": "Location of the HideCursor.exe defense-evasion binary after second rogue client installed",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "HideUL.exe",
+      "context": "Defense-evasion binary suppressing/hiding the cursor to reduce visible interactive activity",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ScreenConnect.ClientSetup.exe",
+      "context": "Initial payload: ScreenConnect installer downloaded from attacker infrastructure",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AdbRd_BkUps_StUp.msi",
+      "context": "Rogue ScreenConnect installer disguised as an Adobe Reader update",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AdbRdBkUpsStUp.msi",
+      "context": "Rogue ScreenConnect installer disguised as Adobe Reader update (body text spelling)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "patch.msi",
+      "context": "Second ScreenConnect installer retrieved by cmd.exe/curl in incident 2",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "pdf_Reader_en_install.msi",
+      "context": "Decoy Adobe Acrobat installer name shown on the fake BiTB download page",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Adobe-AcrobatReader-edge16.exe",
+      "context": "Decoy installer name shown on second incident's fake BiTB download page",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "cmd.exe",
+      "context": "Native Windows command shell used with curl to retrieve and install second ScreenConnect client",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "curl",
+      "context": "Used from cmd.exe to fetch and install the second rogue ScreenConnect client",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "9c1aea531ba4c511",
+      "context": "ScreenConnect Client ID of initial rogue instance (relay instance-uxh86b-relay.screenconnect.com)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "7c1d255d0efefde6",
+      "context": "ScreenConnect Client ID of second rogue instance configured to attacker IP 144.172.115.59",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "d751818fd46e5ca9",
+      "context": "ScreenConnect Client ID of initial rogue instance in incident 2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "c19e38a20f1ba492",
+      "context": "ScreenConnect Client ID of second rogue instance in incident 2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Trojan:Win32/Commando.A!ml",
+      "context": "Microsoft Defender detection name for the command line associated with patch.msi",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://adoube.vu/2a8ed9baefcd",
+      "context": "Phishing landing page with fake 'Safe access' CAPTCHA browser check",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "adoube.vu/filedocacess/file.html",
+      "context": "Fake Adobe file-share page that reveals the BiTB lure and payload download",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "adoube.vu/7c80bc925c23",
+      "context": "CAPTCHA 'Safe access' lure URL rendered in the phishing page screenshot",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "hosthiifran.screenconnect.com/Bin/ScreenConnect.ClientSetup.exe?e=Access&y=Guest&c=olojoaje&c=&c=&c=&c=&c=&c=&c=",
+      "context": "Payload hosting URL for the initial ScreenConnect installer (incident 1)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hosthiifran.screenconnect.com",
+      "context": "Attacker-controlled payload hosting domain for ScreenConnect.ClientSetup.exe",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "instance-uxh86b-relay.screenconnect.com",
+      "context": "ScreenConnect trial relay domain for initial rogue client 9c1aea531ba4c511",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "144.172.115.59",
+      "context": "Attacker-controlled IP on port 8041 for second rogue ScreenConnect client 7c1d255d0efefde6",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "selectstructure.com.au/freedom/adobedocument.html",
+      "context": "Initial access phishing URL delivering the fake Adobe PDF Reader lure (incident 2)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "victory.mkc1.digitaloceanspaces.com/Adbrdb/AdbRdBkUpsStUp.msi",
+      "context": "Payload hosting URL delivering the rogue MSI disguised as Adobe Reader update",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "relay.goldenmelon.us",
+      "context": "Infrastructure for initial rogue ScreenConnect client d751818fd46e5ca9",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "scx.illuminantgroup.net",
+      "context": "Second payload hosting domain for ScreenConnect client c19e38a20f1ba492",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "relay.illuminantgroup.net",
+      "context": "Relay domain for second rogue ScreenConnect client c19e38a20f1ba492",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://wir.consultingics.com/Bin/ScreenConnect.ClientSetup.msi?e=Access&y=Guest&c=GOODVIBE&c=&c=&c=&c=&c=&c=&c=",
+      "context": "Hosting URL for patch.msi ScreenConnect installer retrieved via cmd.exe/curl",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://get.adobe.com/reader/download?os=Windows+10&name=Reader+2025.001.20630+E...",
+      "context": "Legitimate Adobe URL spoofed in the BiTB fake address bar",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "41d2097e8ac636a478aa011e12128c03b3b9bb3c8efca43d3c4f214ac8b1f07b",
+      "description": "Initial payload: rogue ScreenConnect installer (ScreenConnect.ClientSetup.exe)"
+    },
+    {
+      "sha256": "fc96a04c615847f0fb1391f04d9d1aac7f78ddfb7d459168df0a4172b98354e2",
+      "description": "HideCursor.exe defense-evasion binary"
+    },
+    {
+      "sha256": "9f5910d69a4fbc56ff1854e7e0df3199fbfddd7fe6b374f7d816fa6ae70ef991",
+      "description": "Rogue RMM: initial ScreenConnect client (9c1aea531ba4c511)"
+    },
+    {
+      "sha256": "f048400c23add8c75abe189393d33c873c02c74eeaf43d47b950c8d643763b35",
+      "description": "Rogue RMM: secondary ScreenConnect client (7c1d255d0efefde6)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "archive"
+  ]
+}

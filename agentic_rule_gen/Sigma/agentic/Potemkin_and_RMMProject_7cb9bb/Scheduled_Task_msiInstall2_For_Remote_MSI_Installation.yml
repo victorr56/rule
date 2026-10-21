@@ -1,0 +1,28 @@
+title: Scheduled Task 'msiInstall2' for Remote MSI Installation
+id: 9a206a5b-d46c-4819-bb17-6447ab09c252
+status: experimental
+description: Detects the creation of a scheduled task named 'msiInstall2' to download and execute an MSI installer from a remote source, a technique observed in the Potemkin/RMMProject campaign.
+references:
+    - https://www.huntress.com/blog/potemkin-loader-rmmproject-clickfix-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.execution
+    - attack.t1053.005
+    - attack.persistence
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn msiInstall2'
+            - '/tr'
+            - 'msiexec.exe'
+            - '/i http'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

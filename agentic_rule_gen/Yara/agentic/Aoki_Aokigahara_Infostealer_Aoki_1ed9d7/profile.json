@@ -1,0 +1,222 @@
+{
+  "malware_family": "Aoki (Aokigahara) / Infostealer.Aoki",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Aoki (aka Aokigahara) is a recently emerged information stealer that harvests credentials and session files for AI coding assistants such as Claude, Codex, Cursor, Codeium and Gemini, alongside browser, wallet, messaging and password-manager data. It has no backdoor command list: it collects available data and exfiltrates it over HTTP to its C2 server via a /gate endpoint. Symantec detects the family as Infostealer.Aoki.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": ".claude.json",
+      "context": "Claude credential/session file targeted by newest Aoki version",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "config.toml",
+      "context": "OpenAI Codex config file targeted for credential theft",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".env",
+      "context": "Codex .env file targeted by newest Aoki version",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Claude desktop cookies",
+      "context": "Cookie store targeted for AI assistant session theft",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ChatGPT cookies",
+      "context": "Cookie store targeted for AI assistant session theft",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Aokigahara",
+      "context": "Longer name in a malware string used during its decryption process; source of family name",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "mnemonic; recovery; privatekey; private_key; passphrase; backup; keystore; secret; 12word; 24word; wallet; phrase",
+      "context": "Filename keywords Aoki searches for to locate wallet/secret files",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Infostealer.Aoki",
+      "context": "Symantec detection name for this family",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "dobeqnesmot.cc",
+      "context": "C2 domain used by newer Aoki samples",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hjazfioe.surf",
+      "context": "C2 domain used by newer Aoki samples",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "neihite.cc",
+      "context": "C2 domain used by newer Aoki samples",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://dobeqnesmot.cc/gate",
+      "context": "Exfiltration endpoint over HTTPS",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://hjazfioe.surf/gate",
+      "context": "Exfiltration endpoint over HTTPS",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://neihite.cc/gate",
+      "context": "Exfiltration endpoint over HTTPS",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/gate",
+      "context": "C2 endpoint path used by Aoki to send collected data",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "752c8e64af60960b85cf00e4bd34eb459e24b7939464f718ec18494df43b4b69",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "bf037920d39b85572ec7e53b51f09c28198c2c0afbc7c7d6cf639b1f047caebf",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "0adc8e83b2416c275b1283916d70568faddeb6d718eb45f9addfb0938db245b3",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "6655b89b9885483d459c73f2a52e3cec121de5c5956172a8676a0f4c2de94999",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "780bbdbb119befd4eb16e0c2ec0c64e7bedc1b53ce4f85804aea091a6e3af519",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "2fb80e2221bd304e7cd5ac04169e71807ad92d19836f1aaf7885295cb90b2d94",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "73dbac0907e8a092cd978f2787ab1994946f5da1e08f2bdbd05ea52e80cdb896",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "07bc2e3a1d14743cc44f1dc4c78d15d0f2b458b39fb48422b13df40fc662ba21",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "c533570fd7cd7eaf5478317b03ea5750d03797aa4d11ebd96555b6cb708c63f2",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "6350dfee6975a9b159c5a57a3e97f757b0b02fd2dc708016fa6d7270e720c865",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "36af3acc78058023cdcf9307bc15be640be9425de97e574fdaf42d03d308725b",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "039240551f88b0064b2615dffdc1321b1e7c58e3f617ac138a65a6d59400b331",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "0e38bd3c30a4ca08641240ce95b5b6ba593e131213ca1b2a28da4e0385fcabc4",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "3b4547f0d7549274f366cd9568b3d302c1e80e1b89359da681beb47260ec7975",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "b590235493487c51f7050b341c9b2450e4f761ad6055207e4f6daf0cecae271c",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "e374f9ff5094f728528efa566c3de1b7fea7d95f497242a01fffa6c70b5eb768",
+      "description": "Infostealer.Aoki sample"
+    },
+    {
+      "sha256": "f779314b1a5a0b297fd4e2a5f9c1e40d387b3e7c401d42324b556a70f813840e",
+      "description": "Infostealer.Aoki sample"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

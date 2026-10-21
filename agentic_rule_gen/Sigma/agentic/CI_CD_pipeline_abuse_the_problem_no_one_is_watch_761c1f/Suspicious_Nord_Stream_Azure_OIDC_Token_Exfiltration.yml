@@ -1,0 +1,26 @@
+title: Suspicious Nord Stream Azure OIDC Token Exfiltration
+id: 0d757d5e-e470-4f51-87ab-8f929314555f
+status: experimental
+description: Detects a command line pattern used by the Nord Stream tool to exfiltrate Azure OIDC tokens by double base64 encoding the output of 'az account get-access-token'.
+references:
+    - https://www.elastic.co/security-labs/threat-command/detecting-cicd-pipeline-abuse-with-llm-augmented-analysis
+author: ioc-yara-daily (agentic)
+date: 2024-06-18
+tags:
+    - attack.t1528
+    - attack.t1059.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/bash'
+            - '/sh'
+        CommandLine|contains|all:
+            - 'az account get-access-token'
+            - 'base64 -w0 | base64 -w0'
+    condition: selection
+falsepositives:
+    - Legitimate administrative or development scripts that might use this specific and unusual command combination, though this is highly unlikely.
+level: critical

@@ -1,0 +1,25 @@
+title: Balonx Sistema C2 And SIP Server Connection
+id: edda3c51-5183-4903-b09a-cf2a912e5abf
+status: experimental
+description: Detects network connections to IP addresses and ports used by the Balonx Sistema Android RAT C2 and CallFlow AI vishing SIP server.
+references:
+    - https://www.group-ib.com/blog/balonx-sistema-mexico-phaas/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1557
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection_rat:
+        DestinationIp: '196.251.84.11'
+        DestinationPort: 7771
+    selection_sip:
+        DestinationIp: '85.31.235.109'
+        DestinationPort: 5160
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: critical

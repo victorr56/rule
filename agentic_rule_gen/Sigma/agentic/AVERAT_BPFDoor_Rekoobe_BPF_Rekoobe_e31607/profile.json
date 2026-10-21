@@ -1,0 +1,762 @@
+{
+  "malware_family": "AVERAT, BPFDoor, Rekoobe (BPF Rekoobe)",
+  "threat_actor": "",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "A regionalized modular access ecosystem in which a vendor-aware dropper (key derived from SHA1(\"ShareTech\")) writes a .php shell script to a storage mount, stages AVERAT and BPFDoor/Rekoobe payloads into /sbin as ntpdate/udevds, launches them and unlinks them so /proc/<pid>/exe reads (deleted). AVERAT beacons over outbound SMTP port 25 with a hand-built TLS ClientHello and a 276-byte encrypted config, while BPFDoor and Rekoobe variants sit passive on raw PF_PACKET sockets behind classic BPF filters gated on per-sample magic bytes and passwords. Defense should focus on unlinked process images, unexpected port-25 callbacks, raw/BPF socket creation, appliance staging paths and process masquerading.",
+  "mitre_techniques": [
+    "T1584.008",
+    "T1133",
+    "T1480",
+    "T1059.004",
+    "T1129",
+    "T1037",
+    "T1205",
+    "T1205.002",
+    "T1070.004",
+    "T1070.003",
+    "T1070.006",
+    "T1036.004",
+    "T1036.005",
+    "T1564.001",
+    "T1027",
+    "T1027.013",
+    "T1140",
+    "T1562.004",
+    "T1083",
+    "T1057",
+    "T1082",
+    "T1033",
+    "T1016",
+    "T1005",
+    "T1041",
+    "T1030",
+    "T1105",
+    "T1071.003",
+    "T1573.001",
+    "T1090",
+    "T1008",
+    "T1529",
+    "T1489"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/tmp/flag",
+      "context": "Dropper precondition gate - checked, never written",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/HDD/ms6x2xTo64/updIptable.php",
+      "context": "Shell script under a .php extension written by dropper",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/HDD/ms6x2xTo64/execProcEnd",
+      "context": "Watchdog marker file recreated by resident dropper",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/lib/.db",
+      "context": "AVERAT state file storing beacon interval (bf8135f4, 925c0418, 2fe2dd40)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/lib/.sencha",
+      "context": "AVERAT state file (4925bcca)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/lib/.us",
+      "context": "AVERAT state file (a4379e11)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/lib/.a",
+      "context": "AVERAT state file (a65048eb)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/run/spamsniper.pid",
+      "context": "BPFDoor mutex impersonating SpamSniper PID file, South Korean cluster",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/sbin/ntpdate",
+      "context": "Staging name for dropper re-executed as resident watchdog",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/sbin/udevds",
+      "context": "Staging name for AVERAT payload",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/addpkg/sbin/update",
+      "context": "Dropper on-disk location in appliance add-on package directory",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/addpkg/sbin/agetty",
+      "context": "AVERAT payload source location copied to /sbin/udevds",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/usr/sbin/abrtd",
+      "context": "Rapid7 BPFDoor controller spoofs this name via set_proc_name/PR_SET_NAME",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "ora_ppmond",
+      "context": "Data-plane BPFDoor masquerading as Oracle telecom platform process",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/sniper/snipe/bin/dtnpd",
+      "context": "Data-plane BPFDoor sample 4435fcd6 process disguise",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/sniper/bin/ofgmd",
+      "context": "Data-plane BPFDoor sample 4435fcd6 process disguise",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/sniper/autorun/rblsmtpd --start -n 9",
+      "context": "BPF Rekoobe reverse shell process disguise, connects on port 25",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/sniper/snipe/bin/snipe-smtpd",
+      "context": "Rekoobe spoofed name, Sniper bundled SMTP daemon, from encrypted name table",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/sniper/bin/crond -n",
+      "context": "Rekoobe spoofed name from encrypted table",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/sniper/bin/earsd --start",
+      "context": "Rekoobe spoofed name, Sniper EMS/alarm daemon",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/sniper/apache/bin/httpd -k start",
+      "context": "Rekoobe spoofed name, Sniper bundled Apache",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/usr/lib/polkit-1/polkitd --no-debug",
+      "context": "Rekoobe generic Linux disguise",
+      "specificity": "medium",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/usr/bin/python -Es /usr/sbin/tuned -l -p",
+      "context": "SK-cluster BPFDoor daemon-name disguise from decoded string table",
+      "specificity": "medium",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "[kaluad_sync]",
+      "context": "SK-cluster BPFDoor kernel-thread-style disguise name",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "[charger_manager]",
+      "context": "SK-cluster BPFDoor kernel-thread-style disguise name",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ShareTech",
+      "context": "Hardcoded string seeding AES-128-ECB key derivation (SHA1)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 6C CA D5 17 0E 3D B8 17 B3 DF 52 E0 D9 71 B1 48 }",
+      "context": "AES-128-ECB key, first 16 bytes of SHA1(\"ShareTech\"), dropper config blobs",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 2B 76 C0 63 83 E9 5F E1 EE 69 3F 32 CD 94 }",
+      "context": "14-byte payload gate for data-plane BPFDoor a6f3b7f9, unique per sample",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ AB C0 09 22 }",
+      "context": "BPF JEQ compare immediate (TCP magic) for data-plane BPFDoor a6f3b7f9",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x6693 (UDP), 0x4274 (TCP), 0x7820 (ICMP)",
+      "context": "BPFDoor magic bytes matching Rapid7 Variant F in SK cluster",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "gZbpx0",
+      "context": "BPFDoor magic-packet password causing connect-back to sender",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "sT21xf",
+      "context": "BPFDoor magic-packet password causing bind shell",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 5C A3 1E F9 72 84 DB 40 26 9F C8 35 E1 7D 0A B2 4D 68 93 0F E7 5A B4 21 8C D6 39 F2 47 1B 60 CE }",
+      "context": "BPF Rekoobe 32-byte magic packet authentication sequence",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 50 01 13 3F 08 5C 73 7B 1A 72 53 78 }",
+      "context": "BPF Rekoobe 12-byte C2 handshake, decrypts to %wGvo4GL62p*",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "%wGvo4GL62p*",
+      "context": "Plaintext of Rekoobe 12-byte handshake after XOR",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "uvTIgh47,@#R",
+      "context": "Rekoobe repeating-key XOR string decryption key",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "S / U / D single-byte command dispatch (pty shell, upload, download)",
+      "context": "BPFDoor switch-case integrated from Tiny Shell",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "TinyShell",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "iptables -D INPUT 1",
+      "context": "NAT-redirect teardown on authenticated BPFDoor session",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "iptables -t nat -D PREROUTING 1",
+      "context": "NAT-redirect teardown on authenticated BPFDoor session",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "VIMINIT=\"set viminfo=\"; HISTFILE=/dev/null; HISTSIZE=0; HISTFILESIZE=0",
+      "context": "Rekoobe suppresses bash and vim command history",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "1571 / 0x0623",
+      "context": "AVERAT protocol magic used in application-layer shared-secret handshake",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 5d 0c f9 47 e4 ea 7b 18 1b ed 5e b1 fb 5c 56 3f }",
+      "context": "AVERAT MAC key, byte-identical in all six builds",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 6b 6a 48 0e f8 ae 5f 1b 38 e6 c0 94 86 df e3 45 }",
+      "context": "AVERAT aux key, byte-identical in all six builds",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 00 80 04 00 }",
+      "context": "AVERAT beacon tag copied into check-in struct",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 7d 58 87 95 48 5b fd 37 f1 40 5d 75 32 3a b4 00 }",
+      "context": "AVERAT stream key (sample-specific), 16 bytes at cfg+32",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/%s/%s",
+      "context": "AVERAT path format string, XOR-0x37 encoded at 0x40E8EB",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AVE",
+      "context": "XOR-0x37 decodes to directory name 'var'; only disk artifact of AVERAT",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/bin/cp -f /addpkg/sbin/update /sbin/ntpdate",
+      "context": "Staging command in dropper-written script, parent sh -c on .php path",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/bin/cp -f /addpkg/sbin/agetty /sbin/udevds",
+      "context": "Staging command in dropper-written script, parent sh -c on .php path",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "sh -c /HDD/ms6x2xTo64/updIptable.php -> cp/chmod into /sbin -> rm -rf same path",
+      "context": "High-fidelity staging sequence completing within about ten seconds",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "fopen, fwrite, fputs, fclose, chmod, system, strlen, sleep, access, memcpy, exit",
+      "context": "Minimal import table of the x86-64 ELF dropper, no networking APIs",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "mx.zxopfds.com",
+      "context": "AVERAT C2 domain (bf8135f4)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "spam.suwaccqi.com",
+      "context": "AVERAT C2 domain (2fe2dd40)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mx1.wwstifsteel.com",
+      "context": "AVERAT C2 domain (a65048eb)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "59.125.211.65",
+      "context": "AVERAT C2 relay, compromised Synology NAS in Chunghwa Telecom HiNet AS3462",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "122.116.138.33",
+      "context": "AVERAT C2 relay, embedded NetKlass SMB appliance",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "1.34.200.85",
+      "context": "AVERAT C2 relay, Dahua DH-XVR5116HS-I3 recorder",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "TCP/25",
+      "context": "Default AVERAT C2 port, SMTP-disguised beaconing",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "TCP/1723 (PPTP)",
+      "context": "Operator-installed PPTP on all three C2 relays, identical banner fingerprint 261189147",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "EHLO / STARTTLS on port 25",
+      "context": "AVERAT opens SMTP session on port 25, then begins its own encrypted channel",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/admin/login.aspx?id=99990",
+      "context": "Hardcoded controller path; '9999' lands at TCP payload offset 26",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/admin_login.aspx?id=99990",
+      "context": "Hardcoded controller path in dogetlogin",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/Admin/Default.aspx?=99990",
+      "context": "Hardcoded controller path in dogetlogin",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/UploadFile.aspx?id=099990",
+      "context": "Hardcoded controller path in dogetlogin",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/user/admin.php?id=0099991",
+      "context": "Hardcoded controller path in dogetlogin",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/uploadfiles.php?id=099991",
+      "context": "Hardcoded controller path in dogetlogin",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/uploadfilm.php?id=099991",
+      "context": "Hardcoded controller path in dogetlogin",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/uploadphoto.php?id=099991",
+      "context": "Hardcoded controller path in dogetlogin",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/uploadPic.php?id=00099991",
+      "context": "Hardcoded controller path in dogetlogin",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/systems/login.php?i=99991",
+      "context": "Hardcoded controller path in dogetlogin",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "2bedc26d4b29b435c21962beed7db21188a0219a0d28334bba8b4fb1656d7b15",
+      "description": "ShareTech-appliance dropper, x86-64 ELF installer with four AES-128-ECB blobs"
+    },
+    {
+      "sha256": "bf8135f46ecedfe5bd06fcecbb2e721c2367ff765b18f4aa3f868e6597f49e47",
+      "description": "AVERAT implant, domain C2 mx.zxopfds.com, build 1189"
+    },
+    {
+      "sha256": "4925bcca085ec504f51191645da278d8e96698d91f3c6df44146336c697b4de8",
+      "description": "AVERAT implant, hardcoded IP C2 59.125.211.65, build 1189"
+    },
+    {
+      "sha256": "a4379e115d3c4420f5d4b92561022d6e0897990e7297be65c033d47de68e6a6a",
+      "description": "AVERAT implant, hardcoded IP C2 122.116.138.33, build 1189"
+    },
+    {
+      "sha256": "925c041807d4fb9dfe2ad84f963c2a4c60ea1289f6a0bdccbfb944478ffc2cf2",
+      "description": "AVERAT implant, hardcoded IP C2 1.34.200.85, build 1073"
+    },
+    {
+      "sha256": "2fe2dd402ee6f9c578fce6dd4b36daaa407e99133e5dd502f2afca80feb60150",
+      "description": "AVERAT implant, domain C2 spam.suwaccqi.com, build 1073"
+    },
+    {
+      "sha256": "a65048eb30661e27f8edc2dd8d8c77ec87faec1f1750f6e04e7ecaf069a32858",
+      "description": "AVERAT implant, domain C2 mx1.wwstifsteel.com, build 1073"
+    },
+    {
+      "sha256": "a37ea9897221d4495b538de72b74f2aa1d2ff09b7b6dcedd395aee58931adbf3",
+      "description": "SpamSniper BPFDoor sniffer, South Korean cluster"
+    },
+    {
+      "sha256": "7e667ba5f9df912e02275d3cfe3809d16f822fe776f4035c84b118ebd925b1b5",
+      "description": "SpamSniper BPFDoor sniffer, South Korean cluster"
+    },
+    {
+      "sha256": "652508a9cf40bee883dc0e5e219dfeba71fe7dac591d01c89f74c21f73b4963f",
+      "description": "BPF Rekoobe backdoor with dual port-25 BPF filter"
+    },
+    {
+      "sha256": "4435fcd6862921092614dbeaa880e4192352984686ebcd98f0ba13ee8e226ef9",
+      "description": "Data-plane BPFDoor spoofing /sniper/snipe/bin/dtnpd and /sniper/bin/ofgmd"
+    },
+    {
+      "sha256": "a6f3b7f932761fb1fd5e74123f2482e36c65dd13e769af2ce08c65da195bfa7a",
+      "description": "Data-plane BPFDoor with 16-instruction BPF filter and 14-byte payload gate"
+    }
+  ],
+  "file_types": [
+    "elf"
+  ]
+}

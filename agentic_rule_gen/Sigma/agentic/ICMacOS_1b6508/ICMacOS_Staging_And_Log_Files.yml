@@ -1,0 +1,32 @@
+title: ICMacOS Staging And Log Files
+id: e462b48d-6916-43b9-8736-23910c8397a7
+status: experimental
+description: Detects the creation of various hidden log, staging, and data archive files by ICMacOS in the /tmp directory.
+references:
+    - https://socradar.io/blog/icmacos-infostealer-rat/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.collection
+    - attack.t1005
+    - attack.execution
+    - attack.t1059.004
+logsource:
+    category: file_event
+    product: macos
+detection:
+    selection_logs:
+        Image|endswith: '/touch'
+        TargetFilename|endswith:
+            - '/tmp/.update-helper.log'
+            - '/tmp/.cache-update.log'
+    selection_payload:
+        Image|endswith: '/curl'
+        TargetFilename|endswith: '/tmp/.update-tmp/ICMacOs.gz'
+    selection_archive:
+        Image|endswith: '/zip'
+        TargetFilename|endswith: '/tmp/.systemd-private-helper.zip'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate scripts that happen to use the same combination of tools and temporary file paths, though unlikely.
+level: high

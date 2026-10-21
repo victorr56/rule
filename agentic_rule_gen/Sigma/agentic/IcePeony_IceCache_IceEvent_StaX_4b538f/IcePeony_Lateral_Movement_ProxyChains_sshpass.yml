@@ -1,0 +1,25 @@
+title: IcePeony Lateral Movement with ProxyChains and sshpass
+id: cb9b83b3-f66f-474d-aa64-9a86a603a119
+status: experimental
+description: Detects a command-line pattern used by IcePeony for lateral movement, involving the use of ProxyChains and sshpass together.
+references:
+    - http://nao-sec.org/2024/10/IcePeony-with-the-996-work-culture.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.lateral_movement
+    - attack.t1090
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/proxyChains'
+        CommandLine|contains|all:
+            - 'sshpass'
+            - '-p '
+            - 'StrictHostKeyChecking=no'
+    condition: selection
+falsepositives:
+    - Legitimate administrative scripts that use this combination of tools, although it is an unusual practice.
+level: high

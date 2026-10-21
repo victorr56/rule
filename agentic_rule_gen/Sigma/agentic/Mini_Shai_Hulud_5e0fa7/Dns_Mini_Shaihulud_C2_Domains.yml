@@ -1,0 +1,23 @@
+title: Mini Shai-Hulud C2 Domain Query
+id: 74d53860-84a1-4354-9a03-75b28b74614e
+status: experimental
+description: Detects DNS queries for domains known to be used as C2 or exfiltration endpoints by the Mini Shai-Hulud malware.
+references:
+    - https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.004
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName:
+            - 'npm-cache.com'
+            - 'pypi-get.com'
+            - 'js-mirror.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

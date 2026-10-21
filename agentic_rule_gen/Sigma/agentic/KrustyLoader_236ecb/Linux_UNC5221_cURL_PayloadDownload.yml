@@ -1,0 +1,27 @@
+title: Linux UNC5221 Payload Retrieval via cURL
+id: df3b7134-9276-47b7-bdc1-5c8e27c156eb
+status: experimental
+description: Detects the use of cURL on Linux systems to download payloads from known UNC5221 C2 infrastructure.
+references:
+    - https://www.darktrace.com/blog/ivanti-under-siege-investigating-the-ivanti-endpoint-manager-mobile-vulnerabilities-cve-2025-4427-cve-2025-4428
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/curl'
+        CommandLine|contains:
+            - '15.188.246.198'
+            - '0d8da2d1.digimg.store'
+            - '185.193.125.65'
+            - '64.52.80.21'
+            - '134.209.107.209'
+    condition: selection
+falsepositives:
+    - Legitimate administrative scripts retrieving resources from these IP addresses, should they be benignly repurposed.
+level: high

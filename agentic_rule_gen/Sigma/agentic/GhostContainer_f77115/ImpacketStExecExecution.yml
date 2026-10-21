@@ -1,0 +1,25 @@
+title: Potential Impacket stexec.py Execution
+id: f456a61a-0761-4c12-9c16-224855866164
+status: experimental
+description: Detects command-line parameters consistent with the execution of Impacket's stexec.py, a tool used by NightEagle for lateral movement. The filename 'stexec.py' is based on the report and may be a typo for the more common 'atexec.py'.
+references:
+    - https://securelist.com/tr/nighteagle-apt-ghostcontainer-and-tunneling/121323/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1059.006
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\python.exe'
+            - '\pythonw.exe'
+        CommandLine|contains: 'stexec.py'
+    condition: selection
+falsepositives:
+    - Benign custom python scripts that happen to be named 'stexec.py'.
+level: medium

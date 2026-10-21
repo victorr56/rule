@@ -1,0 +1,24 @@
+title: Rogue ScreenConnect C2 Connection
+id: 17293a98-89c5-4d7a-a53e-2b7e53efc6c0
+status: experimental
+description: Detects network connections to IP addresses known to be used as Command and Control (C2) infrastructure by the rogue ScreenConnect VBScript loader.
+references:
+    - https://www.huntress.com/blog/rogue-screenconnect-installations
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1572
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '45.13.237.190'
+            - '131.123.40.98'
+            - '15.204.185.204'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

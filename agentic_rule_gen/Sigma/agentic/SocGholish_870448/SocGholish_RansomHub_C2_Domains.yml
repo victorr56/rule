@@ -1,0 +1,28 @@
+title: SocGholish and RansomHub C2 and Distribution Domains
+id: a2c187f5-373a-4be3-b09a-41be3db3065d
+status: experimental
+description: Detects DNS queries for domains associated with SocGholish C2, Keitaro TDS, and malware distribution infrastructure leading to RansomHub deployment.
+references:
+    - https://www.darktrace.com/blog/socgholish-from-loader-and-c2-activity-to-ransomhub-deployment
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'garagebevents.com'
+            - 'packedbrick.com'
+            - 'rednosehorse.com'
+            - 'blackshelter.org'
+            - 'blacksaltys.com'
+            - 'virtual.urban-orthodontics.com'
+            - 'msbdz.crm.bestintownpro.com'
+    condition: selection
+falsepositives:
+    - Benign connections to previously compromised but since cleaned infrastructure.
+level: high

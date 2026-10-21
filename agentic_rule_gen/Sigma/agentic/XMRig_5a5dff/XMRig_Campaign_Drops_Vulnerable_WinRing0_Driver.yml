@@ -1,0 +1,28 @@
+title: XMRig Campaign Drops Vulnerable WinRing0 Driver
+id: f01c05d7-f938-4e1a-bb10-1490b4d4b1a4
+status: experimental
+description: Detects the creation of the 'WinRing0x64.sys' driver in a user's temporary folder by common scripting engines. This driver is known to be vulnerable and is often abused by malware, particularly cryptocurrency miners like XMRig, to gain kernel-level hardware access.
+references:
+    - https://www.huntress.com/blog/ahsaycbs-flaws-exploit
+author: ioc-yara-daily (agentic)
+date: 2024-07-24
+tags:
+    - attack.t1105
+    - attack.t1564
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_cmd:
+        Image|endswith: '\cmd.exe'
+        TargetFilename|endswith: '\AppData\Local\Temp\WinRing0x64.sys'
+    selection_ps:
+        Image|endswith: '\powershell.exe'
+        TargetFilename|endswith: '\AppData\Local\Temp\WinRing0x64.sys'
+    selection_pwsh:
+        Image|endswith: '\pwsh.exe'
+        TargetFilename|endswith: '\AppData\Local\Temp\WinRing0x64.sys'
+    condition: 1 of them
+falsepositives:
+    - Legitimate software that uses this specific driver and places it in the Temp directory, which is highly unusual.
+level: high

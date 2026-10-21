@@ -1,0 +1,25 @@
+title: JadeProx TriBack Stager Execution via Ftp.exe
+id: 8c962b32-e427-4638-b710-74944d673f32
+status: experimental
+description: Detects the use of ftp.exe with the -s parameter to execute a script from a .dat file located in a directory path containing '_CL_'. This is a TTP used by JadeProx to stage the TriBack loader.
+references:
+    - https://www.group-ib.com/blog/jadeprox-china-nexus-triback-loader/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1218
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\ftp.exe'
+        CommandLine|contains|all:
+            - '-s:'
+            - '_CL_'
+            - '.dat'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

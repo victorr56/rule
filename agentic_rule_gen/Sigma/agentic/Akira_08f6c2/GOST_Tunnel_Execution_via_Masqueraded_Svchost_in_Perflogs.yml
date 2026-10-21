@@ -1,0 +1,24 @@
+title: GOST Tunnel Execution via Masqueraded Svchost in Perflogs
+id: 59eb0df6-a6fc-4632-a6aa-a9b1c7849e7b
+status: experimental
+description: Detects the execution of a masqueraded 'svchost.exe' from the 'C:\PerfLogs\Temp' directory with command-line arguments pointing to a 'config.dll', a pattern associated with the GOST tunneling tool as used by Akira affiliates.
+references:
+    - https://www.huntress.com/blog/mapping-akira-ransomware-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1036.005
+    - attack.t1572
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\PerfLogs\Temp\svchost.exe'
+        CommandLine|contains|all:
+            - '-C'
+            - '\PerfLogs\Temp\config.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

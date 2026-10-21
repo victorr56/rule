@@ -1,0 +1,30 @@
+title: JINX-0164 and AUDIOFIX C2 and Payload Domains
+id: 9f7b1e4c-3d2e-4a1b-8c7d-6f5e4d3c2b1a
+status: experimental
+description: Detects DNS queries for domains associated with JINX-0164 malware families (AUDIOFIX, MINIRAT) and payload delivery infrastructure.
+references:
+    - https://www.wiz.io/blog/threat-actors-target-crypto-orgs
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'datahub.ink'
+            - 'cloud-sync.online'
+            - 'byte-io.us'
+            - 'apple.driver-store.com'
+            - 'apple.driver-update.io'
+            - 'bitget-meeting.com'
+            - 'teamicrosoft.com'
+            - 'my-home-company-group.us03-slack.online'
+            - 'windows.driver-store.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

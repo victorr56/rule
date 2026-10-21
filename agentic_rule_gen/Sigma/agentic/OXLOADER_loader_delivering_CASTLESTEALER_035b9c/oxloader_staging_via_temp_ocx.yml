@@ -1,0 +1,27 @@
+title: Suspicious OCX Module Load from Temp Directory
+id: 9a785d9b-a010-45e0-aa31-e73715c0e86b
+status: experimental
+description: |
+  Detects the loading of an OCX file from a temporary user directory. OXLOADER uses this
+  technique by copying dui70.dll to a randomly named OCX file in the temp folder and
+  loading it to execute its payload, for instance by using odbcad32.exe.
+references:
+  - https://www.elastic.co/security-labs/threat-command/oxloader-malware-loader-infostealer
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+  - attack.defense_evasion
+  - attack.t1574.002
+logsource:
+  category: image_load
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\odbcad32.exe'
+    ImageLoaded|contains|all:
+      - '\AppData\Local\Temp\'
+      - '.ocx'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high

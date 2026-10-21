@@ -1,0 +1,26 @@
+title: AMOS Infostealer Download via Curl on macOS
+id: c6ca17d0-86c0-43f1-b844-3de6804a8b79
+status: experimental
+description: Detects the curl command used to download the AMOS infostealer payload on macOS, as seen in a recent phishing campaign.
+references:
+    - https://www.huntress.com/blog/google-doc-sidebar-malware-mac-windows
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.execution
+    - attack.t1204.004
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image|endswith: '/curl'
+        CommandLine|contains|all:
+            - '-fsSL'
+            - 'https://apple-googleapi.com/i'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

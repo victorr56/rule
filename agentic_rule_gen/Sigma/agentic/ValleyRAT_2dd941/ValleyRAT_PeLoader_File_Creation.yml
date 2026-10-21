@@ -1,0 +1,22 @@
+title: Silver Fox/ValleyRAT PeLoader Payload File Creation
+id: c714c6e9-299f-43b8-8097-90045f2711ec
+status: experimental
+description: Detects the creation of a file named 'PeLoader', which contains the AES-encrypted ValleyRAT backdoor payload.
+references:
+    - https://securelist.com/valleyrat-backdoor-adware/121175/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.hijack_execution_flow
+    - attack.t1574.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        ProcessImage|endswith: '\QnWallpaper.exe'
+        TargetFilename|endswith: '\PeLoader'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

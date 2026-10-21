@@ -1,0 +1,27 @@
+title: REF7707 FINALDRAFT Execution via Renamed CDB.exe
+id: 52d6a541-b6a9-4b13-af0d-4560d241d7d0
+status: experimental
+description: Detects the execution of a renamed CDB.exe (fontdrvhost.exe) with specific arguments to load shellcode from a configuration file, a technique used by the FINALDRAFT malware.
+references:
+    - https://www.elastic.co/security-labs/threat-command/fragile-web-ref7707
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.execution
+    - attack.t1204.002
+    - attack.defense_evasion
+    - attack.t1036.005
+detection:
+    selection:
+        Image|endswith: '\fontdrvhost.exe'
+        CommandLine|contains|all:
+            - '-cf'
+            - 'C:\ProgramData\config.ini'
+            - '-o'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical
+logsource:
+    category: process_creation
+    product: windows

@@ -1,0 +1,27 @@
+title: OceanLotus SPECTRALVIPER C2 Domains
+id: 110d9f0f-8b21-4d33-a3d8-a83d735e5d3c
+status: experimental
+description: Detects DNS queries to domains known to be used by the SPECTRALVIPER backdoor for C2 communications.
+references:
+    - https://www.welivesecurity.com/en/eset-research/oceanlotus-external-espionage-domestic-targeting/
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'financemachinelearning.com'
+            - 'leadingfilipinoteams.com'
+            - 'coachcybersecurity.com'
+            - 'gatewayrvcenter.com'
+            - 'mxprodesign.com'
+            - 'power-sync-services.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

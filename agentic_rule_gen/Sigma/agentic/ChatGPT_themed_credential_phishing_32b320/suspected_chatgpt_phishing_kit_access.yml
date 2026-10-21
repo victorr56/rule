@@ -1,0 +1,21 @@
+title: Suspected ChatGPT Phishing Kit Access (fertaq)
+id: f023c52a-b9c1-409c-a81d-e062b80061e8
+status: experimental
+description: Detects web access to a URL path pattern associated with a ChatGPT-themed credential phishing kit hosted on nxcli.io infrastructure.
+references:
+    - https://cofense.com/blog/chatbot-conundrum-phishing-attempts-of-openai-s-chatgpt
+author: ioc-yara-daily (agentic)
+date: 2024-06-03
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname|endswith: '.nxcli.io'
+        Url|contains: '/fertaq/app/'
+    condition: selection
+falsepositives:
+    - Legitimate web traffic to the `nxcli.io` domain that happens to match the `/fertaq/app/` path.
+level: high

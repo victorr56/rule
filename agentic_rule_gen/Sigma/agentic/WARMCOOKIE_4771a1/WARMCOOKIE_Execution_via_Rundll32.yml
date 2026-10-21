@@ -1,0 +1,21 @@
+title: WARMCOOKIE Execution via Rundll32
+id: e47b3967-f38f-409b-a320-9941a876793a
+status: experimental
+description: Detects the execution of the WARMCOOKIE backdoor, which uses rundll32.exe to load its payload from a specific hardcoded path 'C:\ProgramData\RtlUpd\RtlUpd.dll'.
+references:
+    - https://www.elastic.co/security-labs/threat-command/revisiting-warmcookie
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.t1218.011
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains: 'C:\ProgramData\RtlUpd\RtlUpd.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

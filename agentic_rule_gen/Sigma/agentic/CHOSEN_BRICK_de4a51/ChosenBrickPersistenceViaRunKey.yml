@@ -1,0 +1,27 @@
+title: CHOSEN BRICK Persistence via Run Key
+id: c5d60f58-61d9-436d-9477-742a1b9f4852
+status: experimental
+description: Detects persistence registry entries in the HKCU Run key created by the CHOSEN BRICK malware.
+references:
+    - https://www.ncsc.gov.uk/news/iranian-cyber-targeting-of-dissidents-activists-and-journalists
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_smqd:
+        TargetObject|endswith: '\Microsoft\Windows\CurrentVersion\Run\SMQDService'
+        Details|contains|all:
+            - 'C:\ProgramData\SMQDServicePackages\'
+            - '\smdqservice.exe'
+    selection_winappx:
+        TargetObject|endswith: '\Microsoft\Windows\CurrentVersion\Run\winappx'
+        Details|contains: '\MicrosoftDistribution\sysmain\winappx.exe'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

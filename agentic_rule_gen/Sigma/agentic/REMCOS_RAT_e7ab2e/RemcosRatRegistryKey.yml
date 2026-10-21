@@ -1,0 +1,25 @@
+title: REMCOS RAT Registry Key Modification
+id: 5743b591-1153-41c1-90a6-5ca434a9194e
+status: experimental
+description: Detects the creation or modification of specific registry values under the 'Remcos' key, used by the REMCOS RAT for configuration and persistence.
+references:
+    - https://www.elastic.co/security-labs/threat-command/dissecting-remcos-rat-part-four
+author: ioc-yara-daily (agentic)
+date: 2024-07-24
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\Software\Remcos'
+        Details|contains:
+            - 'Password'
+            - 'StartupMethod'
+            - 'StartupName'
+    condition: selection
+falsepositives:
+    - Legitimate software that uses 'Remcos' as part of its registry configuration path.
+level: high

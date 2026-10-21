@@ -1,0 +1,22 @@
+title: CLOSEDQUORUM Persistence via 'WindowsUpdate' Run Key
+id: 79ab921a-e8f0-410a-bd6e-214467d383b0
+status: experimental
+description: Detects the creation of a registry run key with the value name 'WindowsUpdate' as used by CLOSEDQUORUM for persistence.
+references:
+    - https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Microsoft\Windows\CurrentVersion\Run\WindowsUpdate'
+        Details|contains: '\Microsoft\WindowsUpdate.exe'
+    condition: selection
+falsepositives:
+    - Legitimate software is unlikely to use this specific combination of registry value name and executable path for persistence.
+level: high

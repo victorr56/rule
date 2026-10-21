@@ -1,0 +1,28 @@
+title: ClickFix C2 IPs
+id: 597a1516-73d8-4f24-9b50-3889104b2b11
+status: experimental
+description: Detects network connections to known C2 servers associated with the ClickFix social engineering tactic.
+references:
+    - https://www.darktrace.com/blog/unpacking-clickfix-darktraces-detection-of-a-prolific-social-engineering-tactic
+author: ioc-yara-daily (agentic)
+date: 2026-10-17
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: any
+detection:
+    selection:
+        DestinationIp:
+            - '138.199.156.22'
+            - '141.193.213.10'
+            - '141.193.213.11'
+            - '185.250.151.155'
+            - '188.34.195.44'
+            - '193.36.38.237'
+            - '94.181.229.250'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

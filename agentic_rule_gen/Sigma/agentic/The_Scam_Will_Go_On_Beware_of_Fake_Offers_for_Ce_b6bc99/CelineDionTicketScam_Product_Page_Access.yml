@@ -1,0 +1,21 @@
+title: Celine Dion Ticket Scam Product Page Access
+id: d7f06ed9-0e70-4a87-a066-51253a652a26
+status: experimental
+description: Detects access to a highly specific URL path corresponding to the fraudulent Celine Dion ticket product page.
+references:
+    - https://www.group-ib.com/blog/fake-concert-ticket-scam-celine-dion/
+author: ioc-yara-daily (agentic)
+date: 2023-10-16
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        UrlOriginal|contains: '/products/celine-dion-samedi-19-septembre-2026-19h30'
+        HttpMethod: 'GET'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,544 @@
+{
+  "malware_family": "SPECTRALVIPER",
+  "threat_actor": "OceanLotus (APT32)",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "OceanLotus (APT32) deployed its SPECTRALVIPER backdoor in two 2024-2026 Windows campaigns: a supply-chain compromise of the FireAnt MetaKit update server targeting Vietnamese stock investors, and a long-running intrusion into an infrastructure and transport construction corporation. SPECTRALVIPER is delivered via renamed signed side-loader executables (Toolbox.exe and dtlupdate.exe copies) with a -uiDll DLL side-load, then injects into a host process and beacons over HTTPS with encrypted host data in a Cookie header prefixed euconsent-v2= or zd_cs_pm=.",
+  "mitre_techniques": [
+    "T1195.002",
+    "T1190",
+    "T1059",
+    "T1204",
+    "T1574.002",
+    "T1055",
+    "T1036",
+    "T1027",
+    "T1553.002",
+    "T1082",
+    "T1570",
+    "T1021",
+    "T1071.001",
+    "T1573",
+    "T1105",
+    "T1041"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "C:\\Users\\[redacted]\\IntelAudio\\Service\\IntelAudioService.exe /appmodel /StateRepository /Service",
+      "context": "SPECTRALVIPER side-loader host executed after malicious FireAnt update; parent not stated",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-uiDll",
+      "context": "Required command line parameter for Genuine.exe, Updater.exe, AutoCAD242.exe side-loading to work",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "setup.exe",
+      "context": "SPECTRALVIPER downloader delivered from FireAnt MetaKit update server",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Metakit.exe",
+      "context": "FireAnt MetaKit executable that ran the malicious downloader as a legitimate update",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DtlCrashCatch.dll",
+      "context": "SPECTRALVIPER configured as loader, side-loaded and injected into OneDrive sync process",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "IntelAudioService.exe",
+      "context": "Masquerade copy of legitimately signed dtlupdate.exe used as side-loader host",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Toolbox.exe",
+      "context": "Original filename of the legitimate signed executable renamed to side-loader hosts",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Genuine.exe",
+      "context": "Renamed legitimate Toolbox.exe side-loader host in Autodesk-like path",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Updater.exe",
+      "context": "Renamed legitimate Toolbox.exe side-loader host in appcompat path",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AutoCAD242.exe",
+      "context": "Renamed legitimate Toolbox.exe side-loader host in Autodesk AutoCAD path",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "OneDrive.Sync.Service.exe",
+      "context": "Process injected by DtlCrashCatch.dll to run SPECTRALVIPER in backdoor mode",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\Autodesk\\Genuine Autodesk Service\\Genuine.exe",
+      "context": "Side-loader host path on victim network",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\Autodesk\\AutoCAD 2023\\R24.2\\AutoCad242.exe",
+      "context": "Side-loader host path on victim network",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\appcompat\\Updater.exe",
+      "context": "Side-loader host path on victim network",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "GlobalSettings.conf",
+      "context": "Companion config file next to side-loader host",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "appcompat.log",
+      "context": "Companion file dropped with Updater.exe side-loader",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "system.config.xml",
+      "context": "SPECTRALVIPER backdoor file",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "NotificationConfig.json",
+      "context": "SPECTRALVIPER backdoor file",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "SetupUi.dll",
+      "context": "SPECTRALVIPER backdoor file",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "euconsent-v2=",
+      "context": "Historical prefix of encrypted host data in SPECTRALVIPER beacon Cookie header",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "zd_cs_pm=",
+      "context": "New prefix of encrypted host data in SPECTRALVIPER beacon Cookie header, first seen this campaign",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "dtlupdate",
+      "context": "File description and original filename of signed binary copied as IntelAudioService.exe",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "HP Digital Imaging",
+      "context": "Product name of signed Toolbox.exe copied to Genuine.exe/Updater.exe/AutoCAD242.exe",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "40.15.1230.21319",
+      "context": "File version of the Toolbox.exe-derived side-loaders",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "XGU::Pivot::StartLink",
+      "context": "RTTI class method implementing inter-instance orchestration over named pipes",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "XGU::Pivot::Internal::WaitNew_RemotePipe",
+      "context": "RTTI method handling remote named pipe orchestration",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "XGU::Feature",
+      "context": "Internal SPECTRALVIPER framework class encapsulating remote-control features",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "XGU::Manager::ProcessManager",
+      "context": "Class implementing process manipulation and injection",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "XGU::Manager::ProcessReflector",
+      "context": "Class implementing reflective injection of binaries/shellcode",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "XGU::Feature::LateralMovement",
+      "context": "Class exposing token theft/impersonation features",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "XGU::Feature::Cmd",
+      "context": "Class implementing Ps/Pwd/Cd/Ls/Mkdir command features",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "financemachinelearning.com",
+      "context": "SPECTRALVIPER C&C crafted for stock investor campaign",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "leadingfilipinoteams.com",
+      "context": "SPECTRALVIPER C&C server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "coachcybersecurity.com",
+      "context": "SPECTRALVIPER C&C server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gatewayrvcenter.com",
+      "context": "SPECTRALVIPER C&C observed in construction company intrusion",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mxprodesign.com",
+      "context": "SPECTRALVIPER C&C server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "power-sync-services.com",
+      "context": "SPECTRALVIPER C&C domain observed in incident",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "metakit.fireant.vn",
+      "context": "Legitimate FireAnt MetaKit update server whose updates were trojanized",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://metakit.fireant.vn/Software/setup.exe",
+      "context": "FireAnt MetaKit update URL delivering malicious downloader",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://metakit.fireant.vn/Software/version.xml",
+      "context": "Update config file lacking integrity validation",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://financemachinelearning.com/apparatus/wind/twig/statement.html",
+      "context": "Hardcoded SPECTRALVIPER beacon URL",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://leadingfilipinoteams.com/yak/trains/evalve.html",
+      "context": "SPECTRALVIPER beacon URL with euconsent-v2 cookie prefix",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://142.91.98.77/v1/Update/GetUpdate",
+      "context": "Downloader POST requesting next-stage payload from staging server",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/apparatus/wind/twig/statement.html",
+      "context": "SPECTRALVIPER C2 beacon path",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/yak/trains/evalve.html",
+      "context": "SPECTRALVIPER C2 beacon path",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/Update/GetUpdate",
+      "context": "Download API consistent across all observed downloader samples",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.60.245.37",
+      "context": "SPECTRALVIPER C&C server IP (leadingfilipinoteams.com)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "139.99.33.239",
+      "context": "SPECTRALVIPER C&C server IP (coachcybersecurity.com)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "139.162.11.152",
+      "context": "SPECTRALVIPER staging/hosting server, early downloader infrastructure",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "139.180.128.42",
+      "context": "SPECTRALVIPER C&C server IP (gatewayrvcenter.com)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "142.91.98.77",
+      "context": "SPECTRALVIPER staging server used by downloader POST requests",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "166.88.77.186",
+      "context": "SPECTRALVIPER C&C server IP (mxprodesign.com)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "194.68.26.241",
+      "context": "SPECTRALVIPER C&C server IP (financemachinelearning.com)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.119.47.104",
+      "context": "SPECTRALVIPER C&C server IP (power-sync-services.com)",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.6998.166 Safari/537.36",
+      "context": "User-Agent of downloader POST to staging server",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+      "context": "Predefined User-Agent of SPECTRALVIPER beacon requests",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

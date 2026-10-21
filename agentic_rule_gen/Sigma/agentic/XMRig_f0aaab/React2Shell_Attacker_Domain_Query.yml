@@ -1,0 +1,25 @@
+title: React2Shell Attacker Domain DNS Query
+id: 978912e7-9d7f-44eb-be5a-a3093cae1762
+status: experimental
+description: Detects DNS queries for domains known to be used by attackers in React2Shell (CVE-2025-55182) campaigns for payload delivery or C2.
+references:
+    - https://www.greynoise.io/blog/react2shell-exploitation-consolidates
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.command_and_control
+    - attack.resource_hijacking
+    - attack.t1496
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.mased.top'
+            - '.mercarios.buzz'
+            - 'bt2.radiology.link'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

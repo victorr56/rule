@@ -1,0 +1,23 @@
+title: JINX-0164 MINIRAT Execution via Persistence On MacOS
+id: 9eb672c2-d6c5-4ab2-9e5c-1dd776722d7d
+status: experimental
+description: Detects the execution of the MINIRAT payload, which is launched via a malicious LaunchAgent for persistence on macOS. The payload runs from a specific path with a UUID as a key.
+references:
+    - https://www.wiz.io/blog/threat-actors-target-crypto-orgs
+author: ioc-yara-daily (agentic)
+date: 2024-06-18
+tags:
+    - attack.persistence
+    - attack.t1543.001
+    - attack.execution
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image|endswith: '/Library/Containers/profile'
+        CommandLine|re: '\s-k\s[a-f0-9]{8}-([a-f0-9]{4}-){3}[a-f0-9]{12}'
+    condition: selection
+falsepositives:
+    - Legitimate software named 'profile' is unlikely to be located in this path and executed with a UUID as a command-line argument.
+level: high

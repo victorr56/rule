@@ -1,0 +1,23 @@
+title: Global Ransomware Initial Execution via WinMerge
+id: a206b3a0-5394-4346-8dd3-918d37aa9c23
+status: experimental
+description: Detects the execution of the legitimate WinMerge utility by a known Global Group ransomware loader executable.
+references:
+    - https://cofense.com/blog/from-payment-plan-to-ransomware-inside-a-global-group-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-16
+tags:
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\Preview-9dc7.exe'
+        Image|endswith:
+            - '\WinMerge.exe'
+            - '\WinMergeU.exe'
+    condition: selection
+falsepositives:
+    - Unlikely, but the parent process name could be used by a legitimate application.
+level: high

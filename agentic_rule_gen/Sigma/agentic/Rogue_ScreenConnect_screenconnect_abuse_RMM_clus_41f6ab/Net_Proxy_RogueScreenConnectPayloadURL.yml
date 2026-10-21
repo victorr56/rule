@@ -1,0 +1,32 @@
+title: Rogue ScreenConnect Staging and Payload URL Access
+id: f456a0ea-7358-45a8-9d48-a006c6ef2075
+status: experimental
+description: Detects web requests to staging and payload URLs associated with a phishing campaign abusing ScreenConnect.
+references:
+    - https://www.huntress.com/blog/screenconnect-power-bi
+author: ioc-yara-daily (agentic)
+date: 2024-06-21
+tags:
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection_msi:
+        DestinationHostname: 'onthegotree.site'
+        Url|endswith: '/Bin/ScreenConnect.ClientSetup.msi'
+    selection_main_html:
+        DestinationHostname|endswith:
+            - 'burnsworth.site'
+            - 'essaywritingservice.site'
+            - 'openpediatrics.site'
+        Url|endswith: '/S/main.html'
+    selection_s_dir:
+        DestinationHostname: 'dailylifeproject.site'
+        Url|endswith: '/S/'
+    selection_e_dir:
+        DestinationHostname: 'check.vykyn.click'
+        Url|endswith: '/E/'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high
