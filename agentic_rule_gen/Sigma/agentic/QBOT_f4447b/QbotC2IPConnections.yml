@@ -1,0 +1,31 @@
+title: Qbot C2 IP Connections
+id: 9d1b72e1-7e8c-4f7d-8687-3507d720b001
+status: experimental
+description: Detects network connections to IP addresses identified as Qbot command and control (C2) servers.
+references:
+    - https://www.elastic.co/security-labs/threat-command/exploring-the-qbot-attack-pattern
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '41.228.22.180'
+            - '45.63.1.12'
+            - '47.23.89.62'
+            - '47.180.172.159'
+            - '103.107.113.120'
+            - '140.82.49.12'
+            - '144.202.2.175'
+            - '148.64.96.100'
+            - '176.67.56.94'
+            - '181.118.183.98'
+    condition: selection
+falsepositives:
+    - These IPs may be reassigned or used for other purposes over time.
+level: medium

