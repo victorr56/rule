@@ -1,0 +1,23 @@
+title: APT40 C2 Domain Query (June 2020)
+id: f98c760a-5d9c-48c9-94b2-e64e5251a66e
+status: experimental
+description: Detects DNS queries for domains known to be used as C2 infrastructure by APT40 in a campaign observed in June 2020.
+references:
+    - https://www.elastic.co/security-labs/threat-command/advanced-techniques-used-in-malaysian-focused-apt-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1568.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'armybar.hopto.org'
+            - 'tomema.myddns.me'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

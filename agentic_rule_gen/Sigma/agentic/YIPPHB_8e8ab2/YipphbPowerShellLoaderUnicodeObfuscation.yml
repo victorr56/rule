@@ -1,0 +1,27 @@
+title: YIPPHB PowerShell Loader with Unicode Substitution Obfuscation
+id: e4b25867-bca9-411a-8c76-5993822a1012
+status: experimental
+description: Detects the execution of a YIPPHB PowerShell loader which uses a Unicode character (U+231A) as a substitution key to obfuscate a Base64 encoded payload.
+references:
+    - https://www.elastic.co/security-labs/threat-command/doing-time-with-the-yipphb-dropper
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.defense_evasion
+    - attack.t1027
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - '\u231a\u231a\u231a'
+            - 'FromBase64String'
+            - 'Unicode.GetString'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

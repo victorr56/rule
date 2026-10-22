@@ -1,0 +1,304 @@
+{
+  "malware_family": "BPFDoor",
+  "threat_actor": "Red Menshen",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "BPFDoor is a passive Linux backdoor used for long-term persistence, attributed to Red Menshen. It uses a Berkeley Packet Filter (BPF) to stealthily monitor network traffic for a magic packet, which activates a reverse or bind shell. The malware employs various anti-forensic techniques, such as process name spoofing and placing itself in temporary filesystems like /dev/shm.",
+  "mitre_techniques": [
+    "T1106",
+    "T1133",
+    "T1070",
+    "T1095",
+    "T1059.004",
+    "T1548.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/dev/shm",
+      "context": "Malware copies itself to and executes from this directory.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "kdmtmpflush",
+      "context": "Hardcoded process name the malware renames itself to.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-init",
+      "context": "Flag used by the malware to initialize itself.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/run/haldrund.pid",
+      "context": "Observed PID file created by BPFDoor.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/run/kdevrund.pid",
+      "context": "Observed PID file created by BPFDoor.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/run/xinetd.lock",
+      "context": "Observed lock file created by BPFDoor.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "/dev/shm/kdmtmpflush",
+      "context": "Observed process name of BPFDoor from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "hald-addon-acpi: listening on acpi kernel interface /proc/acpi/event",
+      "context": "Hardcoded string used for process name spoofing.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/sbin/iptables -t nat -D PREROUTING -p tcp -s %s --dport %d -j REDIRECT --to-ports %d",
+      "context": "Command-line string to remove iptables redirection rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "avahi-daemon: chroot helper",
+      "context": "Hardcoded string used for process name spoofing.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/sbin/mingetty /dev/tty6",
+      "context": "Hardcoded string used for process name spoofing.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ttcompat",
+      "context": "Hardcoded string found in BPFDoor samples.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/sbin/auditd -n",
+      "context": "Hardcoded string used for process name spoofing.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[-] Spawn shell failed.",
+      "context": "Error message string.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[+] Packet Successfuly Sending %d Size.",
+      "context": "Debug string with characteristic typo.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "decrypt_ctx",
+      "context": "Internal string, likely function or variable name.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "getshell",
+      "context": "Internal string, likely function or variable name.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "getpassw",
+      "context": "Internal string, likely function or variable name.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "godpid",
+      "context": "Internal string, likely function or variable name.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "rc4_init",
+      "context": "Internal string, likely function name.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "(udp[8:2]=0x7255) or (icmp[8:2]=0x7255) or (tcp[((tcp[12]&0xf0)>>2):2]=0x5293)",
+      "context": "BPF filter string to detect the magic packet.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Couldn't install filter %s: %s",
+      "context": "Error message format string for BPF filter installation.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 45 D8 0F B6 10 0F B6 45 FF 48 03 45 F0 0F B6 00 8D 04 02 00 }",
+      "context": "Code pattern from BPFDoor binary.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ D0 48 89 45 F8 48 8B 45 F8 0F B6 40 0C C0 E8 04 0F B6 C0 C1 }",
+      "context": "Code pattern from BPFDoor binary.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [],
+  "samples": [
+    {
+      "sha256": "144526d30ae747982079d5d340d1ff116a7963aba2e3ed589e7ebc297ba0c1b3",
+      "description": "BPFDoor malware sample referenced in YARA rule."
+    },
+    {
+      "sha256": "3a1b174f0c19c28f71e1babde01982c56d38d3672ea14d47c35ae3062e49b155",
+      "description": "BPFDoor malware sample referenced in YARA rule."
+    },
+    {
+      "sha256": "591198c234416c6ccbcea6967963ca2ca0f17050be7eed1602198308d9127c78",
+      "description": "BPFDoor malware sample referenced in YARA rule."
+    },
+    {
+      "sha256": "76bf736b25d5c9aaf6a84edd4e615796fffc338a893b49c120c0b4941ce37925",
+      "description": "BPFDoor malware sample referenced in YARA rule."
+    },
+    {
+      "sha256": "dc8346bf443b7b453f062740d8ae8d8d7ce879672810f4296158f90359dcae3a",
+      "description": "BPFDoor malware sample referenced in YARA rule."
+    },
+    {
+      "sha256": "74ef6cc38f5a1a80148752b63c117e6846984debd2af806c65887195a8eccc56",
+      "description": "BPFDoor malware sample."
+    },
+    {
+      "sha256": "07ecb1f2d9ffbd20a46cd36cd06b022db3cc8e45b1ecab62cd11f9ca7a26ab6d",
+      "description": "BPFDoor malware sample."
+    },
+    {
+      "sha256": "93f4262fce8c6b4f8e239c35a0679fbbbb722141b95a5f2af53a2bcafe4edd1c",
+      "description": "BPFDoor malware sample."
+    },
+    {
+      "sha256": "96e906128095dead57fdc9ce8688bb889166b67c9a1b8fdb93d7cff7f3836bb9",
+      "description": "BPFDoor malware sample."
+    },
+    {
+      "sha256": "2e0aa3da45a0360d051359e1a038beff8551b957698f21756cfc6ed5539e4bdb",
+      "description": "BPFDoor malware sample."
+    }
+  ],
+  "file_types": [
+    "elf"
+  ]
+}

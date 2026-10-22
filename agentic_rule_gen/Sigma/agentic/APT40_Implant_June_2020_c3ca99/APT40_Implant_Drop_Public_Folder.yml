@@ -1,0 +1,24 @@
+title: APT40 Implant Dropped in Public Folder
+id: 98a5d3f2-1a2b-4e4f-b8d9-3c8f2b7a9e6a
+status: experimental
+description: Detects the creation of specific .tmp files in the C:\Users\Public directory, which is a known behavior of an APT40 implant.
+references:
+    - https://www.elastic.co/security-labs/threat-command/advanced-techniques-used-in-malaysian-focused-apt-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\Users\Public\'
+        TargetFilename|endswith:
+            - '\sl1.tmp'
+            - '\sl2.tmp'
+    condition: selection
+falsepositives:
+    - Other applications legitimately writing files with these names to the Public folder, though unlikely.
+level: medium

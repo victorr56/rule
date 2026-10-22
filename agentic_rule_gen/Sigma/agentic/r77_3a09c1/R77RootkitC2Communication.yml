@@ -1,0 +1,25 @@
+title: R77 Rootkit C2 Communication
+id: 1c3a6b8c-5d9e-4e2a-8c7c-0a1b8d2d9f3f
+status: experimental
+description: Detects network connections to IP addresses known to be C2 servers for the R77 rootkit.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-security-labs-steps-through-the-r77-rootkit
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '5.133.65.53'
+            - '5.133.65.54'
+            - '5.133.65.55'
+            - '5.133.65.56'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

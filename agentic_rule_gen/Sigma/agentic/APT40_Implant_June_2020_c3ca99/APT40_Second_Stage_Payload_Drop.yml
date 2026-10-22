@@ -1,0 +1,22 @@
+title: APT40 Second Stage Payload Drop
+id: 2c1f9b3e-7a5d-4f3e-8d9e-1a2b3c4d5e6f
+status: experimental
+description: Detects the creation of a file named '~liseces1.pcs' in the user's Temp directory, which is a second-stage payload used by APT40.
+references:
+    - https://www.elastic.co/security-labs/threat-command/advanced-techniques-used-in-malaysian-focused-apt-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\~liseces1.pcs'
+        TargetFilename|contains: '\AppData\Local\Temp\'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

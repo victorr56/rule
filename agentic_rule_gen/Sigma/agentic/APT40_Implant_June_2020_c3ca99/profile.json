@@ -1,0 +1,309 @@
+{
+  "malware_family": "APT40 Implant June 2020",
+  "threat_actor": "APT40",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "APT40 targets Malaysian entities using a phishing document that leverages remote template injection to execute macro code. The macro drops and runs DLLs that perform DLL side-loading to execute a second-stage backdoor. The backdoor establishes persistence via a Run key and communicates with a C2 server using AES-encrypted traffic.",
+  "mitre_techniques": [
+    "T1193",
+    "T1221",
+    "T1060",
+    "T1073",
+    "T1129",
+    "T1055",
+    "T1107",
+    "T1140",
+    "T1059"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\sl1.tmp",
+      "context": "Path for dropped DLL from VBA macro.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\sl2.tmp",
+      "context": "Path for dropped DLL from VBA macro.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\*\\AppData\\Local\\Temp\\~liseces1.pcs",
+      "context": "Path for downloaded AES-encrypted second stage payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "RemoteLoad.dotm",
+      "context": "Remote template downloaded by lure document.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "LogiMailApp.exe",
+      "context": "Benign executable used for DLL side-loading vulnerability.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "LogiMail.dll",
+      "context": "Malicious DLL side-loaded by LogiMailApp.exe.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "ntkd",
+      "context": "Value name under HKCU\\...\\Run key for persistence.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "RCT",
+      "context": "Export in sl1.tmp/sl2.tmp, downloads file via URLDownloadToFileA.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "RCP",
+      "context": "Export in sl1.tmp/sl2.tmp, executes commands via WinExec.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "DllGetClassObject",
+      "context": "Export in malicious LogiMail.dll containing core logic.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Open Remote File %s Failed For: %s",
+      "context": "Error string in second stage implant.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Open Pipe Failed %s",
+      "context": "Error string in second stage implant.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Download Read Path Failed %s",
+      "context": "Error string in second stage implant.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "%02X-%02X-%02X-%02X-%02X-%02X",
+      "context": "Format string in second stage implant, likely for MAC address.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\\cmd.exe",
+      "context": "Wide string in second stage implant for command execution.",
+      "specificity": "low",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "context": "Registry key used for persistence.",
+      "specificity": "low",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "armybar.hopto.org",
+      "context": "Payload staging and C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tomema.myddns.me",
+      "context": "Second stage C2 infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://armybar.hopto.org/LogiMail.dll",
+      "context": "URL to download malicious side-loadable DLL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://armybar.hopto.org/LogiMailApp.exe",
+      "context": "URL to download benign executable for side-loading.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://armybar.hopto.org/Encrypted",
+      "context": "URL to download encrypted second stage payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.248.148.156",
+      "context": "Associated C2 infrastructure IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "139.59.31.188",
+      "context": "Associated C2 infrastructure IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/list_direction",
+      "context": "C2 URI path found in implant strings.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/post_document",
+      "context": "C2 URI path found in implant strings.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/postlogin",
+      "context": "C2 URI path found in implant strings.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "74b5e317527c93539dbaaf84d6a61da92a56012a",
+      "context": "SHA1 thumbprint of C2 HTTPS certificate.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "523cbdaf31ddc920e5b6c873f3ab42fb791fb4c9d1f4d9e6a7f174105d4f72a1",
+      "description": "Component from Malaysian-focused APT40 campaign."
+    },
+    {
+      "sha256": "ab541df861c6045a17006969dac074a7d300c0a8edd0a5815c8b871b62ecdda7",
+      "description": "Component from Malaysian-focused APT40 campaign."
+    },
+    {
+      "sha256": "145daf50aefb7beec32556fd011e10c9eaa71e356649edfce4404409c1e8fa30",
+      "description": "Component from Malaysian-focused APT40 campaign."
+    },
+    {
+      "sha256": "93810c5fd9a287d85c182d2ad13e7d30f99df76e55bb40e5bc7a486d259810c8",
+      "description": "Component from Malaysian-focused APT40 campaign."
+    },
+    {
+      "sha256": "925f404b0207055f2a524d9825c48aa511199da95120ed7aafa52d3f7594b0c9",
+      "description": "Component from Malaysian-focused APT40 campaign."
+    },
+    {
+      "sha256": "feca9ad5058bc8571d89c9d5a1eebce09e709cc82954f8dce1564e8cc6750a77",
+      "description": "Component from Malaysian-focused APT40 campaign."
+    },
+    {
+      "sha256": "06a4246be400ad0347e71b3c4ecd607edda59fbf873791d3772ce001f580c1d3",
+      "description": "Component from Malaysian-focused APT40 campaign."
+    },
+    {
+      "sha256": "77ef350639b767ce0a748f94f723a6a88609c67be485b9d8ff8401729b8003d2",
+      "description": "Component from Malaysian-focused APT40 campaign."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "document"
+  ]
+}

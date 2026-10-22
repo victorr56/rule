@@ -1,0 +1,320 @@
+{
+  "malware_family": "r77",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "r77 is a modular, open-source userland rootkit used to hide the presence of other malware, such as the XMRIG crypto miner. It achieves persistence via scheduled tasks and uses techniques like process hollowing, PPID spoofing, and registry storage for its components and configuration. The rootkit's core module hooks multiple Windows APIs to conceal files, processes, and registry keys from users and security tools.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "registry_key",
+      "value": "HKEY_LOCAL_MACHINE\\SOFTWARE\\$77stager",
+      "context": "Registry key created by the installer to store the stager module PE.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKEY_LOCAL_MACHINE\\SOFTWARE\\$77config",
+      "context": "Registry key created by the service module to store configuration.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "svc32",
+      "context": "Registry value name under HKLM\\SOFTWARE\\$77config\\pid storing service PID.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "svc64",
+      "context": "Registry value name under HKLM\\SOFTWARE\\$77config\\pid storing service PID.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "\\\\.\\pipe\\$77childproc64",
+      "context": "Used for IPC to notify service module of new child processes.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "\\\\.\\pipe\\$77childproc32",
+      "context": "Used for IPC to notify service module of new child processes.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/processid:",
+      "context": "Parameter used with dllhost.exe to mimic legitimate process behavior.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "winlogon.exe>dllhost.exe",
+      "context": "Spoofed parent winlogon.exe for hollowed dllhost.exe process.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[Runtime.InteropServices.Marshal]::Copy([Byte[]](0xb8,0x57,0,7,0x80,0xc3)",
+      "context": "PowerShell snippet used to patch AmsiScanBuffer in memory.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PROC_THREAD_ATTRIBUTE_PARENT_PROCESS",
+      "context": "Attribute used in UpdateProcThreadAttribute for PPID spoofing.",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "adm",
+      "context": "Username for a new administrator account created on the system.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "NLBrute.exe",
+      "context": "Process name excluded from injection by the rootkit.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "SSH_Checker.exe",
+      "context": "Process name excluded from injection by the rootkit.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "ReflectiveDllMain",
+      "context": "Export found in r77 rootkit modules.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".detourd",
+      "context": "String found in r77 core module, related to the hooking library.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Detours",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 01 04 10 41 8B 4A 04 49 FF C1 48 8D 41 F8 48 D1 E8 4C 3B C8 }",
+      "context": "YARA rule pattern for r77 rootkit.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 8C 20 88 00 00 00 42 8B 44 21 10 42 8B 4C 21 1C 48 2B D0 49 }",
+      "context": "YARA rule pattern for r77 rootkit.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 33 C9 48 89 8C 24 C0 00 00 00 4C 8B CB 48 89 8C 24 B8 00 00 00 45 33 C0 48 89 8C 24 B0 00 00 00 48 89 8C 24 A8 00 00 00 89 8C 24 A0 00 00 00 }",
+      "context": "YARA rule pattern for r77 rootkit.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "$77_Install.exe",
+      "context": "Filename for the r77 installer module.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "$77_Loader.exe",
+      "context": "Filename for the .NET binary that loads the main PowerShell script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "msupdate.info",
+      "context": "Malicious domain used to download the XMRIG miner.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "5.133.65.53",
+      "context": "C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "5.133.65.54",
+      "context": "C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "5.133.65.55",
+      "context": "C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "5.133.65.56",
+      "context": "C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "14444",
+      "context": "Firewall port opened by the orchestrator PowerShell script.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "24444",
+      "context": "Firewall port opened by the orchestrator PowerShell script.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "34444",
+      "context": "Firewall port opened by the orchestrator PowerShell script.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "916c805b0d512dd7bbd88f46632d66d9613de61691b4bd368e4b7cb1f0ac7f60",
+      "description": "$77_Install.exe installer module"
+    },
+    {
+      "sha256": "9fb38412cac94255a3abbec80f15620098a0c85247690850c302a9ff060b5c0c",
+      "description": "Stager module"
+    },
+    {
+      "sha256": "91c6e2621121a6871af091c52fafe41220ae12d6e47e52fd13a7b9edd8e31796",
+      "description": "64-bit service module"
+    },
+    {
+      "sha256": "29bc88a316e3f34ed29c5358e459b9fbf3b7962a72cac388ab5c977dd990ea77",
+      "description": "32-bit service module"
+    },
+    {
+      "sha256": "96849108e13172d14591169f8fdcbf8a8aa6be05b7b6ef396d65529eacc02d89",
+      "description": "64-bit core module"
+    },
+    {
+      "sha256": "aeb6a7b9ca890dc08259d7c239eb188e466210d48a17640671cba398bf69392f",
+      "description": "32-bit core module"
+    },
+    {
+      "sha256": "a7e31abe10be6bca44f0a846d631e578efe78c14f6bf1cf834cfb15469fc1d3a",
+      "description": "$77_Loader.exe, .NET binary loading a PowerShell script"
+    },
+    {
+      "sha256": "757fa687a9b4d461ffda78d93e4d812003307a9b9747dce7fb469625429cc551",
+      "description": "$77_oracle.exe, XMRIG miner"
+    },
+    {
+      "sha256": "10165e27e0db0a6708f346ddea657ab0409499f93eb8426a80864a966f0f401e",
+      "description": "RMS.exe, Remote Manipulator System"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet",
+    "script"
+  ]
+}

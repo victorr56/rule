@@ -1,0 +1,22 @@
+title: APT40 Side-Loads LogiMail.dll via LogiMailApp.exe
+id: 1b2e6a3d-4c3e-4d5e-8b6b-586733230b0b
+status: experimental
+description: Detects the loading of the malicious 'LogiMail.dll' by the benign 'LogiMailApp.exe', a DLL side-loading technique used by APT40.
+references:
+    - https://www.elastic.co/security-labs/threat-command/advanced-techniques-used-in-malaysian-focused-apt-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\LogiMailApp.exe'
+        ImageLoaded|endswith: '\LogiMail.dll'
+    condition: selection
+falsepositives:
+    - Legitimate use of LogiMailApp.exe loading a legitimate LogiMail.dll, if such a combination exists from a different software vendor.
+level: high

@@ -1,0 +1,31 @@
+title: SiestaGraph Execution In Non-Standard Path
+id: a7766020-f5a0-48e0-a7d0-c3d526e06dd8
+status: experimental
+description: Detects the execution of SiestaGraph malware from specific, non-standard file paths masquerading as legitimate Microsoft Office components.
+references:
+    - https://www.elastic.co/security-labs/threat-command/siestagraph-new-implant-uncovered-in-asean-member-foreign-ministry
+author: ioc-yara-daily (agentic)
+date: 2024-05-30
+tags:
+    - attack.execution
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_officeclient_progdata:
+        Image|endswith: '\ProgramData\Microsoft\OfficeClient.exe'
+        Description: 'Office Client'
+    selection_officeclient_pla:
+        Image|endswith: '\windows\pla\Officeclient.exe'
+        Description: 'Office Client'
+    selection_officeup:
+        Image|endswith: '\programdata\officeup.exe'
+        Description: 'Office Update'
+    selection_officecore:
+        Image|endswith: '\ProgramData\OfficeCore.exe'
+        Description: 'Office Core'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

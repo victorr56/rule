@@ -1,0 +1,20 @@
+title: REF2924 Cobalt Strike C2 Connection
+id: 9a01f09c-36a5-48b4-8cfc-bf3d3a010471
+status: experimental
+description: Detects network connections to a known Cobalt Strike C2 IP address used by REF2924.
+references:
+    - https://www.elastic.co/security-labs/threat-command/siestagraph-new-implant-uncovered-in-asean-member-foreign-ministry
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '185.239.70.229'
+    condition: selection
+falsepositives:
+    - This IP address may be repurposed by another actor or service in the future.
+level: high

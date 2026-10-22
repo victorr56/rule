@@ -1,0 +1,160 @@
+{
+  "malware_family": "PHOREAL",
+  "threat_actor": "APT32",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "PHOREAL/RIZZO is a backdoor used by APT32, observed targeting a Vietnamese financial services institution. The malware evades defenses by loading into memory from an unsigned DLL masquerading as a system file, injected into the control.exe process. C2 communication is established with a domain stored in an RC4 encrypted resource.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "control.exe Firewall.cpl {2D48D219-C306-4349-AE1F-09744DFFB5B9}",
+      "context": "The targeted process for shellcode injection.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tscon32.dll",
+      "context": "Name of the unsigned PHOREAL DLL loaded into control.exe.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\SysWOW64\\tscon32.dll",
+      "context": "Path of the malicious unsigned PHOREAL DLL.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Local\\{5FBC3F53-A76D-4248-969A-31740CBC8AD6}",
+      "context": "Mutex found in memory region strings.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "\\\\.\\pipe\\{A06F176F-79F1-473E-AF44-9763E3CB34E5}",
+      "context": "Named pipe found in memory region strings.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "{FD5F8447-657A-45C1-894B-D533926C9B66}.dll",
+      "context": "DLL name pattern found in memory region strings.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 8B FF 55 8B EC 56 E8 3F 3E 00 00 E8 34 3E 00 00 50 E8 14 3E 00 00 85 C0 75 2A 8B 75 08 56 E8 21 }",
+      "context": "Start address bytes sequence of the malicious thread.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "control.exe",
+      "context": "Host process for the in-memory PHOREAL backdoor.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "NetWkstaGetInfo",
+      "context": "API import found in memory strings.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "NetApiBufferFree",
+      "context": "API import found in memory strings.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "DllEntry",
+      "context": "Likely export name found in memory strings.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "thelivemusicgroup.com",
+      "context": "C2 domain extracted from an RC4 encrypted RCDATA resource.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.75.117.250",
+      "context": "Resolved IP address for the C2 domain thelivemusicgroup.com.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cdn-api-cn-1.com",
+      "context": "Domain also observed resolving to the C2 IP 103.75.117.250.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "ec5d5e18804e5d8118c459f5b6f3ca96047d629a50d1a0571dee0ac8d5a4ce33",
+      "description": "PHOREAL DLL masquerading as tscon32.dll."
+    },
+    {
+      "sha256": "88f073552b30462a00d1d612b1638b0508e4ef02c15cf46203998091f0aef4de",
+      "description": "Reference sample for the PHOREAL YARA rule."
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

@@ -1,0 +1,23 @@
+title: Deimos Persistence via PowerShell Custom File Handler
+id: 61ed8a79-e33a-48a0-bb2d-c205775aa7df
+status: experimental
+description: Detects the creation of a custom file handler under 'HKCU\Software\Classes' that executes PowerShell, a technique used by Deimos for persistence.
+references:
+    - https://www.elastic.co/security-labs/threat-command/going-coast-to-coast-climbing-the-pyramid-with-the-deimos-implant
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|startswith: 'HKCU\Software\Classes\'
+        TargetObject|endswith: '\shell\open\command\'
+        Details|contains: 'powershell'
+    condition: selection
+falsepositives:
+    - Some legitimate software (e.g., PowerShell IDEs) or administrative scripts may register custom file handlers that invoke PowerShell.
+level: high

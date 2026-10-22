@@ -1,0 +1,22 @@
+title: R77 Rootkit Process Hollowing Host
+id: 34e8574d-91b6-4581-9b16-e5559cf9dd00
+status: experimental
+description: Detects the execution of dllhost.exe with the `/processid:` command line argument, a behavior observed with the R77 rootkit which uses this to host its stager module via process hollowing.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-security-labs-steps-through-the-r77-rootkit
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1055.012
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\dllhost.exe'
+        CommandLine|contains: '/processid:'
+    condition: selection
+falsepositives:
+    - Unlikely, as `/processid:` is not a standard argument for dllhost.exe.
+level: high

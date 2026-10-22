@@ -1,0 +1,24 @@
+title: R77 Rootkit Registry Component Storage
+id: 76f62d19-482a-43c2-8435-09559e2a77f2
+status: experimental
+description: Detects the creation of specific registry keys (`$77stager`, `$77config`) used by the R77 rootkit to store its stager module and configuration data.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-security-labs-steps-through-the-r77-rootkit
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.defense_evasion
+    - attack.t1112
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains:
+            - '\SOFTWARE\$77stager'
+            - '\SOFTWARE\$77config'
+        Image|endswith: '.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

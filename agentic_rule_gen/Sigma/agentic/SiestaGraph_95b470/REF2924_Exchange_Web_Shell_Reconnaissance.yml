@@ -1,0 +1,26 @@
+title: REF2924 Exchange Web Shell Reconnaissance
+id: 60b37805-4f46-4444-a09f-68252277d33d
+status: experimental
+description: Detects reconnaissance commands executed by the IIS worker process (w3wp.exe) from a suspicious path, as observed in REF2924 intrusions involving a DoorMe web shell.
+references:
+    - https://www.elastic.co/security-labs/threat-command/siestagraph-new-implant-uncovered-in-asean-member-foreign-ministry
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.t1059.003
+    - attack.t1505.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\w3wp.exe'
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - 'cd /d'
+            - 'HttpProxy\owa\auth\Current\themes\resources'
+    condition: selection
+falsepositives:
+    - Legitimate administrative activity on an Exchange server, although highly unlikely to use this specific path for command execution.
+level: high

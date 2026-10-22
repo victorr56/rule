@@ -1,0 +1,21 @@
+title: R77 Rootkit C2 Domain Query
+id: d5d1e2e2-63b1-4c39-93bb-c1789c09c377
+status: experimental
+description: Detects DNS queries for a domain (`msupdate.info`) known to be used by the R77 rootkit to download additional payloads like the XMRIG miner.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-security-labs-steps-through-the-r77-rootkit
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'msupdate.info'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

@@ -1,0 +1,26 @@
+title: Gamaredon Group C2 IP Connections
+id: e2b6623e-671c-4b10-85f2-ac7f0e9b9777
+status: experimental
+description: Detects network connections to IP addresses known to be used by the Gamaredon group for C2 communication or payload hosting.
+references:
+    - https://www.elastic.co/security-labs/threat-command/playing-defense-against-gamaredon-group
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1041
+detection:
+    selection:
+        DestinationIp:
+            - '141.8.195.60'
+            - '141.8.192.153'
+            - '188.225.25.50'
+            - '185.200.241.88'
+            - '188.225.46.94'
+    condition: selection
+falsepositives:
+    - These IPs could be reassigned, but are high-confidence at the time of writing.
+level: high
+logsource:
+    category: network_connection
+    product: windows

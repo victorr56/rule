@@ -1,0 +1,23 @@
+title: R77 Rootkit Named Pipe For IPC
+id: 9a3c10b2-70df-4d37-9759-ddf2709e89d1
+status: experimental
+description: Detects the creation of a named pipe (`$77childproc64`) by winlogon.exe, used for inter-process communication by the R77 rootkit to coordinate its components.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-security-labs-steps-through-the-r77-rootkit
+author: ioc-yara-daily (agentic)
+date: 2023-11-08
+tags:
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1559.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\winlogon.exe'
+        TargetFilename: '\\\\.\\pipe\\$77childproc64'
+    condition: selection
+falsepositives:
+    - It is highly unlikely that the legitimate winlogon.exe process would create a named pipe with this specific name.
+level: high

@@ -1,0 +1,23 @@
+title: PHOREAL/RIZZO Masquerading DLL Loaded
+id: a87e682d-122e-4a4e-a18a-f5b248a3182b
+status: experimental
+description: Detects the loading of a malicious DLL 'tscon32.dll' into the control.exe process, a technique used by the PHOREAL/RIZZO backdoor.
+references:
+    - https://www.elastic.co/security-labs/threat-command/phoreal-malware-targets-the-southeast-asian-financial-sector
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+    - detection.threat_hunting
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\control.exe'
+        ImageLoaded|endswith: '\tscon32.dll'
+    condition: selection
+falsepositives:
+    - Unlikely, as 'tscon32.dll' is not a standard Windows library.
+level: high

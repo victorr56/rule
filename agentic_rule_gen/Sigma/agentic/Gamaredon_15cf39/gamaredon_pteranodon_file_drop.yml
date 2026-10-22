@@ -1,0 +1,28 @@
+title: Gamaredon Pteranodon Related File Creation
+id: 84a441e1-e123-455b-b9f1-ac06fef83315
+status: experimental
+description: Detects the creation of specific files in Office startup folders, a technique associated with the Gamaredon Pteranodon backdoor.
+references:
+    - https://www.elastic.co/security-labs/threat-command/playing-defense-against-gamaredon-group
+    - https://cert.gov.ua/article/4423
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.persistence
+    - attack.t1137.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_word:
+        Image|endswith: '\winword.exe'
+        TargetFilename|endswith:
+            - '\Microsoft\Word\STARTUP\wordMacros.vba'
+            - '\Microsoft\Word\STARTUP\wordMacros.txt'
+    selection_excel:
+        Image|endswith: '\excel.exe'
+        TargetFilename|endswith: '\Microsoft\Excel\XLSTART\ExcelMyMacros.vba'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate VBA macros that use these specific names and are saved in the Office startup locations, which is highly unlikely.
+level: high

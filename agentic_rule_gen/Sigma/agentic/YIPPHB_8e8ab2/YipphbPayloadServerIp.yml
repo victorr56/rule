@@ -1,0 +1,25 @@
+title: YIPPHB Payload Server Connection
+id: 53c7a339-b9d9-43c2-a447-c99ebcc62da0
+status: experimental
+description: Detects network connections to IP addresses known to host YIPPHB-related payloads.
+references:
+    - https://www.elastic.co/security-labs/threat-command/doing-time-with-the-yipphb-dropper
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.ingress_tool_transfer
+    - attack.t1105
+    - detection.threat_hunting
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '91.241.19.49'
+            - '20.231.55.108'
+            - '212.192.246.226'
+    condition: selection
+falsepositives:
+    - These IPs could be reassigned to benign services over time. Correlate with other indicators.
+level: medium

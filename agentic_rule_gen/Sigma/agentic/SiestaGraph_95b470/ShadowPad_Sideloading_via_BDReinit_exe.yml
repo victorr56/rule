@@ -1,0 +1,22 @@
+title: ShadowPad Sideloading via BDReinit.exe
+id: 3c6b2089-a2e6-42d7-a50d-71b3e8e25d20
+status: experimental
+description: Detects the sideloading of a malicious 'log.dll' (ShadowPad) by 'BDReinit.exe', a technique used by REF2924.
+references:
+    - https://www.elastic.co/security-labs/threat-command/siestagraph-new-implant-uncovered-in-asean-member-foreign-ministry
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\BDReinit.exe'
+        ImageLoaded|endswith: '\log.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

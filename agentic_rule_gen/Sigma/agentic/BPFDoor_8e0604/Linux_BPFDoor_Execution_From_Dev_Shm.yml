@@ -1,0 +1,23 @@
+title: Linux BPFDoor Execution from Shared Memory
+id: 11ac72b8-7c85-48b2-b437-124b8bd6838b
+status: experimental
+description: Detects the execution of BPFDoor from its typical installation path in /dev/shm with a hardcoded process name.
+references:
+    - https://www.elastic.co/security-labs/threat-command/a-peek-behind-the-bpfdoor
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.t1059.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/dev/shm/kdmtmpflush'
+        ParentImage|endswith: '/nohup'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

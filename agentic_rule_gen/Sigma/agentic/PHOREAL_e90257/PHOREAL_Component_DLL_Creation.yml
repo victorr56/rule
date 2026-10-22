@@ -1,0 +1,22 @@
+title: PHOREAL/RIZZO Component DLL Creation
+id: 59a1171d-55e1-4c6e-82d8-21d4c20f18bd
+status: experimental
+description: Detects the creation of a DLL with a specific GUID in its name, by a process executing from the C:\ProgramData directory. This behavior is associated with the PHOREAL/RIZZO backdoor.
+references:
+    - https://www.elastic.co/security-labs/threat-command/phoreal-malware-targets-the-southeast-asian-financial-sector
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1027
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|startswith: 'C:\ProgramData\'
+        TargetFilename|contains: '{FD5F8447-657A-45C1-894B-D533926C9B66}.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

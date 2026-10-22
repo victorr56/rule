@@ -1,0 +1,22 @@
+title: REF2924 Sideloading via AlarmClock.exe
+id: b8e18e38-406c-4874-8840-7abf3c0b0edc
+status: experimental
+description: Detects the sideloading of 'APerfectDayBase.dll' by 'AlarmClock.exe', a technique used by REF2924.
+references:
+    - https://www.elastic.co/security-labs/threat-command/siestagraph-new-implant-uncovered-in-asean-member-foreign-ministry
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\AlarmClock.exe'
+        ImageLoaded|endswith: '\APerfectDayBase.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

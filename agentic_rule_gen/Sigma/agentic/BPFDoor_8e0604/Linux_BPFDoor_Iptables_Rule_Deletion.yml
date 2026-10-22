@@ -1,0 +1,26 @@
+title: Linux BPFDoor Iptables Rule Deletion
+id: e47b4d1b-8533-4f10-91a5-e1a5332f9157
+status: experimental
+description: Detects a specific iptables command used by BPFDoor to remove firewall rules, likely as part of its network redirection cleanup.
+references:
+    - https://www.elastic.co/security-labs/threat-command/a-peek-behind-the-bpfdoor
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1070
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/sbin/iptables'
+        CommandLine|contains|all:
+            - '-t nat'
+            - '-D PREROUTING'
+            - '-j REDIRECT'
+            - '--to-ports'
+    condition: selection
+falsepositives:
+    - Legitimate administrative activity to remove a NAT redirection rule, though this specific combination is unusual.
+level: high

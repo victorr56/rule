@@ -1,0 +1,21 @@
+title: Deimos C2 Communication
+id: fa877d13-42e1-4c17-916c-e408d249f6f6
+status: experimental
+description: Detects network connections to a known Deimos command and control (C2) server.
+references:
+    - https://www.elastic.co/security-labs/threat-command/going-coast-to-coast-climbing-the-pyramid-with-the-deimos-implant
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '216.230.232.134'
+    condition: selection
+falsepositives:
+    - The IP address could be reassigned or benign traffic could be routed to it in the future.
+level: critical

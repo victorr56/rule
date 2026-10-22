@@ -1,0 +1,24 @@
+title: R77 Rootkit Installer Or Loader Execution
+id: f42a5c0b-48c9-462f-923f-e77c570b5c1a
+status: experimental
+description: Detects the execution of processes with filenames specific to the R77 rootkit installer or loader modules, such as `$77_Install.exe` or `$77_Loader.exe`.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-security-labs-steps-through-the-r77-rootkit
+author: ioc-yara-daily (agentic)
+date: 2024-07-24
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\$77_Install.exe'
+            - '\$77_Loader.exe'
+        Description: 'R77 Rootkit'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

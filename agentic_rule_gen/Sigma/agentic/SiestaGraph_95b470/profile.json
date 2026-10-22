@@ -1,0 +1,316 @@
+{
+  "malware_family": "SiestaGraph",
+  "threat_actor": "REF2924",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "SiestaGraph is a .NET backdoor that uses the Microsoft Graph API for command and control. Observed in an intrusion against an ASEAN foreign ministry, it was deployed alongside a modified DoorMe IIS backdoor and ShadowPad. The primary goal was diplomatic intelligence gathering, focusing on the exfiltration of Exchange mailboxes.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Microsoft\\OfficeClient.exe",
+      "context": "SiestaGraph execution on a Domain Controller.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "c:\\windows\\pla\\Officeclient.exe",
+      "context": "SiestaGraph execution on a Windows 2019 server.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\programdata\\officeup.exe",
+      "context": "SiestaGraph execution on a Windows 2019 server.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\OfficeCore.exe",
+      "context": "SiestaGraph execution on an Exchange server.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "windowss.exe",
+      "context": "Original PE file name for SiestaGraph variants.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "iisrehv.dll",
+      "context": "Malicious IIS module (DoorMe variant).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "log.dll",
+      "context": "ShadowPad DLL side-loaded by BDReinit.exe.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "APerfectDayBase.dll",
+      "context": "Malicious DLL side-loaded by AlarmClock.exe.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "kk2.exe",
+      "context": "Loader for mhyprot.sys vulnerable driver.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c cd /d C:\\Program Files\\Microsoft\\Exchange Server\\V15\\FrontEnd\\HttpProxy\\owa\\auth\\Current\\themes\\resources\"&whoami",
+      "context": "Reconnaissance command executed via w3wp.exe.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c cd /d C:\\Program Files\\Microsoft\\Exchange Server\\V15\\FrontEnd\\HttpProxy\\owa\\auth\\Current\\themes\\resources\"&hostname",
+      "context": "Reconnaissance command executed via w3wp.exe.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "w3wp.exe->cmd.exe",
+      "context": "IIS worker process spawning shell for command execution.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "huebfkaudfbaksidfabsdf",
+      "context": "Password for 7.tmp 7zip archive of mailboxes.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "daad",
+      "context": "POST parameter for JScript web shell to receive code.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "nHsXLMPUSCABolxOgKWuIFeGVimhEjyzQrTvRcwafZdJDktqYpbN",
+      "context": "Hardcoded string in JScript web shell.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GenBeaconOptions",
+      "context": "Parameter for DoorMe command 0x42.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".?AVDoorme@@",
+      "context": "String from DoorMe YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "downloadAsync",
+      "context": "String from SiestaGraph YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "UploadxAsync",
+      "context": "String from SiestaGraph YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GetAllDriveRootChildren",
+      "context": "String from SiestaGraph YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "sendsession",
+      "context": "String from SiestaGraph YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "createEmailDraft",
+      "context": "String from SiestaGraph YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "RegisterModule",
+      "context": "Export used to load the DoorMe IIS module.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 8B 6C 24 ?? C1 E5 ?? 8B 5C 24 ?? 8D 34 9D ?? ?? ?? ?? 0F B6 04 31 32 44 24 ?? 88 04 29 8D 04 9D ?? ?? ?? ?? 0F B6 04 01 32 44 24 ?? 88 44 29 ?? 8D 04 9D ?? ?? ?? ?? 0F B6 04 01 44 30 F8 88 44 29 ?? 8D 04 9D ?? ?? ?? ?? 0F B6 04 01 44 30 E0 88 44 29 ?? 8B 74 24 ?? }",
+      "context": "AES crypto sequence from DoorMe YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "graph.microsoft.com",
+      "context": "C2 domain for SiestaGraph via Microsoft Graph API.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.239.70.229",
+      "context": "Cobalt Strike C2 server for downloading web shell.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "1a87e1b41341ad042711faa0c601e7b238a47fa647c325f66b1c8c7b313c8bdf",
+      "description": "SiestaGraph implant (OfficeClient.exe, OfficeCore.exe)"
+    },
+    {
+      "sha256": "7fc54a287c08cde70fe860f7c65ff71ade24dfeedafdfea62a8a6ee57cc91950",
+      "description": "SiestaGraph implant (Officeclient.exe)"
+    },
+    {
+      "sha256": "f9b2b3f7ee55014cc8ad696263b24a21ebd3a043ed1255ac4ab6a63ad4851094",
+      "description": "SiestaGraph implant (officeup.exe)"
+    },
+    {
+      "sha256": "50c2f1bb99d742d8ae0ad7c049362b0e62d2d219b610dcf25ba50c303ccfef54",
+      "description": "SiestaGraph reference sample from YARA rule"
+    },
+    {
+      "sha256": "c283ceb230c6796d8c4d180d51f30e764ec82cfca0dfaa80ee17bb4fdf89c3e0",
+      "description": "DoorMe IIS Backdoor (Microsoft.Exchange.Entities.Content.dll)"
+    },
+    {
+      "sha256": "96b226e1dcfb8ea2155c2fa508125472c8c767569d009a881ab4c39453e4fe7f",
+      "description": "DoorMe reference sample from YARA rule"
+    },
+    {
+      "sha256": "452b08d6d2aa673fb6ccc4af6cebdcb12b5df8722f4d70d1c3491479e7b39c05",
+      "description": "ShadowPad implant (log.dll)"
+    },
+    {
+      "sha256": "54f969ce5c4be11df293db600df57debcb0bf27ecad38ba60d0e44d4439c39b6",
+      "description": "mhyprot.sys loader (kk2.exe)"
+    },
+    {
+      "sha256": "509628b6d16d2428031311d7bd2add8d5f5160e9ecc0cd909f1e82bbbb3234d6",
+      "description": "Vulnerable driver (mhyprot.sys)"
+    },
+    {
+      "sha256": "5be0045a2c86c38714ada4084080210ced8bc5b6865aef1cca658b263ff696dc",
+      "description": "Malicious DLL (APerfectDayBase.dll)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet",
+    "script"
+  ]
+}

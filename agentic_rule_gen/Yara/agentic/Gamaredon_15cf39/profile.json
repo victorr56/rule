@@ -1,0 +1,293 @@
+{
+  "malware_family": "Gamaredon",
+  "threat_actor": "Gamaredon Group",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Gamaredon Group targets Ukrainian entities via spearphishing with malicious documents using remote template injection. The macro-enabled templates execute VBA to disable security warnings, persist via a VBScript in the startup folder, and communicate with Dynamic DNS-based C2 infrastructure. The campaign has observed ties to the Pteranodon backdoor.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "\\word\\_rels\\settings.xml.rels",
+      "context": "OOXML file containing the URL to the remote malicious template.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\security.vbs",
+      "context": "VBScript file dropped by the malicious macro for persistence.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "pos.dot",
+      "context": "Name of the remote template file.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ExcelMyMacros.vba",
+      "context": "VBA file dropped by Pteranodon sample.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wordMacros.vba",
+      "context": "VBA file dropped by Pteranodon sample.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wordMacros.txt",
+      "context": "File referenced by a .NET Pteranodon sample.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKEY_CURRENT_USER\\Software\\Microsoft\\Office\\*\\Word\\Security\\AccessVBOM",
+      "context": "Registry key modified to 1 to bypass macro security settings.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKEY_CURRENT_USER\\Software\\Microsoft\\Office\\*\\Word\\Security\\VBAWarnings",
+      "context": "Registry key modified to 1 to disable macro warnings.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ШУРИК",
+      "context": "Author metadata field in lure documents and remote templates.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Reanimator Extreme Edition",
+      "context": "Company metadata field in lure documents and remote templates.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Drives(Environ(\"SystemDrive\")).SerialNumber",
+      "context": "VBA code used to retrieve the system drive serial number for victim ID.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CreateObject(\"MSXML2.XMLHTTP\")",
+      "context": "VBScript code to create an object for making HTTP requests.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "asrrCodes(i) = Asc( Mid( myPassPhrase, i + 1, 1 ) )",
+      "context": "Line from unobfuscated Pteranodon VBA code.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "explorer.exe:wscript.exe",
+      "context": "Execution of persisted VBScript from startup folder upon user logon.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "document-out.hopto.org",
+      "context": "Domain hosting the remote template (pos.dot).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "libcrash.ddns.net",
+      "context": "Domain used for C2 check-in.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "beercraft.space",
+      "context": "Pteranodon C2 Domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "skymage.fun",
+      "context": "Pteranodon C2 Domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "masseffect.space",
+      "context": "Pteranodon C2 Domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "masseffect.website",
+      "context": "Pteranodon C2 Domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "//posolreboot.php",
+      "context": "Path component of the C2 check-in URL.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://document-out.hopto.org/pos.dot",
+      "context": "Full URL for remote template download.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "141.8.195.60",
+      "context": "Remote Template Hosting IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "141.8.192.153",
+      "context": "Remote Template Hosting IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "188.225.25.50",
+      "context": "System Information Upload IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.200.241.88",
+      "context": "Pteranodon C2 IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "188.225.46.94",
+      "context": "Pteranodon C2 IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "86e0701349903105b0c346df9485dd59d85dd9463c2bee46d974ea1b1d7059d4",
+      "description": "Lure Document (docx)"
+    },
+    {
+      "sha256": "feb0596e9735e03ae929d9b5ee862da19e16e5cdf57dd2a795205e591a55940f",
+      "description": "Remote Template (pos.dot)"
+    },
+    {
+      "sha256": "c4089686965df5e52105b6eac06703aa11c4891695278446370f623d531b505e",
+      "description": "ExcelMyMacros.vba dropped by Pteranodon"
+    },
+    {
+      "sha256": "02e6e2bfaaf6e77cfaccadaf26167135c53cf2c934d17c5a83e5bbcadd85b47d",
+      "description": "wordMacros.vba dropped by Pteranodon"
+    },
+    {
+      "sha256": "2f310c5b16620d9f6e5d93db52607f21040b4829aa6110e22ac55fab659e9fa1",
+      "description": "ExcelMyMacros.txt dropped by Pteranodon"
+    },
+    {
+      "sha256": "c1524a4573bc6acbe59e559c2596975c657ae6bbc0b64f943fffca663b98a95f",
+      "description": "Pteranodon sample"
+    },
+    {
+      "sha256": "145a61a14ec6d32b105a6279cd943317b41f1d27f21ac64df61bcdd464868edd",
+      "description": "Pteranodon sample"
+    }
+  ],
+  "file_types": [
+    "document",
+    "script",
+    "pe",
+    "dotnet"
+  ]
+}

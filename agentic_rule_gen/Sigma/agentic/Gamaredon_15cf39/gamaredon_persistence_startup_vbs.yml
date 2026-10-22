@@ -1,0 +1,27 @@
+title: Gamaredon Persistence VBS Dropped in Startup Folder
+id: 50f682f9-7e77-4c31-9f9f-0c5a3d0f0461
+status: experimental
+description: Detects the creation of a VBScript file named "security.vbs" in the user's Startup folder, a technique used by Gamaredon for persistence.
+references:
+    - https://www.elastic.co/security-labs/threat-command/playing-defense-against-gamaredon-group
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.persistence
+    - attack.t1547.001
+    - attack.execution
+    - attack.t1059.005
+detection:
+    selection:
+        Image|endswith:
+            - '\winword.exe'
+            - '\excel.exe'
+            - '\powerpnt.exe'
+        TargetFilename|endswith: '\Microsoft\Windows\Start Menu\Programs\Startup\security.vbs'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
+logsource:
+    category: file_event
+    product: windows

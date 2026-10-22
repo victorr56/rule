@@ -1,0 +1,23 @@
+title: Deimos HWID File Creation
+id: 86b40291-72a3-4b62-afed-7589d9c22295
+status: experimental
+description: Detects the creation of a file with an unusually long name in the AppData\Roaming directory, which is characteristic of the Deimos implant's 'hwid' file.
+references:
+    - https://www.elastic.co/security-labs/threat-command/going-coast-to-coast-climbing-the-pyramid-with-the-deimos-implant
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.discovery
+    - attack.t1082
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\AppData\Roaming\'
+        TargetFilename|re: '\\[A-Za-z0-9_]{96,192}$'
+    condition: selection
+falsepositives:
+    - Some software may use very long, randomly-generated filenames for temporary or cache files.
+level: medium

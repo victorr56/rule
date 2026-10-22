@@ -1,0 +1,22 @@
+title: Linux BPFDoor Process Initialization
+id: 8527a2ac-e5ac-4a81-9988-753ba0f545a9
+status: experimental
+description: Detects the BPFDoor process being executed with the "-init" flag, which is used to initialize the backdoor.
+references:
+    - https://www.elastic.co/security-labs/threat-command/a-peek-behind-the-bpfdoor
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.t1059
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: 'kdmtmpflush'
+        CommandLine|contains: ' -init'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

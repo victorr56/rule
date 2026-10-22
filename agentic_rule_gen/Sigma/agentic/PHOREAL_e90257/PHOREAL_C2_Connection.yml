@@ -1,0 +1,22 @@
+title: PHOREAL/RIZZO C2 Connection
+id: 25f82218-e875-433e-b873-1cd8a9463b36
+status: experimental
+description: Detects network connections to IP addresses known to be used by the PHOREAL/RIZZO backdoor for command and control.
+references:
+    - https://www.elastic.co/security-labs/threat-command/phoreal-malware-targets-the-southeast-asian-financial-sector
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - detection.threat_hunting
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '103.75.117.250'
+    condition: selection
+falsepositives:
+    - This IP could be reassigned to a benign service in the future.
+level: high

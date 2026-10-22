@@ -1,0 +1,25 @@
+title: PHOREAL/RIZZO Loader Execution Via Control.exe
+id: b9d99723-5e98-44d5-8854-325cf62a373b
+status: experimental
+description: Detects the execution of control.exe with a specific command-line GUID argument used to load the PHOREAL/RIZZO backdoor.
+references:
+    - https://www.elastic.co/security-labs/threat-command/phoreal-malware-targets-the-southeast-asian-financial-sector
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1218.002
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\control.exe'
+        CommandLine|contains|all:
+            - 'Firewall.cpl'
+            - '{2D48D219-C306-4349-AE1F-09744DFFB5B9}'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

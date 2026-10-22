@@ -1,0 +1,278 @@
+{
+  "malware_family": "YIPPHB",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "YIPPHB is a dropper that follows a PowerShell loader stage. The loader uses Unicode icons embedded in Base64 strings as a simple substitution cipher to evade detection. YIPPHB is executed via InstallUtil and is used to deliver various RATs, such as NJRAT and LIMERAT.",
+  "mitre_techniques": [
+    "T1583",
+    "T1608",
+    "T1547.001",
+    "T1059.005",
+    "T1059.001",
+    "T1218.004",
+    "T1027"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "powershell.exe\" -command $iUqm = 'JABSAG...';$OWjuxD = [system.Text.Encoding]::Unicode.GetString( [system.Convert]::FromBase64String( $iUqm.replace('⌚⌚⌚','U') ) );$OWjuxD = $OWjuxD.replace('-¯¯--¯--¯¯', '[redacted].vbs');powershell.exe -windowstyle hidden -ExecutionPolicy Bypss -NoProfile -Command $OWjuxD",
+      "context": "Initial loader command using Unicode icons for obfuscation.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[system.Text.Encoding]::Unicode.GetString",
+      "context": "PowerShell function used to decode the second stage script.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".replace('⌚⌚⌚','U')",
+      "context": "PowerShell substitution of Unicode watch icon with 'U'.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "text2.Replace(\"▒▒▒▒\", \"A\")",
+      "context": "C# substitution of placeholder characters with 'A' in the dropper.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-¯¯--¯--¯¯",
+      "context": "Placeholder string for VBS script name in decoded PowerShell loader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "_*\\/}+/_=",
+      "context": "ASCII characters used for substitution instead of a Unicode icon.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "assembly_name",
+      "value": "YippHB",
+      "context": "Module name within the decoded dropper PE, from which it's named.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "NwgoxM.KPJaNj",
+      "context": ".NET Class name invoked by the initial PowerShell loader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PUlGKA",
+      "context": ".NET Method name invoked by the initial PowerShell loader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "TllBTiBDQVQ=",
+      "context": "Base64 encoded string for victimName 'NYAN CAT' in NJRAT configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "NJRAT",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\*.vbs",
+      "context": "Loader persists by copying itself to the user's Startup folder.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "InstallUtil.exe",
+      "context": "Used to execute the YIPPHB dropper component.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dllsica.txt",
+      "context": "Downloaded file containing Base64 encoded loader.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "pesica.txt",
+      "context": "Downloaded file containing Base64 encoded YIPPHB dropper.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "10oct8000.txt",
+      "context": "Downloaded file containing reversed, Base64 encoded NJRAT implant.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "bdw6ufv4/moc.lruynit//:sptth",
+      "context": "Reversed TinyURL for YIPPHB dropper, embedded in loader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "txt.0008tco01/1798128249382884301/325971924996365659/stnemhcatta/moc.ppadrocsid.ndc//:sptth",
+      "context": "Reversed Discord URL for RAT implant, embedded in loader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://tinyurl.com/2erph6cs",
+      "context": "URL shortener for initial loader download.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://tinyurl.com/4vfu6wd",
+      "context": "URL shortener for YIPPHB dropper download.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cdn.discordapp.com/attachments/1023798426636402818/1023798426636402818/dllsica.txt",
+      "context": "Resolved URL hosting the 'dllsica.txt' loader.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cdn.discordapp.com/attachments/1023796232872792096/1023796278213234758/pesica.txt",
+      "context": "Resolved URL hosting the 'pesica.txt' dropper.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cdn.discordapp.com/attachments/956563699429179523/1034882839428218971/10oct8000.txt",
+      "context": "URL hosting the '10oct8000.txt' NJRAT implant.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wins10ok.duckdns.org",
+      "context": "NJRAT Command and Control server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "NJRAT"
+    },
+    {
+      "kind": "ip",
+      "value": "91.241.19.49",
+      "context": "Payload hosting server.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "20.231.55.108",
+      "context": "Payload hosting server.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "212.192.246.226",
+      "context": "Payload hosting server.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "49562fda46cfa05b2a6e2cb06a5d25711c9a435b578a7ec375f928aae9c08ff2",
+      "description": "Initial loader (dllsica.bin)"
+    },
+    {
+      "sha256": "bba5f2b1c90cc8af0318502bdc8d128019faa94161b8c6ac4e424efe1165c2cf",
+      "description": "YIPPHB dropper (pesica.bin)"
+    },
+    {
+      "sha256": "1c1910375d48576ea39dbd70d6efd0dba29a0ddc9eb052cadd583071c9ca7ab3",
+      "description": "NJRAT implant (10oct8000.bin)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet",
+    "script"
+  ]
+}

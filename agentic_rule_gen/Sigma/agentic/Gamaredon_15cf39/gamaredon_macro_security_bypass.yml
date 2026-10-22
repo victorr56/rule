@@ -1,0 +1,33 @@
+title: Gamaredon Disables Office Macro Security Warnings
+id: 111f185c-19d8-4f5f-9e73-0495f2d011f0
+status: experimental
+description: Detects modification of Office registry keys to disable macro security warnings or allow programmatic access to the VBA object model, as seen in Gamaredon campaigns.
+references:
+    - https://www.elastic.co/security-labs/threat-command/playing-defense-against-gamaredon-group
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+detection:
+    selection_logic:
+        Image|endswith:
+            - '\winword.exe'
+            - '\excel.exe'
+            - '\powerpnt.exe'
+            - '\wscript.exe'
+            - '\cscript.exe'
+        Details|contains: # Covers 1, 0x1, DWORD: 0x00000001 etc.
+            - '1'
+    selection_key:
+        TargetObject|contains: '\Software\Microsoft\Office\'
+        TargetObject|endswith:
+            - '\Word\Security\AccessVBOM'
+            - '\Word\Security\VBAWarnings'
+    condition: selection_logic and selection_key
+falsepositives:
+    - System administrators or developers might legitimately change these settings, but typically not from an Office process itself.
+level: medium
+logsource:
+    category: registry_set
+    product: windows
