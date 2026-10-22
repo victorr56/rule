@@ -1,0 +1,226 @@
+{
+  "malware_family": "BlackX",
+  "threat_actor": "APT41",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "BlackX is a UEFI bootkit used by APT41, derived from the BlackLotus bootkit. It exploits the Baton Drop vulnerability (CVE-2022-21894) to bypass Secure Boot and deploy a kernel driver and user-mode payloads, including a .NET RAT and a sideloaded DLL runner. The malware uses cloud storage and a dedicated domain for C2 communications.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "C:\\ProgramData\\Intel\\inst.exe PVMDIJGKAX2 Q46F6MDLI3RX2KV1",
+      "context": "Installer execution with encrypted package and RC4 key.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "inst.exe",
+      "context": "Installer executable dropped on the victim machine.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "PVMDIJGKAX2",
+      "context": "RC4-encrypted file containing bootkit components.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Q46F6MDLI3RX2KV1",
+      "context": "RC4 key used to decrypt the PVMDIJGKAX2 installer package.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "温江区明宇网络技术服务工作室",
+      "context": "Signing certificate subject for the malicious kernel driver.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0bcdf5e0da32d68900b8b7638459d072",
+      "context": "Serial number of the certificate used to sign the malicious driver.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Returns handle to calc.exe instead of malicious file handle",
+      "context": "Kernel driver intercepts file open requests to protect bootkit files.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "TEST.Class1.RunCMD(argument_array)",
+      "context": "Method called by the .NET RAT to execute commands.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0X01",
+      "context": "Cloud C2 file suffix indicating a .NET file to execute.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0X02",
+      "context": "Cloud C2 file suffix indicating the result of a command.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SSSR",
+      "context": "Cloud C2 file suffix indicating initial system info.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "OxiDLLRunner",
+      "context": "Malicious DLL payload, obfuscated with OLLVM.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "OLLVM",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "googleupdate.exe",
+      "context": "Legitimate file abused for DLL sideloading of OxiDLLRunner.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "jcef_helper.exe",
+      "context": "Original filename of the abused 'googleupdate.exe' executable.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "v8_context_snapshot.bin",
+      "context": "Encrypted file containing shellcode and a Rust payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "create_plugin",
+      "context": "Exported function in DLLs received from C2 by the Rust payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "C:\\Users\\xdd\\Desktop",
+      "context": "Prefix of PDB path from a related FishMonger/APT41 kernel implant.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "xdd",
+      "context": "Identifier observed multiple times in BlackX bootkit payloads.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Secureboot",
+      "context": "Registry key where a flag is set to manually trigger Baton Drop patch.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "Secure-Boot-Update",
+      "context": "Scheduled task created to manually trigger the Baton Drop patch.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "www.archivetj.com",
+      "context": "C2 server for the OxiDLLRunner's Rust payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "dotnet"
+  ]
+}

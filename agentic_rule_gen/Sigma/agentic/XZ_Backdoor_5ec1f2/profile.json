@@ -1,0 +1,154 @@
+{
+  "malware_family": "XZ Backdoor",
+  "threat_actor": "JiaT75",
+  "platforms": [
+    "linux",
+    "macos"
+  ],
+  "summary": "A backdoor was surreptitiously added to XZ Utils versions 5.6.0 and 5.6.1. The malware uses a manipulated build process to modify the liblzma library, enabling it to circumvent authentication in sshd and achieve remote code execution. The compromise was discovered due to a 500ms latency increase in SSH connections.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "yolAbejyiejuvnup=Evjtgvsh5okmkAvj",
+      "context": "Potential backdoor kill-switch string found in the malicious library.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ F3 0F 1E FA 55 48 89 F5 4C 89 CE 53 89 FB 81 E7 00 00 00 80 48 83 EC 28 48 89 54 24 18 48 89 4C 24 10 }",
+      "context": "YARA rule signature for a function in liblzma used by sshd.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 8D 7C 24 08 F3 AB 48 8D 44 24 08 48 89 D1 4C 89 C7 48 89 C2 E8 ?? ?? ?? ?? 89 C2 }",
+      "context": "Unique byte pattern in backdoored liblzma, from YARA rule.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 31 C0 49 89 FF B9 16 00 00 00 4D 89 C5 48 8D 7C 24 48 4D 89 CE F3 AB 48 8D 44 24 48 }",
+      "context": "Unique byte pattern in backdoored liblzma, from YARA rule.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 4D 8B 6C 24 08 45 8B 3C 24 4C 8B 63 10 89 85 78 F1 FF FF 31 C0 83 BD 78 F1 FF FF 00 F3 AB 79 07 }",
+      "context": "Unique byte pattern in backdoored liblzma, from YARA rule.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "m4/build-to-host.m4",
+      "context": "Initial malicious code additions to the build script.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "infected.txt",
+      "context": "File detailing altered extraction and compilation code modifications.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "liblzma.so.5.6.*",
+      "context": "File name pattern for vulnerable library versions, from KQL query.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[ \"$(uname)\" = \"Linux\" ]",
+      "context": "Bash command from Stage 1 script to check for Linux environment.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sshd -D -R",
+      "context": "sshd process arguments indicating malicious activity, from EQL rule.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "sshd -> *",
+      "context": "sshd spawns an unexpected child process (not sshd), from EQL rule.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "sshd",
+      "context": "The targeted service for authentication bypass and code execution.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "xz-utils",
+      "context": "Package name containing the vulnerable liblzma library on Debian-based systems.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [],
+  "samples": [
+    {
+      "sha256": "5448850cdc3a7ae41ff53b433c2adbd0ff492515012412ee63a40d2685db3049",
+      "description": "Reference sample from YARA rule for Linux.Trojan.XZBackdoor."
+    }
+  ],
+  "file_types": [
+    "elf",
+    "script",
+    "archive"
+  ]
+}

@@ -1,0 +1,22 @@
+title: S1ngularity Malicious Javascript Execution
+id: f1e2b0da-1361-46a7-805b-800539c3e98b
+status: experimental
+description: Detects the execution of the S1ngularity post-install script 'telemetry.js' via node, which is indicative of the supply chain attack.
+references:
+    - https://www.wiz.io/blog/s1ngularity-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.t1059.007
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/node'
+        CommandLine|contains: 'telemetry.js'
+    condition: selection
+falsepositives:
+    - Legitimate, unrelated npm packages that may also use a script named 'telemetry.js'.
+level: medium

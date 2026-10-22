@@ -1,0 +1,21 @@
+title: BlackX C2 Domain Query (www.archivetj.com)
+id: f08a139a-9e11-4770-9856-32d733560737
+status: experimental
+description: Detects DNS queries for 'www.archivetj.com', a known C2 domain used by BlackX malware.
+references:
+    - https://securelist.com/uefi-bootkit-blackx/121539/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'www.archivetj.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

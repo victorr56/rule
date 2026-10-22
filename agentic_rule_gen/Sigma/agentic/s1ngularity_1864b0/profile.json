@@ -1,0 +1,172 @@
+{
+  "malware_family": "s1ngularity",
+  "threat_actor": "",
+  "platforms": [
+    "linux",
+    "macos"
+  ],
+  "summary": "s1ngularity is a malicious JavaScript post-install script (telemetry.js) distributed via compromised npm packages, primarily the Nx build system. It targets Linux and macOS developer systems to steal sensitive data including credentials, SSH keys, and crypto wallets. Stolen data is exfiltrated to attacker-created GitHub repositories on the victim's own account, which are later made public in a second phase.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "telemetry.js",
+      "context": "Malicious post-installation script in the npm package.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sudo shutdown -h 0",
+      "context": "Appended to ~/.bashrc and ~/.zshrc to cause shutdown on new terminal.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.bashrc",
+      "context": "Modified by malware to append a shutdown command.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.zshrc",
+      "context": "Modified by malware to append a shutdown command.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/inventory.txt",
+      "context": "Contains paths to sensitive files found on the victim host.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/inventory.txt.bak",
+      "context": "Backup of the sensitive file paths list.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "--dangerously-skip-permissions",
+      "context": "Flag used with AI CLI tools for reconnaissance.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "--yolo",
+      "context": "Flag used with AI CLI tools for reconnaissance.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "--trust-all-tools",
+      "context": "Flag used with AI CLI tools for reconnaissance.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "s1ngularity-repository",
+      "context": "Name of public GitHub repository for exfiltration (Phase 1).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "s1ngularity-repository-0",
+      "context": "Name of public GitHub repository for exfiltration (Phase 1).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "s1ngularity-repository-1",
+      "context": "Name of public GitHub repository for exfiltration (Phase 1).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "s1ngularity-repository-#5letters#",
+      "context": "Pattern for renamed public repositories in Phase 2.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/user/repos",
+      "context": "GitHub API endpoint used to create exfiltration repositories.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/repos/*/contents/results.b64",
+      "context": "GitHub API endpoint used to upload stolen data.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "results.b64",
+      "context": "Filename for exfiltrated data on GitHub.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.github.com",
+      "context": "Used for exfiltration API calls.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

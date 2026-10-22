@@ -1,0 +1,24 @@
+title: FORMBOOK C2 DNS Query
+id: 3e839215-d5c4-4b52-b8c1-177935749a2a
+status: experimental
+description: Detects DNS queries for domains known to be used for FORMBOOK phishing and C2 infrastructure.
+references:
+    - https://www.elastic.co/security-labs/threat-command/formbook-adopts-cab-less-approach
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.initial_access
+    - attack.t1566.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'issratech.com'
+            - 'backsjoy.com'
+            - 'leoeni.com'
+    condition: selection
+falsepositives:
+    - These domains could be sinkholed or taken over for legitimate use in the future.
+level: critical

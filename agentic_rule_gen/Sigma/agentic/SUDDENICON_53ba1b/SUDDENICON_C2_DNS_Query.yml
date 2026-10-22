@@ -1,0 +1,41 @@
+title: SUDDENICON C2 DNS Query
+id: 5970c0c8-4752-45e0-b6f7-b4d5337eb132
+status: experimental
+description: Detects DNS queries to domains known to be used by the SUDDENICON malware for command and control.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-users-protected-from-suddenicon-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName:
+            - akamaicontainer.com
+            - akamaitechcloudservices.com
+            - azuredeploystore.com
+            - azureonlinecloud.com
+            - azureonlinestorage.com
+            - dunamistrd.com
+            - glcloudservice.com
+            - journalide.org
+            - msedgepackageinfo.com
+            - msstorageazure.com
+            - msstorageboxes.com
+            - officeaddons.com
+            - officestoragebox.com
+            - pbxcloudeservices.com
+            - pbxphonenetwork.com
+            - pbxsources.com
+            - qwepoi123098.com
+            - sbmsa.wiki
+            - sourceslabs.com
+            - visualstudiofactory.com
+            - zacharryblogs.com
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

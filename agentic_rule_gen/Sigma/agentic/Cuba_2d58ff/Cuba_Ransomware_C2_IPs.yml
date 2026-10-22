@@ -1,0 +1,26 @@
+title: Cuba Ransomware C2 IP Connection
+id: 8d5a711c-22a0-4569-b570-5b20c224213d
+status: experimental
+description: Detects network connections to IP addresses known to be used as C2 or distribution servers by Cuba ransomware.
+references:
+    - https://www.elastic.co/security-labs/threat-command/cuba-ransomware-campaign-analysis
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '64.235.39.82'
+            - '108.170.31.115'
+            - '104.217.8.100'
+            - '159.203.70.39'
+            - '208.76.253.84'
+            - '38.108.119.121'
+    condition: selection
+falsepositives:
+    - These IPs may be reassigned to legitimate services in the future.
+level: high

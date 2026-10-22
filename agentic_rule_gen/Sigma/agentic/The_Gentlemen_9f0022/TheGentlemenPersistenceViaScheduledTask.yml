@@ -1,0 +1,28 @@
+title: The Gentlemen Ransomware Persistence via Scheduled Task
+id: 0c115f5c-b17d-4b8f-8d26-21876e53d5a4
+status: experimental
+description: Detects the creation of a scheduled task named "WindowsConnSvc" used by The Gentlemen ransomware affiliates to maintain persistence for a SOCKS proxy client.
+references:
+    - https://www.huntress.com/blog/the-gentlemen-ransomware-defense-evasion-ttps
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.persistence
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn WindowsConnSvc'
+            - '/tr'
+            - '\svchost32.exe'
+            - 'client'
+            - '/sc minute'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

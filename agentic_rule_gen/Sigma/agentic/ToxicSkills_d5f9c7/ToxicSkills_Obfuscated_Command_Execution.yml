@@ -1,0 +1,31 @@
+title: ToxicSkills Obfuscated Command Execution via Base64
+id: 62534a6d-2e6f-47dc-a077-44026363c1ea
+status: experimental
+description: Detects a command execution pattern used by ToxicSkills where a base64 encoded string is decoded and executed via `eval`. This is a common technique to obfuscate malicious commands executed by AI agents.
+references:
+    - https://snyk.io/blog/toxicskills-malicious-ai-agent-skills-clawhub/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.t1059.004
+    - attack.defense_evasion
+    - attack.t1027
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+            - '/zsh'
+            - '/ash'
+        CommandLine|contains|all:
+            - 'eval $('
+            - 'echo'
+            - '| base64 -d'
+    condition: selection
+falsepositives:
+    - Highly suspicious but potentially legitimate system administration or complex installation scripts.
+level: high

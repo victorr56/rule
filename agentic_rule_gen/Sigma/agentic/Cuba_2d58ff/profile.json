@@ -1,0 +1,362 @@
+{
+  "malware_family": "Cuba",
+  "threat_actor": "Cuba Ransomware",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "The Cuba Ransomware group targets organizations, gaining initial access through Exchange vulnerabilities like ProxyLogon. They deploy a range of tools including SystemBC, Cobalt Strike, and custom malware for persistence and lateral movement, before exfiltrating data and encrypting files. The BUGHATCH downloader is also used to fetch payloads, and the final ransomware appends the `.cuba` file extension.",
+  "mitre_techniques": [
+    "T1190",
+    "T1059.001",
+    "T1059.003",
+    "T1053.005",
+    "T1547.001",
+    "T1136.001",
+    "T1003.001",
+    "T1486",
+    "T1564.003",
+    "T1036.005",
+    "T1027",
+    "T1620"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": ".cuba",
+      "context": "File extension appended to encrypted files by the ransomware.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "F:\\Source\\WorkNew17\\AddUser.pdb",
+      "context": "PDB path found in the add2.exe user creation utility.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "F:\\Source\\Mosquito\\Agent\\x64\\Release\\Agent.pdb",
+      "context": "PDB path from the BUGHATCH downloader payload (Agent32.bin).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Mysql",
+      "context": "Hardcoded username created by the add2.exe persistence tool.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "KJaoifhLOaiwdhadx1@!",
+      "context": "Hardcoded password for the 'Mysql' user.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "We also inform that your databases, ftp server and file server were downloaded by us to our servers.",
+      "context": "Ransom note string from the Cuba ransomware binary.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Good day. All your files are encrypted. For decryption contact us.",
+      "context": "Ransom note string from the Cuba ransomware binary.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "SpecialAccounts\\UserList",
+      "context": "Registry key used to hide the created 'Mysql' user account.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "bkfkals",
+      "context": "The single export name of the afk.ttf (ZenPak) DLL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "TEMP%u.CMD",
+      "context": "File name pattern for dropped files from BUGHATCH downloader.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "TEMP%u.PS1",
+      "context": "File name pattern for dropped files from BUGHATCH downloader.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 81 38 46 49 44 45 75 ?? 81 78 04 4C 2E 43 41 74 }",
+      "context": "YARA pattern for Cuba ransomware, checks for 'FIDE' and 'L.CA'.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "add2.exe",
+      "context": "Persistence tool that creates a hidden user and enables RDP.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ra.exe",
+      "context": "Filename for NetSupport Manager RAT, dropped in C:\\programdata\\.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "NetSupport Manager",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "komar.ps1",
+      "context": "PowerShell script used as a stager for the BUGHATCH downloader.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "komar2.ps1",
+      "context": "PowerShell script used as a stager for the BUGHATCH downloader.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Mysql\\Downloads\\94-79.dll",
+      "context": "Malicious DLL downloaded by GoToAssist.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SEKURLSA::LogonPasswords",
+      "context": "Mimikatz module observed in memory strings for credential harvesting.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "hashdump",
+      "context": "Meterpreter module observed being used to collect the SAM database.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "Metasploit",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-windowstyle hidden -executionpolicy bypass -file",
+      "context": "PowerShell arguments used by the BUGHATCH stager.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DefenderControl.exe",
+      "context": "Utility used to disable Microsoft Defender.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Defender Control",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "http://64.235.39.82/Agent32.bin",
+      "context": "Download URL for BUGHATCH payload, found in memory strings.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mvnetworking.com",
+      "context": "Cobalt Strike C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "domain",
+      "value": "bluetechsupply.com",
+      "context": "Cobalt Strike C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "url",
+      "value": "http://108.170.31.115/add.dll",
+      "context": "Distribution URL for add.dll, a related tool.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.217.8.100",
+      "context": "C2 server for SystemBC, configured as HOST1 and HOST2.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "SystemBC"
+    },
+    {
+      "kind": "ip",
+      "value": "159.203.70.39",
+      "context": "C2 IP for afk.ttf (Metasploit payload).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "208.76.253.84",
+      "context": "IP hosting the add2.exe persistence tool.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.108.119.121",
+      "context": "Download server for Agent32.bin (BUGHATCH).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/Time/cb6zubbpio",
+      "context": "C2 URI for afk.ttf (Metasploit payload), reported as truncated.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/tor/status-vote/current/consensus",
+      "context": "URI path used by SystemBC to fetch Tor consensus data.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "SystemBC"
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "33352a38454cfc247bc7465bf177f5f97d7fd0bd220103d4422c8ec45b4d3d0e",
+      "description": "Cuba Ransomware sample referenced in YARA rule."
+    },
+    {
+      "sha256": "b495456a2239f3ba48e43ef295d6c00066473d6a7991051e1705a48746e8051f",
+      "description": "Bughatch Trojan sample referenced in YARA rule."
+    },
+    {
+      "sha256": "728994be6b928de3d1c7b49ca1c79db8656c1cf4b95a1e508a6be48c6ab407da",
+      "description": "add2.exe, persistence and user creation tool."
+    },
+    {
+      "sha256": "17edf458f7b8baae5ddef725e255d3a7bb6c960830503556f157655308895128",
+      "description": "Agent32.bin (BUGHATCH downloader)."
+    },
+    {
+      "sha256": "2e6fffad384cd6ce93cc1cde97911063e640c1953dac0507cd5f5b4b3d21bb69",
+      "description": "Agent32.bin (BUGHATCH downloader)."
+    },
+    {
+      "sha256": "43f7d739f00c2fdc67f7ab6b976565a323a181fb6570ac3d261dff197f820165",
+      "description": "afk.ttf, a variant of ZenPak/Bazar."
+    },
+    {
+      "sha256": "c24d7a93d6a5c33e673e6b0fd171701c4646e67cf2328f41739ef9b50302a02e",
+      "description": "add.dll, related to add2.exe."
+    },
+    {
+      "sha256": "5669f6a48dac80717fa5770fa3be6c18022a7633b996ccf0df6b468994085378",
+      "description": "ra.exe, a NetSupport Manager RAT sample."
+    },
+    {
+      "sha256": "3a8b7c1fe9bd9451c0a51e4122605efc98e7e4e13ed117139a13e4749e211ed0",
+      "description": "zero.exe, Zerologon exploit tool."
+    },
+    {
+      "sha256": "0f385cc69a93abeaf84994e7887cb173e889d309a515b55b2205805bdfe468a3",
+      "description": "A.exe, a Cuba ransomware sample."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

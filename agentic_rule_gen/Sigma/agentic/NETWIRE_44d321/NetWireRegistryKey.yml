@@ -1,0 +1,25 @@
+title: NetWire Registry Key Creation
+id: 56976a4a-1a84-4860-9df1-8079b76e27ec
+status: experimental
+description: Detects the creation or modification of the NetWire RAT's specific registry key by a process running from a suspicious location.
+references:
+    - https://www.elastic.co/security-labs/blog/netwire-dynamic-configuration-extraction
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.command_and_control
+    - attack.t1112
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        Image|contains:
+            - '\AppData\'
+            - '\Users\Public\'
+            - 'C:\ProgramData\'
+        TargetObject|endswith: '\SOFTWARE\NetWire'
+    condition: selection
+falsepositives:
+    - Legitimate software that uses the name 'NetWire' and is installed in or runs from one of the specified locations (unlikely).
+level: high

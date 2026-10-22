@@ -1,0 +1,22 @@
+title: BlackX Payload Drop by Sideloaded Process
+id: c5d6b412-581d-44aa-8f78-a3f8510a7110
+status: experimental
+description: Detects the creation of 'v8_context_snapshot.bin' by 'googleupdate.exe', which may indicate the BlackX sideloading host dropping a subsequent payload.
+references:
+    - https://securelist.com/uefi-bootkit-blackx/121539/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\googleupdate.exe'
+        TargetFilename|endswith: '\v8_context_snapshot.bin'
+    condition: selection
+falsepositives:
+    - Legitimate browser or Electron-based applications may create 'v8_context_snapshot.bin'. However, being created by 'googleupdate.exe' specifically is suspicious and characteristic of this attack chain.
+level: medium

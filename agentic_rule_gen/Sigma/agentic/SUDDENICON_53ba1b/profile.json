@@ -1,0 +1,388 @@
+{
+  "malware_family": "SUDDENICON",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "macos"
+  ],
+  "summary": "SUDDENICON is a payload delivered in a supply chain attack targeting users of the 3CXDesktopApp. A trojanized ffmpeg.dll loads SUDDENICON from another malicious DLL (d3dcompiler_47.dll) using a static RC4 key. The malware then contacts C2 domains, which are decoded from icon files hosted on GitHub, to download a second-stage infostealer.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "hex_pattern",
+      "value": "{ FE ED FA CE }",
+      "context": "Byte sequence marker for payload in d3dcompiler_47.dll.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "3jB(2bsG#@c7",
+      "context": "Static RC4 key used to decrypt the SUDDENICON payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "3CXDesktopApp.exe",
+      "context": "Compromised parent process initiating malicious activity.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "d3dcompiler_47.dll",
+      "context": "Trojanized library containing the SUDDENICON payload.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ffmpeg.dll",
+      "context": "Trojanized library that extracts and loads the SUDDENICON payload.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "*:\\Users\\*\\AppData\\Local\\Programs\\C3XDesktopApp\\app\\",
+      "context": "Path for dropped 'manifest' file on Windows.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "manifest",
+      "context": "File written by shellcode to implement a sleep timer.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "*/Library/Application Support/3CX Desktop App/",
+      "context": "Path for dropped files on macOS.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "UpdateAgent",
+      "context": "File written by malware on macOS.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".main_storage",
+      "context": "File written by malware on macOS.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".session-lock",
+      "context": "File written by malware on macOS.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "3CX Ltd",
+      "context": "Code signing subject for the compromised application.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Windows.Trojan.SuddenIcon",
+      "context": "Elastic detection name for the malware.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "3cxdesktopapp-18.12.407.msi",
+      "context": "Malicious installer filename.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "3cxdesktopapp-18.12.416.msi",
+      "context": "Malicious installer filename.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "3CXDesktopApp-18.11.1213.dmg",
+      "context": "Malicious installer filename.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "akamaicontainer.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "akamaitechcloudservices.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "azuredeploystore.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "azureonlinecloud.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "azureonlinestorage.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dunamistrd.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "glcloudservice.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "journalide.org",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "msedgepackageinfo.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "msstorageazure.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "msstorageboxes.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "officeaddons.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "officestoragebox.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pbxcloudeservices.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pbxphonenetwork.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pbxsources.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "qwepoi123098.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sbmsa.wiki",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sourceslabs.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "visualstudiofactory.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "zacharryblogs.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "raw.githubusercontent.com",
+      "context": "Used to stage files containing encoded C2 domains.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "7986bbaee8940da11ce089383521ab420c443ab7b15ed42aed91fd31ce833896",
+      "description": "Malicious DLL hash (ffmpeg.dll or d3dcompiler_47.dll)."
+    },
+    {
+      "sha256": "c485674ee63ec8d4e8fde9800788175a8b02d3f9416d0e763360fff7f8eb4e02",
+      "description": "Malicious DLL hash (ffmpeg.dll or d3dcompiler_47.dll)."
+    },
+    {
+      "sha256": "dde03348075512796241389dfea5560c20a3d2a2eac95c894e7bbed5e85a0acc",
+      "description": "Trojanized 3CX Windows client hash (v18.12.407)."
+    },
+    {
+      "sha256": "aa124a4b4df12b34e74ee7f6c683b2ebec4ce9a8edcf9be345823b4fdcf5d868",
+      "description": "Trojanized 3CX Windows installer hash (3cxdesktopapp-18.12.407.msi)."
+    },
+    {
+      "sha256": "fad482ded2e25ce9e1dd3d3ecc3227af714bdfbbde04347dbc1b21d6a3670405",
+      "description": "Trojanized 3CX Windows client hash (v18.12.416)."
+    },
+    {
+      "sha256": "59e1edf4d82fae4978e97512b0331b7eb21dd4b838b850ba46794d9c7a2c0983",
+      "description": "Trojanized 3CX Windows installer hash (3cxdesktopapp-18.12.416.msi)."
+    },
+    {
+      "sha256": "92005051ae314d61074ed94a52e76b1c3e21e7f0e8c1d1fdd497a006ce45fa61",
+      "description": "Trojanized 3CX macOS client hash (v18.11.1213)."
+    },
+    {
+      "sha256": "5407cda7d3a75e7b1e030b1f33337a56f293578ffa8b3ae19c671051ed314290",
+      "description": "Trojanized 3CX macOS installer hash (3CXDesktopApp-18.11.1213.dmg)."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "archive"
+  ]
+}

@@ -1,0 +1,28 @@
+title: Shai-Hulud 2.0 Container Breakout Attempt
+id: 3c5a6d33-4f0e-4b4d-910a-3c582772579b
+status: experimental
+description: Detects a specific command line used by the Shai-Hulud 2.0 malware to break out of a Docker container, mount the host's root filesystem, and add a file to the sudoers.d directory for privilege escalation.
+references:
+    - https://www.wiz.io/blog/shai-hulud-2-0-ongoing-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.privilege_escalation
+    - attack.escape_to_host
+    - attack.t1611
+    - attack.t1059.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/docker'
+        CommandLine|contains|all:
+            - '--privileged'
+            - '-v /:/host'
+            - 'cp /host/tmp/runner'
+            - '/host/etc/sudoers.d/runner'
+    condition: selection
+falsepositives:
+    - Highly specific administrative or testing activity that mirrors this exact command structure, which is extremely unlikely.
+level: critical

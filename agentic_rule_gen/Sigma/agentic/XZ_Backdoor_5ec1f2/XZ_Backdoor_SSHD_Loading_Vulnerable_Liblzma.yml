@@ -1,0 +1,25 @@
+title: Suspicious SSHD Loading Vulnerable Liblzma Version (XZ Backdoor)
+id: cb14c5c2-f198-4a5c-9d62-8178a4c82c2a
+status: experimental
+description: Detects the sshd process loading a vulnerable version of the liblzma library (5.6.0 or 5.6.1), which is a strong indicator of the XZ backdoor (CVE-2024-3094).
+references:
+    - https://www.elastic.co/security-labs/threat-command/500ms-to-midnight
+    - https://nvd.nist.gov/vuln/detail/CVE-2024-3094
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.t1556
+    - attack.t1574.006
+logsource:
+    category: image_load
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/sshd'
+        ImageLoaded|contains:
+            - 'liblzma.so.5.6.0'
+            - 'liblzma.so.5.6.1'
+    condition: selection
+falsepositives:
+    - Unlikely. Legitimate use of these specific vulnerable versions with sshd is possible but indicates a vulnerable system that should be investigated and patched immediately.
+level: critical

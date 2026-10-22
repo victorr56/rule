@@ -1,0 +1,408 @@
+{
+  "malware_family": "PARALLAX",
+  "threat_actor": "REF2731",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "REF2731 uses the PARALLAX loader in maldoc campaigns to deliver the NETWIRE RAT. The loader chain begins with a macro downloading components for DLL side-loading via a legitimate Microsoft binary (MsiDb.exe). It uses steganography in PNG files and direct syscalls for process injection to evade detection, with persistence established via a scheduled task.",
+  "mitre_techniques": [
+    "T1583.001",
+    "T1566.001",
+    "T1574.002",
+    "T1055",
+    "T1053.005",
+    "T1106",
+    "T1027.002",
+    "T1548.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\MsiDb.exe",
+      "context": "Macro saves downloaded components to the AppData directory.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "MsiDb.exe",
+      "context": "Legitimate tool abused to side-load malicious msi.dll.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "MsiDb.exe",
+      "context": "Anti-analysis check; malware exits if current process is not MsiDb.exe.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "msi.dll",
+      "context": "Malicious DLL side-loaded by MsiDb.exe in Campaign 1.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "cs16.wav",
+      "context": "XOR encrypted shellcode payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "paper.png",
+      "context": "Steganographic container for NETWIRE and PARALLAX loader stager.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "cs16.cfg",
+      "context": "Configuration file containing location of the next stage PNG file.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "cmd.exe",
+      "context": "Target process for shellcode injection.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "CMSTPLUA",
+      "context": "COM interface used for UAC bypass.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "Msidb.exe",
+      "context": "Persistence mechanism to run the loader.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Как я искал Гантмахера",
+      "context": "H1 Word document header in lure documents.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "msvcr100.dll",
+      "context": "Malicious DLL side-loaded in Campaign 2.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Fruit.png",
+      "context": "Steganographic container in Campaign 2.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "idea.cfg",
+      "context": "Configuration file in Campaign 2.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "idea.mp3",
+      "context": "Shellcode container in Campaign 2 (disguised as MP3).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ B9 01 00 00 00 6B D1 00 C6 44 15 D4 83 B8 01 00 00 00 C1 E0 00 C6 44 05 D4 B6 B9 01 00 00 00 D1 E1 C6 44 0D D4 33 BA 01 00 00 00 6B C2 03 C6 44 05 D4 28 B9 01 00 00 00 C1 E1 02 C6 44 0D D4 36 BA 01 00 00 00 6B C2 05 C6 44 05 D4 6B B9 01 00 00 00 6B D1 06 C6 44 15 D4 90 B8 01 00 00 00 6B C8 07 C6 44 0D D4 97 }",
+      "context": "YARA rule $COM_png for PARALLAX.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 8B 4D ?? 8B 04 B8 85 C9 74 ?? 8B F1 90 8A 08 8D 40 ?? 88 0C 1A 42 83 EE ?? 75 ?? 8B 4D ?? 8B 45 ?? 47 3B 7D ?? 72 ?? }",
+      "context": "YARA rule $png_parse for PARALLAX.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ C7 45 F8 68 74 74 70 8B ?? ?? 8B 02 89 ?? ?? 6A 08 8D ?? ?? 51 E8 ?? ?? ?? ?? 83 C4 08 8B ?? ?? 52 8D ?? ?? 50 8B ?? ?? 8B 51 0C FF D2 }",
+      "context": "YARA rule $config_func for PARALLAX.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Clipboard Start",
+      "context": "String found in PARALLAX payload.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[Clipboard End]",
+      "context": "String found in PARALLAX payload.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "UN.vbs",
+      "context": "Filename string found in PARALLAX payload.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".DeleteFile(Wscript.ScriptFullName)",
+      "context": "VBScript string found in PARALLAX payload.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "russnet123@protonmail.com",
+      "context": "Admin email address for PARALLAX loader domains.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "chisholm.i@aol.com",
+      "context": "Registration email for NETWIRE C2 domain septton.com.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "marketforce666@yandex.com",
+      "context": "Registration email for NETWIRE C2 domain septton.com.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "gaza666",
+      "context": "Moniker associated with chisholm.i@aol.com.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "digitialrotprevention.com",
+      "context": "Campaign 1 macro download domain for PARALLAX loader.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "internationalmusicservices.com",
+      "context": "Campaign 1 macro download domain for PARALLAX loader.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "globalartisticservices.com",
+      "context": "Campaign 1 macro download domain for PARALLAX loader.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ohioohioa.com",
+      "context": "NETWIRE C2 domain shared by Campaign 1 and 2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ywiyr.com",
+      "context": "Campaign 1 NETWIRE C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "septton.com",
+      "context": "Campaign 1 NETWIRE C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "solro14.s3.ap-northeast-3.amazonaws.com",
+      "context": "Campaign 2 macro download domain for PARALLAX loader.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "micsupportcenter.com",
+      "context": "Additional malicious domain linked to Campaign 1 infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mikemikemic.com",
+      "context": "Domain registered by marketforce666@yandex.com.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ppl-biz.com",
+      "context": "Domain registered by marketforce666@yandex.com.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "opnarchitect.net",
+      "context": "Domain registered by marketforce666@yandex.com.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "bc9f19ae835d975de9aaea7d233b6ea9b2bc30f80d192af2e8e68542b588917e",
+      "description": "Brian_Tax_Docs.doc lure document (Campaign 1)"
+    },
+    {
+      "sha256": "d70365481fb4806130743afd199697eb981a0eb2756754ecc548f5b30c2203a5",
+      "description": "VIRGINIA-TAX-RETURN-2021-US-EXT.doc lure document (Campaign 1)"
+    },
+    {
+      "sha256": "16227f50bbe42a13a2abf0bf0e146f356863de59525c54909ea8ccc2db448f77",
+      "description": "msi.dll PARALLAX loader / NETWIRE (Campaign 1)"
+    },
+    {
+      "sha256": "0c8c431a1f589fdcf453c7afada63c2e2e2a887e49abdbb222983fa6044fdf66",
+      "description": "cs16.wav (shellcode)"
+    },
+    {
+      "sha256": "6ed65beb692301af5296ba6751063ae40e91c4e69ced43560c67ce58165c36b5",
+      "description": "cs16.cfg (config for PNG stage)"
+    },
+    {
+      "sha256": "5f259757741757c78bfb9dab2cd558aaa8403951c1495dc86735ca73c33d877f",
+      "description": "paper.png (stager for NETWIRE)"
+    },
+    {
+      "sha256": "32fc0d1ad678133c7ae456ecf66c3fcf97e43abc2fdfce3ad3dce66af4841f35",
+      "description": "2021-Individual-Tax-Form.doc lure document (Campaign 2)"
+    },
+    {
+      "sha256": "443879ee2cb3d572bb928d0831be0771c7120968e442bafe713a6e0f803e8cd9",
+      "description": "msvcr100.dll PARALLAX loader / NETWIRE (Campaign 2)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "document"
+  ]
+}

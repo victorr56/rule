@@ -1,0 +1,25 @@
+title: REF2731/PARALLAX Msidb.exe Scheduled Task Persistence
+id: a01b9796-03f5-4e0e-8f5c-8df09e3a64d1
+status: experimental
+description: Detects the creation of a scheduled task that executes MsiDb.exe, a technique used by the PARALLAX loader for persistence.
+references:
+    - https://www.elastic.co/security-labs/threat-command/exploring-the-ref2731-intrusion-set
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.persistence
+    - attack.execution
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - 'Msidb.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

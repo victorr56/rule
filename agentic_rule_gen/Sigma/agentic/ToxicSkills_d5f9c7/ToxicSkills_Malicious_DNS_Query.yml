@@ -1,0 +1,21 @@
+title: ToxicSkills Malicious AI Skill Repository DNS Query
+id: e461c32d-9447-4f4c-9f88-be0cbe7f7358
+status: experimental
+description: Detects DNS queries for `clawhub.ai`, a domain known to host malicious AI agent skills related to the ToxicSkills campaign.
+references:
+    - https://snyk.io/blog/toxicskills-malicious-ai-agent-skills-clawhub/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'clawhub.ai'
+    condition: selection
+falsepositives:
+    - Unlikely, as the domain is specifically associated with malicious content in the source report.
+level: high

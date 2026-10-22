@@ -1,0 +1,26 @@
+title: BlackX Bootkit Installer Execution
+id: 597280fe-f844-48ac-b08e-b96906f368f5
+status: experimental
+description: Detects the execution of the BlackX bootkit installer with its specific command-line arguments.
+references:
+    - https://securelist.com/uefi-bootkit-blackx/121539/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.t1059.003
+    - attack.persistence
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\inst.exe'
+        CommandLine|contains|all:
+            - 'PVMDIJGKAX2'
+            - 'Q46F6MDLI3RX2KV1'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

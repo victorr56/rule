@@ -1,0 +1,26 @@
+title: SUDDENICON Tainted 3CXDesktopApp Module Load
+id: d769c0d3-3563-4c07-b648-b0a7ed410313
+status: experimental
+description: Detects the loading of the malicious 'd3dcompiler_47.dll' by the trojanized '3CXDesktopApp.exe'. This is a core behavior of the SUDDENICON supply chain attack, where a legitimate application loads a malicious DLL from its application directory instead of the legitimate system path.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-users-protected-from-suddenicon-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1574.002
+logsource:
+    product: windows
+    category: image_load
+detection:
+    selection:
+        Image|endswith: '\3CXDesktopApp.exe'
+        ImageLoaded|endswith: '\d3dcompiler_47.dll'
+    filter:
+        ImageLoaded|startswith:
+            - 'C:\Windows\System32\'
+            - 'C:\Windows\SysWOW64\'
+    condition: selection and not filter
+falsepositives:
+    - Unlikely
+level: critical

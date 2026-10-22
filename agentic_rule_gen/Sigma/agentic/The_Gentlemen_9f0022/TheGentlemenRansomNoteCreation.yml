@@ -1,0 +1,22 @@
+title: The Gentlemen Ransom Note Creation
+id: c3c9c9e8-8b9a-4c2f-b45d-4f1e0c2d3a3b
+status: experimental
+description: Detects the creation of the ransom note file "README-GENTLEMEN.txt" by The Gentlemen ransomware.
+references:
+    - https://www.huntress.com/blog/the-gentlemen-ransomware-defense-evasion-ttps
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.impact
+    - attack.t1486
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\AppData\Roaming\svchost.exe'
+        TargetFilename|endswith: '\README-GENTLEMEN.txt'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

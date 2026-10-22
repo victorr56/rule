@@ -1,0 +1,104 @@
+{
+  "malware_family": "LapDogs ORB",
+  "threat_actor": "Chinese-nexus",
+  "platforms": [
+    "windows",
+    "network_device"
+  ],
+  "summary": "Campaign by Chinese-nexus actors exploiting internet-facing devices like Trimble Cityworks (CVE-2025-0994) to deliver payloads like z44.exe. The activity uses a C2 infrastructure called the LapDogs ORB network, which has used TLS certificates spoofing law enforcement.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "certificate_subject",
+      "value": "CN=ROOT,OU=Police department,O=LAPD,L=LA,ST=California,C=US",
+      "context": "TLS certificate details for LapDogs ORB C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "z44.exe",
+      "context": "Malicious file download linked to CVE-2025-0994 exploitation.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "systemd-log",
+      "context": "Filename of possible ShortLeash payload.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "www.northumbra.com",
+      "context": "Command and Control (C2) server for LapDogs ORB network.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.131.189.2",
+      "context": "C2 server, observed December 2024 & June 2025.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.106.230.31",
+      "context": "C2 server, observed December 2024.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "154.223.20.56",
+      "context": "Possible C2 server, observed December 2024.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.60.214.23",
+      "context": "Possible C2 server, observed January & February 2025.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://154.223.20.58:1346/systemd-log",
+      "context": "Download URL for possible ShortLeash payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://192.210.239.172:3219/z44.exe",
+      "context": "Download URL linked to CVE-2025-0994 exploitation.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

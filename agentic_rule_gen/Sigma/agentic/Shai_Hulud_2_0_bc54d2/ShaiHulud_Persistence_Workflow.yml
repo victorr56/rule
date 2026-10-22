@@ -1,0 +1,26 @@
+title: Shai-Hulud 2.0 Persistence via GitHub Workflow
+id: 5e62f7d9-c4a0-4a88-81e1-e6a6a9b40f2b
+status: experimental
+description: Detects the creation of a specific GitHub workflow file named "discussion.yaml", which is used by the Shai-Hulud 2.0 malware to establish a persistent backdoor.
+references:
+    - https://www.wiz.io/blog/shai-hulud-2-0-ongoing-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.persistence
+    - attack.t1127.001
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        Image|endswith:
+            - '\python.exe'
+            - '\node.exe'
+            - '\pip.exe'
+            - '\npm.cmd'
+        TargetFilename|endswith: '.github\workflows\discussion.yaml'
+    condition: selection
+falsepositives:
+    - Legitimate automation scripts (e.g., Python, Node.js) that create a GitHub workflow file named 'discussion.yaml'.
+level: high

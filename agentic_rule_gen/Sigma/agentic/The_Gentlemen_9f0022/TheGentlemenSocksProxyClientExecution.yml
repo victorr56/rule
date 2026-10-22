@@ -1,0 +1,27 @@
+title: The Gentlemen SOCKS Proxy Client Execution
+id: f47a61d1-678c-4f81-9b1d-c4b4d6a1b2c2
+status: experimental
+description: Detects the execution of a SOCKS proxy client masquerading as 'svchost32.exe' from the 'C:\Windows\Temp' directory, a technique used by The Gentlemen ransomware affiliates for command and control.
+references:
+    - https://www.huntress.com/blog/the-gentlemen-ransomware-defense-evasion-ttps
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1090.002
+    - attack.masquerading
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image: 'C:\Windows\Temp\svchost32.exe'
+        CommandLine|contains|all:
+            - 'client'
+            - 'R:'
+            - ':socks'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

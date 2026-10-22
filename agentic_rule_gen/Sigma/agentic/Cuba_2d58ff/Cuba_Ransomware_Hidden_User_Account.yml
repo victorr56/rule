@@ -1,0 +1,26 @@
+title: Cuba Ransomware Hiding 'Mysql' User Account
+id: 6b567b43-2287-4348-8ef7-a0d0d47348e4
+status: experimental
+description: Detects the registry modification used by Cuba ransomware to hide the 'Mysql' user account from the login screen.
+references:
+    - https://www.elastic.co/security-labs/threat-command/cuba-ransomware-campaign-analysis
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1564.003
+    - attack.persistence
+    - attack.t1136.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains|all:
+            - '\Winlogon\SpecialAccounts\UserList\'
+            - 'Mysql'
+        Details: '0'
+    condition: selection
+falsepositives:
+    - Legitimate administrative activity creating a hidden user named 'Mysql', which is highly unlikely.
+level: high

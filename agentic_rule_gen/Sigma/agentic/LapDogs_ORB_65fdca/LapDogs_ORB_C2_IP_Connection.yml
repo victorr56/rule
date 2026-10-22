@@ -1,0 +1,24 @@
+title: LapDogs ORB C2 Network Connection
+id: 1113835f-1413-4c57-a87f-3b7c4d519b5e
+status: experimental
+description: Detects network connections to IP addresses known to be part of the LapDogs ORB C2 infrastructure.
+references:
+    - https://www.darktrace.com/blog/2025-cyber-threat-landscape-darktraces-mid-year-review
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+detection:
+    selection:
+        DestinationIp:
+            - '103.131.189.2'
+            - '103.106.230.31'
+            - '154.223.20.56'
+            - '38.60.214.23'
+    condition: selection
+falsepositives:
+    - Connections to these IPs if they are reallocated to benign services in the future.
+level: high

@@ -1,0 +1,22 @@
+title: LapDogs ORB ShortLeash Payload Download (systemd-log)
+id: c71c6dd1-6c2e-4b6f-87d2-7634f59e9526
+status: experimental
+description: Detects the download of systemd-log, a possible ShortLeash payload associated with LapDogs ORB, from a known malicious URL.
+references:
+    - https://www.darktrace.com/blog/2025-cyber-threat-landscape-darktraces-mid-year-review
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationIp: '154.223.20.58'
+        DestinationPort: 1346
+        Url|endswith: '/systemd-log'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

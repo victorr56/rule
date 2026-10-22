@@ -1,0 +1,22 @@
+title: FORMBOOK Masquerading as DllhostSvc.exe
+id: 5b7d6b3a-2f0c-457e-97a7-531063df478d
+status: experimental
+description: Detects the execution of "dllhostSvc.exe" from a user's AppData\Local directory, a behavior observed in FORMBOOK infections where the malware masquerades as a legitimate system file.
+references:
+    - https://www.elastic.co/security-labs/threat-command/formbook-adopts-cab-less-approach
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\dllhostSvc.exe'
+        Image|contains: '\AppData\Local\'
+    condition: selection
+falsepositives:
+    - Legitimate 'dllhost.exe' resides in the System32 directory. The name 'dllhostSvc.exe' is not standard.
+level: high

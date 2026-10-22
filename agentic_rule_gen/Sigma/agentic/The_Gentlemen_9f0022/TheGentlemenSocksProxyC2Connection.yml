@@ -1,0 +1,23 @@
+title: The Gentlemen SOCKS Proxy C2 Connection
+id: 9e0b1f3c-5c8e-4a4b-9f9a-1c8e7d6b5a4a
+status: experimental
+description: Detects network connections to IP addresses known to be used by The Gentlemen ransomware affiliates for their SOCKS proxy C2 infrastructure.
+references:
+    - https://www.huntress.com/blog/the-gentlemen-ransomware-defense-evasion-ttps
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1090.002
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '193.233.202.17'
+            - '77.110.122.137'
+    condition: selection
+falsepositives:
+    - Unlikely, but these IPs may be reassigned in the future.
+level: high

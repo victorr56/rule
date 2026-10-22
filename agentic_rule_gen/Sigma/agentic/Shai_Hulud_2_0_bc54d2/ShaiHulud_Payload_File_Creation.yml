@@ -1,0 +1,27 @@
+title: Shai-Hulud 2.0 Payload File Creation
+id: b4c1e2f3-a5d6-4e7f-b8d9-a0b1c2d3e4f5
+status: experimental
+description: Detects the creation of JavaScript payload files named "setup_bun.js" or "bun_environment.js", associated with the Shai-Hulud 2.0 campaign.
+references:
+    - https://www.wiz.io/blog/shai-hulud-2-0-ongoing-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.execution
+    - attack.t1059.007
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\node.exe'
+            - '\npm.cmd'
+            - '\npx.cmd'
+        TargetFilename|endswith:
+            - '\setup_bun.js'
+            - '\bun_environment.js'
+    condition: selection
+falsepositives:
+    - Legitimate setup or environment files related to the "Bun" JavaScript runtime toolkit.
+level: medium

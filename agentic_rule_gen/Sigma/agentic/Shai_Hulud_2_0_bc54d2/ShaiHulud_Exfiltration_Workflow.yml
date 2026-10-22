@@ -1,0 +1,23 @@
+title: Shai-Hulud 2.0 Exfiltration via GitHub Workflow
+id: 8d1f0c45-2e3b-477d-8f9a-11267e89c0a9
+status: experimental
+description: Detects the creation of a GitHub workflow file matching the pattern "formatter_*.yml" used by Shai-Hulud 2.0 to exfiltrate secrets.
+references:
+    - https://www.wiz.io/blog/shai-hulud-2-0-ongoing-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.exfiltration
+    - attack.t1537
+    - attack.t1127.001
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        TargetFilename|startswith: '.github\workflows\formatter_'
+        TargetFilename|endswith: '.yml'
+    condition: selection
+falsepositives:
+    - Unlikely, but possible if a developer legitimately creates a workflow file following this specific naming convention.
+level: high

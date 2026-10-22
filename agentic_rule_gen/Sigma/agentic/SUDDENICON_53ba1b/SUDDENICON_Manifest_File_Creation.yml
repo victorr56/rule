@@ -1,0 +1,22 @@
+title: SUDDENICON 'manifest' File Creation
+id: f549a997-c8a8-444f-b676-e17578a4879b
+status: experimental
+description: Detects the creation of a 'manifest' file in a subdirectory of the 3CXDesktopApp installation path, a behavior observed with the SUDDENICON malware.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-users-protected-from-suddenicon-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - detection.threat_hunting
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        Image|endswith: '\3CXDesktopApp.exe'
+        TargetFilename|endswith: '\Programs\C3XDesktopApp\app\manifest'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,25 @@
+title: S1ngularity Data Exfiltration via GitHub API
+id: a7d0c3d9-6c39-445a-8b89-a2e9b0ab83b5
+status: experimental
+description: Detects HTTP PUT requests that match the API pattern used by the S1ngularity malware to exfiltrate stolen data to GitHub as a file named 'results.b64'. This detection is generalized to avoid depending on the specific shared platform.
+references:
+    - https://www.wiz.io/blog/s1ngularity-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.exfiltration
+    - attack.t1567.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        # S1ngularity malware exfiltrates data via PUT request to https://api.github.com/repos/{owner}/{repo}/contents/results.b64
+        # This rule detects the path components and HTTP method to avoid matching on the generic 'api.github.com' domain.
+        cs-method: 'PUT'
+        Url|contains|all:
+            - '/repos/'
+            - '/contents/results.b64'
+    condition: selection
+falsepositives:
+    - Legitimate developer tools that use a similar API call pattern to upload a file with the same name to a Git repository API (e.g., on GitLab, etc.).
+level: medium

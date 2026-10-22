@@ -1,0 +1,23 @@
+title: BlackX OxiDLLRunner Sideloading via GoogleUpdate.exe
+id: 86b72f10-2a81-4252-aa38-c646061329c3
+status: experimental
+description: Detects the loading of the malicious OxiDLLRunner payload by a process named 'googleupdate.exe', a technique used by BlackX.
+references:
+    - https://securelist.com/uefi-bootkit-blackx/121539/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1574.002
+    - detection.threat_hunting
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\googleupdate.exe'
+        ImageLoaded|contains: 'OxiDLLRunner'
+    condition: selection
+falsepositives:
+    - Legitimate 'googleupdate.exe' is not expected to load a DLL with 'OxiDLLRunner' in its name.
+level: high

@@ -1,0 +1,30 @@
+title: S1ngularity Staging File Creation
+id: 5c91b1d3-3b1a-4f4d-8d4e-28b9c8c5a2c7
+status: experimental
+description: Detects the command used by the S1ngularity malware to stage lists of sensitive files for exfiltration.
+references:
+    - https://www.wiz.io/blog/s1ngularity-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.collection
+    - attack.t1074.001
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+        CommandLine|contains|all:
+            - 'find /'
+            - '-type f'
+            - '-name "*.key"'
+            - '-o -name "*.pem"'
+            - '-o -name "*.config"'
+            - ' > /tmp/inventory.txt'
+    condition: selection
+falsepositives:
+    - Custom system administration scripts that search for configuration or key files and output to a similarly named file.
+level: high

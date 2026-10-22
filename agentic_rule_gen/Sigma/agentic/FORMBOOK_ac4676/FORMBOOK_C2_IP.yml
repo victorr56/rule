@@ -1,0 +1,22 @@
+title: FORMBOOK C2 Network Connection
+id: 11f2619c-859a-4712-8700-111451f496eb
+status: experimental
+description: Detects network connections to an IP address known to be used as a command and control (C2) server by FORMBOOK.
+references:
+    - https://www.elastic.co/security-labs/threat-command/formbook-adopts-cab-less-approach
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '104.244.78.177'
+    condition: selection
+falsepositives:
+    - This IP address could be reassigned or used for legitimate purposes in the future.
+level: critical

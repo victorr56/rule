@@ -1,0 +1,324 @@
+{
+  "malware_family": "Shai-Hulud 2.0",
+  "threat_actor": "Unknown (Shai-Hulud campaign)",
+  "platforms": [
+    "windows",
+    "linux",
+    "macos",
+    "multi"
+  ],
+  "summary": "Shai-Hulud 2.0 is a supply-chain attack campaign compromising hundreds of npm packages to steal secrets. The malware, executed via `preinstall` scripts, exfiltrates developer, CI/CD, and cloud credentials to public GitHub repositories. It also establishes a persistence backdoor by registering the compromised machine as a self-hosted GitHub runner.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": ".github/workflows/discussion.yaml",
+      "context": "Backdoor workflow file created by the malware to enable persistence.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "setup_bun.js",
+      "context": "New payload file name used in this variant of the malware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "bun_environment.js",
+      "context": "New payload file name used in this variant of the malware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".github/workflows/formatter_123456789.yml",
+      "context": "Workflow file created by the malware to exfiltrate GitHub secrets.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "cloud.json",
+      "context": "File created by the malware during its execution.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "contents.json",
+      "context": "File created by the malware during its execution.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "environment.json",
+      "context": "File created by the malware during its execution.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "truffleSecrets.json",
+      "context": "File created by the malware during its execution.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "actionsSecrets.json",
+      "context": "File containing exfiltrated GitHub secrets in the exfiltration repositories.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SHA1HULUD",
+      "context": "Name given to the self-hosted GitHub runner registered by the malware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "add-linter-workflow-",
+      "context": "Prefix for the newly created branch name pattern used for exfiltration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Sha1-Hulud: The Continued Coming",
+      "context": "Description used for repositories in the second phase of the attack.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "F**K Guillermo, F**K VERCEL --multi",
+      "context": "Updated GitHub repository description seen in the campaign.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Discussion Create",
+      "context": "Name of the backdoor workflow defined in discussion.yaml.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "runs-on: self-hosted",
+      "context": "Key configuration in backdoor workflow to target the compromised runner.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Add Discusion",
+      "context": "Commit message used when adding the discussion.yaml workflow.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Code Formatter",
+      "context": "Name of the exfiltration workflow.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "formatting",
+      "context": "Name of the artifact created to store exfiltrated GitHub secrets.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "docker run --rm --privileged -v /:/host ubuntu bash -c \"cp /host/tmp/runner /host/etc/sudoers.d/runner\"",
+      "context": "Command used for container breakout to gain root privileges on host.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "echo ${{ github.event.discussion.body }}",
+      "context": "Backdoor execution command within the discussion.yaml workflow.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "BUILDKITE",
+      "context": "Environment variable checked for CI environment detection.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "GITHUB_ACTIONS",
+      "context": "Environment variable checked for CI environment detection.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "CODEBUILD_BUILD_NUMBER",
+      "context": "Environment variable checked for CI environment detection.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "CIRCLE_SHA1",
+      "context": "Environment variable checked for CI environment detection.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "@postman/tunnel-agent",
+      "context": "Compromised npm package, versions 0.6.5, 0.6.6, 0.6.7.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "posthog-node",
+      "context": "Compromised npm package, versions 5.13.3, 5.11.3, 4.18.1.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "@asyncapi/specs",
+      "context": "Compromised npm package, versions 6.9.1, 6.10.1, 6.8.3, 6.8.2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "get-them-args",
+      "context": "Compromised npm package, version 1.3.3.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://discord.gg/AJDsM7jtbq",
+      "context": "URL advertised in malicious GitHub repository descriptions.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.airforce",
+      "context": "Domain advertised in malicious GitHub repository descriptions.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/repos/{owner}/{repo}/contents/{path}",
+      "context": "GitHub API endpoint used to write files into a repository.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

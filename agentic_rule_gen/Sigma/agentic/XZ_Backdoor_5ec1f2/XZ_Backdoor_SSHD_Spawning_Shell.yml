@@ -1,0 +1,36 @@
+title: Suspicious Shell Spawned By SSHD (XZ Backdoor)
+id: 5b6c8b3d-1a2c-4e8f-8d9b-c7f6a5b4c3d2
+status: experimental
+description: Detects the `sshd` process spawning a shell process (e.g., sh, bash), which is highly anomalous. This behavior can be indicative of the post-exploitation stage of the XZ backdoor (CVE-2024-3094), where the compromised `sshd` is used to execute arbitrary commands.
+references:
+    - https://www.elastic.co/security-labs/threat-command/500ms-to-midnight
+    - https://nvd.nist.gov/vuln/detail/CVE-2024-3094
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.t1059.004
+    - attack.execution
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        ParentImage|endswith:
+            - '/sbin/sshd'
+            - '/usr/sbin/sshd'
+            - '/usr/bin/sshd'
+        Image|endswith:
+            - '/bin/sh'
+            - '/bin/bash'
+            - '/bin/dash'
+            - '/bin/ksh'
+            - '/bin/zsh'
+            - '/usr/bin/sh'
+            - '/usr/bin/bash'
+            - '/usr/bin/dash'
+            - '/usr/bin/ksh'
+            - '/usr/bin/zsh'
+    condition: selection
+falsepositives:
+    - Legitimate but unusual system configurations, such as certain PAM modules or `ForceCommand` directives in `sshd_config`, might spawn shells from sshd.
+level: high

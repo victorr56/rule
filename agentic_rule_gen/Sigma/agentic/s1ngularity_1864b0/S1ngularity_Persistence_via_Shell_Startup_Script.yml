@@ -1,0 +1,29 @@
+title: S1ngularity Persistence via Shell Startup Script
+id: b925e0c8-47e2-49ac-92d5-455b57f02868
+status: experimental
+description: Detects the command used by S1ngularity to add a disruptive shutdown command to user shell startup files (.bashrc, .zshrc) for persistence.
+references:
+    - https://www.wiz.io/blog/s1ngularity-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.persistence
+    - attack.t1546.004
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+            - '/zsh'
+        CommandLine|contains|all:
+            - 'echo'
+            - 'sudo shutdown -h 0'
+            - '>>'
+            - 'rc'  # Catches .bashrc and .zshrc
+    condition: selection
+falsepositives:
+    - An administrator manually running this exact, specific command to add a shutdown hook, which is highly unlikely.
+level: high

@@ -1,0 +1,23 @@
+title: LapDogs ORB Payload Execution From IIS Worker Process
+id: 57444155-7589-4b67-8547-efb191630b91
+status: experimental
+description: Detects the execution of z44.exe, a payload associated with LapDogs ORB, when spawned by the IIS worker process w3wp.exe. This pattern is indicative of exploitation of a web vulnerability, such as CVE-2025-0994 in Trimble Cityworks.
+references:
+    - https://www.darktrace.com/blog/2025-cyber-threat-landscape-darktraces-mid-year-review
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.initial_access
+    - attack.t1190
+    - attack.execution
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\z44.exe'
+        ParentImage|endswith: '\w3wp.exe'
+    condition: selection
+falsepositives:
+    - Legitimate applications named `z44.exe` spawned by IIS for an administrative purpose.
+level: high

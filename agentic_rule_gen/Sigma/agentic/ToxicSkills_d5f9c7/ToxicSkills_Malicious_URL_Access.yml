@@ -1,0 +1,29 @@
+title: ToxicSkills Malicious AI Skill Repository URL Access
+id: 59eb07fc-8f74-4bca-8422-7711200fa447
+status: experimental
+description: Detects proxy requests for URLs on clawhub.ai known to host malicious AI agent skills related to the ToxicSkills campaign.
+references:
+    - https://snyk.io/blog/toxicskills-malicious-ai-agent-skills-clawhub/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname: 'clawhub.ai'
+        Url|contains:
+            - '/zaycv/clawhud'
+            - '/zaycv/clawhub1'
+            - '/Aslaep123/polymarket-traiding-bot'
+            - '/Aslaep123/base-agent'
+            - '/Aslaep123/bybit-agent'
+            - '/moonshine-100rze/moltbook-lm8'
+            - '/pepe26/moltbookagent'
+            - '/pepe26/publish-dist'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

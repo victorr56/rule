@@ -1,0 +1,28 @@
+title: The Gentlemen Disables Microsoft Defender via PowerShell
+id: 5d2a9f4e-2a8b-4a3d-8e4f-2d7c6b5a4a3d
+status: experimental
+description: Detects a PowerShell command used by The Gentlemen affiliates to disable Microsoft Defender's real-time monitoring and the WinDefend service.
+references:
+    - https://www.huntress.com/blog/the-gentlemen-ransomware-defense-evasion-ttps
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'Set-MpPreference'
+            - '-DisableRealtimeMonitoring $true'
+            - 'Stop-Service'
+            - 'WinDefend'
+            - 'Set-Service'
+            - '-StartupType Disabled'
+    condition: selection
+falsepositives:
+    - Legitimate administrative scripts that perform the same sequence of actions, although this combination is highly suspicious.
+level: high

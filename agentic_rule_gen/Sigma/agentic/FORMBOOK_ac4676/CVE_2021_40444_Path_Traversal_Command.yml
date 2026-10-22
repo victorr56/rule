@@ -1,0 +1,32 @@
+title: Potential CVE-2021-40444 Exploitation via Path Traversal
+id: 8b010c2e-4b95-4b3e-8c66-6b6f7560a6f8
+status: experimental
+description: Detects command-line arguments containing 'cpl:..' or 'wsf:..', which are indicative of path traversal attempts related to CVE-2021-40444. This technique was used in FORMBOOK delivery campaigns.
+references:
+    - https://www.elastic.co/security-labs/threat-command/formbook-adopts-cab-less-approach
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.execution
+    - attack.t1203
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_cpl_specific:
+        Image|endswith: '\control.exe'
+        CommandLine|contains: 'cpl:..'
+    selection_wsf_specific:
+        Image|endswith:
+            - '\wscript.exe'
+            - '\cscript.exe'
+        CommandLine|contains: 'wsf:..'
+    selection_rundll32:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains:
+            - 'cpl:..'
+            - 'wsf:..'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate software using 'cpl:' or 'wsf:' URI handlers with path traversal-like syntax.
+level: high

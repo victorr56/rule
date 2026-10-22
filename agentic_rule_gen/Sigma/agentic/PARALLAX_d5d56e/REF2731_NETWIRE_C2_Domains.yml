@@ -1,0 +1,31 @@
+title: REF2731/NETWIRE C2 and Downloader Domain Query
+id: d9a0b3c2-1e4f-4d6c-b7a9-8e9d0c1b2a3d
+status: experimental
+description: Detects DNS queries for domains known to be used by REF2731 for PARALLAX loader and NETWIRE RAT C2 infrastructure.
+references:
+    - https://www.elastic.co/security-labs/threat-command/exploring-the-ref2731-intrusion-set
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1583.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'digitialrotprevention.com'
+            - 'internationalmusicservices.com'
+            - 'globalartisticservices.com'
+            - 'ohioohioa.com'
+            - 'ywiyr.com'
+            - 'septton.com'
+            - 'micsupportcenter.com'
+            - 'mikemikemic.com'
+            - 'ppl-biz.com'
+            - 'opnarchitect.net'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

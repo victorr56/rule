@@ -1,0 +1,22 @@
+title: LapDogs ORB Payload Download (z44.exe)
+id: f0d740c0-f4b6-4b6d-a131-0e10b27efdfc
+status: experimental
+description: Detects the download of z44.exe, a payload associated with LapDogs ORB, from a known malicious URL.
+references:
+    - https://www.darktrace.com/blog/2025-cyber-threat-landscape-darktraces-mid-year-review
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationIp: '192.210.239.172'
+        DestinationPort: 3219
+        Url|endswith: '/z44.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

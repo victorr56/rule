@@ -1,0 +1,28 @@
+title: REF2731/PARALLAX MsiDb.exe Side-Loading Activity
+id: 2a8c3d7e-f519-4b2a-a8d0-99e2f47c8f0d
+status: experimental
+description: Detects the legitimate MsiDb.exe process loading a suspicious msi.dll or msvcr100.dll from a non-standard path, indicative of DLL side-loading used by PARALLAX loader.
+references:
+    - https://www.elastic.co/security-labs/threat-command/exploring-the-ref2731-intrusion-set
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\MsiDb.exe'
+        ImageLoaded|endswith:
+            - '\msi.dll'
+            - '\msvcr100.dll'
+    filter:
+        ImageLoaded|startswith:
+            - 'C:\Windows\System32\'
+            - 'C:\Windows\SysWOW64\'
+    condition: selection and not filter
+falsepositives:
+    - Some legitimate software installers might package their own version of msvcr100.dll and place it in the application's directory.
+level: high
