@@ -1,0 +1,410 @@
+{
+  "malware_family": "SiriusQT",
+  "threat_actor": "Amonus",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "SiriusQT is a feature-rich RAT and stealer sold as a service on dark web forums. It provides remote access, HVNC, credential theft, and keylogging capabilities using a custom encrypted C2 protocol. It is often deployed as a final stage payload via loaders like UpCrypter.",
+  "mitre_techniques": [
+    "T1059.001",
+    "T1059.003",
+    "T1055",
+    "T1055.012",
+    "T1055.002",
+    "T1055.001",
+    "T1055.004",
+    "T1569.002",
+    "T1053.005",
+    "T1547.001",
+    "T1548.002",
+    "T1037.001",
+    "T1134",
+    "T1027",
+    "T1140",
+    "T1564.003",
+    "T1112",
+    "T1497.001",
+    "T1686.003",
+    "T1070.004",
+    "T1036.004",
+    "T1555",
+    "T1555.003",
+    "T1555.005",
+    "T1539",
+    "T1056.001",
+    "T1552.001",
+    "T1082",
+    "T1057",
+    "T1120",
+    "T1518",
+    "T1518.001",
+    "T1083",
+    "T1012",
+    "T1010",
+    "T1033",
+    "T1087",
+    "T1016",
+    "T1614",
+    "T1049",
+    "T1007",
+    "T1005",
+    "T1119",
+    "T1560",
+    "T1115",
+    "T1113",
+    "T1123",
+    "T1125",
+    "T1095",
+    "T1021.001",
+    "T1021.005",
+    "T1573.001",
+    "T1001",
+    "T1571",
+    "T1105",
+    "T1090",
+    "T1041",
+    "T1020",
+    "T1529",
+    "T1491.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "Sirius Cracked by Claude",
+      "context": "Window title on cracked server versions mentioned in the report.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "Caffee_Config",
+      "context": "Resource name containing client configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "<<SIRIUS_STUB_CONFIG>>",
+      "context": "Marker for embedded fallback configuration blob.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "SDB\\x01",
+      "context": "Magic bytes at the start of appdata.dat file.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "80667f9a-d50c-4c39-a4b5-44ae8aae6d2c",
+      "context": "Example mutex name from configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "HVNCInjection.x64.dll",
+      "context": "Name of the HVNC module DLL delivered to the client.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "appdata.dat",
+      "context": "Server-side file storing offline client information in Tool-Data folder.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "connection.key",
+      "context": "Server-side file storing the C2 communication key.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Windows Update",
+      "context": "Default name for persistence entries (Run key, Scheduled Task).",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "UserInitMprLogonScript",
+      "context": "Registry value set in HKCU\\Environment for logon script persistence.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "data:text/html,Welcome to HVNC !",
+      "context": "Part of command line to launch Chromium-based browser for HVNC.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "dQw4w9WgXcQ:",
+      "context": "Prefix for AES-GCM encrypted Discord tokens.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "ReflectiveLoader",
+      "context": "Export in HVNC DLL used for in-memory loading.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x7158B20F",
+      "context": "Seed for custom FNV-1 API hashing algorithm (e.g., CreateThread).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "custom FNV-1 (32bit)",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x29f1276c",
+      "context": "Seed for custom FNV-1 API hashing algorithm (e.g., LoadLibraryA).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "custom FNV-1 (32bit)",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x6A4ABC5B",
+      "context": "ROR13-based hash for kernel32.dll in HVNC module.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "ROR13-based",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xFF51AFD7ED558CCD",
+      "context": "MurmurHash3 finalizer constant used in C2 encryption.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xC4CEB9FE1A85EC53",
+      "context": "MurmurHash3 finalizer constant used in C2 encryption.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "RDI_SEARCH_PATH",
+      "context": "Environment variable for HVNC file system redirection (source path).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "RDI_REPLACE_PATH",
+      "context": "Environment variable for HVNC file system redirection (destination path).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "NtCreateFile",
+      "context": "API hooked by HVNC module for file system redirection.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "MinHook",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "OK: PE injected successfully",
+      "context": "Client-to-server C2 message confirming payload injection.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "OK: HVNC started",
+      "context": "Client-to-server C2 message confirming HVNC session start.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 41 B9 0F B2 58 71 }",
+      "context": "YARA: mov r9d, 7158B20F (FNV-1 hash seed).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 93 01 00 01 }",
+      "context": "YARA: FNV prime constant 0x01000193.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "server.activeworkshops.com:16614",
+      "context": "C2 server endpoint from campaign data.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "server.activeworkshops.com:31166",
+      "context": "C2 server endpoint from campaign data.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "serios.ydns.eu:4449",
+      "context": "C2 server endpoint from campaign data.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "2.27.62.140:4449",
+      "context": "C2 server endpoint from campaign data.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "34.41.139.193",
+      "context": "C2 server on Google Cloud infrastructure.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "xweb.ddns.net:7070",
+      "context": "Primary C2 from sample configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "23.132.164.14:4449",
+      "context": "Primary C2 from detonated sample configuration.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "8*613*10*0",
+      "context": "Example C2 command string for HVNC mouse move event.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "c206fa613257110b0522b60b402ca0b35da2cb126113e47b67543ba3ff93c53c",
+      "description": "HVNCInjection.x64.dll HVNC helper module"
+    },
+    {
+      "sha256": "4fbbb632e08fde2aed8401ffcae9e45627d87084335ac88eb4c25088f0708b79",
+      "description": "SiriusQT.exe server component"
+    },
+    {
+      "sha256": "2eced97bf1395c1560fce05971a3400e0718a3bb70aadb5c2323121cdf6d19a2",
+      "description": "SiriusQT native C++ client"
+    },
+    {
+      "sha256": "903fdebedf8976c8f6f937ab02e86dd73e5386120b6ec257bc9b2ff57a653cee",
+      "description": "SiriusQT .NET Loader client"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet"
+  ]
+}

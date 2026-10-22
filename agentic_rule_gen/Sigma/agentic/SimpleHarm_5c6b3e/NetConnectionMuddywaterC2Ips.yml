@@ -1,0 +1,27 @@
+title: MuddyWater C2 IP Addresses
+id: d1cf48e1-d21b-426b-9c86-13d6a455a29f
+status: experimental
+description: Detects network connections to IP addresses known to be part of MuddyWater C2 infrastructure.
+references:
+    - https://www.group-ib.com/blog/muddywater-infrastructure/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '51.254.25.36'
+            - '51.255.19.179'
+            - '51.255.19.178'
+            - '164.132.237.65'
+            - '91.121.240.96'
+            - '91.121.240.108'
+    condition: selection
+falsepositives:
+    - These IPs could be reassigned to benign services in the future.
+level: high

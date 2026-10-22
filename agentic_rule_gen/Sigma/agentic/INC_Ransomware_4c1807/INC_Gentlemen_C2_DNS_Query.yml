@@ -1,0 +1,29 @@
+title: INC and The Gentlemen Ransomware C2 DNS Query
+id: 5a9756b1-0498-466d-a19e-e8c1a681c6aa
+status: experimental
+description: Detects DNS queries to domains associated with the C2 infrastructure of INC and The Gentlemen ransomware affiliates.
+references:
+    - https://socradar.io/blog/inc-gentlemen-ransomware-ai-infrastructure/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith:
+            - '.system-strategy.org'
+            - '.iquickline.com'
+            - '.trulitesupport.com'
+            - '.incblog.su'
+        QueryName:
+            - 'system-strategy.org'
+            - 'iquickline.com'
+            - 'trulitesupport.com'
+            - 'incblog.su'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

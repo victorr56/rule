@@ -1,0 +1,28 @@
+title: Labyrinth Chollima - 3CX Supply Chain Attack DLL Side-Loading
+id: 569d660f-e25f-4d6b-80a5-f5b2b3a12a7d
+status: experimental
+description: Detects the loading of a malicious d3dcompiler_47.dll from the 3CXDesktopApp application directory, a technique used in the 3CX supply chain attack by LABYRINTH CHOLLIMA. The legitimate DLL is located in the System32 directory.
+references:
+    - https://www.group-ib.com/blog/3cx-supply-chain-attack/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.t1574.002
+    - attack.t1195.002
+logsource:
+    product: windows
+    category: image_load
+detection:
+    selection:
+        Image|endswith: '\3CXDesktopApp.exe'
+        ImageLoaded|contains|all:
+            - '\3CXDesktopApp\'
+            - 'd3dcompiler_47.dll'
+    filter_legit:
+        ImageLoaded|startswith:
+            - 'C:\Windows\System32\'
+            - 'C:\Windows\SysWOW64\'
+    condition: selection and not filter_legit
+falsepositives:
+    - Unlikely. The legitimate d3dcompiler_47.dll should only be loaded from the Windows system directories.
+level: high

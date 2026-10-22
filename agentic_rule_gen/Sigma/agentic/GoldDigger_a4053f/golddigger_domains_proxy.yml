@@ -1,0 +1,38 @@
+title: GoldDigger C2 and Delivery Domains HTTP/S Request
+id: d7d995c6-de6a-4933-b924-f7e911270258
+status: experimental
+description: Detects HTTP/S requests to domains associated with the GoldDigger Android Trojan, used for C2 communication and malware delivery.
+references:
+    - https://www.group-ib.com/blog/golddigger-fraud-matrix/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.initial_access
+logsource:
+    category: proxy
+detection:
+    selection_c2:
+        DestinationHostname:
+            - 'hds6y.cc'
+            - 'ks8cb.cc'
+            - 'ms2ve.cc'
+            - 'smgeo.cc'
+            - 'wbke.cc'
+            - 'www.dg1e.com'
+            - 'zu7kt.cc'
+    selection_delivery:
+        DestinationHostname:
+            - 'cskh.evnspa.cc'
+            - 'cskh.evnspc.cc'
+            - 'cskh.evnspe.cc'
+            - 'viet.cgovn.cc'
+            - 'viet.egovn.cc'
+            - 'viet.gdtgovn.com'
+            - 'viet.govn.cc'
+            - 'vietgov22.cc'
+            - 'vietgov33.cc'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,25 @@
+title: Lazarus Operation Flashhole C2 and Wateringhole Domains
+id: 9a0094e9-06f1-432d-94e0-70fce3730e2f
+status: experimental
+description: Detects DNS queries for domains associated with the Lazarus Group's Operation Flashhole C2 and watering hole infrastructure.
+references:
+    - https://securelist.com/lazarus-operation-flashhole/121541/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'javadevhouse.co.kr'
+            - 'pythonapischool.com'
+            - 'cubedesign.co.kr'
+            - 'k-wbc.co.kr'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

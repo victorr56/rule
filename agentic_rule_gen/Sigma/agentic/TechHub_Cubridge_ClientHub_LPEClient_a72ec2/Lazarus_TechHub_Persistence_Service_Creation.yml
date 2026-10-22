@@ -1,0 +1,23 @@
+title: Lazarus TechHub Persistence Service Creation
+id: 791a82f0-f9a5-4f4d-b65f-4a39b33dd040
+status: experimental
+description: Detects the creation of a Windows service pointing to a masqueraded ImeBroker.exe in an unusual path, a persistence technique used by the Lazarus Group's TechHub malware.
+references:
+    - https://securelist.com/lazarus-operation-flashhole/121541/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.persistence
+    - attack.t1543.003
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|startswith: 'HKLM\SYSTEM\CurrentControlSet\Services\'
+        TargetObject|endswith: '\ImagePath'
+        Details|endswith: '\Windows\System32\RasConv\ImeBroker.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

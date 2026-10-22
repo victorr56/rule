@@ -1,0 +1,27 @@
+title: SiriusQT C2 TCP Connection
+id: 5e638b9e-b816-43ad-8d96-bde3d2621b4a
+status: experimental
+description: Detects network connections to IP addresses known to be used by SiriusQT C2 servers.
+references:
+    - https://www.group-ib.com/blog/siriusqt-rat-hvnc-stealer/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection_1:
+        DestinationIp: '2.27.62.140'
+        DestinationPort: '4449'
+    selection_2:
+        DestinationIp: '23.132.164.14'
+        DestinationPort: '4449'
+    selection_3:
+        DestinationIp: '34.41.139.193'
+    condition: 1 of selection_*
+falsepositives:
+    - This list of IPs is specific to this threat. False positives are possible if the IPs are reassigned.
+level: high

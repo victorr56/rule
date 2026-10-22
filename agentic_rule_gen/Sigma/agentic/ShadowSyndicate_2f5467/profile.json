@@ -1,0 +1,349 @@
+{
+  "malware_family": "ShadowSyndicate",
+  "threat_actor": "ShadowSyndicate",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "ShadowSyndicate is a suspected Ransomware-as-a-Service (RaaS) affiliate active since July 2022, distinguished by a unique SSH fingerprint (1ca4cbac895fc3bd12417b77fc6ed31d) found on at least 85 servers. The actor uses a versatile toolkit including Cobalt Strike, Sliver, and IcedID to deploy multiple ransomware families such as Quantum, Nokoyawa, and ALPHV, and shows infrastructure overlap with past Cl0p-affiliated clusters.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "1ca4cbac895fc3bd12417b77fc6ed31d",
+      "context": "SSH fingerprint used across 85 servers since July 2022.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "12345",
+      "context": "Cobalt Strike watermark associated with Royal and Cactus ransomware.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "305419776",
+      "context": "Cobalt Strike watermark associated with Quantum and Nokoyawa ransomware.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "206546002",
+      "context": "Cobalt Strike watermark associated with Royal, Quantum, and Play ransomware.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "587247372",
+      "context": "Cobalt Strike watermark associated with ALPHV and Play ransomware.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "1580103824",
+      "context": "Cobalt Strike watermark associated with Cl0p, Royal, IcedID, Gootloader.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "674054486",
+      "context": "Cobalt Strike watermark associated with ALPHV and Nokoyawa ransomware.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "426352781",
+      "context": "Cobalt Strike watermark associated with Royal ransomware.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "668694132",
+      "context": "Cobalt Strike watermark with unknown attribution.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "119588",
+      "context": "Cobalt Strike sleeptime.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "57247",
+      "context": "Cobalt Strike sleeptime.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "60216",
+      "context": "Cobalt Strike sleeptime.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "60946",
+      "context": "Cobalt Strike sleeptime.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ddd9ca54c1309cde578062cba965571",
+      "context": "SSH hash of reused Cl0p infrastructure cluster.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "b54cce689e9139e824b6e51a84a7a103",
+      "context": "SSH hash of reused Cl0p infrastructure cluster.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "9bd79ffaeb8de31c9813b3ce51b30488",
+      "context": "SSH hash of reused Cl0p infrastructure cluster.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "5e21f8e88b007935710b2afc174f289",
+      "context": "SSH hash of reused Cl0p infrastructure cluster.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "78.128.112.139",
+      "context": "Cobalt Strike C2 for Quantum ransomware attack, September 2022.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "5.8.18.242",
+      "context": "Cobalt Strike C2 for Nokoyawa ransomware attack, October 2022.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "109.172.45.28",
+      "context": "Cobalt Strike C2 for ALPHV ransomware attack, February 2023.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "179.60.150.151",
+      "context": "Meterpreter C2 detected in March 2023.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ja3",
+      "value": "00000000000000000043d43d00043de2a97eabb398317329f027c66e4c1b01",
+      "context": "Sliver JARM certificate.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Sliver"
+    },
+    {
+      "kind": "domain",
+      "value": "windosupdate.net",
+      "context": "Cobalt Strike C2 domain (typosquat).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "d4ng3r.s01kaspersky.com",
+      "context": "Cobalt Strike C2 domain (typosquat).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cache01.micnosoftupdate.com",
+      "context": "Cobalt Strike C2 domain (typosquat).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "msupd.wimdowupdate.com",
+      "context": "Cobalt Strike C2 domain (typosquat).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "upd232.windowservicecentar.com",
+      "context": "Cobalt Strike C2 domain (typosquat).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mysqlserver.org",
+      "context": "Cobalt Strike C2 domain.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "devcloudpro.com",
+      "context": "Cobalt Strike C2 domain, linked to ALPHV attack.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "uranustechsolution.com",
+      "context": "Cobalt Strike C2 domain, linked to ALPHV attack.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "devsetgroup.com",
+      "context": "Cobalt Strike C2 domain, linked to Nokoyawa attack.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "paloaltocloud.online",
+      "context": "Cobalt Strike C2 domain (typosquat).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "etgtgvtgttefeer.xyz",
+      "context": "C2 domain with DGA-like pattern.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "egetrgertgegege.xyz",
+      "context": "C2 domain with DGA-like pattern.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "svchostsreg.com",
+      "context": "C2 domain (typosquat).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "qw.sveexec.com",
+      "context": "Cobalt Strike C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "opentechcorp.net",
+      "context": "Cobalt Strike C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "document",
+    "script"
+  ]
+}

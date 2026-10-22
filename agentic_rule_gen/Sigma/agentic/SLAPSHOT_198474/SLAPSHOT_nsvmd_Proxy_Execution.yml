@@ -1,0 +1,24 @@
+title: SLAPSHOT nsvmd Proxy Execution
+id: 593796d8-6eb6-444f-9e67-d86ce69fa5c7
+status: experimental
+description: Detects the execution of the 'nsvmd' Go proxy agent, a component of the SLAPSHOT malware, with its specific command-line arguments for C2.
+references:
+  - https://www.rapid7.com/blog/post/ra-netscaler-intrusions-chaining-cve-2026-88771-and-cve-2026-88779
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+  - attack.command_and_control
+  - attack.t1090.001
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  selection:
+    Image|endswith: '/nsvmd'
+    CommandLine|contains|all:
+      - '-server'
+      - '-sni'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: critical

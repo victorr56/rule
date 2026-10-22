@@ -1,0 +1,22 @@
+title: Execution of Masquerading Chrome Updater
+id: a776632f-a36c-48b0-a612-c28dd68b64d0
+status: experimental
+description: Detects the execution of an executable named "updater.exe" from the "Google\Chrome" directory, which is a non-standard path for the legitimate Google updater. This behavior was observed during an XMRig cryptomining campaign.
+references:
+    - https://www.group-ib.com/blog/mxdr-cryptominer/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.defense_evasion
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\Google\Chrome\updater.exe'
+        ParentImage|endswith: '\svchost.exe'
+    condition: selection
+falsepositives:
+    - Legitimate but non-standard software installations could potentially use this path. The parent process being svchost.exe (as used by Task Scheduler) increases confidence.
+level: medium

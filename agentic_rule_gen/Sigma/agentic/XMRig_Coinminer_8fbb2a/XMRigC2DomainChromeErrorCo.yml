@@ -1,0 +1,20 @@
+title: XMRig C2 Domain chrome-error.co
+id: b3fd80ac-a2e9-4672-8877-628d09f3edbb
+status: experimental
+description: Detects DNS queries for "chrome-error.co", a domain used for C2 and payload delivery in an XMRig cryptomining campaign.
+references:
+    - https://www.group-ib.com/blog/mxdr-cryptominer/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'chrome-error.co'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

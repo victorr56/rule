@@ -1,0 +1,24 @@
+title: Tonto Team Bisonal Persistence via Run Key
+id: 593b4822-1d07-4e94-a128-090c23945938
+status: experimental
+description: Detects the creation of a registry run key used by Bisonal malware to establish persistence with a masqueraded conhost.exe payload.
+references:
+    - https://www.group-ib.com/blog/tonto-team/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains|all:
+            - '\Software\Microsoft\Windows\CurrentVersion\Run'
+            - '\userInit'
+        Details|endswith: '\AppData\Roaming\conhost.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

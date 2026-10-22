@@ -1,0 +1,21 @@
+title: Labyrinth Chollima - 3CX C2 List Retrieval from GitHub
+id: 0463994e-257a-4286-9a25-c6374f3f01b1
+status: experimental
+description: Detects HTTP requests to a specific GitHub repository path used by the 3CX malware to retrieve a list of C2 servers from files disguised as ICO images.
+references:
+    - https://www.group-ib.com/blog/3cx-supply-chain-attack/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.t1105
+    - attack.t1568.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        c-uri|contains: '/IconStorages/images/main/icon'
+        c-uri|endswith: '.ico'
+    condition: selection
+falsepositives:
+    - Unlikely. The URL path is highly specific to this threat.
+level: high

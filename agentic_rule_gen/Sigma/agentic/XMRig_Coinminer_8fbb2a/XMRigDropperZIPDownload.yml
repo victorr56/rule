@@ -1,0 +1,27 @@
+title: XMRig Dropper ZIP Download With Chromium Patch Pattern
+id: c71c08d1-55c3-4d6d-8f23-8686d1484f3c
+status: experimental
+description: Detects the download of a ZIP archive with a name pattern "chromium-patch-nightly.00.*.zip", which is the initial dropper in an XMRig cryptomining campaign.
+references:
+    - https://www.group-ib.com/blog/mxdr-cryptominer/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.t1204.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\chrome.exe'
+            - '\firefox.exe'
+            - '\msedge.exe'
+            - '\iexplore.exe'
+        TargetFilename|startswith: 'chromium-patch-nightly.00.'
+        TargetFilename|endswith: '.zip'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

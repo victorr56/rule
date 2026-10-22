@@ -1,0 +1,343 @@
+{
+  "malware_family": "Krasue",
+  "threat_actor": "",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "Krasue is a Linux Remote Access Trojan (RAT) primarily targeting telecommunications companies in Thailand. It features an embedded rootkit, based on several open-source projects, to hide its presence by hooking syscalls and hiding files, processes, and network ports. Krasue maintains persistence and communicates with its C2 server using AES-encrypted traffic over UDP and a distinctive RTSP-based 'alive ping'.",
+  "mitre_techniques": [
+    "T1059.004",
+    "T1014",
+    "T1027.002",
+    "T1564.001",
+    "T1071.001",
+    "T1573"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "auwd.bin",
+      "context": "Filename for the Krasue RAT binary.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/proc/version",
+      "context": "Read to determine kernel version for rootkit installation.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VMware User Mode Helper",
+      "context": "Fake description in the rootkit's modinfo section.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "auwd",
+      "context": "Prefix for files and directories hidden by the rootkit.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "vmware_helper",
+      "context": "Prefix for files and directories hidden by the rootkit.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/bin/sh",
+      "context": "Used for the 'shell' C2 command.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 22 32 A4 98 A1 4F 2E 44 CF 55 93 B7 91 59 BE A6 }",
+      "context": "Static AES-CBC key for C2 communication.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "%s: main/child pid: %d/%d root/god/hidden/module",
+      "context": "Format string for the 'info' C2 command response.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "god die",
+      "context": "C2 command to terminate the malware process.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "set master done",
+      "context": "String from YARA rule, likely related to setting a C2.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "52698",
+      "context": "Magic number used in kill() signal to control the rootkit.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "758",
+      "context": "Magic number used in kill() signal to check if rootkit is loaded.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "31",
+      "context": "Signal number to hide a process via rootkit.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "63",
+      "context": "Signal number to hide/show kernel module via rootkit.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "64",
+      "context": "Signal number to provide root privilege via rootkit.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "unhide_allz",
+      "context": "Rootkit function name, shared with XorDdos.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "XorDdos",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "kkill",
+      "context": "Rootkit function name, shared with XorDdos.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "XorDdos",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "DESCRIBE rtsp://server/media.mp4 RTSP/1.0\\r\\nCSeq: 2\\r\\n\\r\\n",
+      "context": "RTSP \"alive ping\" sent to master C2 server.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/media.mp4",
+      "context": "Path used in the RTSP alive ping.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "128.199.226.11",
+      "context": "Hardcoded external C2 address (port 554).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "52699",
+      "context": "UDP port for listening for C2 commands.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "554",
+      "context": "Port for external C2 communication (RTSP).",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "\\x20",
+      "context": "Blank space character returned by C2 in response to alive ping.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.19.37.145",
+      "context": "Hardcoded internal C2 address (port 52699).",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.19.37.159",
+      "context": "Hardcoded internal C2 address (port 52699).",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.19.37.169",
+      "context": "Hardcoded internal C2 address (port 52699).",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.19.37.170",
+      "context": "Hardcoded internal C2 address (port 52699).",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.19.37.171",
+      "context": "Hardcoded internal C2 address (port 52699).",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.19.37.172",
+      "context": "Hardcoded internal C2 address (port 52699).",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.19.37.173",
+      "context": "Hardcoded internal C2 address (port 52699).",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.19.37.175",
+      "context": "Hardcoded internal C2 address (port 52699).",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "902013bc59be545fb70407e8883717453fb423a7a7209e119f112ff6771e44cc",
+      "description": "Krasue RAT (auwd.bin)."
+    },
+    {
+      "sha256": "ed38a61a6b7af436120465d352baa4cdf4ed8f01a7db7245b6254353e52f818f",
+      "description": "Krasue RAT (auwd.bin, UPX packed)."
+    },
+    {
+      "sha256": "afbc79dfc4c7c4fd9b71b5fea23ef12adf0b84b1af22a993ecf91f3d829967a4",
+      "description": "Krasue RAT (auwd.bin, UPX packed)."
+    },
+    {
+      "sha256": "97f08424b14594a5a39d214bb97823690f1086c78fd877558761afe0a032b772",
+      "description": "Krasue Rootkit for kernel v2.6.32-642."
+    },
+    {
+      "sha256": "38ba7790697da0a736c80fd9a04731b8b0bac675cca065cfd42a56dde644e353",
+      "description": "Krasue Rootkit for kernel v2.6.32-220."
+    },
+    {
+      "sha256": "e0748b32d0569dfafef6a8ffd3259edc6785902e73434e4b914e68fea86e6632",
+      "description": "Krasue Rootkit for kernel v2.6.32-71."
+    },
+    {
+      "sha256": "c9552ba602d204571b9f98bd16f60b6f4534b3ad32b4fc8b3b4ab79f2bf371e5",
+      "description": "Krasue Rootkit for kernel v2.6.39."
+    },
+    {
+      "sha256": "3e37c7b65c1e46b2eb132f98f65c711b4169c6caeeaecc799abbda122c0c4a59",
+      "description": "Krasue Rootkit for kernel v3.10.0-514."
+    },
+    {
+      "sha256": "8a58dce7b57411441ac1fbff3062f5eb43a432304b2ba34ead60e9dd4dc94831",
+      "description": "Krasue Rootkit for kernel v3.10.0-327."
+    }
+  ],
+  "file_types": [
+    "elf"
+  ]
+}

@@ -1,0 +1,370 @@
+{
+  "malware_family": "XMRig Coinminer",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A cryptojacking campaign uses a drive-by download from a compromised website to deliver a ZIP archive. The archive contains a dropper that installs the XMRig Monero miner, establishes persistence via a scheduled task, and disables security tools. The initial infection is triggered by a multi-stage JavaScript loader that displays a fake Chrome error page.",
+  "mitre_techniques": [
+    "T1565.001",
+    "T1562.001",
+    "T1053.005",
+    "T1489"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "chromium-patch-nightly.00.[0-9]{3}.[0-9]{3}.zip",
+      "context": "Name pattern for malicious archives downloaded to victim hosts.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "chromium-patch-nightly.00.810.532.exe",
+      "context": "Executable dropper from within the malicious ZIP archive.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files\\Google\\Chrome\\Update\\generated_file_name.png",
+      "context": "Path where encrypted JavaScript is copied, disguised as a PNG.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "updater.exe",
+      "context": "Filename of the created payload (miner) after decryption.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files\\Google\\Chrome\\updater.exe",
+      "context": "Path to the miner executable launched by the scheduled task.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "payload.exe",
+      "context": "Internal name of the executable inside the downloaded release.zip archive.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "chromium-patch-nightly.*.exe",
+      "context": "Process name of the dropper, used in an EDR search query.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "ProcessHacker.exe",
+      "context": "The miner suspends activity when this process is detected.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "XMRig",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "procexp64.exe",
+      "context": "The miner suspends activity when this process is detected.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "XMRig",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/create /f /sc onlogon /rl highest /ru System /tn GoogleUpdateTaskMachineQC /tr \"'C:\\Program Files\\Google\\Chrome\\updater.exe'\"",
+      "context": "schtasks.exe command line to create persistence for the miner payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "GoogleUpdateTaskMachineQC",
+      "context": "Task name created to launch the miner on user logon.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "doscv",
+      "context": "Service stopped and deleted by the malware to prevent OS updates.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "wuauserv",
+      "context": "Service stopped and deleted by the malware to prevent OS updates.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "usosvc",
+      "context": "Service stopped and deleted by the malware to prevent OS updates.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "bits",
+      "context": "Service stopped and deleted by the malware to prevent OS updates.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "waasmedicsvc",
+      "context": "Service stopped and deleted by the malware to prevent OS updates.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "cinit-stealth-targets",
+      "context": "XMRig configuration parameter to specify processes to avoid.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "XMRig",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "cinit-idle-cpu=80",
+      "context": "XMRig configuration parameter for idle mining start time.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "XMRig",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "cpu-max-threads=30",
+      "context": "XMRig configuration parameter for CPU thread limit.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "XMRig",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "user=\"87CiZcDDU",
+      "context": "Start of the Monero wallet address in the miner configuration.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "__exoclick__ads__show",
+      "context": "Global variable set in the initial infection script to prevent re-running.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "c122eba0264bfd7e383f015cecf59fbd",
+      "context": "Cookie name and global variable used for throttling infection attempts.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DERFEksNGRoBUBBXFAdBSkheXFNFVx8BWQsRAksKR1YXH2APbWFbXBVVHFs6UwxXUGNWAGJ+WhdnFTcRICJFciZaRwFPcwVCKFxRSAY8biA=",
+      "context": "Base64 string in the initial script, XOR'd to get a URL.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "d01b8765f1d2cf8d8722161b5ddfdc70",
+      "context": "XOR key used to decrypt the Base64 string in the initial script.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "forceWindows",
+      "context": "localStorage key checked by the infection script.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "chrome-error.co",
+      "context": "Domain hosting the initial payload and C2 for the JS loader.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gateway.pinata.cloud",
+      "context": "Public IPFS gateway used to host malicious JavaScript stages and HTML.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gateway.chrome-error.co/probe/v1/",
+      "context": "URL used by infection script to signal initial access.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gateway.chrome-error.co/payload/v1",
+      "context": "URL used by infection script to fetch the next stage script URL.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gateway.chrome-error.co/release.zip",
+      "context": "URL from which the initial dropper archive is downloaded.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gateway.pinata.cloud/ipfs/QmUVmisdxiY543hTd2SHkuRqSwDArBBjvcwD3wNm5zeZVD",
+      "context": "URL of the first-stage JavaScript payload fetched from IPFS.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gateway.pinata.cloud/ipfs/QmcMovkgsDLcDn7SM1ifWwWZyaCjpoH7bCepmsb882AvZj",
+      "context": "URL of the second-stage JavaScript payload fetched from IPFS.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gateway.pinata.cloud/ipfs/QmUBgSVFmhT1GU1YuoqDY7ZX47TWsWJBN3pLgbQF4jRjRZ",
+      "context": "URL hosting the HTML content for the fake Chrome error page.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/ipfs/QmUVmisdxiY543hTd2SHkuRqSwDArBBjvcwD3wNm5zeZVD",
+      "context": "IPFS path for the first-stage JavaScript payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/ipfs/QmcMovkgsDLcDn7SM1ifWwWZyaCjpoH7bCepmsb882AvZj",
+      "context": "IPFS path for the second-stage JavaScript payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/ipfs/QmUBgSVFmhT1GU1YuoqDY7ZX47TWsWJBN3pLgbQF4jRjRZ",
+      "context": "IPFS path for the fake Chrome error page HTML.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "c122eba0264bfd7e383f015cecf59fbd",
+      "context": "Cookie name set by the malware to track victims.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "archive",
+    "script"
+  ]
+}

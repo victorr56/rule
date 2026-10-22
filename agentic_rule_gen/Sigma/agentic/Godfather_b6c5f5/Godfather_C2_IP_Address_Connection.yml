@@ -1,0 +1,21 @@
+title: Godfather C2 IP Address Connection
+id: 7e758a0a-6691-45da-9669-e5ac7a0d4c98
+status: experimental
+description: Detects network connections to an IP address known to be used by the Godfather Android trojan for command and control.
+references:
+    - https://www.group-ib.com/blog/godfather-trojan/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '168.100.9.86'
+    condition: selection
+falsepositives:
+    - This IP address could be reassigned to a benign service in the future.
+level: high

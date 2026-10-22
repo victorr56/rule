@@ -1,0 +1,44 @@
+title: Labyrinth Chollima - 3CX macOS C2 Cookie
+id: 97ac725b-38cc-4d1a-b021-9e797e88c0cd
+status: experimental
+description: Detects a specific Cookie header pattern used by the macOS version of the 3CX malware for C2 communications.
+references:
+    - https://www.group-ib.com/blog/3cx-supply-chain-attack/
+author: ioc-yara-daily (agentic)
+date: 2023-04-12
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        c-cookie|contains|all:
+            - 'z3cx_auth_id='
+            - '3cx_auth_token_content='
+        DestinationHostname|endswith:
+            - '.akamaicontainer.com'
+            - '.akamaitechcloud.com'
+            - '.azuredeploystore.com'
+            - '.azureonlinecloud.com'
+            - '.azureonlinestorage.com'
+            - '.dunamistrd.com'
+            - '.glcloudservice.com'
+            - '.journalide.org'
+            - '.msstorageazure.com'
+            - '.msstoragebox.com'
+            - '.officeaddons.com'
+            - '.officestoragebox.com'
+            - '.pbxcloudes.com'
+            - '.pbxphonenet.com'
+            - '.pbxsources.com'
+            - '.pysource.org'
+            - '.reactfirst.net'
+            - '.sbmsa.wiki'
+            - '.sourcegraph.org'
+            - '.visualstudiofactory.com'
+            - '.zacharryblogs.com'
+    condition: selection
+falsepositives:
+    - Legitimate 3CX applications are not expected to generate network traffic with this specific combination of cookie values and destination domains.
+level: high

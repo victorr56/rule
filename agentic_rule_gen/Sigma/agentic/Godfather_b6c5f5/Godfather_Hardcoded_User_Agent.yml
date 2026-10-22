@@ -1,0 +1,27 @@
+title: Godfather Trojan Hardcoded User-Agent
+id: 9a78e72c-d9c0-4328-912f-4e0ab34fc409
+status: experimental
+description: Detects C2 communication from the Godfather Android trojan identified by a hardcoded User-Agent string and known C2 domains.
+references:
+    - https://www.group-ib.com/blog/godfather-trojan/
+author: ioc-yara-daily (agentic)
+date: 2022-12-20
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: proxy
+detection:
+    selection:
+        UserAgent: 'Mozilla/5.0 (Linux; Android 9; SM-J730F Build/PPR12.180610.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/88.0.4324.181 Mobile Safari/537.36'
+        r-dns:
+            - 'come-back-later.xyz'
+            - 'digital-well.xyz'
+            - 'golden-dust.xyz'
+            - 'try-it-now.xyz'
+            - 'my-super-star.xyz'
+            - 'new-realise-app.xyz'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

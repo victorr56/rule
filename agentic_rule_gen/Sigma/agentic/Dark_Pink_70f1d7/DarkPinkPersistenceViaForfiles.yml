@@ -1,0 +1,27 @@
+title: Dark Pink Persistence Execution via Forfiles
+id: 5e6a9f81-2c7b-4d6e-8d8a-9f9b5c2a1b1c
+status: experimental
+description: Detects the execution of "forfiles.exe" with specific arguments used by the Dark Pink APT group to trigger a malicious file association for persistence.
+references:
+    - https://www.group-ib.com/blog/dark-pink-apt/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.persistence
+    - attack.execution
+    - attack.t1546.001
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\forfiles.exe'
+        CommandLine|contains|all:
+            - ' /m notepad.exe'
+            - ' /c "cmd.exe /c'
+            - 'a.abcd'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

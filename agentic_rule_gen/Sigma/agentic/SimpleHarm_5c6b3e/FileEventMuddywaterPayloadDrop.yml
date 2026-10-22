@@ -1,0 +1,24 @@
+title: MuddyWater Payload Drop in ProgramData via Curl
+id: b2a8f89e-2131-4122-b2fa-b7325bdfa957
+status: experimental
+description: Detects curl.exe writing a VBScript file to the C:\ProgramData directory, a behavior associated with MuddyWater for staging payloads.
+references:
+    - https://www.group-ib.com/blog/muddywater-infrastructure/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1105
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\curl.exe'
+        TargetFilename|startswith: 'C:\ProgramData\'
+        TargetFilename|endswith: '.vbs'
+    condition: selection
+falsepositives:
+    - Legitimate administrative scripts might use curl to download VBS tools, but this combination is uncommon and warrants review.
+level: medium

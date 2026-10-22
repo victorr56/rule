@@ -1,0 +1,25 @@
+title: Godfather C2 Domain DNS Query
+id: c1a3511f-8469-4e76-88a4-1a9f1f0a8e10
+status: experimental
+description: Detects DNS queries for domains known to be used by the Godfather Android trojan for command and control.
+references:
+    - https://www.group-ib.com/blog/godfather-trojan/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'henkormerise.com'
+            - 'banerrokutepera.com'
+            - 'heikenmorgan.com'
+            - 'pluscurrencyconverter.com'
+    condition: selection
+falsepositives:
+    - Unlikely. These domains are specific to the malware campaign.
+level: critical

@@ -1,0 +1,22 @@
+title: Lazarus Initial Compromise via INISAFECrossWebEXSvc.exe
+id: 3c6f0302-3c1a-4c9f-85b8-ed140e791338
+status: experimental
+description: Detects the spawning of fsquirt.exe from INISAFECrossWebEXSvc.exe, an indicator of compromise associated with the Lazarus Group's Operation Flashhole.
+references:
+    - https://securelist.com/lazarus-operation-flashhole/121541/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.t1203
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\INISAFECrossWebEXSvc.exe'
+        Image|endswith: '\fsquirt.exe'
+    condition: selection
+falsepositives:
+    - Legitimate use of Bluetooth file transfer by this specific service, if any exists, is considered highly unlikely.
+level: high

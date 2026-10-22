@@ -1,0 +1,27 @@
+title: SiriusQT HVNC Module File Drop
+id: f02da4e3-a602-4fc3-a554-04f79435b861
+status: experimental
+description: Detects the creation of the SiriusQT HVNC module DLL, typically in a temporary or user-writable folder.
+references:
+    - https://www.group-ib.com/blog/siriusqt-rat-hvnc-stealer/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.t1055
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\HVNCInjection.x64.dll'
+        TargetFilename|contains:
+            - '\AppData\'
+            - '\Temp\'
+            - 'C:\Users\Public\'
+            - 'C:\ProgramData\'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

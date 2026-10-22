@@ -1,0 +1,221 @@
+{
+  "malware_family": "LLMjacking",
+  "threat_actor": "Unknown",
+  "platforms": [
+    "web"
+  ],
+  "summary": "Threat actors use phishing via sponsored search ads to compromise Google Cloud Platform accounts. They then disable security policies, link their own projects to the victim's billing account, and abuse it for large-scale, costly LLM (Gemini) API usage, a technique dubbed 'LLMjacking'.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "iam.allowedPolicyMemberDomains",
+      "context": "GCP IAM policy deleted by actor to allow external accounts.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "roles/ml.admin",
+      "context": "GCP IAM role assigned to actor's service accounts.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "roles/mcp.toolUser",
+      "context": "GCP IAM role assigned to actor's service accounts.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "roles/recommender.billingAccountCudAdmin",
+      "context": "GCP IAM role assigned to actor-controlled accounts on projects.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "roles/billing.admin",
+      "context": "GCP IAM role assigned to actor-controlled accounts on billing accounts.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "google cloud",
+      "context": "Phishing ad search keyword.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "gcp",
+      "context": "Phishing ad search keyword.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "212.73.134.136",
+      "context": "Initial login IP from the phishing page.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gboogl.com",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "groosl.com",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gprokl.com",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gxoosl.com",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gsoolg.com",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gzoozl.com",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "groonl.com",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gsool.space",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gbrokl.space",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gbrokl.xyz",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gsoosl.xyz",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gsool.xyz",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gpoosl.com",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "groolg.com",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gcslom.com",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gcoalg.com",
+      "context": "Attacker phishing domain (wildcard used).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

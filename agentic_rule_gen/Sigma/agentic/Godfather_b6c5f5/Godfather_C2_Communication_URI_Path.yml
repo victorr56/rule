@@ -1,0 +1,27 @@
+title: Godfather C2 Communication URI Path
+id: 593b482d-8b43-4217-ac37-d2e431b9134a
+status: experimental
+description: Detects HTTP requests to specific URI paths used by the Godfather Android trojan for C2 communication, data exfiltration, and downloading web fakes. This detection is based on the URI path combined with a User-Agent string typical for Android devices.
+references:
+    - https://www.group-ib.com/blog/godfather-trojan/
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: proxy
+detection:
+    selection:
+        cs-uri-stem|endswith:
+            - '/aks.php'
+            - '/ads.php'
+            - '/mp4_recorder.php'
+            - '/itor/fafa.php'
+            - '/sender_new.php'
+        # Godfather is an Android trojan, its C2 comms will originate from a Dalvik user-agent
+        UserAgent|startswith: 'Dalvik/'
+    condition: selection
+falsepositives:
+    - Legitimate Android applications making requests to web servers with similarly named PHP files.
+level: high

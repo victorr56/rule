@@ -1,0 +1,21 @@
+title: Krasue RAT RTSP Beacon
+id: c38b79f2-221d-4050-a92c-d0ef14470d02
+status: experimental
+description: Detects the RTSP "alive ping" beacon sent by the Krasue RAT to its C2 server.
+references:
+    - https://www.group-ib.com/blog/krasue-rat/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        cs-method: 'DESCRIBE'
+        c-uri-path: '/media.mp4'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

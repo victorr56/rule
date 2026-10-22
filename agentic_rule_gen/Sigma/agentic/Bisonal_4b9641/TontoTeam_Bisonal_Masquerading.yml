@@ -1,0 +1,22 @@
+title: Tonto Team Bisonal conhost.exe Masquerading
+id: 110d7031-6450-482a-a9e9-f31666fdd123
+status: experimental
+description: Detects the execution of conhost.exe from the AppData\Roaming directory, a behavior associated with the Bisonal backdoor. The legitimate conhost.exe resides in the System32 directory.
+references:
+    - https://www.group-ib.com/blog/tonto-team/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\conhost.exe'
+        Image|contains: '\AppData\Roaming\'
+    condition: selection
+falsepositives:
+    - Legitimate software placing and executing a binary named conhost.exe in the AppData\Roaming folder (highly unlikely).
+level: high

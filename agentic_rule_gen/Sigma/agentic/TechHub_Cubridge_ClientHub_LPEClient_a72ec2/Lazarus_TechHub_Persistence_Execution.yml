@@ -1,0 +1,24 @@
+title: Lazarus TechHub Persistence Execution via ImeBroker.exe
+id: 56930263-149b-43d0-917f-a2e6f2127fd7
+status: experimental
+description: Detects the execution of a masqueraded ImeBroker.exe from a hardcoded path with a specific argument, used by the Lazarus Group's TechHub malware for persistence.
+references:
+    - https://securelist.com/lazarus-operation-flashhole/121541/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.persistence
+    - attack.t1543.003
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\RasConv\ImeBroker.exe'
+        CommandLine|contains: ' -TimeBroker'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

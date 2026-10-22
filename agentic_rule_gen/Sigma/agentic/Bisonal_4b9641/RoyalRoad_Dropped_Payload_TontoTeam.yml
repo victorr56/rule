@@ -1,0 +1,26 @@
+title: Royal Road RTF Weaponizer Dropped Payload
+id: 9a7852de-22da-4b08-bc02-4fc36087d03a
+status: experimental
+description: Detects the creation of a .wmf file, a known payload dropped by the Royal Road RTF weaponizer, often used by Tonto Team.
+references:
+    - https://www.group-ib.com/blog/tonto-team/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith:
+            - '\winword.exe'
+            - '\excel.exe'
+            - '\powerpnt.exe'
+            - '\EQNEDT32.EXE'
+        TargetFilename|endswith: '\dcnx18pwh.wmf'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: medium

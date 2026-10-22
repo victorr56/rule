@@ -1,0 +1,25 @@
+title: Tonto Team C2 Domain Queries
+id: 57922d5f-d2e8-466d-9781-a9f8f2d5fcb0
+status: experimental
+description: Detects DNS queries for domains known to be used by Tonto Team for C2 infrastructure.
+references:
+    - https://www.group-ib.com/blog/tonto-team/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.offices-update.com'
+            - '.upportteam.lingrevelat.com'
+            - '.supportteam.lingrevelat.com'
+            - '.news.wooordhunts.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

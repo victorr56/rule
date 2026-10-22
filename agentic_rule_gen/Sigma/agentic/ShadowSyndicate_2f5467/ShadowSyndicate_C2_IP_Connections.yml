@@ -1,0 +1,25 @@
+title: ShadowSyndicate C2 IP Connections
+id: e4f2b93e-2f88-44d4-89c0-6d05ac00966a
+status: experimental
+description: Detects network connections to IP addresses associated with ShadowSyndicate C2 infrastructure.
+references:
+    - https://www.group-ib.com/blog/shadowsyndicate-raas/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '5.8.18.242'
+            - '78.128.112.139'
+            - '109.172.45.28'
+            - '179.60.150.151'
+    condition: selection
+falsepositives:
+    - Connections to benign services hosted on these IPs after they have been reallocated by the service provider.
+level: high

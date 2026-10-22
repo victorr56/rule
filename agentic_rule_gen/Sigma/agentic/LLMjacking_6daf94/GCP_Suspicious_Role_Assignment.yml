@@ -1,0 +1,30 @@
+title: Suspicious GCP Billing or ML Role Assignment
+id: c46517a9-d6e0-40e1-a021-d1f044d0ec36
+status: experimental
+description: Detects the assignment of high-privilege billing or machine learning roles in Google Cloud Platform. This is a common tactic in LLMjacking to escalate privileges and abuse cloud resources for billing fraud.
+references:
+    - https://www.wiz.io/blog/from-phishing-to-llmjacking
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.privilege_escalation
+    - attack.t1078.004
+    - attack.resource_hijacking
+    - attack.t1496
+logsource:
+    product: gcp
+    service: audit
+    category: cloud
+detection:
+    selection:
+        gcp.audit.method_name|contains: 'SetIamPolicy'
+        gcp.audit.service_data.policyDelta.bindingDeltas.action: 'ADD'
+        gcp.audit.service_data.policyDelta.bindingDeltas.role:
+            - 'roles/billing.admin'
+            - 'roles/ml.admin'
+            - 'roles/recommender.billingAccountCudAdmin'
+            - 'roles/mcp.toolUser'
+    condition: selection
+falsepositives:
+    - Legitimate assignment of these roles to administrators or service accounts. This activity should be audited.
+level: medium

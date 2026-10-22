@@ -1,0 +1,364 @@
+{
+  "malware_family": "Bisonal",
+  "threat_actor": "Tonto Team",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Tonto Team is a suspected Chinese espionage actor using phishing emails with malicious RTF documents created by the Royal Road weaponizer. The documents drop the Bisonal.DoubleT backdoor or a new downloader called TontoTeam.Downloader (aka QuickMute). The malware establishes persistence via Run keys and communicates with C2 servers over HTTP/S using custom URI patterns and RC4-encrypted data.",
+  "mitre_techniques": [
+    "T1566.001",
+    "T1204.002",
+    "T1203",
+    "T1059.003",
+    "T1547.001",
+    "T1027",
+    "T1140",
+    "T1124",
+    "T1057",
+    "T1082",
+    "T1614.001",
+    "T1016",
+    "T1033",
+    "T1071.001",
+    "T1573.002",
+    "T1001",
+    "T1105",
+    "T1041"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "17.06.2022_Протокол_МРГ_Подгруппа_ИБ.doc",
+      "context": "Malicious RTF attachment from 2022 phishing email.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Royal Road RTF Weaponizer",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dcnx18pwh.wmf",
+      "context": "Encoded payload dropped by Royal Road RTF.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "30 июня B 17.30 – очередное заседание Исполкома АДЭ.doc",
+      "context": "Malicious RTF attachment from 2021 phishing email.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Royal Road RTF Weaponizer",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "8.t",
+      "context": "Encoded payload from 2021 Royal Road RTF.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%AppData%\\Roaming\\conhost.exe",
+      "context": "Bisonal.DoubleT dropped by Bisonal.Dropper.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%windows%\\temp\\log.txt",
+      "context": "Bisonal.DoubleT error log file.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "userInit = \"%AppData%\\Roaming\\conhost.exe\"",
+      "context": "Bisonal.Dropper sets this in HKCU\\...\\Run for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[!] get pRegSetValueEx error\\n",
+      "context": "Bisonal.DoubleT error message written to log file.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "{\"status\":\"success\"}",
+      "context": "String found in Bisonal.DoubleT samples.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567=",
+      "context": "Base32 alphabet string in Bisonal.DoubleT.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "{A931568B-94AF-449D-B7F6-6585EF9E9839}",
+      "context": "Mutex created by TontoTeam.Downloader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "QuitMutex%d",
+      "context": "TontoTeam.Downloader mutex to prevent re-download, %d is PID.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "https-note-86",
+      "context": "Possible malware/campaign ID from TontoTeam.Downloader config.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "`[#o_*#]`",
+      "context": "Placeholder for proxy settings in TontoTeam.Downloader config.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "%[^!]!%[^$]$%[^$]$%[^$]$%[^$]$%[^$]$%[^$]$%[^$]$%[^$]$%[^$]$%[^$]",
+      "context": "sscanf format string for parsing TontoTeam.Downloader config.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Wrap Module",
+      "context": "File description string in TontoTeam.Downloader.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Wrap",
+      "context": "Window class name created by TontoTeam.Downloader.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "HttpsVictimMain",
+      "context": "Exported function in payload DLL downloaded by TontoTeam.Downloader.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 38 05 87 0F 0C 6B 9F 2A 2B 1F F8 DA D2 6E 1E 42 8D 3D 07 5F 36 F9 91 21 FC 7D EB 8A 06 C7 66 3F 29 2F EF FB 78 B6 1B 7B 04 14 B2 30 98 D0 7F 8B BF EC 47 FE 94 5D A6 CF 15 44 FF AB C9 57 46 81 93 69 82 58 08 03 B5 68 25 83 1D 0A 1A 9E D6 48 2E 09 EA C1 02 0D 51 F2 6C 0B 4D E8 A9 32 5B AE B7 A7 C5 01 3A 8F 72 00 4E 76 DB 65 4A 23 70 BA 97 52 D7 D4 E2 8E 89 3B AC 9B 90 63 28 1C 39 A0 77 27 A5 0E EE D5 4C E7 41 B8 9A 17 B4 37 A4 F1 A3 55 C4 B9 CD CC 88 D1 CB 18 22 4F 2D 8C E5 9D BB F5 35 60 FA 84 E0 73 13 C6 C2 79 B3 5E 71 26 D9 F7 3C 2C F3 45 7A 43 10 4B CE E6 86 16 ED AD 12 BC DE 85 AF 19 A8 C8 E3 E9 31 F0 61 5A 99 75 A2 E1 56 B0 D8 53 7C DD DF BE E4 80 C0 54 C3 74 7E 6D 20 49 64 67 B1 40 A1 95 D3 DC BD 24 9C FD 3E 6F 5C 62 34 F4 6A 50 CA 92 AA 96 33 11 F6 59 }",
+      "context": "TontoTeam.Downloader 256-byte RC4 key for config decryption.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "137.220.176.165",
+      "context": "Bisonal.DoubleT C2 server (2022).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.85.20.194",
+      "context": "Bisonal.DoubleT C2 server (2021).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "offices-update.com",
+      "context": "Bisonal C2 server (2020).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "upportteam.lingrevelat.com",
+      "context": "TontoTeam.Downloader C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "supportteam.lingrevelat.com",
+      "context": "TontoTeam.Downloader C2 server (IOC list typo variant).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "news.wooordhunts.com",
+      "context": "Associated Tonto Team C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/ru/order/index.php",
+      "context": "Bisonal.DoubleT C2 initial 'hello' beacon.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/ru/news/index.php",
+      "context": "Bisonal.DoubleT C2 command retrieval.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/xhome.native.page/datareader.php",
+      "context": "Bisonal.DoubleT C2 data exfiltration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/siteFiles/index.php",
+      "context": "Bisonal.DoubleT C2 for 'Download & Execute'.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/update/v32/default",
+      "context": "TontoTeam.Downloader C2 path for payload download.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36",
+      "context": "User-Agent used by Bisonal.DoubleT.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko",
+      "context": "User-Agent used by TontoTeam.Downloader.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "58c1cab2a56ae9713b057626953f8967c3bacbf2cda68ce104bbb4ece4e35650",
+      "description": "Decoded Royal Road payload - Bisonal.DoubleT (2022)"
+    },
+    {
+      "sha256": "1c86452b222c8e631b0434585000466814f92f71d81576e03e0a118409019842",
+      "description": "Decoded Royal Road payload - Bisonal.Dropper (2021)"
+    },
+    {
+      "sha256": "8597e6b9f5f61c68a9ef219513dd43dd36e269b738f849b1dda44b576c865d39",
+      "description": "conhost.exe - Bisonal.DoubleT (backdoor dropped by dropper)"
+    },
+    {
+      "sha256": "c357faf78d6fb1460bfcd2741d1e99a9f19cf6dffd6c09bda84a2f0928015398",
+      "description": "Decoded Royal Road payload - TontoTeam.Downloader"
+    },
+    {
+      "sha256": "c7018ee3783f4b2fb19fedc78c59586390efa1b72c907867794bf42141eb767c",
+      "description": "17.06.2022_Протокол_МРГ_Подгруппа_ИБ.doc (Royal Road RTF)"
+    },
+    {
+      "sha256": "bc78ba16d9495b17918d31e893a5f10d8a87d16a4a88f9bfd3ed5c735ce2ae11",
+      "description": "30 июня в 17.30 – очередное заседание Исполкома АДЭ.doc (Royal Road RTF)"
+    },
+    {
+      "sha256": "7944fa9cbfef2c7d652f032edc159abeaa1fb4fd64143a8fe3b175095c4519f5",
+      "description": "Вниманию.doc (Royal Road RTF delivering downloader)"
+    },
+    {
+      "sha256": "dcb854e32d3ca08852371673ed7cd9139af761b8b127113746a527050b5e2b1d",
+      "description": "Decoded Royal Road payload - Bisonal.DoubleT"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "document"
+  ]
+}

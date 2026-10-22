@@ -1,0 +1,378 @@
+{
+  "malware_family": "Godfather",
+  "threat_actor": "",
+  "platforms": [
+    "android"
+  ],
+  "summary": "Godfather is an Android banking trojan, forked from the Anubis malware family, distributed via decoy apps on Google Play. It abuses AccessibilityService to steal credentials via web fakes, capture screen recordings, and exfiltrate data from over 400 financial applications. It retrieves its C2 address from Telegram channel descriptions and uses a custom protocol for communication.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "libspotify.so",
+      "context": "VNC library name in newer versions, masquerading as Spotify lib.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "libjson.so",
+      "context": "VNC library name in newer versions, masquerading as JSON lib.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "lib.%ARCHITECTURE%.godfat.so",
+      "context": "JNI wrapper for VNC in older versions.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "lib.%ARCHITECTURE%.vncserver.so",
+      "context": "VNC library in older versions.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "open-source VNC library",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%DEFAULT_DIRECTORY_MOVIES%/%KEY%_%CURRENT_TIME_MS%.mp4",
+      "context": "Screen recording save path template.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "config.xml",
+      "context": "SharedPreferences configuration file name.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Enable accessibility for protection to take effect ‘Google Protect”",
+      "context": "AccessibilityService access request pop-up text.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GWy8tfjp4mXpu58fCRpWCLxqHV8YmeHR",
+      "context": "AES key for encrypting native VNC libraries (older versions).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ABC",
+      "context": "Blowfish key for decrypting C2 address from Telegram.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0123456789abcdef",
+      "context": "AES key for exfiltrated data encryption.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "fedcba9876543210",
+      "context": "AES IV for exfiltrated data encryption.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Package:%PACKAGE%|Time: %DATE% (MM/dd/yyyy, HH:mm:ss)|[(CLICKED)]%DATA%{line}",
+      "context": "Keylogger log format for click events.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Package:%PACKAGE%|Time: %DATE% (MM/dd/yyyy, HH:mm:ss)|[(TEXT)]%DATA%{line}",
+      "context": "Keylogger log format for text change events.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Injection",
+      "context": "String required to parse InjectCommandRequest response.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Injection_10",
+      "context": "Hardcoded marker in web fake data exfiltration URL parameter.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "RU",
+      "context": "System language code checked to disable malware.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "UZ",
+      "context": "System language code checked to disable malware.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "com.google.android.apps.authenticator2",
+      "context": "Target for Google Authenticator OTP exfiltration.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Cerberus",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "34500",
+      "context": "Port used for backconnect SOCKS5 proxy server.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "5500",
+      "context": "Default port for reverse VNC connection.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "henkormerise.com",
+      "context": "Godfather C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "banerrokutepera.com",
+      "context": "Godfather C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "heikenmorgan.com",
+      "context": "Godfather C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pluscurrencyconverter.com",
+      "context": "C2 server for the downloader application.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "168.100.9.86",
+      "context": "Godfather C2 server IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://t.me/dobrynyanikitichsobre",
+      "context": "Telegram channel used for C2 discovery.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://t.me/puykomterivon",
+      "context": "Telegram channel used for C2 discovery.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/aks.php",
+      "context": "C2 endpoint found in Trojan.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/ads.php",
+      "context": "C2 endpoint found in Trojan.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/mp4_recorder.php",
+      "context": "Endpoint for uploading screen recordings.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/itor/fafa.php",
+      "context": "Endpoint for downloading web fakes.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Anubis"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/sender_new.php",
+      "context": "Endpoint for exfiltrating data from web fakes.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Anubis"
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Linux; Android 9; SM-J730F Build/PPR12.180610.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/88.0.4324.181 Mobile Safari/537.36",
+      "context": "Hardcoded user agent for web fake downloads.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "logd=new",
+      "context": "Parameter in RatCommandRequest body.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "tag=PTS",
+      "context": "Parameter in RatCommandRequest body.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "eyes=1",
+      "context": "Parameter in RatCommandRequest body.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "%СOMMAND%|%PARAM1%|%PARAM2%|%PARAM3%|%PARAM4%",
+      "context": "Format of the RatCommandRequest server response.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "c79857015dbf220111e7c5f47cf20a656741a9380cc0faecd486b517648eb199",
+      "description": "Analyzed Godfather sample from March 2022"
+    },
+    {
+      "sha256": "b6249fa996cb4046bdab37bab5e3b4d43c79ea537f119040c3b3e138149897fd",
+      "description": "Analyzed Godfather sample from September 2022 with WebSocket module"
+    },
+    {
+      "sha256": "0b72c22517fdefd4cf0466d8d4c634ca73b7667d378be688efe131af4ac3aed8",
+      "description": "Godfather APK from IOC list"
+    },
+    {
+      "sha256": "7664293fc1dde797940d857d1f16eb1e12a15b9126d704854f97df1bedc18758",
+      "description": "Godfather APK from IOC list"
+    },
+    {
+      "sha256": "9815ba07d0a2528c11d377b583243df24218a48c6a4f839f40769ea290555070",
+      "description": "Godfather APK from IOC list"
+    },
+    {
+      "sha256": "c3dadb9a593523d1bf3fe76dabf375578119aff3110d92a1a4ee6db06742263a",
+      "description": "Godfather APK from IOC list"
+    }
+  ],
+  "file_types": [
+    "apk"
+  ]
+}

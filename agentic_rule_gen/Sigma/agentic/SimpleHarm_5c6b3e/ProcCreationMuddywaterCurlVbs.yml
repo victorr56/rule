@@ -1,0 +1,29 @@
+title: MuddyWater Curl Download and Execute VBS
+id: 569d6c33-87a3-4a16-ae9d-d6a5c17163c4
+status: experimental
+description: Detects a specific command line pattern used by MuddyWater to download a VBScript payload using curl, save it to C:\ProgramData, display a decoy message, and execute the payload.
+references:
+    - https://www.group-ib.com/blog/muddywater-infrastructure/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.t1059.003
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - 'curl'
+            - '> C:\programdata\'
+            - '.vbs'
+            - '&& msg *'
+            - 'The file is c orrupted'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,259 @@
+{
+  "malware_family": "36gate",
+  "threat_actor": "LABYRINTH CHOLLIMA",
+  "platforms": [
+    "windows",
+    "macos"
+  ],
+  "summary": "A trojanized version of the 3CX Desktop App was distributed via a supply chain attack. On Windows, a malicious ffmpeg.dll loads shellcode from d3dcompiler_47.dll to download a final payload, with C2s fetched from a GitHub repository disguised as ICO files. The macOS version uses a malicious libffmpeg.dylib with hardcoded, XOR-encrypted C2 URLs.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "AVMonitorRefreshEvent",
+      "context": "Event name created by the infected ffmpeg.dll before shellcode extraction.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ FE ED FA CE }",
+      "context": "Magic bytes preceding the encrypted shellcode in d3dcompiler_47.dll.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "3jB(2bsG#@c7",
+      "context": "Hardcoded decryption key for the shellcode in d3dcompiler_47.dll.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "1200 2400 \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) 3CXDesktopApp/18.11.1197 Chrome/102.0.5005.167 Electron/19.1.9 Safari/537.36\"",
+      "context": "Arguments passed from ffmpeg.dll to the next stage downloader.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) 3CXDesktopApp/18.11.1197 Chrome/102.0.5005.167 Electron/19.1.9 Safari/537.36",
+      "context": "User-Agent string passed as an argument to the downloader stage.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "DllGetClassObject",
+      "context": "The single export in the downloader DLL containing all malicious functionality.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "$",
+      "context": "Symbol that precedes the Base64-encoded C2 data within the .ico files.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ffmpeg.dll",
+      "context": "Trojanized library in the Windows version.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "d3dcompiler_47.dll",
+      "context": "Library containing the encrypted shellcode, located in the same directory.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "libffmpeg.dylib",
+      "context": "Trojanized library in the macOS version.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Application Support/3CX Desktop App/UpdateAgent",
+      "context": "Indicator file for second stage execution on macOS.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Application Support/3CX Desktop App/.main_storage",
+      "context": "Indicator file for second stage execution on macOS.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/Application Support/3CX Desktop App/.session-locks",
+      "context": "Indicator file for second stage execution on macOS.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://raw.githubusercontent.com/IconStorages/images/main/icon1.ico",
+      "context": "C2 list stored in .ico files on GitHub. Up to icon15.ico.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "z3cx_auth_id=%s;3cx_auth_token_content=%s;__tutma=true",
+      "context": "Cookie header format used by the macOS version for C2 communication.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://msstorageazure.com/window",
+      "context": "Decrypted C2 URL from icon1.ico for Windows payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://officestoragebox.com/api/session",
+      "context": "Decrypted C2 URL from icon2.ico for Windows payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://visualstudiofactory.com/workload",
+      "context": "Decrypted C2 URL from icon3.ico for Windows payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://akamaitechcloudservices.com/v2/storage",
+      "context": "Decrypted C2 URL from icon10.ico for Windows payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://pbxsources.com/exchange",
+      "context": "Decrypted C2 URL from icon15.ico for Windows payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://msstorageazure.com/analysis",
+      "context": "Decrypted C2 URL for macOS payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://officestoragebox.com/api/biosync",
+      "context": "Decrypted C2 URL for macOS payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://visualstudiofactory.com/groupcore",
+      "context": "Decrypted C2 URL for macOS payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://pbxphonenetwork.com/phone",
+      "context": "Decrypted C2 URL for macOS payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://pbxsources.com/queue",
+      "context": "Decrypted C2 URL for macOS payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "e6bbc33815b9f20b0cf832d7401dd893fbc467c800728b5891336706da0dbcec",
+      "description": "Trojanized 3CXDesktopApp-18.12.416.dmg (macOS installer)"
+    },
+    {
+      "sha256": "59e1edf4d82fae4978e97512b0331b7eb21dd4b838b850ba46794d9c7a2c0983",
+      "description": "Trojanized 3CXDesktopApp-18.12.416.msi (Windows installer)"
+    },
+    {
+      "sha256": "aa124a4b4df12b34e74ee7f6c683b2ebec4ce9a8edcf9be345823b4fdcf5d868",
+      "description": "Malicious file observed during analysis"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "macho",
+    "archive"
+  ]
+}

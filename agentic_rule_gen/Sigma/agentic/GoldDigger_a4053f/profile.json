@@ -1,0 +1,226 @@
+{
+  "malware_family": "GoldDigger",
+  "threat_actor": "",
+  "platforms": [
+    "android"
+  ],
+  "summary": "GoldDigger is an Android Trojan, active since June 2023, targeting financial applications in Vietnam. It abuses Android's Accessibility Service to steal credentials and SMS messages, and is protected by Virbox Protector to hinder analysis. The malware is distributed via fake websites masquerading as government portals and corporate sites.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "GoldActivity",
+      "context": "A specific activity within the APK, which gave the malware its name.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "EVENT_GET_CLASS_NAME",
+      "context": "String literal observed in the code for capturing credentials.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "EVENT_GET_TEXT",
+      "context": "String literal observed in the code for capturing credentials.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Virbox Protector",
+      "context": "A legitimate software used as an advanced protection and evasion mechanism.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "cskh.evnspa.cc",
+      "context": "Malware delivery site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cskh.evnspc.cc",
+      "context": "Malware delivery site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cskh.evnspe.cc",
+      "context": "Malware delivery site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "viet.cgovn.cc",
+      "context": "Malware delivery site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "viet.egovn.cc",
+      "context": "Malware delivery site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "viet.gdtgovn.com",
+      "context": "Malware delivery site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "viet.govn.cc",
+      "context": "Malware delivery site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "vietgov22.cc",
+      "context": "Malware delivery site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "vietgov33.cc",
+      "context": "Malware delivery site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hds6y.cc",
+      "context": "C2 server domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ks8cb.cc",
+      "context": "C2 server domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ms2ve.cc",
+      "context": "C2 server domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "smgeo.cc",
+      "context": "C2 server domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wbke.cc",
+      "context": "C2 server domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "www.dg1e.com",
+      "context": "C2 server domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "zu7kt.cc",
+      "context": "C2 server domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "c2b91a1d4b3d1dff21f280864c6c4d1ad79054ba6c68c8e453617320709230a1",
+      "description": "GoldDigger APK sample"
+    },
+    {
+      "sha256": "139a5bcc92044e2e7c47aa28256218d92a37bed682b318a7b167abac6a1634bc",
+      "description": "GoldDigger APK sample"
+    },
+    {
+      "sha256": "569626b0b6ef277cc1ad094a2f025d56b6f0e1ed9f9c2ccf1cc8ac492fb4e6a7",
+      "description": "GoldDigger APK sample"
+    },
+    {
+      "sha256": "6171db5548941aff6c6873c1c292c631e0e3e8abc4d6a125e9359b72fcffbb60",
+      "description": "GoldDigger APK sample"
+    },
+    {
+      "sha256": "0ffd769fec5314749c425374a79f02d3bbcd08eefba82c31283d972dd82414f5",
+      "description": "GoldDigger APK sample"
+    },
+    {
+      "sha256": "6a8c601ba5a0eaebcabc274e5c3cfd3b93439fbe5432f178f1ba11bd07457407",
+      "description": "GoldDigger APK sample"
+    },
+    {
+      "sha256": "d8834a21bc70fbe202cb7c865d97301540d4c27741380e877551e35be1b7276b",
+      "description": "GoldDigger APK sample"
+    },
+    {
+      "sha256": "43d058aacb210c33a7d7a5af177ed38647372c35a3fb808ca82a9e233b3f1cd4",
+      "description": "GoldDigger APK sample"
+    },
+    {
+      "sha256": "03b30ad69bd7c4ef7fef3cf9f2f8c0326dae8248f60599313c89db6b46fb6164",
+      "description": "GoldDigger APK sample"
+    },
+    {
+      "sha256": "b80a297daeb4ae116cace282d2199c18f8e5be0e796ad05756cc5ceeff53267c",
+      "description": "GoldDigger APK sample"
+    }
+  ],
+  "file_types": [
+    "apk"
+  ]
+}

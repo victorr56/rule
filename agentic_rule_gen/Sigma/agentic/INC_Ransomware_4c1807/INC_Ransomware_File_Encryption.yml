@@ -1,0 +1,22 @@
+title: INC Ransomware Encrypted File
+id: 3c5d8e77-1e5f-4a0b-80a8-b615c8c07e0b
+status: experimental
+description: Detects files being renamed with the ".INC" extension by a process likely associated with INC ransomware.
+references:
+    - https://socradar.io/blog/inc-gentlemen-ransomware-ai-infrastructure/
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.impact
+    - attack.t1486
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\inc.exe'
+        TargetFilename|endswith: '.INC'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

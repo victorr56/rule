@@ -1,0 +1,363 @@
+{
+  "malware_family": "INC Ransomware",
+  "threat_actor": "INC and The Gentlemen Ransomware Affiliates",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "Affiliates of INC and The Gentlemen ransomware groups operated an AI-driven intrusion ecosystem featuring custom tooling like the Phantom framework, Ghost C2, and RevSocks. The operation, exposed via an open C2 server, relied on exploiting edge devices like FortiClient EMS and SimpleHelp, with AI managing reconnaissance, command generation, and data triage. The final payload was the INC Ransomware, with dozens of builds staged for deployment.",
+  "mitre_techniques": [
+    "T1595.002",
+    "T1591",
+    "T1583.001",
+    "T1587.001",
+    "T1588.002",
+    "T1190",
+    "T1133",
+    "T1078",
+    "T1566.001",
+    "T1566.004",
+    "T1059.001",
+    "T1059.006",
+    "T1204.002",
+    "T1072",
+    "T1136",
+    "T1053.005",
+    "T1685",
+    "T1070.006",
+    "T1036",
+    "T1027.006",
+    "T1003.006",
+    "T1003.003",
+    "T1558.003",
+    "T1555.003",
+    "T1056.002",
+    "T1110",
+    "T1087.002",
+    "T1135",
+    "T1083",
+    "T1057",
+    "T1021.002",
+    "T1021.001",
+    "T1210",
+    "T1074.001",
+    "T1114.001",
+    "T1005",
+    "T1071.001",
+    "T1090",
+    "T1572",
+    "T1219",
+    "T1105",
+    "T1567.002",
+    "T1486",
+    "T1489",
+    "T1490",
+    "T1657"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": ".INC",
+      "context": "Extension appended to encrypted files.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "INC-README.txt",
+      "context": "Ransom note dropped after encryption.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "RealtekAudioSvc",
+      "context": "Persistence mechanism for a Python implant.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "IOCTL 0x0053C028",
+      "context": "Used to delete shadow copies via direct driver call.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Zemana driver",
+      "context": "Abused in a BYOVD attack to kill Quick Heal/Seqrite security products.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "WUServiceHost",
+      "context": "Masquerading name for Phantom agent implants.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "coordinate every action with me",
+      "context": "Directive given by human operator to AI model in OpenCode session.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Authorized Red Team Assessment Request",
+      "context": "Template used to rephrase requests when AI models initially refused.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "tomorrow at 6 Moscow time, right?",
+      "context": "Operator message in Rocket.Chat discussing ransomware deployment timing.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "README_PARTNER.md",
+      "context": "Partner onboarding guide found on deployment server.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "sm4l1st123",
+      "context": "BreachForums username linked to operator's email.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "restic",
+      "context": "Tool used for exfiltration to cloud object storage.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "restic",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "rclone",
+      "context": "Tool used for exfiltration to cloud object storage.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "rclone",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "45.227.254.43",
+      "context": "Initial AI node: knowledge base, OpenCode history, Phantom source.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.227.254.45",
+      "context": "Development and deployment hub: partner package, C2 builds.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.227.254.84",
+      "context": "Operator workstation VM and SimpleHelp console.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "179.60.149.68",
+      "context": "Staging and network pivot node.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "89.185.83.8",
+      "context": "Ghost C2 and credential harvesting tooling.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "138.124.113.210",
+      "context": "Ghost C2 control panel.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "77.110.109.248",
+      "context": "RevSocks reverse SOCKS5 host.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "system-strategy.org",
+      "context": "Ghost / Phantom redirector zone.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "iquickline.com",
+      "context": "Phantom / Athena C2 zone.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "trulitesupport.com",
+      "context": "Look-alike customer-notice page for extortion.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "incblog.su",
+      "context": "INC ransomware leak-site mirror.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "incpaykabjqc2mtdxq6c23nqh4x6m5dkps5fr6vgdkgzp5njssx6qkid.onion",
+      "context": "INC payment portal from ransom note.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "incblog6qu4y4mm4zvw5nrmue6qbwtgjsxpw6b7ixzssu36tsajldoad.onion",
+      "context": "INC leak site from ransom note.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "incadmd42ytgp4hwkejirji4m6pcbacazoeic7fc5sd27nr7it5ajyqd.onion",
+      "context": "INC dashboard / chat panel from screenshot.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/assets/js/analytics.js",
+      "context": "Disguised path for loader delivery.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "smilefacesec@gmail.com",
+      "context": "Email used for FOFA API and BreachForums account registration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "ffca6aa96572743200f9f0040a3e435766f6d7c15d6a4c72045a0cbb4db72eb4",
+      "description": "INC ransomware build A"
+    },
+    {
+      "sha256": "0ae4447d755593ee1931170d4187a07a29bf0690179acc39b7400a4c65cd07c5",
+      "description": "INC ransomware build B"
+    },
+    {
+      "sha256": "14b711bd51096796ac6b38c30e3cced197831092956a4c6ff8d1f5ebb4432212",
+      "description": "INC ransomware build C"
+    },
+    {
+      "sha256": "ec4ba1d570601eaa1474ab7cfffafcff218a717e44e8d2d22ed0573676b0463e",
+      "description": "INC ransomware kit 1, Windows"
+    },
+    {
+      "sha256": "ca02f60942a43d8f8b973baa3231df1f8c26328750baa2ed8d4cf07335084ebb",
+      "description": "INC ransomware kit 2, Windows"
+    },
+    {
+      "sha256": "ffd47c59a9960a293002c4fff481f613892599191356589eb7b6950ef7465918",
+      "description": "INC ransomware kit 3, Windows"
+    },
+    {
+      "sha256": "70f28e18e7f4083cd542e6bff6b2682f3876c5ef4bcf4323aa22a6d03d4a8a82",
+      "description": "INC ransomware kit 1, Linux"
+    },
+    {
+      "sha256": "7ad718a530a2913f775e62c656060af79ffde5c1f2c04138bcc068142f162a20",
+      "description": "INC ransomware kit 2, Linux"
+    },
+    {
+      "sha256": "4286e7035096d002a0f90aca19b93504d7c69354cf0c76eb8b3c93bae2b7885a",
+      "description": "INC ransomware kit 3, Linux"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "elf",
+    "script",
+    "document"
+  ]
+}

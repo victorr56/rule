@@ -1,0 +1,26 @@
+title: Labyrinth Chollima - 3CX C2 Domains
+id: b2944b98-37cd-4fde-bc5c-de09fa1e57c6
+status: experimental
+description: Detects DNS queries for domains known to be used as C2 servers in the 3CX supply chain attack.
+references:
+    - https://www.group-ib.com/blog/3cx-supply-chain-attack/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.t1568.002
+logsource:
+    product: windows
+    category: dns_query
+detection:
+    selection:
+        QueryName:
+            - akamaitechcloudservices.com
+            - msstorageazure.com
+            - officestoragebox.com
+            - pbxphonenetwork.com
+            - pbxsources.com
+            - visualstudiofactory.com
+    condition: selection
+falsepositives:
+    - Unlikely, as these domains are actor-controlled infrastructure.
+level: critical

@@ -1,0 +1,28 @@
+title: Process Execution from SLAPSHOT Directory
+id: a206b3a0-77a8-4c6e-8260-9bb4cd6d71b5
+status: experimental
+description: Detects processes launching from directories known to be used by the SLAPSHOT malware.
+references:
+    - https://www.rapid7.com/blog/post/2023/10/20/cve-2023-4966-citrix-netscaler-adc-and-netscaler-gateway-information-disclosure-and-exploitation-guidance/
+author: ioc-yara-daily (agentic)
+date: 2023-10-22
+tags:
+    - attack.execution
+    - attack.t1059
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|startswith:
+            - '/nsconfig/.slap/'
+            - '/nsconfig/.relay/'
+            - '/flash/.nsvm/'
+        CommandLine|startswith:
+            - '/nsconfig/.slap/'
+            - '/nsconfig/.relay/'
+            - '/flash/.nsvm/'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

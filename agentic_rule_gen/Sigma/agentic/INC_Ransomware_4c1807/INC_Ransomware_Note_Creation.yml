@@ -1,0 +1,23 @@
+title: INC Ransomware Note Creation
+id: 67b36f0b-4158-4458-941f-82386992d9d1
+status: experimental
+description: Detects the creation of the INC ransomware ransom note "INC-README.txt" by the "Client.exe" process as observed in CISA advisory AA23-124A.
+references:
+    - https://socradar.io/blog/inc-gentlemen-ransomware-ai-infrastructure/
+    - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-124a
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.impact
+    - attack.t1486
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\Client.exe'
+        TargetFilename|endswith: '\INC-README.txt'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

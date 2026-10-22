@@ -1,0 +1,26 @@
+title: Labyrinth Chollima - 3CX Downloader Arguments
+id: 28fca8c6-559d-47fd-8926-40e11833d749
+status: experimental
+description: Detects the execution of the 3CX downloader component, identified by specific command-line arguments. The parent process is the compromised 3CXDesktopApp.exe.
+references:
+    - https://www.group-ib.com/blog/3cx-supply-chain-attack/
+author: ioc-yara-daily (agentic)
+date: 2023-04-11
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\3CXDesktopApp.exe'
+        CommandLine|contains|all:
+            - '1200 2400'
+            - 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            - '3CXDesktopApp/18.11.1197'
+            - 'Electron/'
+    condition: selection
+falsepositives:
+    - Legitimate 3CXDesktopApp.exe should not spawn processes with these command-line arguments.
+level: high

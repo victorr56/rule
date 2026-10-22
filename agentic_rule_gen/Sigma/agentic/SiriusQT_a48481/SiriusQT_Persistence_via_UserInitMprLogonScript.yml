@@ -1,0 +1,22 @@
+title: SiriusQT Persistence via UserInitMprLogonScript
+id: 9a784d16-621c-43f1-9b16-43b679ac8e13
+status: experimental
+description: Detects modification of the 'UserInitMprLogonScript' value in the HKCU\Environment registry key, a technique used by SiriusQT for persistence.
+references:
+    - https://www.group-ib.com/blog/siriusqt-rat-hvnc-stealer/
+author: ioc-yara-daily (agentic)
+date: 2023-10-19
+tags:
+    - attack.persistence
+    - attack.t1037.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Environment\UserInitMprLogonScript'
+        Details|contains: '\Sirius\Sirius.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

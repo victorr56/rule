@@ -1,0 +1,25 @@
+title: GCP 'iam.allowedPolicyMemberDomains' Organization Policy Deletion
+id: 57ef9a5f-4a0b-48ab-a077-8ba7a5441a78
+status: experimental
+description: Detects the deletion of the 'iam.allowedPolicyMemberDomains' organization policy in Google Cloud Platform. This policy is used to restrict IAM principals to specific domains. Deleting it allows attackers to add their own external accounts to the GCP organization, a key step observed in LLMjacking campaigns.
+references:
+    - https://www.wiz.io/blog/from-phishing-to-llmjacking
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.impair_defenses
+    - attack.t1562.007
+    - attack.valid_accounts
+    - attack.t1078.004
+logsource:
+    product: gcp
+    service: audit
+    category: cloud
+detection:
+    selection:
+        gcp.audit.method_name: 'google.cloud.orgpolicy.v2.OrgPolicy.DeletePolicy'
+        gcp.audit.resource.name|endswith: '/policies/iam.allowedPolicyMemberDomains'
+    condition: selection
+falsepositives:
+    - Legitimate, albeit risky, administrative action. This policy change should be rare and heavily scrutinized.
+level: high

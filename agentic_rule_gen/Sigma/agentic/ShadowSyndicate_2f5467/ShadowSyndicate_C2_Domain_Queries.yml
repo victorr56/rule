@@ -1,0 +1,36 @@
+title: ShadowSyndicate C2 Domain Queries
+id: 59a88e6b-67e4-41d1-9f93-5d5523b03665
+status: experimental
+description: Detects DNS queries for domains associated with ShadowSyndicate C2 infrastructure.
+references:
+    - https://www.group-ib.com/blog/shadowsyndicate-raas/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'windosupdate.net'
+            - '.s01kaspersky.com'
+            - '.micnosoftupdate.com'
+            - '.wimdowupdate.com'
+            - '.windowservicecentar.com'
+            - 'mysqlserver.org'
+            - 'devcloudpro.com'
+            - 'uranustechsolution.com'
+            - 'devsetgroup.com'
+            - 'paloaltocloud.online'
+            - 'etgtgvtgttefeer.xyz'
+            - 'egetrgertgegege.xyz'
+            - 'svchostsreg.com'
+            - '.sveexec.com'
+            - 'opentechcorp.net'
+    condition: selection
+falsepositives:
+    - Legitimate connections to these domains, especially if they are sinkholed or repurposed.
+level: high

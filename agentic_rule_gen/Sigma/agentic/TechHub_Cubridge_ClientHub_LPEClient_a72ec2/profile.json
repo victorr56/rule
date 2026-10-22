@@ -1,0 +1,395 @@
+{
+  "malware_family": "TechHub, Cubridge, ClientHub, LPEClient",
+  "threat_actor": "Lazarus Group",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Lazarus Group targets South Korean organizations using watering-hole attacks against mandatory security software (CrossWeb EX). The complex, memory-resident infection chain deploys a modular framework including TechHub for GitHub-based C2, Cubridge as an orchestrator, and LPEClient for advanced system profiling. The malware uses advanced evasion, DLL side-loading, and post-quantum cryptography (ML-KEM) for C2 communications.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "parent_child",
+      "value": "INISAFECrossWebEXSvc.exe -> fsquirt.exe",
+      "context": "Initial compromise chain where fsquirt.exe is injected with shellcode.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\System32\\RasConv\\ImeBroker.exe -TimeBroker",
+      "context": "TouchHub creates a service running this hard-coded command line.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\RasConv\\ImeBroker.exe",
+      "context": "Legitimate printfilterpipelinesvc.exe copied and renamed by TouchHub for persistence.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\RasConv\\mscoree.dll",
+      "context": "Side-loaded TouchShift payload dropped by TouchHub.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\RasConv\\ActivationStore.dat",
+      "context": "TechHub's configuration file dropped by TouchHub.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files\\Common Files\\System\\msadc\\msadc.inc",
+      "context": "ClientHub external configuration file.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mscoree.dll",
+      "context": "Name used for side-loading TouchHub and TouchShift malware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ActionModule.dll",
+      "context": "Internal name for Cubridge module managing file/process operations.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "FunctionModule.dll",
+      "context": "Internal name for Cubridge module implementing Windows commands.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "LockClrVersion",
+      "context": "Malicious export function in TouchShift loader.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "AppinfoView",
+      "context": "Export function in ActionModule invoked by Cubridge.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "PresentationFontConfig",
+      "context": "Export function in FunctionModule invoked by Cubridge.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "laeca",
+      "context": "TechHub command to invoke received shellcode in memory.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "KW4Ofw982CNJjxd51AVqkGAop",
+      "context": "Cubridge fixed authentication token.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "xdkiTajAAxc3i/w[<881fnC!G*cb1Dit2sh.gAk/",
+      "context": "Hard-coded password for legacy ZipCrypto used by Cubridge.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "economy, opinion, politics, national, international, medical, investment, sports, lifestyle, shopping, culture",
+      "context": "Cubridge predefined word list for C2 URL generation (page1).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "article, list, story",
+      "context": "Cubridge predefined word list for C2 URL generation (page2).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "x809G736iC3f8Wp8",
+      "context": "TouchShift hard-coded 16-byte XOR key.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "encrypted_key",
+      "context": "Keyword to extract AES key from Chromium's Local State file.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x59",
+      "context": "XOR key used by Cubridge to decrypt a file before archiving.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xF07D6B34",
+      "context": "LPEClient message ID for initial data collection.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xA39CF278",
+      "context": "LPEClient message ID for key exchange request.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xEF8C0D51",
+      "context": "LPEClient message ID for transmitting post-quantum ciphertexts.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xCB790A25",
+      "context": "LPEClient message ID sent after successful payload loading.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "SNOW 1.0",
+      "context": "Stream cipher used by ClientHub to encrypt/decrypt configuration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ML-KEM-1024",
+      "context": "Post-quantum key encapsulation used by LPEClient.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Threefish",
+      "context": "Tweakable block cipher used by LPEClient to decrypt payloads.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "GOST",
+      "context": "Block cipher used by LPEClient to encrypt collected data.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "Microsoft Service",
+      "context": "Description used for the persistence service created by TouchHub.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://javadevhouse.co.kr/ajax/libs/jquery/1.7.3/jquery.min.js",
+      "context": "Malicious script link embedded in a lure website.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://pythonapischool.com/api/detach",
+      "context": "Malicious script link embedded in a lure website.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cubedesign.co.kr/news/AABBCC",
+      "context": "Hardcoded Cubridge C2 URL template (AABBCC is replaced).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/issues",
+      "context": "GitHub API path used by TechHub to create a new issue for C2.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/[page1]/[page2]/[page3]",
+      "context": "Cubridge C2 URL generation pattern.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-CSRF-Token",
+      "context": "Header used by Cubridge for C2 authentication.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Sec-CH-UA",
+      "context": "Atypical header used by ClientHub to mimic legitimate browser traffic.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "javadevhouse.co.kr",
+      "context": "Lure website hosting malicious javascript.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pythonapischool.com",
+      "context": "Lure website hosting malicious javascript.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cubedesign.co.kr",
+      "context": "C2 server for Cubridge malware.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "k-wbc.co.kr",
+      "context": "C2 server for ClientHub malware.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

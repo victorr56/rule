@@ -1,0 +1,22 @@
+title: SiriusQT C2 DNS Query
+id: 11c6d370-d86b-4e6c-a801-ec9e598b0051
+status: experimental
+description: Detects DNS queries for domains known to be used by SiriusQT C2 servers.
+references:
+    - https://www.group-ib.com/blog/siriusqt-rat-hvnc-stealer/
+author: ioc-yara-daily (agentic)
+date: 2022-10-20
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'server.activeworkshops.com'
+    condition: selection
+falsepositives:
+    - Benign connections to the domain if it has been sinkholed or re-registered for legitimate purposes.
+level: high

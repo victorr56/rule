@@ -1,0 +1,22 @@
+title: Krasue RAT Execution From Temp Directory
+id: 5a8a1e2f-870b-4770-8919-09063c63de0f
+status: experimental
+description: Detects the execution of the Krasue RAT binary from the /tmp directory, which is a behavior observed during its installation phase.
+references:
+    - https://www.group-ib.com/blog/krasue-rat/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|startswith: '/tmp/'
+        Image|endswith: '/auwd.bin'
+    condition: selection
+falsepositives:
+    - Legitimate custom binaries named 'auwd.bin' executed from the '/tmp' directory.
+level: high

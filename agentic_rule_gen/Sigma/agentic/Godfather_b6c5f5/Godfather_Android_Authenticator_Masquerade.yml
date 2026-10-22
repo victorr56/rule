@@ -1,0 +1,26 @@
+title: Godfather Android Trojan Masquerading as Google Authenticator
+id: f48b178a-c60f-4e0e-9411-d0b8997a9506
+status: experimental
+description: Detects the execution of a process with the name 'com.google.android.apps.authenticator2', a fake package name used by the Godfather Android trojan to impersonate the legitimate Google Authenticator app ('com.google.android.apps.authenticator'). The rule looks for this process being spawned by the standard Android Zygote process (`app_process`).
+references:
+    - https://www.group-ib.com/blog/godfather-trojan/
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.defense_evasion
+    - attack.t1444
+    - attack.credential_access
+    - attack.t1417
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: 'com.google.android.apps.authenticator2'
+        ParentImage|endswith:
+            - '/app_process32'
+            - '/app_process64'
+    condition: selection
+falsepositives:
+    - Unlikely. The legitimate Google Authenticator package name is 'com.google.android.apps.authenticator'.
+level: high

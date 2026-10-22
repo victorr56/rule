@@ -1,0 +1,24 @@
+title: Dark Pink UAC Bypass via NETLUA Assembly
+id: b3c4d5e6-1a8f-4c9b-9a2e-0f1c2d3e4b5a
+status: experimental
+description: Detects a PowerShell script attempting to bypass User Account Control (UAC) by calling a method from a custom '.NET' assembly named "NETLUA", a technique observed in Dark Pink APT campaigns.
+references:
+    - https://www.group-ib.com/blog/dark-pink-apt/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1548.002
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains: '[NETLUA.Main]::BypassUAC('
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

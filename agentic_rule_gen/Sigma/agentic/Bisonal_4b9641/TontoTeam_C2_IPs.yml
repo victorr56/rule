@@ -1,0 +1,23 @@
+title: Tonto Team C2 IP Connections
+id: e4b25e79-50fa-40cc-9d41-3b7c29342557
+status: experimental
+description: Detects network connections to IP addresses known to be used as C2 servers by Tonto Team's Bisonal malware.
+references:
+    - https://www.group-ib.com/blog/tonto-team/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '137.220.176.165'
+            - '103.85.20.194'
+    condition: selection
+falsepositives:
+    - These IPs may be reallocated to benign services in the future.
+level: high

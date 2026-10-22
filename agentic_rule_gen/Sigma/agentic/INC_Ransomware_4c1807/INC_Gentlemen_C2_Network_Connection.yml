@@ -1,0 +1,27 @@
+title: INC and The Gentlemen Ransomware C2 Network Connection
+id: 97890b07-6c8a-406a-a115-325bdf255c4d
+status: experimental
+description: Detects network connections to IP addresses associated with the C2 infrastructure of INC and The Gentlemen ransomware affiliates.
+references:
+    - https://socradar.io/blog/inc-gentlemen-ransomware-ai-infrastructure/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+detection:
+    selection:
+        DestinationIp:
+            - '45.227.254.43'
+            - '45.227.254.45'
+            - '45.227.254.84'
+            - '179.60.149.68'
+            - '89.185.83.8'
+            - '138.124.113.210'
+            - '77.110.109.248'
+    condition: selection
+falsepositives:
+    - Unlikely, but IPs can be reassigned over time.
+level: critical

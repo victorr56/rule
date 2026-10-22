@@ -1,0 +1,24 @@
+title: XMRig Payload Download from IPFS
+id: d1789c67-c25e-4c74-8b83-a75d1f8a8461
+status: experimental
+description: Detects web requests made by curl to specific IPFS gateway paths used to host malicious content for an XMRig cryptomining campaign.
+references:
+    - https://www.group-ib.com/blog/mxdr-cryptominer/
+author: ioc-yara-daily (agentic)
+date: 2023-10-18
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection:
+        url.path|contains:
+            - '/ipfs/QmUVmisdxiY543hTd2SHkuRqSwDArBBjvcwD3wNm5zeZVD'
+            - '/ipfs/QmcMovkgsDLcDn7SM1ifWwWZyaCjpoH7bCepmsb882AvZj'
+            - '/ipfs/QmUBgSVFmhT1GU1YuoqDY7ZX47TWsWJBN3pLgbQF4jRjRZ'
+        http.user_agent|startswith: 'curl/'
+    condition: selection
+falsepositives:
+    - Legitimate use of curl to download these specific IPFS-hosted files is highly unlikely.
+level: high

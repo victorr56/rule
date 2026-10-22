@@ -1,0 +1,28 @@
+title: XMRig Persistence via GoogleUpdateTaskMachineQC Scheduled Task
+id: e2b618a3-95c5-430c-8d3f-a18a514d2e82
+status: experimental
+description: Detects the creation of a scheduled task named "GoogleUpdateTaskMachineQC" to execute a masquerading "updater.exe" in the Google Chrome application directory, a behavior observed in an XMRig cryptomining campaign.
+references:
+    - https://www.group-ib.com/blog/mxdr-cryptominer/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.persistence
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn'
+            - 'GoogleUpdateTaskMachineQC'
+            - 'Google\Chrome\updater.exe'
+            - '/sc'
+            - 'onlogon'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

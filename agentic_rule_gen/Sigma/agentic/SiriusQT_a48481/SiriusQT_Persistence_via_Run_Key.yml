@@ -1,0 +1,26 @@
+title: SiriusQT Persistence via "Windows Update" Run Key
+id: 28bb18d1-d227-4a00-ab6a-60bdc0590a9d
+status: experimental
+description: Detects the creation of a registry run key entry named "Windows Update", a default persistence behavior of SiriusQT.
+references:
+    - https://www.group-ib.com/blog/siriusqt-rat-hvnc-stealer/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Windows Update'
+        TargetObject|contains: '\CurrentVersion\Run'
+        Details|contains:
+            - ':\Users\'
+            - ':\ProgramData\'
+            - '\AppData\'
+    condition: selection
+falsepositives:
+    - Legitimate software updaters that use the name "Windows Update" and install to user-writable locations.
+level: medium

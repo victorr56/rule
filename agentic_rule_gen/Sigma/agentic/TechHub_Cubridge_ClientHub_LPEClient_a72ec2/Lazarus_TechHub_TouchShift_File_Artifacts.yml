@@ -1,0 +1,25 @@
+title: Lazarus TechHub and TouchShift Component Creation
+id: 5b4c194e-7d72-4d23-95f0-6c927c9d9d30
+status: experimental
+description: Detects the creation of malicious files in the 'C:\Windows\System32\RasConv\' directory, a behavior associated with the Lazarus Group's TechHub and TouchShift malware.
+references:
+    - https://securelist.com/lazarus-operation-flashhole/121541/
+author: ioc-yara-daily (agentic)
+date: 2026-10-22
+tags:
+    - attack.persistence
+    - attack.t1574.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\Windows\System32\RasConv\'
+        TargetFilename|endswith:
+            - '\ImeBroker.exe'
+            - '\mscoree.dll'
+            - '\ActivationStore.dat'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
