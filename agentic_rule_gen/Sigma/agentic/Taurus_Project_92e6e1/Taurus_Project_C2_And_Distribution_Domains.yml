@@ -1,0 +1,37 @@
+title: Taurus Project C2 and Distribution Domain DNS Query
+id: 5a8a1c91-236b-4e8c-8f19-3382755c4d0a
+status: experimental
+description: Detects DNS queries for domains associated with the Taurus Project C2 infrastructure and its distribution network of fake carding shops.
+references:
+    - https://www.group-ib.com/blog/cannibal-carders-fake-shops/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1071
+    - attack.initial_access
+    - attack.t1566
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'monerdomen.ru' # C2
+            - 'panelshopload.su' # Distribution
+            - 'briansclub.ru' # Distribution
+            - 'Jstashbazar.com' # Distribution
+            - 'unicc.cm' # Distribution
+            - 'unicc.cx' # Distribution
+            - 'festore-dumps.ru' # Distribution
+            - 'briansclub.store' # Distribution
+            - 'briansclub.shop' # Distribution
+            - 'briansclub.me' # Distribution
+            - 'jokerstash.cc' # Distribution
+            - 'unicc.me' # Distribution
+            - 'cvv2me.com' # Distribution
+            - 'cryptonshops.com' # Distribution
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: critical

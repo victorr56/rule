@@ -1,0 +1,182 @@
+{
+  "malware_family": "ATMZOW",
+  "threat_actor": "ATMZOW",
+  "platforms": [
+    "web",
+    "windows"
+  ],
+  "summary": "ATMZOW is a JavaScript skimmer group, also known as 'Magento Guruincsite malware', active since at least 2015. The group has recently used Google Tag Manager (GTM) to inject its skimmer onto e-commerce sites, specifically targeting pages containing 'checkout' in the URL. The report links ATMZOW to a phishing campaign and the Hancitor malware group based on a shared JavaScript obfuscator and overlapping infrastructure.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "GTM-WNV8QFR",
+      "context": "Attacker's Google Tag Manager ID used to inject JS sniffers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "vtp_html",
+      "context": "GTM script tag containing the next stage injector.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "checkout",
+      "context": "URL substring that triggers the final payload to be loaded.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "0210_4367220121562.doc",
+      "context": "Malicious Office document used to drop Hancitor malware.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/wp-content/plugins/contact-form-7/includes/block-editor/carl.php",
+      "context": "Path for Prometheus.Backdoor on a compromised WordPress site.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://designestylelab.com/css/",
+      "context": "URL hosting the final ATMZOW JS sniffer payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gvenlayer.com/track/",
+      "context": "Exfiltration address seen in an ATMZOW JS sniffer sample.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "designestylelab.com",
+      "context": "ATMZOW JS sniffer storage.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gvenlayer.com",
+      "context": "ATMZOW JS sniffer gate.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "xn--keyvigatrs-key-7oc4531jsva.com",
+      "context": "Phishing website with ATMZOW-like obfuscation.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "xn--ky-vigatorkey-kjc9383i4ka.com",
+      "context": "Phishing website with ATMZOW-like obfuscation.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "navlgator-kcy.com",
+      "context": "Phishing website with ATMZOW-like obfuscation.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "xn--keynvigatorkey-yp8g.com",
+      "context": "Phishing website detected in the Hancitor campaign.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://xn--keyvigatrs-key-7oc4531jsva.com/ktt/cmd/logon",
+      "context": "Phishing page URL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/ktt/cmd/logon",
+      "context": "Common URI path for phishing pages from both campaigns.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/a3dcb4d229de6fde0db5686dee47145d_wait.gif",
+      "context": "Unique URI path from phishing page with ATMZOW obfuscation.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/a3dcb4d229de6fde0db5686dee47145d_security.php",
+      "context": "Unique URI path from phishing page with ATMZOW obfuscation.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://www.swingsidebilbao.com/wp-content/plugins/contact-form-7/includes/block-editor/carl.php",
+      "context": "Prometheus.Backdoor link used for Hancitor distribution.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://xn--keynvigatorkey-yp8g.com/ktt/cmd/logon0210_4367220121562.doc",
+      "context": "Redirect URL to phishing site after malware download.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script",
+    "document",
+    "pe"
+  ]
+}

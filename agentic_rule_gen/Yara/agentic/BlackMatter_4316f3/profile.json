@@ -1,0 +1,326 @@
+{
+  "malware_family": "BlackMatter",
+  "threat_actor": "BlackMatter",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "BlackMatter is a ransomware family considered a successor to DarkSide and REvil, targeting both Windows and Linux systems. It uses a Salsa20/RSA-1024 encryption scheme, obfuscates API calls via hashing, and stores its configuration in a custom-named resource section. The malware terminates specific processes and services before encryption and exfiltrates system data to hardcoded C2 servers.",
+  "mitre_techniques": [
+    "T1548.002",
+    "T1490",
+    "T1547.001",
+    "T1047",
+    "T1489"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": ".rsrс",
+      "context": "Section name for encrypted config (contains Cyrillic 'с').",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0FFCAA1EAh",
+      "context": "Seed for PRNG to decrypt config data.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "22065FEDh",
+      "context": "XOR key for API address obfuscation.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "022065FEDh",
+      "context": "XOR key for stack strings, version number, and hashes.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bot_company",
+      "context": "Internal name for public key identifier in config.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1.2",
+      "context": "Malware version number.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[email protected]:120Heisler",
+      "context": "Hardcoded credential from config for authentication attempts.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[email protected]:Tesla2019",
+      "context": "Hardcoded credential from config for authentication attempts.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[email protected]:iteam8**",
+      "context": "Hardcoded credential from config for authentication attempts.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "<VICTIM_ID>.README.txt",
+      "context": "Ransom note file name format.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Global\\<derived_from_machineguid>",
+      "context": "Mutex created to ensure single instance, name based on MachineGuid.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SOFTWARE\\Microsoft\\Cryptography",
+      "context": "Registry path read to get MachineGuid for victim ID.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-path",
+      "context": "Argument to encrypt a specified directory, file, or network resource.",
+      "specificity": "medium",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-safe",
+      "context": "Argument to reboot in safe mode for encryption.",
+      "specificity": "medium",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-wall",
+      "context": "Argument to set wallpaper with ransom message.",
+      "specificity": "medium",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "encsvc",
+      "context": "Terminated process name from config.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "xfssvccon",
+      "context": "Terminated process name from config.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "agntsvc",
+      "context": "Terminated process name from config.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "ocautoupds",
+      "context": "Terminated process name from config.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "mepocs",
+      "context": "Stopped/deleted service name from config.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "memtas",
+      "context": "Stopped/deleted service name from config.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "veeam",
+      "context": "Stopped/deleted service name from config.",
+      "specificity": "medium",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "svc$",
+      "context": "Stopped/deleted service name from config (substring).",
+      "specificity": "medium",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "$recycle.bin",
+      "context": "Excluded directory name (hash-gated).",
+      "specificity": "medium",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ntuser.dat",
+      "context": "Excluded file name (hash-gated).",
+      "specificity": "medium",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ThreadHideFromDebugger",
+      "context": "Parameter for NtSetInformationThread anti-debugging call.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ICMLuaUtil",
+      "context": "COM interface used for UAC bypass.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://paymenthacks.com",
+      "context": "C2 for exfiltrating system info and encryption results.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://paymenthacks.com",
+      "context": "C2 for exfiltrating system info and encryption results.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://mojobiden.com",
+      "context": "C2 for exfiltrating system info and encryption results.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://mojobiden.com",
+      "context": "C2 for exfiltrating system info and encryption results.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

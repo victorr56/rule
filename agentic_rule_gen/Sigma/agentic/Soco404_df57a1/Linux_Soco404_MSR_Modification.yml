@@ -1,0 +1,25 @@
+title: Soco404 Cryptominer MSR Modification for CPU Optimization
+id: c46c645b-d3fe-4b10-8b14-046603de5d11
+status: experimental
+description: Detects the use of 'wrmsr' to write specific values to Model-Specific Registers (MSR), a technique used by Soco404 to optimize CPU performance for cryptomining on Zen3 and Zen4 architectures.
+references:
+    - https://www.wiz.io/blog/soco404-multiplatform-cryptomining-campaign-uses-fake-error-pages-to-hide-payload
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.resource_hijacking
+    - attack.t1496
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_zen3:
+        Image|endswith: '/wrmsr'
+        CommandLine|contains: '0xc0011022 0xc000000401500000'
+    selection_zen4:
+        Image|endswith: '/wrmsr'
+        CommandLine|contains: '0xc0011022 0x8680000401570000'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely. These specific MSR writes are tied to this malware's optimization for specific CPUs.
+level: high

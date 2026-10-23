@@ -1,0 +1,32 @@
+title: SideWinder Malicious LNK File Creation
+id: 978939c0-67c4-4a57-b08e-8a0a86377cf0
+status: experimental
+description: Detects the creation of a malicious LNK file with a name characteristic of SideWinder phishing campaigns.
+references:
+    - https://www.group-ib.com/blog/sidewinder-antibot/
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.initial_access
+    - attack.t1566.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\explorer.exe'
+            - '\winrar.exe'
+            - '\7z.exe'
+            - '\7zG.exe'
+            - '\7zFM.exe'
+            - '\winzip32.exe'
+            - '\winzip64.exe'
+        TargetFilename|contains|all:
+            - 'Pay and Pension Increase Circular'
+            - 'Finance Division'
+            - '.pdf.lnk'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

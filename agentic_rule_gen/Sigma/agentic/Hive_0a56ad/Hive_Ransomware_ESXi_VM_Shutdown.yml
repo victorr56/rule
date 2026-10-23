@@ -1,0 +1,25 @@
+title: Hive Ransomware ESXi VM Shutdown Command
+id: 59a11796-03f4-41d9-95e2-2a07c1b525d8
+status: experimental
+description: Detects the command line used by Hive ransomware to discover and shut down all virtual machines on a compromised VMWare ESXi host.
+references:
+    - https://www.group-ib.com/blog/hive/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.impact
+    - attack.t1492
+    - attack.t1561
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+        CommandLine|contains: 'vim-cmd vmsvc/getallvms | grep -o -E ''^[0-9]+'' | xargs -r -n 1 vim-cmd vmsvc/power.off'
+    condition: selection
+falsepositives:
+    - Unlikely. This specific one-liner is characteristic of the ransomware's script.
+level: critical

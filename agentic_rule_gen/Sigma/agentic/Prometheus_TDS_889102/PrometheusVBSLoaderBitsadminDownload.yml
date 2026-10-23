@@ -1,0 +1,26 @@
+title: Prometheus VBS Loader BITSAdmin Download
+id: 54b0362f-f6ed-4d43-9878-43d1ac94b7da
+status: experimental
+description: Detects the use of BITSAdmin by a VBS loader associated with Prometheus TDS to download a payload.
+references:
+    - https://www.group-ib.com/blog/prometheus-tds/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.defense_evasion
+    - attack.persistence
+    - attack.t1197
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\bitsadmin.exe'
+        CommandLine|contains|all:
+            - '/addfile'
+            - 'EncodingFirm'
+            - 'DefineKeeps.tmp'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,23 @@
+title: Prometheus TDS Admin Panel Connection
+id: 3c6a4e3b-9e6e-4f1b-a5d1-122e2646b5a3
+status: experimental
+description: Detects network connections to IP addresses identified as Prometheus TDS administrative panels.
+references:
+    - https://www.group-ib.com/blog/prometheus-tds/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '109.248.11.132'
+            - '185.186.142.191'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: medium

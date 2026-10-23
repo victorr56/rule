@@ -1,0 +1,29 @@
+title: JDWP-Miner - Competitor Process Killer
+id: 9a78f248-038c-4a39-8199-44d576a8ac0d
+status: experimental
+description: Detects a specific command used by the JDWP-Miner dropper script to find and kill high-CPU processes that are not part of its own components or essential system services.
+references:
+    - https://www.wiz.io/blog/exposed-jdwp-exploited-in-the-wild
+author: ioc-yara-daily (agentic)
+date: 2023-10-23
+tags:
+    - attack.impact
+    - attack.t1499
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+        CommandLine|contains|all:
+            - 'ps -eo pid,%cpu,comm'
+            - 'sort=-%cpu'
+            # The awk command below filters for processes with CPU usage > 60% and excludes itself, ps, sshd, java, and the miner process.
+            - 'awk ''NR>1 && !/awk|ps/ && !($3 ~ /^(logrotate|sshd|java)$/) && int($2) > 60 { system("kill -9 '
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

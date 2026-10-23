@@ -1,0 +1,31 @@
+title: BlackMatter Ransomware Service Manipulation
+id: b2940251-512c-47fc-8f74-89c09c3149c9
+status: experimental
+description: Detects the stopping or deletion of specific services ('mepocs', 'memtas') targeted by BlackMatter ransomware as part of its pre-encryption routine.
+references:
+    - https://www.group-ib.com/blog/blackmatter-ransomware/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.impact
+    - attack.t1489
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_net:
+        Image|endswith: '\net.exe'
+        CommandLine|contains:
+            - ' stop mepocs'
+            - ' stop memtas'
+    selection_sc:
+        Image|endswith: '\sc.exe'
+        CommandLine|contains:
+            - ' stop mepocs'
+            - ' stop memtas'
+            - ' delete mepocs'
+            - ' delete memtas'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate administrative action targeting services with these specific, unusual names.
+level: high

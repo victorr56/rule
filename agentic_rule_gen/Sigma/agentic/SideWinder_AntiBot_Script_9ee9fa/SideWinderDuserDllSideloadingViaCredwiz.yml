@@ -1,0 +1,24 @@
+title: SideWinder Duser.dll Sideloading via Credwiz.exe
+id: 5b6c97a5-d85c-43f9-813c-072045e0f523
+status: experimental
+description: Detects the SideWinder malware sideloading a malicious Duser.dll using the legitimate credwiz.exe binary from a non-standard location.
+references:
+    - https://www.group-ib.com/blog/sidewinder-antibot/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.t1574.002
+    - attack.defense_evasion
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\credwiz.exe'
+        ImageLoaded|endswith: '\Duser.dll'
+    filter:
+        ImageLoaded|startswith: 'C:\Windows\System32\'
+    condition: selection and not filter
+falsepositives:
+    - Legitimate software that bundles a custom Duser.dll for use with credwiz.exe.
+level: high

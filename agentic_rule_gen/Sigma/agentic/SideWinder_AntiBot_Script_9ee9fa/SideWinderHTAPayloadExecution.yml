@@ -1,0 +1,23 @@
+title: SideWinder HTA Payload Execution
+id: bc010e9c-da6e-473d-9d41-4700c28ec23f
+status: experimental
+description: Detects the execution of mshta.exe with a command line pointing to a malicious HTA file hosted on a known SideWinder domain.
+references:
+    - https://www.group-ib.com/blog/sidewinder-antibot/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.t1218.005
+    - attack.defense_evasion
+    - attack.execution
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\mshta.exe'
+        CommandLine|contains: 'finance.govpk-mail.net/'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

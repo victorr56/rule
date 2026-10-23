@@ -1,0 +1,141 @@
+{
+  "malware_family": "Gozi ISFB",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A Gozi ISFB variant uses a multi-stage, in-memory infection chain starting with a self-extracting executable. A .NET downloader fetches a .NET packer from a Discord URL, which in turn executes the Gozi downloader DLL. The final payload communicates with C2 servers specified in its embedded configuration.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "traktor.exe",
+      "context": "Initial cabinet self-extractor.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "SEB6A8~1.EXE",
+      "context": "Decompressed .NET downloader.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Deocqpqvayitfaqvcfovoryc.dll",
+      "context": "Original filename of .NET Packer.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "guVZ8lGzorgMS7cj",
+      "context": "Gozi downloader config 'server_key'.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "7776",
+      "context": "Gozi downloader config 'group'.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/drew/",
+      "context": "Gozi downloader config value for key 0x54432e74.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".jlk",
+      "context": "Gozi downloader config value for key 0xbbb5c71d.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://tiny.one/yt52rdce",
+      "context": "Shortener URL pointing to Discord.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cdn.discordapp.com/attachments/977479165555146754/984345564407812106/wiztree_4_08_setup_4_Qfmhjhgh.bmp",
+      "context": "Payload hosted on Discord CDN.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "update.zonealarm.com",
+      "context": "C2 server from downloader configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "iiso.in",
+      "context": "C2 server from downloader configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "904CA32CB62DC94B61092F80FA78C5BC97D0A5394FA03438AEEC85ED87AB763E",
+      "description": "traktor.exe Cabinet Self-Extractor"
+    },
+    {
+      "sha256": "360703b2b2c324dde72dcd0651251c9e882e245c22d6b7e8c3163ed34ddb62b9",
+      "description": "SEB6A8~1.EXE .NET downloader"
+    },
+    {
+      "sha256": "90660936CB65E0F929F32615EF400E0D0F80232F7F2003778C27E28B84468666",
+      "description": ".NET Packer"
+    },
+    {
+      "sha256": "3EF96CFB78CB553943CE591C985FDC793D2ACF342A536B90D0F9EF72BDB15ECD",
+      "description": "Packed GOZI downloader"
+    },
+    {
+      "sha256": "011F6F038B1398C03AE15D3CB81412D32AD0AD554DFBB5D38FAE78577FB2B777",
+      "description": "GOZI downloader"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet"
+  ]
+}

@@ -1,0 +1,25 @@
+title: APT41 Payload Staging Via Move Command
+id: 3c622b39-1667-40c2-9a00-36b3f7f0bb2f
+status: experimental
+description: Detects the use of the 'move' command to place a payload in a masqueraded location, as observed in APT41 campaigns.
+references:
+    - https://www.group-ib.com/blog/apt41-world-tour-2021/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - 'move'
+            - 'C:\dns.exe'
+            - 'C:\windows\mciwave.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

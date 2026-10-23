@@ -1,0 +1,26 @@
+title: Prometheus VBS Loader Persistence Creation
+id: c383a8b4-0c21-4835-a1d2-04e38e1b65e9
+status: experimental
+description: Detects the creation of a scheduled task used by a VBS loader associated with Prometheus TDS to maintain persistence.
+references:
+    - https://www.group-ib.com/blog/prometheus-tds/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.persistence
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/sc minute'
+            - '/tn "Task Update ButPrinciple'
+            - '\ButPrinciple\ButPrinciple.vbs'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

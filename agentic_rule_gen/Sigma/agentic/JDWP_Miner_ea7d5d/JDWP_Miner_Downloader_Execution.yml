@@ -1,0 +1,28 @@
+title: JDWP-Miner - Initial Dropper Download
+id: 555c8c6d-9781-4235-af80-c11c5040f91d
+status: experimental
+description: Detects the execution of a curl command to download the initial dropper script "logservice.sh" from a malicious domain.
+references:
+    - https://www.wiz.io/blog/exposed-jdwp-exploited-in-the-wild
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.execution
+    - attack.t1059.004
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/curl'
+            - '/wget'
+        CommandLine|contains|all:
+            - '/tmp/logservice.sh'
+            - 'canonicalconnect.com/logservice.sh'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,39 @@
+title: JDWP-Miner - Persistence via Shell Sourcing
+id: 76f8278f-68e1-432d-838d-6972e2978a3f
+status: experimental
+description: Detects a command used for persistence that sources a script directly from the network using wget or curl. This is often added to shell startup files like .bashrc or .zshrc.
+references:
+    - https://www.wiz.io/blog/exposed-jdwp-exploited-in-the-wild
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.persistence
+    - attack.t1546.004
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_bash:
+        Image|endswith:
+            - '/bash'
+            - '/sh'
+            - '/zsh'
+        CommandLine|contains|all:
+            - 'source <(wget'
+            - '|| curl'
+            - 'logservice.sh'
+    selection_wget_curl:
+        ParentImage|endswith:
+            - '/bash'
+            - '/sh'
+            - '/zsh'
+        CommandLine|contains|all:
+            - 'logservice.sh'
+            - '-O -' # wget
+            - '-sL' # curl
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

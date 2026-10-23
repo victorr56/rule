@@ -1,0 +1,29 @@
+title: 0ktapus Phishing Campaign DNS Queries
+id: 57922d5f-3eb4-450f-90e8-07e59c25ff91
+status: experimental
+description: Detects DNS queries for domains associated with the 0ktapus phishing campaign.
+references:
+    - https://www.group-ib.com/blog/0ktapus/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.initial_access
+    - attack.t1566
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'twiiio-sso.com'
+            - 'box-okta.org'
+            - 'kucoin-pin.com'
+            - 'microsoft-sso.net'
+            - 'cloudflare-okta.com'
+            - 'mailchimp-okta.com'
+            - 't-moblie-okta.com' # Typo is from the source material
+            - 'riotgames-vpn.net'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

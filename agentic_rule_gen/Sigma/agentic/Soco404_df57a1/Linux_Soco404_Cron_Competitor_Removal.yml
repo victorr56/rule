@@ -1,0 +1,24 @@
+title: Soco404 Cryptominer Competitor Removal via Cron
+id: 59381c15-f55a-4d2d-83b3-8a0322d64f0b
+status: experimental
+description: Detects the execution of a 'sed' command used by the Soco404 dropper script 'soco.sh' to remove cron jobs belonging to competing cryptominers.
+references:
+    - https://www.wiz.io/blog/soco404-multiplatform-cryptomining-campaign-uses-fake-error-pages-to-hide-payload
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.defense_evasion
+    - attack.t1070.004
+    - attack.resource_hijacking
+    - attack.t1496
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/sed'
+        CommandLine|contains: '/\\.bashgo\\|pastebin\\|onion\\|bprofr\\|python\\|curl\\|wget\\|\\.sh/d'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

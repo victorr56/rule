@@ -1,0 +1,26 @@
+title: BlackMatter Ransom Note Creation
+id: 593b4823-380d-4b8c-8f1e-f38f17a942a7
+status: experimental
+description: Detects the creation of BlackMatter ransom notes, which follow the pattern of '[VICTIM_ID].README.txt'. The victim ID is typically a hex string.
+references:
+    - https://www.group-ib.com/blog/blackmatter2/
+author: ioc-yara-daily (agentic)
+date: 2021-08-31
+tags:
+    - attack.impact
+    - attack.t1486
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|re: '\\[a-zA-Z0-9]{8,}\.README\.txt$'
+        Image|contains:
+            # Common malware execution locations
+            - ':\Users\'
+            - ':\ProgramData\'
+            - ':\Windows\Temp\'
+    condition: selection
+falsepositives:
+    - Legitimate software running from temporary directories that creates files matching this specific pattern, which is highly unlikely.
+level: critical

@@ -1,0 +1,30 @@
+title: Ivanti EPMM Post-Exploitation Webshell Creation
+id: f4817a09-786d-49cd-8692-74844fd04ca0
+status: experimental
+description: Detects the creation of specific JSP webshell files in the Ivanti EPMM webapps directory, a common post-exploitation step observed after exploiting CVE-2025-4427 and CVE-2025-4428.
+references:
+    - https://www.wiz.io/blog/ivanti-epmm-rce-vulnerability-chain-cve-2025-4427-cve-2025-4428
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.persistence
+    - attack.t1505.003
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        TargetFilename|endswith:
+            - '/mi/tomcat/webapps/mifs/401.jsp'
+            - '/mi/tomcat/webapps/mifs/session.jsp'
+            - '/mi/tomcat/webapps/mifs/baseURL.jsp'
+        Image|endswith:
+            - '/bin/bash'
+            - '/bin/curl'
+            - '/bin/java'
+            - '/bin/sh'
+            - '/bin/wget'
+    condition: selection
+falsepositives:
+    - Legitimate application deployments or administrative tasks might involve creating files with tools like bash, wget, or curl. However, the combination with the specific file paths and names is highly indicative of malicious activity.
+level: high

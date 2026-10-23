@@ -1,0 +1,25 @@
+title: Suspicious Mimikatz-like Command Line
+id: 7904e21a-e66b-4e08-9df2-5d97f5d02336
+status: experimental
+description: Detects command line arguments highly indicative of Mimikatz usage for credential dumping. This specific variant, using 'mi.exe', was observed in APT41 campaigns.
+references:
+    - https://www.group-ib.com/blog/apt41-world-tour-2021/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.credential_access
+    - attack.t1003.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\mi.exe'
+        CommandLine|contains|all:
+            - 'privilege::debug'
+            - 'sekurlsa::logonpasswords'
+            - 'exit'
+    condition: selection
+falsepositives:
+    - The executable name 'mi.exe' could potentially collide with legitimate tools, but is highly unlikely in combination with the specific command-line arguments.
+level: high

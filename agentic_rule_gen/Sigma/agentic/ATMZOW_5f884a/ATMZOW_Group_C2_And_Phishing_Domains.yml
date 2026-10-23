@@ -1,0 +1,29 @@
+title: ATMZOW Group C2 and Phishing Domains
+id: 57904ca9-e16e-473d-bcab-08819854581f
+status: experimental
+description: Detects DNS queries for domains associated with the ATMZOW skimmer group and related Hancitor/phishing campaigns.
+references:
+    - https://www.group-ib.com/blog/switching-side-jobs/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - attack.initial_access
+    - attack.t1566.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'designestylelab.com'
+            - 'gvenlayer.com'
+            - 'navlgator-kcy.com'
+            - 'xn--keynvigatorkey-yp8g.com'
+            - 'xn--keyvigatrs-key-7oc4531jsva.com'
+            - 'xn--ky-vigatorkey-kjc9383i4ka.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

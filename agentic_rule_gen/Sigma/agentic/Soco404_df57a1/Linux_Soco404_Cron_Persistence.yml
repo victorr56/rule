@@ -1,0 +1,27 @@
+title: Soco404 Persistence via Cron Job in Masqueraded Path
+id: 61e1b82f-8700-47b2-8bbd-0c8a3952f1e2
+status: experimental
+description: Detects a command that adds a cron job pointing to a binary in '/etc/postgresql/', a technique used by Soco404 to establish persistence while masquerading.
+references:
+    - https://www.wiz.io/blog/soco404-multiplatform-cryptomining-campaign-uses-fake-error-pages-to-hide-payload
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.persistence
+    - attack.t1053.003
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/bash'
+        CommandLine|contains|all:
+            - 'crontab -l'
+            - 'echo'
+            - '*/1 * * * *'
+            - '/etc/postgresql/'
+            - '| crontab -'
+    condition: selection
+falsepositives:
+    - Legitimate scripts that add cron jobs pointing to '/etc/postgresql/', which is highly unlikely.
+level: high

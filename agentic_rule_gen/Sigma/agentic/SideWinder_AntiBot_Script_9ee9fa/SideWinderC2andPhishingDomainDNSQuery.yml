@@ -1,0 +1,32 @@
+title: SideWinder C2 and Phishing Domain DNS Query
+id: 5d10d9f9-5431-419b-ab09-7a718c322b7a
+status: experimental
+description: Detects DNS queries for domains known to be used by the SideWinder threat actor for C2 or phishing activities.
+references:
+    - https://www.group-ib.com/blog/sidewinder-antibot/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.t1566
+    - attack.command_and_control
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'api.vpn-secure.co'
+            - 'csd.pakgov.net'
+            - 'dawnpk.org'
+            - 'faujifoundation.bitlyy.me'
+            - 'fileserve.work'
+            - 'finance.govpk-mail.net'
+            - 'finance.pakgov.net'
+            - 'kdf-mail.com'
+            - 'nadra.pakgov.net'
+            - 'tin-url.com'
+            - 'vpn.pakgov.net'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

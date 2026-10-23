@@ -1,0 +1,22 @@
+title: Targeted Fraud Phishing Domain Query
+id: c71c1404-3701-443b-a25e-2b7e515d48ad
+status: experimental
+description: Detects DNS queries for domains associated with the Targeted Fraud phishing campaign.
+references:
+    - https://www.group-ib.com/blog/target/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith:
+            - 'finalopnon.click'
+            - 'go.lltrsknoob.click'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

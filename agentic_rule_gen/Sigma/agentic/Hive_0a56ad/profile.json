@@ -1,0 +1,261 @@
+{
+  "malware_family": "Hive",
+  "threat_actor": "Hive",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "Hive is a Go-based Ransomware-as-a-Service (RaaS) targeting Windows, Linux, FreeBSD and VMWare ESXi. The malware employs a unique encryption process using a custom XOR scheme with a master key table and renames files with a complex extension containing recovery information. To hinder recovery, it stops numerous services and processes, deletes shadow copies, and can wipe free disk space.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "(?i:[WIN_DIR]|\\.(?:386|adv|ani|bat|bin|cab|cmd|com|cpl|cur|deskthemepack|diagcab|diagcfg|diagpkg|dll|drv|exe|hlp|hrmlog|hta|icl|icns|ico|ics|idx|ini|key|lnk|lock|log|mod|mpa|mp3|msc|msi|msp|msstyles|msu|nls|nomedia|ocx|prf|ps1|rom|rtp|scr|shs|spl|sys|theme|themepack|url|wpx)$|(?:autorun\\.inf|bootfont\\.bin|boot\\.ini|bootsect\\.bak|desktop\\.ini|iconcache\\.db|ntldr|ntuser\\.dat|ntuser\\.dat\\.log|ntuser\\.ini|thumbs\\.db)$|\\\\\\$recycle\\.bin|\\$windows\\.~bt|\\$windows\\.~ws|Allusers|appdata|applicationdata|boot|google|intel|Microsoft|mozilla|Mozilla|Msbuild|msocache|perflogs|systemvolumeinformation|torbrowser|windows|Windowsnt|windows\\.old)\\\\|(\\$\\\\Windows\\\\|\\\\ADMIN\\$|\\\\IPC\\$)|(?:^$))",
+      "context": "Regular expression to exclude files from encryption.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "acronis|AcrSch2Svc|Antivirus|ARSM|AVP|backup|bedbg|CAARCUpdateSvc|CASAD2DWebSvc|ccEvtMgr|ccSetMgr|Culserver|dbeng8|dbsrv12|DCAgent|DefWatch|EhttpSrv|ekrn|Enterprise Client Service|EPSecurityService|EPUpdateService|EraserSvc11710|EsgShKernel|ESHASRV|FA_Scheduler|firebird|IISAdmin|IMAP4Svc|Intuit|KAVFS|KAVFSGT|kavfsslp|klnagent|macmnsvc|masvc|MBAMService|MBEndpointAgent|McAfee|McShield|McTaskManager|memtas|mepocs|mfefire |mfemms|mfevtp|MMS|MsDtsServer|MsDtsServer100|MsDtsServer110|msexchange|msmdsrv|MSOLAP|MVArmor|MVarmor64|NetMsmqActivator|ntrtscan|oracle|PDVFSService|POP3Svc|postgres|QBCFMonitorService|QBFCService|QBIDPService|redis|report|RESvc|RTVscan|sacsvr|SamSs|SAVAdminService|SavRoam|SAVService|SDRSVC|SepMasterService|ShMonitor|Smcinst|SmcService|SMTPSvc|SNAC|SntpService|sophos|sql|SstpSvc|stc_raw_agent|^svc|swi_|Symantec|TmCCSF|tmlisten|tomcat|TrueKey|UI0Detect|veeam|vmware|vss|W3Svc|wbengine|WebClient|wrapper|WRSVC|WSBExchange|YooIT|zhudongfangyu|Zoolz",
+      "context": "Default regular expression for stopping system services via -stop parameter.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "agntsvc|sql|CNTAoSMgr|dbeng50|dbsnmp|encsvc|excel|firefoxconfig|infopath|mbamtray|msaccess|mspub|mydesktop|Ntrtscan|ocautoupds|ocomm|ocssd|onenote|oracle|outlook|PccNTMon|powerpnt|sqbcoreservice|steam|synctime|tbirdconfig|thebat|thunderbird|tmlisten|visio|word|xfssvccon|zoolz",
+      "context": "Default regular expression for terminating processes via -kill parameter.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "vim-cmd vmsvc/getallvms | grep -o -E '^[0-9]+' | xargs -r -n 1 vim-cmd vmsvc/power.off",
+      "context": "Command used by ESXi version to stop virtual machines.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "XXXX_HOW_TO_DECRYPT.txt",
+      "context": "Ransom note name format (X is [0-9A-Za-z]).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "[KEY_NAME].key.[RANSOM_EXT]",
+      "context": "Filename format for the saved encrypted key table.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "*.hive",
+      "context": "Encrypted file extension used in Hive v1.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "icacls.exe “[XX]:*” /grant Everyone:F /T /C /Q",
+      "context": "Command run with the -grant parameter to change file permissions.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "windows.exe",
+      "context": "Filename for Windows (x64) GUI version in generated kit.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "esxi",
+      "context": "Filename for ESXi version in generated kit.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-no-wipe",
+      "context": "Command-line parameter to prevent wiping of empty disk space.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-no-stop",
+      "context": "ESXi command-line parameter to prevent stopping virtual machines.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-low-cpu",
+      "context": "ESXi command-line parameter to use single thread encryption.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_",
+      "context": "Base64 alphabet used for encoding key file name.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "EncryptionKeyTab",
+      "context": "Go data structure for the encryption key table.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "HiveContext",
+      "context": "Go data structure containing the main ransomware configuration.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "EvaluateFilename",
+      "context": "Go function name for file data encryption.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ B? 03 52 DA 8D [6-12] 69 ?? 00 70 0E 00 [14-20] 8D ?? 00 90 01 00 }",
+      "context": "YARA pattern for Hive v3.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 69 ?? B5 B4 1B 01 48 C1 E? 20 69 ?? 00 70 0E 00 29 ?? }",
+      "context": "YARA pattern for Hive v3 ESXi.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Stopping VMs",
+      "context": "String from Hive ESXi variant.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\\.(vm|vs)\\w+$",
+      "context": "Regex string from Hive ESXi variant.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [],
+  "samples": [
+    {
+      "sha256": "1e21c8e27a97de1796ca47a9613477cf7aec335a783469c5ca3a09d4f07db0ff",
+      "description": "Hive v1 for Windows"
+    },
+    {
+      "sha256": "25bfec0c3c81ab55cf85a57367c14cc6803a03e2e9b4afd72e7bbca9420fe7c5",
+      "description": "Hive v2 for Windows"
+    },
+    {
+      "sha256": "6983ef6e484c0c70356d6f868ac03bc90a1055560642706743511f76aa6f28ad",
+      "description": "Hive v2 for Linux"
+    },
+    {
+      "sha256": "0e8e6fc94e6eb17cfd8993b3dcfd9acd11ee32f1b4e956df3097ae3259be4f9c",
+      "description": "Hive v3 for Windows"
+    },
+    {
+      "sha256": "12389b8af28307fd09fe080fd89802b4e616ed4c961f464f95fdb4b3f0aaf185",
+      "description": "Hive v3 for Linux"
+    },
+    {
+      "sha256": "bdf3d5f4f1b7c90dfc526340e917da9e188f04238e772049b2a97b4f88f711e3",
+      "description": "Hive v3 for FreeBSD"
+    },
+    {
+      "sha256": "822d89e7917d41a90f5f65bee75cad31fe13995e43f47ea9ea536862884efc25",
+      "description": "Hive v3 for ESXi"
+    },
+    {
+      "sha256": "00dc667e31c607838c8fe69494eaa45bcaba1b737973d3842643c22477eab1f1",
+      "description": "Hive Decryptor v3"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "elf"
+  ]
+}

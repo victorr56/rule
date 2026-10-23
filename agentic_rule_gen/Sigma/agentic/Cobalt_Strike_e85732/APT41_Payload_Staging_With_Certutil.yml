@@ -1,0 +1,26 @@
+title: APT41 Payload Staging With Certutil
+id: 5698b67f-27f1-4122-bd8b-d72b2c918231
+status: experimental
+description: Detects the use of certutil.exe to decode a Base64 encoded file, a technique used by APT41 to stage payloads on a compromised system.
+references:
+    - https://www.group-ib.com/blog/apt41-world-tour-2021/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.defense_evasion
+    - attack.t1140
+    - attack.t1027
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\certutil.exe'
+        CommandLine|contains|all:
+            - '-decode'
+            - 'C:\dns.txt'
+            - 'C:\dns.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,27 @@
+title: Hive Ransomware Grants Full File Access via ICACLS
+id: 9a784d6b-3657-45b0-a0de-fcb07779d717
+status: experimental
+description: Detects the use of "icacls.exe" by Hive ransomware to grant "Everyone" full control over files recursively, which is a preparatory step for encryption.
+references:
+    - https://www.group-ib.com/blog/hive/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.defense_evasion
+    - attack.t1222.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\icacls.exe'
+        CommandLine|contains|all:
+            - '/grant'
+            - 'Everyone:F'
+            - '/T'
+            - '/C'
+            - '/Q'
+    condition: selection
+falsepositives:
+    - Some administrative scripts might use a similar command, but the combination of granting full access to 'Everyone' recursively and quietly is highly suspicious.
+level: high

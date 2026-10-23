@@ -1,0 +1,28 @@
+title: Soco404 C2 and Scam Related Domain Queries
+id: 5a18a901-bb11-4ed4-9c9c-b169527f311c
+status: experimental
+description: Detects DNS queries for domains associated with the Soco404 campaign's command and control (C2) or related scam activities.
+references:
+    - https://www.wiz.io/blog/soco404-multiplatform-cryptomining-campaign-uses-fake-error-pages-to-hide-payload
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'www.fastsoco.top'
+            - 'dblikes.cyou'
+            - 'seeyoume.top'
+            - 'arcticoins.com'
+            - 'diamondcapitalcrypro.com'
+            - 'nordicicoins.com'
+            - 'hkcapitals.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

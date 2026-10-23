@@ -1,0 +1,29 @@
+title: OPERA1ER C2 IP Address
+id: c71f11e9-4e01-4475-ac82-7e045ab5c7d8
+status: experimental
+description: Detects network connections to IP addresses associated with the OPERA1ER threat actor's C2 infrastructure.
+references:
+    - https://www.group-ib.com/blog/opera1er-apt/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '20.91.192.253'
+            - '188.126.90.14'
+            - '178.73.192.17'
+            - '46.246.84.17'
+            - '46.246.84.21'
+            - '43.205.33.202'
+            - '46.246.84.74'
+            - '72.11.142.240'
+    condition: selection
+falsepositives:
+    - These IPs could be reassigned to benign services in the future.
+level: high

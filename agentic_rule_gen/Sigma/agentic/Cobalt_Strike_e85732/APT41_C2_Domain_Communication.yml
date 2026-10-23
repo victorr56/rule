@@ -1,0 +1,26 @@
+title: APT41 C2 Domain Communication
+id: 8527a4d5-6cfb-4e2e-ad29-f81d8bb6307a
+status: experimental
+description: Detects DNS queries for domains known to be used by APT41 for command and control.
+references:
+    - https://www.group-ib.com/blog/apt41-world-tour-2021/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.delaylink.tk'
+            - '.colunm.tk'
+            - '.cs16.dns04.com'
+            - '.newimages.socialpt2021.tk'
+            - '.socialpt2021.club'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

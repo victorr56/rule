@@ -1,0 +1,24 @@
+title: 0ktapus Campaign C2 Connections
+id: a2de8409-56c4-4b5c-b17b-d4560b457e5b
+status: experimental
+description: Detects network connections to IP addresses associated with the 0ktapus campaign.
+references:
+    - https://www.group-ib.com/blog/0ktapus/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '45.76.80.199'
+            - '149.28.37.137'
+            - '138.68.27.0'
+            - '138.68.26.2'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

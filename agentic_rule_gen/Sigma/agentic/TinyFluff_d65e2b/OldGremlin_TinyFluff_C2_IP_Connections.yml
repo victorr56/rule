@@ -1,0 +1,24 @@
+title: OldGremlin/TinyFluff C2 and WebDAV Server Connection
+id: 941f6e2b-58d3-4a11-b0e2-a7d57f0a9a8f
+status: experimental
+description: Detects network connections to IP addresses associated with OldGremlin C2 and payload delivery servers.
+references:
+    - https://www.group-ib.com/blog/oldgremlin-comeback/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '46.101.113.161'
+            - '161.35.41.9'
+            - '192.248.176.138'
+    condition: selection
+falsepositives:
+    - These IPs could be reassigned in the future.
+level: high

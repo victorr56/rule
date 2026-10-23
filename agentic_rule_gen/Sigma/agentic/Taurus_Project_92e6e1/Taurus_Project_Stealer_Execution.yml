@@ -1,0 +1,28 @@
+title: Taurus Project Stealer Persistence
+id: f27d53b2-6523-455b-af83-c288d011f054
+status: experimental
+description: Detects persistence of the Taurus Project stealer via a Run key.
+references:
+    - https://www.group-ib.com/blog/cannibal-carders-fake-shops/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.persistence
+    - attack.t1547.001
+    - attack.credential_access
+    - attack.t1555
+    - attack.collection
+    - attack.exfiltration
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\PanelControl'
+        Details|contains:
+            - '\AppData\Roaming\PanelControl\PanelControl.exe'
+            - '\AppData\Roaming\PanelControl\LitePanel.exe'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

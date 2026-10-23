@@ -1,0 +1,27 @@
+title: Soco404 Initial Payload Download via Certutil
+id: 8c50c000-84c2-4889-8d7d-2b4f654b9d03
+status: experimental
+description: Detects the use of 'certutil.exe' to download the initial Soco404 payload, saving it as 'os.exe' in the 'Users\Public' directory.
+references:
+    - https://www.wiz.io/blog/soco404-multiplatform-cryptomining-campaign-uses-fake-error-pages-to-hide-payload
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.defense_evasion
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\certutil.exe'
+        CommandLine|contains|all:
+            - '-urlcache'
+            - '-split'
+            - '-f'
+            - '\Users\Public\os.exe'
+    condition: selection
+falsepositives:
+    - Unlikely, as this specific combination of arguments, output file name, and location is highly suspicious.
+level: high

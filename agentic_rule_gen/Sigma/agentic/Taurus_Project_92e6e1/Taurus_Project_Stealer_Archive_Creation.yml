@@ -1,0 +1,25 @@
+title: Taurus Project Stealer Archive Creation
+id: 110e828d-1941-4545-9a8c-9c3f4e1f727c
+status: experimental
+description: Detects the execution of a command-line archiver to create a RAR archive file associated with the Taurus Project stealer. The filename contains a typo, which increases specificity.
+references:
+    - https://www.group-ib.com/blog/cannibal-carders-fake-shops/
+author: ioc-yara-daily (agentic)
+date: 2024-06-27
+tags:
+    - attack.collection
+    - attack.t1074.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\rar.exe'
+            - '\7z.exe'
+            - '\7za.exe'
+        CommandLine|contains: 'panelcontorl.rar'
+    condition: selection
+falsepositives:
+    - Legitimate use of command-line archivers creating a file with the same name, which is unlikely due to the typo.
+level: high

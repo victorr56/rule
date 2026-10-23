@@ -1,0 +1,185 @@
+{
+  "malware_family": "Taurus Project",
+  "threat_actor": "Alexuiop1337",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A large cybercriminal fraud operation, codenamed SPAGETTI, operates over 3,000 fake carding shop domains to scam other criminals. Victims are tricked into downloading the Taurus Project stealer, disguised as a 'protected app', which steals credentials from browsers, banking applications, and cryptocurrency wallets. The malware is an evolution of the PredatorTheThief stealer and exfiltrates data to a dedicated C2 infrastructure.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "panelcontorl.rar",
+      "context": "Archive downloaded from the SPAGETTI fake shop briansclub.ru.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "PanelControl.exe",
+      "context": "Taurus Project stealer executable extracted from panelcontorl.rar.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "LitePanel.exe",
+      "context": "Taurus Project stealer executable extracted from panelcontorl.rar.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Your account is activated! For safe use of the store. Download the protected app",
+      "context": "Message on fake briansclub.ru prompting user to download the stealer.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "monerdomen.ru",
+      "context": "Taurus Project botnet C2 controller website.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.21.52.20",
+      "context": "IP address for Taurus Project C2 monerdomen.ru.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.67.194.75",
+      "context": "IP address for Taurus Project C2 monerdomen.ru.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "panelshopload.su",
+      "context": "Domain hosting the Taurus Project stealer for download.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "briansclub.ru",
+      "context": "SPAGETTI network fake shop used to distribute Taurus Project stealer.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "Jstashbazar.com",
+      "context": "JokerMantey network fake shop impersonating Joker's Stash.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "unicc.cm",
+      "context": "Hijacked domain of a former card shop, repurposed as a fake shop.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "unicc.cx",
+      "context": "Fake shop belonging to the UniFake network.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "festore-dumps.ru",
+      "context": "SPAGETTI network fake shop copying the card shop Trump's Dumps.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "briansclub.store",
+      "context": "JokerMantey network fake shop copying BriansClub.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "briansclub.shop",
+      "context": "JokerMantey network fake shop copying BriansClub.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "briansclub.me",
+      "context": "JokerMantey network fake shop copying BriansClub.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "jokerstash.cc",
+      "context": "JokerMantey network fake shop copying Joker's Stash.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "unicc.me",
+      "context": "JokerMantey network fake shop copying Unicc.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cvv2me.com",
+      "context": "JokerMantey network fake shop.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cryptonshops.com",
+      "context": "JokerMantey network fake shop.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

@@ -1,0 +1,28 @@
+title: TaskMasters Webdav-O C2 Communication via Yandex WebDAV
+id: a53846fd-abf0-45d8-9c60-c44d93026365
+status: experimental
+description: Detects specific URI paths used by the Webdav-O RAT for C2 communications over the Yandex WebDAV service.
+references:
+    - https://www.group-ib.com/blog/task/
+author: ioc-yara-daily (agentic)
+date: 2023-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1102
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname|endswith: 'webdav.yandex.ru'
+        Url|endswith:
+            - '/?userinfo'
+            - '/test/?userinfo'
+            - '/test/test2.txt'
+            - '/test/test3.txt'
+            - '/test/test4.txt'
+            - '/test/test5.txt'
+    condition: selection
+falsepositives:
+    - Legitimate use of Yandex WebDAV services that happens to use one of these URI paths.
+level: high

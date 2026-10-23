@@ -1,0 +1,21 @@
+title: Access to Ivanti EPMM Exploit Related Payload URLs
+id: c4b13a7c-50a9-4672-9118-2e008d5cd2b6
+status: experimental
+description: Detects HTTP/S requests to URLs known to host payloads or commands related to the exploitation of Ivanti EPMM vulnerabilities (CVE-2025-4427, CVE-2025-4428).
+references:
+    - https://www.wiz.io/blog/ivanti-epmm-rce-vulnerability-chain-cve-2025-4427-cve-2025-4428
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname: 'craft-dev.greenenaftaligallery.com'
+        Url|endswith: '/a.txt'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

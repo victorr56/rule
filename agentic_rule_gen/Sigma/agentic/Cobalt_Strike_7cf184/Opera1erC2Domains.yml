@@ -1,0 +1,23 @@
+title: OPERA1ER C2 Domain
+id: 593a8d9a-d76f-4050-84c4-722513f56f10
+status: experimental
+description: Detects DNS queries for domains associated with the OPERA1ER threat actor's C2 infrastructure.
+references:
+    - https://www.group-ib.com/blog/opera1er-apt/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'files.ddrive.online'
+            - 'banqueislamik.ddrive.online'
+    condition: selection
+falsepositives:
+    - Legitimate use of the domain, though unlikely.
+level: high

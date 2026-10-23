@@ -1,0 +1,21 @@
+title: Gozi ISFB C2 Domain Query
+id: e4719c8f-3760-4927-a068-07d0f19de4bb
+status: experimental
+description: Detects DNS queries for a known Gozi ISFB command and control domain.
+references:
+    - https://www.group-ib.com/blog/gozi-latest-ttps/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'iiso.in'
+    condition: selection
+falsepositives:
+    - None
+level: critical

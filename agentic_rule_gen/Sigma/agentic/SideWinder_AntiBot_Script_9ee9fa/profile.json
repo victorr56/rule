@@ -1,0 +1,253 @@
+{
+  "malware_family": "SideWinder.AntiBot.Script",
+  "threat_actor": "SideWinder",
+  "platforms": [
+    "windows",
+    "web",
+    "android"
+  ],
+  "summary": "SideWinder uses a custom JavaScript tool, SideWinder.AntiBot.Script, to vet visitors to phishing pages. The script profiles the browser, checking geolocation (Pakistan), OS, language, and other fingerprints before serving a malicious ZIP with a LNK file. The LNK file downloads and executes an HTA payload, ultimately deploying a RAT via DLL side-loading.",
+  "mitre_techniques": [
+    "T1566",
+    "T1204.002",
+    "T1218.005",
+    "T1574.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "34-D4-3D-5B-6E-31-77-E7-27-06-96-CE-BE-E6-B5",
+      "context": "XOR key ('secretKey') for C2 profiling data.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Pay and Pension Increase Circular_Finance Division.zip",
+      "context": "Downloaded ZIP archive containing malicious LNK.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Pay and Pension Increase Circular_Finance Division.pdf.lnk",
+      "context": "LNK file within the ZIP archive.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "https://finance.govpk-mail.net/15523/1/12443/2/0/0/1/1874254181/79DWxM3xhqvyZapU4oq7D3M8j5wB6f4HVHnbIEc/files-60b6e42b/hta",
+      "context": "URL target in LNK file, executed by mshta.exe.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Duser.dll",
+      "context": "Malicious DLL sideloaded by credwiz.exe.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "credwiz.exe",
+      "context": "Legitimate binary used to perform DLL side-loading of Duser.dll.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "mshta.exe",
+      "context": "Used to execute the downloaded HTA payload.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Geolocation is not supported by this browser.",
+      "context": "Error string in the AntiBot script.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ross jack",
+      "context": "Author name for malicious 'SecureVPN' Android app.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://finance.pakgov.net/733/1/670/2/0/0/1874372994/HvEdALWHsRoqS3eIArlDgXiyAcvV5TsjfqF7kVAK/files-8adb0199/ads",
+      "context": "C2 endpoint for sending profiling data (postUrl).",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://finance.pakgov.net/733/1/670/2/0/0/1874372994/HvEdALWHsRoqS3eIArlDgXiyAcvV5TsjfqF7kVAK/files-867fdc8a/adscom",
+      "context": "C2 endpoint for detection events (detectionPostUrl).",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "finance.pakgov.net",
+      "context": "Phishing domain mimicking Pakistani government.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "vpn.pakgov.net",
+      "context": "Phishing domain mimicking Pakistani government.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "csd.pakgov.net",
+      "context": "Phishing domain mimicking Pakistani government.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "nadra.pakgov.net",
+      "context": "Phishing domain mimicking Pakistani government.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "finance.govpk-mail.net",
+      "context": "Phishing domain hosting HTA payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.vpn-secure.co",
+      "context": "C2 for malicious 'SecureVPN' Android app.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "faujifoundation.bitlyy.me",
+      "context": "Phishing domain from phishing link table.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kdf-mail.com",
+      "context": "Phishing domain from phishing link table.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dawnpk.org",
+      "context": "Phishing domain from phishing link table.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tin-url.com",
+      "context": "Phishing domain from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "fileserve.work",
+      "context": "Phishing domain from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://api.vpn-secure.co/secureVpn/register",
+      "context": "Registration endpoint for malicious Android app.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "2.56.245.21",
+      "context": "C2 server hosting multiple phishing domains.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "5.2.79.135",
+      "context": "IP hosting phishing page login panel.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Content-Type: application/text",
+      "context": "Header used when posting profiling data to C2.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script",
+    "pe",
+    "archive",
+    "document"
+  ]
+}

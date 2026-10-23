@@ -1,0 +1,25 @@
+title: JDWP-Miner - C2 Domains
+id: d4f04a3e-7c58-45a7-bc5b-86d7cd8746ae
+status: experimental
+description: Detects DNS queries to domains known to be used by JDWP-Miner for downloading payloads.
+references:
+    - https://www.wiz.io/blog/exposed-jdwp-exploited-in-the-wild
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'canonicalconnect.com'
+            - 'awarmcorner.world'
+            - 'aheatcorner.world'
+            - 'cozy.yachts'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

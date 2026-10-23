@@ -1,0 +1,125 @@
+{
+  "malware_family": "Targeted fraud",
+  "threat_actor": "",
+  "platforms": [
+    "web"
+  ],
+  "summary": "Targeted fraud is a large-scale phishing campaign that uses personalized, cloaked links to redirect victims to fake survey and prize giveaway pages. The scheme, active in over 90 countries, aims to steal personal information and payment card details by generating unique URLs for each victim that contain a timestamp and hash to evade analysis. The infrastructure is vast, with attackers using many domain networks to ensure the campaign's persistence.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "Dear customer! Congratulations! You are one of the 100 users that we selected to receive the chance to win",
+      "context": "Opening text of the phishing landing page.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "You have 4 minutes and 27 seconds to answer the following questions",
+      "context": "Urgency-creating text on the phishing landing page.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "finalopnon.click",
+      "context": "Domain from a large network hosting targeted links, with high traffic.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "go.lltrsknoob.click",
+      "context": "Domain found in the 'track' parameter of a scam URL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "thepiratebay.cc",
+      "context": "Torrent tracker used as a watering hole to distribute scam links.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/s10xs/",
+      "context": "URI path pattern from scam URL, likely referencing a Samsung S10 prize.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/pr/i12/brand/",
+      "context": "URI path pattern from scam URL, likely referencing an iPhone 12 prize.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/it/s20i11/",
+      "context": "URI path pattern with country code (it) and prize codes (s20, i11).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "key",
+      "context": "URL parameter containing a base64 encoded JSON object for user tracking.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "timestamp",
+      "context": "JSON key inside the base64-encoded 'key' URL parameter.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "hash",
+      "context": "JSON key inside the base64-encoded 'key' URL parameter.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "bemobdata",
+      "context": "URL parameter name used for traffic analysis and tracking.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "track",
+      "context": "URL parameter containing the initial smartlink domain for cloaking.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "unknown"
+  ]
+}

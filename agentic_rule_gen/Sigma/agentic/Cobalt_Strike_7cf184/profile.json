@@ -1,0 +1,125 @@
+{
+  "malware_family": "Cobalt Strike",
+  "threat_actor": "OPERA1ER",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "OPERA1ER is a French-speaking, financially motivated threat actor that has been targeting organizations in Africa since at least 2018. They utilize commodity malware such as Cobalt Strike and BitRAT. Their infrastructure can be identified through specific Cobalt Strike public key hashes and SSH fingerprints.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "52c66274994172447b21054744cc5b69",
+      "context": "MD5 hash of the public key on Cobalt Strike servers.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "657a78dcd2c190f00b2f4ef745dd2cdd",
+      "context": "SSH fingerprint on C2 servers.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "files.ddrive.online",
+      "context": "Cobalt Strike C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "DynDNS"
+    },
+    {
+      "kind": "domain",
+      "value": "banqueislamik.ddrive.online",
+      "context": "C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "DynDNS"
+    },
+    {
+      "kind": "ip",
+      "value": "20.91.192.253",
+      "context": "Cobalt Strike C2 server",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "188.126.90.14",
+      "context": "Cobalt Strike C2 server",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "178.73.192.17",
+      "context": "C2 server",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "46.246.84.17",
+      "context": "C2 server",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "46.246.84.21",
+      "context": "C2 server",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "43.205.33.202",
+      "context": "C2 server",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "46.246.84.74",
+      "context": "C2 server",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "72.11.142.240",
+      "context": "C2 server",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "777",
+      "context": "Cobalt Strike Listener port",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

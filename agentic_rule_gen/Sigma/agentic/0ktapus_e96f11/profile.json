@@ -1,0 +1,222 @@
+{
+  "malware_family": "0ktapus",
+  "threat_actor": "Subject X",
+  "platforms": [
+    "windows",
+    "web"
+  ],
+  "summary": "0ktapus is a large-scale phishing campaign targeting employees of Okta customers to steal credentials and 2FA codes. Attackers use SMS messages with links to convincing phishing pages that impersonate Okta login portals. The compromised credentials are then exfiltrated to a Telegram channel and used to conduct supply chain attacks.",
+  "mitre_techniques": [
+    "T1566",
+    "T1195"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "_nuxt",
+      "context": "Folder name utilized by the frontend of the phishing kit.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Okta",
+      "context": "Name of the Telegram channel used to drop compromised credentials.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "X",
+      "context": "Username of the administrator of the credential drop Telegram channel.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AnyDesk.exe",
+      "context": "Legitimate remote admin tool downloaded to victim's browser post-phishing.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "twiiio-sso.com",
+      "context": "Phishing domain from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "box-okta.org",
+      "context": "Phishing domain from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kucoin-pin.com",
+      "context": "Phishing domain from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "microsoft-sso.net",
+      "context": "Phishing domain from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cloudflare-okta.com",
+      "context": "Phishing domain from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mailchimp-okta.com",
+      "context": "Phishing domain from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "t-moblie-okta.com",
+      "context": "Phishing domain from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "riotgames-vpn.net",
+      "context": "Phishing domain from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pomf.cat",
+      "context": "File hosting service used to share the phishing kit.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.76.80.199",
+      "context": "C2 IP from IOC list.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "149.28.37.137",
+      "context": "C2 IP from IOC list.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "138.68.27.0",
+      "context": "C2 IP from IOC list.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "138.68.26.2",
+      "context": "C2 IP from IOC list.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/_nuxt/",
+      "context": "Path for Nuxt.js framework resources on the phishing site.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "8080/tcp",
+      "context": "Port for the backend Django admin interface.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "sso",
+      "context": "Keyword used in phishing domains.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "vpn",
+      "context": "Keyword used in phishing domains.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "okta",
+      "context": "Keyword used in phishing domains.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "mfa",
+      "context": "Keyword used in phishing domains.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "help",
+      "context": "Keyword used in phishing domains.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

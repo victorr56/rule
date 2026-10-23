@@ -1,0 +1,28 @@
+title: OldGremlin/TinyFluff WebDAV Payload Execution
+id: 57d819e6-0158-4c91-a1e6-b9a3026a7988
+status: experimental
+description: Detects a specific command line used by OldGremlin to mount a WebDAV share and execute the TinyFluff backdoor and a decoy document.
+references:
+    - https://www.group-ib.com/blog/oldgremlin-comeback/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.execution
+    - attack.t1059.003
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - 'net use http://192.248.176.138'
+            - '&& start '
+            - '\DavWWWRoot\'
+            - 'tf.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

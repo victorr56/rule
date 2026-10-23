@@ -1,0 +1,28 @@
+title: Network Communication to Ivanti EPMM Exploit C2 IPs
+id: 3c6218f2-8928-442b-9860-e2216fd4e157
+status: experimental
+description: Detects network traffic to IP addresses known to be associated with command and control infrastructure used in the exploitation of Ivanti EPMM vulnerabilities (CVE-2025-4427, CVE-2025-4428).
+references:
+    - https://www.wiz.io/blog/ivanti-epmm-rce-vulnerability-chain-cve-2025-4427-cve-2025-4428
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+detection:
+    selection:
+        DestinationIp:
+            - '5.181.159.149'
+            - '37.219.84.22'
+            - '47.120.74.19'
+            - '75.170.92.132'
+            - '77.221.158.154'
+            - '82.132.235.212'
+            - '150.241.97.83'
+            - '185.193.125.65'
+    condition: selection
+falsepositives:
+    - These IPs could be reassigned to legitimate services in the future.
+level: high

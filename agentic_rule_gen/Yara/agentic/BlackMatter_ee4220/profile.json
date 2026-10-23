@@ -1,0 +1,384 @@
+{
+  "malware_family": "BlackMatter",
+  "threat_actor": "BlackMatter",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "BlackMatter is a Ransomware-as-a-Service (RaaS) operation considered to be the successor to DarkSide. It features distinct ransomware variants for Windows and Linux, utilizing ChaCha20 and HC-256 encryption respectively. The malware is known for its configurable nature, targeting of critical infrastructure, and high ransom demands communicated via Tor-based chat rooms.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "–path [PATH]",
+      "context": "Command line argument to encrypt a specified object.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "–safe",
+      "context": "Command line argument for self-registration and encryption in safe mode.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "–wall",
+      "context": "Command line argument to create and set the ransom wallpaper.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ICMLuaUtil",
+      "context": "COM interface used for UAC bypass via privilege escalation.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "HKLM\\SOFTWARE\\Microsoft\\Cryptography\\MachineGuid",
+      "context": "Value used to generate the victim ID for file extensions and mutexes.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Global\\[MUTEX_NAME]",
+      "context": "Mutex name is generated from the MachineGuid registry value.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "[VICTIM_ID].README.txt",
+      "context": "Ransom note file created in each processed directory.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%ExchangeInstallPath%\\Mailbox",
+      "context": "Directory containing Microsoft Exchange files targeted for encryption.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".rsrc",
+      "context": "Section name disguising the configuration data in the Windows variant.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "0F8B2AB512017D0F5",
+      "context": "Initial value (random seed) for the pseudo-random sequence generator.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PDF",
+      "context": "Substring in printer name to avoid printing the ransom note.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "XPSPort:",
+      "context": "Printer port name that prevents printing the ransom note.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SHRFAX:",
+      "context": "Printer port name that prevents printing the ransom note.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "FILE:",
+      "context": "Printer port name that prevents printing the ransom note.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PORTPROMPT:",
+      "context": "Printer port name that prevents printing the ransom note.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": ".cfgETD",
+      "context": "Section name containing configuration data in the Linux ELF variant.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": ".app.version",
+      "context": "Section name adjacent to .cfgETD in the Linux ELF variant.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "esxcli",
+      "context": "Utility used by the Linux variant to list VMFS datastores.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bot-id",
+      "context": "Configuration parameter key in Linux variant's JSON configuration.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "worker-concurrency",
+      "context": "Configuration parameter key in Linux variant's JSON configuration.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "kill-vm",
+      "context": "Configuration parameter key in Linux variant's JSON configuration.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bot_company",
+      "context": "Configuration parameter for Company ID in Windows variant.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 80 C6 61 80 EE 61 C1 CA 0D 03 D0 }",
+      "context": "YARA rule for BlackMatter Windows payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 02 F1 2A F1 B9 0D 00 00 00 D3 CA 03 D0 }",
+      "context": "YARA rule for BlackMatter Windows payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 3C 2B 75 04 B0 78 EB 0E 3C 2F 75 04 B0 69 EB 06 3C 3D 75 02 B0 7A }",
+      "context": "YARA rule for BlackMatter Windows payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 0F B6 10 84 D2 74 19 0F B6 34 0F 40 38 F2 74 10 48 83 C1 01 31 F2 48 83 F9 20 88 10 49 0F 44 C9 48 83 C0 01 4C 39 C0 75 D7 }",
+      "context": "YARA rule for BlackMatter Linux payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "paymenthacks.com",
+      "context": "C2 server for data exfiltration.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mojobiden.com",
+      "context": "C2 server for data exfiltration.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "nowautomation.com",
+      "context": "C2 server for data exfiltration.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "fluentzip.org",
+      "context": "C2 server for data exfiltration.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "supp24yy6a66hwszu2piygicgwzdtbwftb76htfj7vnip3getgqnzxid.onion",
+      "context": "Tor-based victim communication and ransom payment site.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "supp24maprinktc7uizgfyqhisx7lkszb6ogh6lwdzpac23w3mh4tvyd.onion",
+      "context": "Tor-based victim communication and ransom payment site.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://supp24yy6a66hwszu2piygicgwzdtbwftb76htfj7vnip3getgqnzxid.onion/7NT6LXKC1XQHW5039BLOV",
+      "context": "Tor-based victim chat room URL from ransom note.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://supp24maprinktc7uizgfyqhisx7lkszb6ogh6lwdzpac23w3mh4tvyd.onion/OR7OTLBK8D5UVHZ0Q",
+      "context": "Tor-based victim chat room URL from ransom note.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "072158f5588440e6c94cb419ae06a27cf584afe3b0cb09c28eff0b4662c15486",
+      "description": "BlackMatter for Windows v1.2"
+    },
+    {
+      "sha256": "a6e14988d91f09db44273c79cba51c16b444afafa37ba5968851badb2a62ef27",
+      "description": "BlackMatter Decryptor for Windows v1.3"
+    },
+    {
+      "sha256": "7c642cdeaa55f56c563d82837f4dc630583b516a5d02d5a94b57b65489d74425",
+      "description": "BlackMatter for Windows v1.4"
+    },
+    {
+      "sha256": "6d4712df42ad0982041ef0e2e109ab5718b43830f2966bd9207a7fac3af883db",
+      "description": "BlackMatter for Windows v1.6"
+    },
+    {
+      "sha256": "2466fca0e29b06c78ffa8a44193fb58c30e6bec4e54bbef8e6622349b95cce4c",
+      "description": "BlackMatter for Windows v1.9"
+    },
+    {
+      "sha256": "0751c422962dcd500d7cf2cf8bf544ddf5b2fe3465df7dd9b9998f6bba5e08a4",
+      "description": "BlackMatter for Windows v2.0 (2021-08-16)"
+    },
+    {
+      "sha256": "2aad85dbd4c79bd21c6218892552d5c9fb216293a251559ba59d45d56a01437c",
+      "description": "BlackMatter for Windows v2.0 (2021-09-26)"
+    },
+    {
+      "sha256": "7a223a0aa0f88e84a68da6cde7f7f5c3bb2890049b0bf3269230d87d2b027296",
+      "description": "BlackMatter for Windows v3.0 (2021-10-22)"
+    },
+    {
+      "sha256": "1247a68b960aa81b7517c614c12c8b5d1921d1d2fdf17be636079ad94caf970f",
+      "description": "BlackMatter for Linux v1.6.0.2"
+    },
+    {
+      "sha256": "d4645d2c29505cf10d1b201826c777b62cbf9d752cb1008bef1192e0dd545a82",
+      "description": "BlackMatter for Linux v1.6.0.4"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "elf"
+  ]
+}

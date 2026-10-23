@@ -1,0 +1,34 @@
+title: Prometheus TDS Associated C2 And Phishing Domains
+id: 1a9b033d-1a86-4e02-9a00-3444ab065306
+status: experimental
+description: Detects DNS queries for domains associated with Prometheus TDS infrastructure, including C2, payload hosting, and phishing.
+references:
+    - https://www.group-ib.com/blog/prometheus-tds/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1071
+    - attack.initial_access
+    - attack.t1566
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'xn--keynvigatorkey-yp8g.com' # keynavigatorkey.com
+            - 'ementincied.com'
+            - 'inpulsion.net'
+            - 'aramiglobal.com'
+            - 'denazao.info'
+            - 'twotimercvac.uno'
+            - 'secure-doc-viewer.com'
+            - 'pdfsecure.net'
+            - 'huvpn.com'
+            - 'hotaiddeal.su'
+            - 'banking.sparkasse.de-id1897ajje9021ucn9021345345b0juah10zb1092uhda.xyz'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: medium

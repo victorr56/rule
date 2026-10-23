@@ -1,0 +1,27 @@
+title: BlackMatter C2 Domain Queries
+id: c6744c8c-1e23-45c1-9657-f6552e17282b
+status: experimental
+description: Detects DNS queries for domains associated with BlackMatter C2 infrastructure.
+references:
+    - https://www.group-ib.com/blog/blackmatter2/
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.paymenthacks.com'
+            - '.mojobiden.com'
+            - '.nowautomation.com'
+            - '.fluentzip.org'
+            - '.supp24yy6a66hwszu2piygicgwzdtbwftb76htfj7vnip3getgqnzxid.onion'
+            - '.supp24maprinktc7uizgfyqhisx7lkszb6ogh6lwdzpac23w3mh4tvyd.onion'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

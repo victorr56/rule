@@ -1,0 +1,26 @@
+title: JDWP-Miner - Masquerading XMRig Execution
+id: 08832a87-14e3-4d7a-8f81-a67b5e4c6c2e
+status: experimental
+description: Detects the execution of the XMRig miner which masquerades as 'logrotate' but runs from a user's home directory.
+references:
+    - https://www.wiz.io/blog/exposed-jdwp-exploited-in-the-wild
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+    - attack.resource_hijacking
+    - attack.t1496
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/.config/logrotate'
+        CommandLine|contains: '--config=/.config/config.json'
+    filter:
+        Image|startswith: '/usr/sbin/'
+    condition: selection and not filter
+falsepositives:
+    - "Unlikely. Legitimate `logrotate` binary is typically located in `/usr/sbin/` and not in a user's home directory."
+level: high

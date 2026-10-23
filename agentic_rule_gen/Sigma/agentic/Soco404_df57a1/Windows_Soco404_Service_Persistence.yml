@@ -1,0 +1,26 @@
+title: Soco404 Persistence Service Creation with Random Path
+id: d76a084c-3ca7-44be-ac48-9366e4a2a472
+status: experimental
+description: Detects the creation of a Windows service where the binary path matches a random pattern used by Soco404 ('C:\ProgramData\<12-char-random>\<12-char-random>.exe').
+references:
+    - https://www.wiz.io/blog/soco404-multiplatform-cryptomining-campaign-uses-fake-error-pages-to-hide-payload
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.persistence
+    - attack.t1543.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\sc.exe'
+        CommandLine|contains|all:
+            - 'create'
+            - 'binpath='
+            - 'start= auto'
+        CommandLine|re: 'binpath=\s*"C:\\ProgramData\\[a-z]{12}\\[a-z]{12}\.exe"'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

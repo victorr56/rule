@@ -1,0 +1,24 @@
+title: Linux Reverse Shell From Ivanti EPMM Exploit
+id: 5e6274b1-876a-4933-a609-b4b10492066d
+status: experimental
+description: Detects a reverse shell command pattern commonly used by attackers after successfully exploiting vulnerabilities like those in Ivanti EPMM (CVE-2025-4427, CVE-2025-4428).
+references:
+    - https://www.wiz.io/blog/ivanti-epmm-rce-vulnerability-chain-cve-2025-4427-cve-2025-4428
+author: ioc-yara-daily (agentic)
+date: 2026-10-23
+tags:
+    - attack.execution
+    - attack.t1059.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/sh'
+        CommandLine|contains|all:
+            - '-i'
+            - '>& /dev/tcp/'
+    condition: selection
+falsepositives:
+    - Legitimate but rare use of this pattern in some administration or development scripts.
+level: high

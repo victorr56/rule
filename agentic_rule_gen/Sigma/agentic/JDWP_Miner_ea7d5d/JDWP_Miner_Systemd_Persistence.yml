@@ -1,0 +1,27 @@
+title: JDWP-Miner - Systemd Persistence
+id: 28f60ccb-7f61-419b-ab29-e85df6463991
+status: experimental
+description: Detects the creation of a malicious systemd service file used by JDWP-Miner for persistence.
+references:
+    - https://www.wiz.io/blog/exposed-jdwp-exploited-in-the-wild
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.persistence
+    - attack.t1543.002
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        Image:
+            - '/bin/sh'
+            - '/usr/bin/sh'
+            - '/bin/bash'
+            - '/usr/bin/bash'
+            - '/bin/dash'
+        TargetFilename|endswith: '/systemd/system/logrotate.service'
+    condition: selection
+falsepositives:
+    - Custom, legitimate services named 'logrotate.service' created via a shell script by an administrator.
+level: high

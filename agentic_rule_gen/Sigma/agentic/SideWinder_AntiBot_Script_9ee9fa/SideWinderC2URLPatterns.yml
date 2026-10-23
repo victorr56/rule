@@ -1,0 +1,36 @@
+title: SideWinder C2 and Payload URL Access
+id: f0e3f8ec-c67b-402a-bfbe-d450892bce37
+status: experimental
+description: Detects web requests to URLs with patterns characteristic of SideWinder C2 communication or payload delivery.
+references:
+    - https://www.group-ib.com/blog/sidewinder-antibot/
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.command_and_control
+    - attack.execution
+    - attack.t1071
+    - attack.t1105
+    - attack.t1218.005
+logsource:
+    category: proxy
+detection:
+    selection_payload:
+        Url|contains|all:
+            - '/files-'
+            - '/hta'
+        UserAgent|contains: 'compatible; MSIE 7.0'
+    selection_c2:
+        UserAgent|startswith: 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0;'
+        1 of:
+            - Url|contains|all:
+                - '/files-'
+                - '/ads'
+            - Url|contains|all:
+                - '/files-'
+                - '/adscom'
+            - Url|endswith: '/secureVpn/register'
+    condition: 1 of them
+falsepositives:
+    - Legitimate applications using legacy IE-based components for network requests that may access URLs with similar patterns.
+level: high
