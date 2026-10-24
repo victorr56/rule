@@ -1,0 +1,21 @@
+title: Network Connection to FakeSecurity/Vidar C2 IP
+id: c5d8d9b1-3e4b-4a57-8178-569b91001a74
+status: experimental
+description: Detects network connections to an IP address identified as a C2 server for stealers like Vidar, used in the initial stages of the FakeSecurity campaign.
+references:
+    - https://www.group-ib.com/blog/fakesecurity/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '200.63.40.2'
+    condition: selection
+falsepositives:
+    - This IP address may be reallocated to a benign service in the future.
+level: high

@@ -1,0 +1,21 @@
+title: Mosaic Regressor Payload SEP File Creation in SendTo Folder
+id: 3c9b1f77-5079-4eb5-83e9-026871a29398
+status: experimental
+description: Detects 'IntelUpdate.exe' creating 'cryptui.sep' in the SendTo folder, a behavior of the Mosaic Regressor payload.
+references:
+    - https://www.group-ib.com/blog/bootkits/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.t1027
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\IntelUpdate.exe'
+        TargetFilename|endswith: '\Microsoft\Windows\SendTo\cryptui.sep'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

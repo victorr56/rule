@@ -1,0 +1,22 @@
+title: OldGremlin Persistence Via HKCU Security Key
+id: 79f7d2f9-7104-45e0-994c-b173663a7f80
+status: experimental
+description: Detects the creation or modification of a registry value 'sync' in an unusual location 'HKCU\Software\Microsoft\Windows\Security', used by OldGremlin's TinyNode backdoor to store the path to its executable for persistence.
+references:
+    - https://www.group-ib.com/blog/oldgremlin/
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Microsoft\Windows\Security\sync'
+        Details|contains: '.exe'
+    condition: selection
+falsepositives:
+    - Legitimate software storing an executable path in a registry value named 'sync' under this specific, non-standard key path is considered highly unlikely.
+level: high

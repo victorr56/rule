@@ -1,0 +1,23 @@
+title: Mosaic Regressor Payload Data File Creation
+id: 1a59a72b-4573-42e5-a38f-a951d4512c12
+status: experimental
+description: Detects 'IntelUpdate.exe' creating a .dat file in the Internet Explorer folder, which is a behavior of the Mosaic Regressor payload. The filename is derived from the computer name.
+references:
+    - https://www.group-ib.com/blog/bootkits/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.t1027
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\IntelUpdate.exe'
+        TargetFilename|contains|all:
+            - '\Microsoft\Internet Explorer\'
+            - '.dat'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,28 @@
+title: E1RB Skimmer C2 Domain
+id: 5938cc24-f7b5-4b31-97ed-a8d29b1ac7c8
+status: experimental
+description: Detects DNS queries for domains associated with the E1RB JavaScript skimmer.
+references:
+    - https://www.group-ib.com/blog/e1rb/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.drive_by_compromise
+    - attack.t1189
+    - attack.exfiltration
+    - attack.t1048
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith:
+            - 'google-analitics.org'
+            - 'cdn-host.org'
+            - 'telrshop.com'
+            - 'jquery-live.com'
+            - 'cdn-gstat.com'
+            - 'jquery-on.com'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

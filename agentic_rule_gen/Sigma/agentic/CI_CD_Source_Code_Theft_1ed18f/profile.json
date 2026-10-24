@@ -1,0 +1,332 @@
+{
+  "malware_family": "CI/CD Source Code Theft",
+  "threat_actor": "",
+  "platforms": [
+    "linux",
+    "web"
+  ],
+  "summary": "Analysis of forensic artifacts from GitLab and Jenkins servers used in source code theft incidents. Attackers abuse misconfigured CI/CD instances to create users, generate tokens, and exfiltrate code repositories by cloning or downloading build artifacts. The report details specific log entries, file paths, and URI patterns indicative of this activity.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/var/opt/gitlab/gitlab-rails/production_json.log",
+      "context": "GitLab log for all performed requests.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/opt/gitlab/gitlab-rails/application_json.log",
+      "context": "GitLab JSON-formatted audit logs.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/opt/gitlab/gitlab-rails/api_json.log",
+      "context": "GitLab log for direct API requests.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SessionsController",
+      "context": "GitLab controller for user login events.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Successful Login: username=",
+      "context": "GitLab application_json.log entry for successful login.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Failed Login: username=",
+      "context": "GitLab application_json.log entry for failed login.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Admin::UsersController",
+      "context": "GitLab controller for new user creation event.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Profiles::PersonalAccessTokensController",
+      "context": "GitLab controller for creating personal access tokens.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PAT CREATION: created_by:",
+      "context": "GitLab application_json.log entry for token creation.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Projects::RepositoriesController",
+      "context": "GitLab controller for repository archive download.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Repositories::GitHttpController",
+      "context": "GitLab controller for git clone/fetch/pull operations.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "git_upload_pack",
+      "context": "GitLab action for git clone/fetch/pull.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "git/2.17.1",
+      "context": "User agent for 'git clone' command against GitLab.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/log/jenkins/access_log",
+      "context": "Jenkins web access log path.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/lib/jenkins/jobs/<repo>/builds/<build number>/log",
+      "context": "Jenkins job log file path.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$JENKINS_HOME/users/<username>_<number>.xml",
+      "context": "Jenkins user configuration file created on user creation.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/loginError by",
+      "context": "Jenkins Audit Trail plugin log for failed login.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "- - -",
+      "context": "Delimiter used in Jenkins Audit Trail logs.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Started by user unknown or anonymous",
+      "context": "Jenkins job log entry for anonymous build start.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Replayed [",
+      "context": "Jenkins job log entry indicating a replayed build.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "using credential jenkins-repo-check-user",
+      "context": "Jenkins job log indicating specific credential usage.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/users/sign_in",
+      "context": "GitLab login page URI.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/admin/users/new",
+      "context": "GitLab page to create a new user.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/admin/users",
+      "context": "GitLab POST endpoint for creating a new user.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/-/profile/personal_access_tokens",
+      "context": "GitLab page for creating personal access tokens.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/root/secure-service/-/archive/master/secure-service-master.zip",
+      "context": "GitLab URI for downloading a repository as a zip archive.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/root/secure-service.git/git-upload-pack",
+      "context": "GitLab URI path for git clone operation.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/j_acegi_security_check",
+      "context": "Jenkins POST endpoint for authentication.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/loginError",
+      "context": "Jenkins redirect URI on failed login.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/securityRealm/createAccountByAdmin",
+      "context": "Jenkins POST endpoint for admin to create an account.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/credentials/store/system/domain/_/credential/jenkins-repo-check-user",
+      "context": "Jenkins URI for viewing a credential.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/job/secure-service/build",
+      "context": "Jenkins POST endpoint to start a build job.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/job/secure-service/12/execution/node/3/ws/",
+      "context": "Jenkins URI for accessing a job workspace.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/job/secure-service/12/execution/node/3/ws/*zip*/secure-service.zip",
+      "context": "Jenkins URI for downloading a file from the workspace via zip.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "unknown"
+  ]
+}

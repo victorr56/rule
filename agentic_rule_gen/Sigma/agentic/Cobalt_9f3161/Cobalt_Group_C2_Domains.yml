@@ -1,0 +1,33 @@
+title: Cobalt Group Related DNS Queries
+id: 5693081e-450f-48d1-ab99-d4ff28e21720
+status: experimental
+description: Detects DNS queries for domains associated with Cobalt Group C2 and phishing campaigns.
+references:
+    - https://www.group-ib.com/blog/renaissance/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.command_and_control
+    - attack.t1071
+    - attack.resource_development
+    - attack.t1583
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.dns-verifon.com'
+            - '.ecb-europa.info'
+            - '.foxsecit.com'
+            - '.ibm-cert.com'
+            - '.ibm-notice.com'
+            - '.kaspersky-corporate.com'
+            - '.kaspersky-security.com'
+            - '.spamhuas.com'
+            - '.swift-fraud.com'
+            - '.swift-sipn.info'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

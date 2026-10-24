@@ -1,0 +1,27 @@
+title: IcedID WMIC AntiVirusProduct Reconnaissance
+id: 5937190e-b79e-4a6c-94da-df611f75b06d
+status: experimental
+description: Detects the use of a specific WMIC command line to enumerate installed antivirus products, as seen used by IcedID.
+references:
+    - https://www.group-ib.com/blog/icedid/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.discovery
+    - attack.t1082
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\wmic.exe'
+        CommandLine|contains|all:
+            - '/Node:localhost'
+            - '/Namespace:\\root\SecurityCenter2'
+            - 'Path AntiVirusProduct'
+            - 'Get *'
+            - '/Format:List'
+    condition: selection
+falsepositives:
+    - Legitimate system administration scripts might use this command, but it is uncommon and warrants investigation.
+level: medium

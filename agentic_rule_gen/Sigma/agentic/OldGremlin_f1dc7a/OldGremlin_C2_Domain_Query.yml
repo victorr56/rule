@@ -1,0 +1,21 @@
+title: OldGremlin C2 Domain Query
+id: 5e638d1a-47d0-4de2-9f33-68d71d3a6331
+status: experimental
+description: Detects DNS queries for a domain known to be used by OldGremlin for C2 communications.
+references:
+    - https://www.group-ib.com/blog/oldgremlin/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.command_and_control
+    - attack.t1573.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'rbcholding.press'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

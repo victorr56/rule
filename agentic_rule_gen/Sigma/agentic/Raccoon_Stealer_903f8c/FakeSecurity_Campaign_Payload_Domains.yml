@@ -1,0 +1,29 @@
+title: FakeSecurity Campaign Payload Domain DNS Query
+id: f4ab339d-277d-411a-8e2b-f896deaa348f
+status: experimental
+description: Detects DNS queries for domains known to be used in FakeSecurity campaigns to distribute Raccoon Stealer and other malware.
+references:
+    - https://www.group-ib.com/blog/fakesecurity-raccoon/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'cloud-server-updater22.co.za'
+            - 'microsoft-cloud13.co.za'
+            - 'updateforadobenew.co.za'
+            - 'documents-cloud-server.co.za'
+            - 'badlandsparks.com'
+            - 'cloud-server-updater1.co.za'
+            - 'cloud-server-updater2.co.za'
+            - 'google-document.co.za'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

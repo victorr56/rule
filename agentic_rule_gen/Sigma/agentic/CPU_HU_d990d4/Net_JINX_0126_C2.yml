@@ -1,0 +1,22 @@
+title: JINX-0126 CPU_HU C2 Network Connection
+id: c46d9080-60b7-4c07-b27b-586b66efb47b
+status: experimental
+description: Detects network connections to a C2 server used by JINX-0126 to distribute the CPU_HU malware.
+references:
+    - https://www.wiz.io/blog/postgresql-cryptomining
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: linux
+detection:
+    selection:
+        DestinationIp: '159.223.123.175'
+        DestinationPort: 36287
+    condition: selection
+falsepositives:
+    - This IP address could be reassigned to a benign service in the future.
+level: high

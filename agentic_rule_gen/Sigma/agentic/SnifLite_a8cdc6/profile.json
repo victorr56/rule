@@ -1,0 +1,179 @@
+{
+  "malware_family": "SnifLite",
+  "threat_actor": "UltraRank",
+  "platforms": [
+    "web"
+  ],
+  "summary": "UltraRank uses a JS-sniffer from the SnifLite family to steal payment card data from e-commerce checkout pages. The malware is hosted on, and exfiltrates data to, domains mimicking Google Tag Manager, such as googletagsmanager.co. The sniffer activates on pages with URLs containing keywords like 'checkout' or 'cart' and stores stolen data in a local storage object named 'google.verify.cache.001'.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "google.verify.cache.001",
+      "context": "Local storage object name for collected data before exfiltration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "_google.verify.cache.001object",
+      "context": "Name of object from which data is extracted before sending.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "onepage",
+      "context": "URL keyword that triggers data collection and exfiltration.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "checkout",
+      "context": "URL keyword that triggers data collection and exfiltration.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "panier",
+      "context": "URL keyword that triggers data collection and exfiltration.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "kasse",
+      "context": "URL keyword that triggers data collection and exfiltration.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "purchase",
+      "context": "URL keyword that triggers data collection and exfiltration.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "worker",
+      "context": "Directory for website files on googletagsmanager.co server.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "panel",
+      "context": "Directory for website files on s-panel.su server.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "googletagsmanager.co",
+      "context": "Hosts malicious JS code and serves as data collection gate.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "s-panel.su",
+      "context": "Presumed sniffer control panel.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "googletagsmanager.info",
+      "context": "Related domain sharing infrastructure with the primary C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://googletagsmanager.co/",
+      "context": "URL used to load malicious JS sniffer onto victim sites.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://s-panel.su/",
+      "context": "URL for the sniffer control panel login page.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.141.84.239",
+      "context": "Real IP of backend server (Media Land LLC).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "8.208.16.230",
+      "context": "IP for googletagsmanager.co at time of analysis.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "8.208.96.88",
+      "context": "Shared IP for C2 domains in Sept 2020.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "50e15969b10d40388bffbb87f56dd83df14576af",
+      "context": "SHA1 of SSL certificate shared by C2 infrastructure.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

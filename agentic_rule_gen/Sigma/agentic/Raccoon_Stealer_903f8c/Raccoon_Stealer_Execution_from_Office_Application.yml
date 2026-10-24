@@ -1,0 +1,26 @@
+title: Raccoon Stealer Execution from Office Application
+id: 9a6e60b1-ef7c-473d-9d41-479634d0b1d3
+status: experimental
+description: Detects the execution of 'officebuilder.exe', a known Raccoon Stealer payload name, spawned by a Microsoft Office application. This pattern is consistent with malware delivery via malicious macros.
+references:
+    - https://www.group-ib.com/blog/fakesecurity-raccoon/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\officebuilder.exe'
+        ParentImage|endswith:
+            - '\winword.exe'
+            - '\excel.exe'
+            - '\powerpnt.exe'
+            - '\outlook.exe'
+    condition: selection
+falsepositives:
+    - Legitimate but unusually named applications spawned from Office.
+level: high

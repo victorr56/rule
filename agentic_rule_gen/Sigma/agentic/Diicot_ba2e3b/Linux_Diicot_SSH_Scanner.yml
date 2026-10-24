@@ -1,0 +1,25 @@
+title: Diicot Malware SSH Scanner Execution
+id: 5972051e-61e3-4614-a95c-ab4e68bd7480
+status: experimental
+description: Detects the execution of the '.bisis' SSH banner grabbing scanner used by the Diicot malware for discovery purposes.
+references:
+    - https://www.wiz.io/blog/diicot-threat-group-malware-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.discovery
+    - attack.t1046
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image: '/var/tmp/.update-logs/.bisis'
+        CommandLine|contains|all:
+            - '2000'
+            - '22'
+            - 'iplist'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

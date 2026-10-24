@@ -1,0 +1,24 @@
+title: Cobalt Group C2 IP Connections
+id: e8a977df-98d6-419b-a010-8285514b8f04
+status: experimental
+description: Detects network connections to IP addresses associated with Cobalt Group C2 and phishing infrastructure.
+references:
+    - https://www.group-ib.com/blog/renaissance/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '185.86.79.156'
+            - '62.76.40.207'
+            - '91.230.121.86'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

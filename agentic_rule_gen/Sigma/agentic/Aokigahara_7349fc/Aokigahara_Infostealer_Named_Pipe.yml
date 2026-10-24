@@ -1,0 +1,26 @@
+title: Aokigahara Infostealer Named Pipe
+id: 28f60c41-945f-4a0b-9273-d5d2222d1033
+status: experimental
+description: Detects the creation of a named pipe with a pattern used by the Aokigahara infostealer. The malware often masquerades as executables related to AI tools.
+references:
+    - https://research.checkpoint.com/2024/infostealer-riding-the-ai-train-aokigahara-and-the-new-trend-of-ai-themed-malware/
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.execution
+    - attack.t1559
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: '\.\pipe\akg_'
+        Image|endswith:
+            - '\Midjourney.exe'
+            - '\Sora.exe'
+            - '\DALL-E.exe'
+            - '\Stable-Diffusion.exe'
+    condition: selection
+falsepositives:
+    - Legitimate software using filenames related to AI tools, though the combination with the specific named pipe pattern is highly unlikely.
+level: high

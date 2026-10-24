@@ -1,0 +1,128 @@
+{
+  "malware_family": "G-Analytics",
+  "threat_actor": "",
+  "platforms": [
+    "web"
+  ],
+  "summary": "G-Analytics is a JavaScript web skimmer family, active since 2016, that steals payment card information from e-commerce websites, particularly those using Magento CMS. It evades detection by masquerading as legitimate services like Google Analytics and jQuery, and exfiltrates data to actor-controlled domains. Some variants can also inject malicious code into server-side PHP scripts.",
+  "mitre_techniques": [],
+  "host_artifacts": [],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "dittm.org",
+      "context": "Early gate domain used in 2016.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "jquery-js.com",
+      "context": "Gate domain imitating jQuery's CDN, active in 2017.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "g-analytics.com",
+      "context": "Gate domain imitating Google Analytics, active since 2018.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "iozoz.com",
+      "context": "Early C2 infrastructure domain from 2016.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "google-analytics.cm",
+      "context": "C2 infrastructure domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "analytic.is",
+      "context": "C2 infrastructure domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "googlc-analytics.cm",
+      "context": "C2 infrastructure domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cardz.vc",
+      "context": "Underground shop domain for selling stolen cards.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cardz.su",
+      "context": "Underground shop domain for selling stolen cards.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://jquery-js.com/latest/jquery.min.js",
+      "context": "URL hosting G-Analytics JS-sniffer script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://jquery-js.com/jquery.1.12.4.min.js",
+      "context": "URL hosting a specific version of G-Analytics JS-sniffer script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://g-analytics.com/libs/1.0.1/analytics.js",
+      "context": "URL hosting a specific version of G-Analytics JS-sniffer script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://g-analytics.com/libs/analytics.js",
+      "context": "URL hosting G-Analytics JS-sniffer script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/__utm.gif",
+      "context": "Exfiltration path on g-analytics.com, imitating a GIF request.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

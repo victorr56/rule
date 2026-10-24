@@ -1,0 +1,368 @@
+{
+  "malware_family": "IcedID",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "This IcedID version uses steganography in PNG images to conceal its main module and configuration files. It establishes persistence via Scheduled Task or Run key, injects into browsers to perform MitM attacks via a local proxy, and uses basic anti-VM and anti-debugging checks. Its C2 framework includes modules for VNC, SOCKS proxy, and credential theft.",
+  "mitre_techniques": [
+    "T1218.010",
+    "T1055",
+    "T1548.002",
+    "T1547.001",
+    "T1053.005",
+    "T1555",
+    "T1082",
+    "T1016",
+    "T1069.002",
+    "T1057",
+    "T1557",
+    "T1090.002",
+    "T1219",
+    "T1497.003"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "BE0F1DE5",
+      "context": "Hardcoded 'downloader identifier' in C2 GET request for payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "zeus",
+      "context": "Magic string found in decrypted config file.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bot.init > core init ver=",
+      "context": "Internal log string format for core initialization.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "#lf",
+      "context": "Global variable name for log-filter.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "#ke",
+      "context": "Global variable name for 'kill edge'.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "#dr",
+      "context": "Global variable name for signed C2 URL list.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "#dm",
+      "context": "Global variable name for unsigned C2 URL list.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "regsvr32.exe /s “C:\\Users\\<%Username%>\\AppData\\Local\\lepuan\\odnu\\olniyueu3.dll”",
+      "context": "Persistence for DLL payload via Run key or Scheduled Task.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "WMIC /Node:localhost /Namespace:\\\\root\\SecurityCenter2 Path AntiVirusProduct Get * /Format:List",
+      "context": "System information gathering for 'sysinfo' command.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\ms-settings\\Shell\\Open\\command",
+      "context": "UAC bypass using fodhelper.exe.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "DelegateExecute",
+      "context": "Value set in key for fodhelper.exe UAC bypass.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\mscfile\\shell\\open\\command",
+      "context": "UAC bypass using eventvwr.exe.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "meayjiduge_{94D3BBC9-24EA-411F-066A-A604B94A99DA}",
+      "context": "Example persistence registry value name in Run key.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "C=US; O=VeriSign, Inc.; OU=VeriSign Trust Network; OU=(c) 2006 VeriSign, Inc. – For authorized use only; CN=VeriSign Class 3 Public Primary Certification Authority – G5",
+      "context": "Subject string used to generate self-signed root certificate for MitM.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CN=.com",
+      "context": "Subject CN for second-level self-signed certificate for MitM.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "chrome.exe",
+      "context": "Hashed process name for browser injection.",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "custom",
+      "hash_value": "0x7A257A14"
+    },
+    {
+      "kind": "process_name",
+      "value": "firefox.exe",
+      "context": "Hashed process name for browser injection.",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "custom",
+      "hash_value": "0x9EFDE0C4"
+    },
+    {
+      "kind": "process_name",
+      "value": "iexplore.exe",
+      "context": "Hashed process name for browser injection.",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "custom",
+      "hash_value": "0x534B083E"
+    },
+    {
+      "kind": "process_name",
+      "value": "microsoftedgecp.exe",
+      "context": "Hashed process name for browser injection.",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "custom",
+      "hash_value": "0x9F96A0E0"
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 4A 01 4F 97 }",
+      "context": "Auth constant in BC (backconnect) module binary protocol header.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VMwa",
+      "context": "VM detection processor Vendor ID string (VMware).",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "XenV",
+      "context": "VM detection processor Vendor ID string (Xen).",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "KVMK",
+      "context": "VM detection processor Vendor ID string (KVM).",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VBox",
+      "context": "VM detection processor Vendor ID string (VirtualBox).",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/image/?id=",
+      "context": "Downloader GET request path for IcedID core.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/audio/",
+      "context": "Alive module C2 beacon path.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/video/",
+      "context": "BC module WebSocket C2 path.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "front://",
+      "context": "Internal placeholder string for C2 domain, replaced in commands.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Upgrade: websocket",
+      "context": "HTTP header used by BC module for C2 communication.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://poloturtles.top/audio",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://robertogunez.xyz/audio",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gotofresno.xyz/audio",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://fordthunderbirth.site/audio",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://luxcarlegend.top/audio",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://nicebirththunder.cloud/audio",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://totheocean.pw/audio",
+      "context": "C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

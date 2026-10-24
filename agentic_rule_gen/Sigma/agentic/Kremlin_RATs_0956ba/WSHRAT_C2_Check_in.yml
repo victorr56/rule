@@ -1,0 +1,21 @@
+title: WSHRAT C2 Check-in
+id: 79f57a07-1647-493e-b873-1d07c427301c
+status: experimental
+description: Detects WSHRAT C2 check-in traffic characterized by a specific User-Agent and URI path.
+references:
+    - https://www.group-ib.com/blog/rats-nigeria/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        UserAgent: 'WSHRAT'
+        Url|endswith: '/is-ready'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,21 @@
+title: Diicot C2 Domain Query
+id: 11eb31a1-3b7c-473d-aa80-eb0e3639d6e4
+status: experimental
+description: Detects DNS queries for the C2 domain used by the Diicot malware.
+references:
+    - https://www.wiz.io/blog/diicot-threat-group-malware-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith: '.digitaldatainsights.org'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

@@ -1,0 +1,285 @@
+{
+  "malware_family": "PerSwaysion",
+  "threat_actor": "Vietnamese-speaking developers and various international operators, including a Nigerian group.",
+  "platforms": [
+    "multi",
+    "web"
+  ],
+  "summary": "PerSwaysion is a large-scale phishing campaign that abuses Microsoft file-sharing services like Sway, SharePoint, and OneNote to redirect victims to a credential harvesting page. The phishing kit uses modern JavaScript frameworks, features anti-analysis techniques, and is operated by multiple groups who conduct follow-on attacks by impersonating victims to their contacts.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "ID_CUS_SP_NBR_30629",
+      "context": "Campaign version number variable in JS code.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "EMAILRESULT_NBR",
+      "context": "Notification email variable in JS code.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "LINKRE_RESULT",
+      "context": "Error redirect URL variable in JS code.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Vui lòng nhập một địa chỉ email hợp lệ.",
+      "context": "Vietnamese validation error message in phishing kit.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "VeeValidate",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Trường này là bắt buộc.",
+      "context": "Vietnamese validation error message in phishing kit.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "VeeValidate",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[Success] Da lay dc thong tin!",
+      "context": "Vietnamese developer log message in phishing kit.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Microsoft YaHei",
+      "context": "Simplified Chinese font name in script.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Microsoft JhengHei",
+      "context": "Traditional Chinese font name in script.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "anaye_11.06.2019.22_47_1573055260",
+      "context": "Campaign version string (ID_CUS_SP_NBR).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "billgates_03.10.2020.01_16_1583777787",
+      "context": "Campaign version string (ID_CUS_SP_NBR).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "dumpoker_11.13.2019.00_32_1573579967",
+      "context": "Campaign version string (ID_CUS_SP_NBR).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ghost_frjohn_12.09.2019.23_36_1575909403",
+      "context": "Campaign version string (ID_CUS_SP_NBR).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "6.7.6640.0",
+      "context": "Microsoft Outlook revision number on fake SSO page.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "a5e2a323bdb682660c9cd8b06e950f31nbr1581699430.js",
+      "context": "Example JS file for user interactions (45 chars).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "e88a1b1823a36c944d71746cdefb5fdc.js",
+      "context": "Example JS file for C2 communication (32 chars).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "adriangalbincea",
+      "context": "Username on yourjavascript.com uploading early scripts.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "fash20161",
+      "context": "Skype ID used by Nigerian actor group.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "as54rdxfzxs.appspot.com",
+      "context": "Phishing web server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "etetdc4ed-exhausted-lizard-tc.mybluemix.net",
+      "context": "Phishing web server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tu4dff-reflective-shark.eu-gb.mybluemix.net",
+      "context": "Phishing web server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "y56gcvx-lean-bear-up.mybluemix.net",
+      "context": "Phishing web server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "odaiw3dda.bestnewsworld.info",
+      "context": "Data harvesting server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "uy6x.c3y5-tools.com",
+      "context": "Data harvesting server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "anuanuanuoluwa@gmail.com",
+      "context": "Scammer notification/actor email",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "evilc0der@yandex.com",
+      "context": "Scammer notification/actor email",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "fashsam@protonmail.com",
+      "context": "Scammer notification/actor email",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "virgilabloh007@yandex.com",
+      "context": "Scammer notification/actor email",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/theme/[32-character-hash].js",
+      "context": "Path pattern for main phishing JS file.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://www.linkedin.com/in/daniel-browns-721316196",
+      "context": "LinkedIn profile used for reconnaissance.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "document",
+    "script"
+  ]
+}

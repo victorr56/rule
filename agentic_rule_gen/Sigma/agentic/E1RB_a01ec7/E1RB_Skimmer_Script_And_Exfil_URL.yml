@@ -1,0 +1,28 @@
+title: E1RB Skimmer Script Load or Exfiltration URL
+id: c46d1b28-1b2b-43ac-950c-e1104332d4b9
+status: experimental
+description: Detects web requests to specific URLs known to be used by the E1RB JavaScript skimmer for loading malicious scripts or exfiltrating stolen data.
+references:
+    - https://www.group-ib.com/blog/e1rb/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.drive_by_compromise
+    - attack.t1189
+    - attack.exfiltration
+    - attack.t1048
+    - attack.collection
+    - attack.t1119
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url:
+            - 'http://google-analitics.org/diem/stat'
+            - 'https://google-analitics.org/diem/track'
+            - 'http://cdn-gstat.com/thredzonline/script'
+            - 'https://cdn-gstat.com/thredzonline/data'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: critical

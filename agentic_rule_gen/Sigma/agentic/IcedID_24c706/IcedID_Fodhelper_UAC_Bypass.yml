@@ -1,0 +1,23 @@
+title: UAC Bypass via Fodhelper DelegateExecute
+id: 8d26c71c-7f52-47c1-90a6-1e967a68595c
+status: experimental
+description: Detects the creation of the 'DelegateExecute' registry value in the 'ms-settings' class, a technique used to bypass UAC using fodhelper.exe. This has been observed in IcedID campaigns.
+references:
+    - https://www.group-ib.com/blog/icedid/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1548.002
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Classes\ms-settings\shell\open\command\DelegateExecute'
+        Details: '' # The value is created but has no data
+    condition: selection
+falsepositives:
+    - Legitimate use of this UAC bypass is rare and highly suspicious.
+level: high

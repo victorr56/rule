@@ -1,0 +1,22 @@
+title: Jenkins Admin Creates User Account
+id: 3c59239d-2b4f-4d9f-a2e1-4509170e7e17
+status: experimental
+description: Detects the creation of a new user account by an administrator in Jenkins. This could be an attacker creating a persistent account after gaining administrative access.
+references:
+    - https://www.group-ib.com/blog/gitlab-jenkins-forensics/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.persistence
+    - attack.t1136
+logsource:
+    category: proxy
+    product: any
+detection:
+    selection:
+        Url.Path|endswith: '/securityRealm/createAccountByAdmin'
+        Http.Method: 'POST'
+    condition: selection
+falsepositives:
+    - Legitimate user creation by a Jenkins administrator.
+level: high

@@ -1,0 +1,40 @@
+title: Aokigahara Infostealer Accessing AI and Developer Tool Credentials
+id: 5752ef0f-b44c-4734-93e1-70566810ec5e
+status: experimental
+description: Detects processes accessing sensitive files related to AI applications and developer tools, a behavior characteristic of the Aokigahara infostealer.
+references:
+    - https://research.checkpoint.com/2026/infostealer-riding-the-ai-train/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.credential_access
+    - attack.t1555
+    - detection.threat_hunting
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection_generic:
+        TargetFilename|endswith:
+            - '\.claude\credentials.json'
+            - '\Packages\OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0\LocalCache\Roaming\ChatGPT'
+            - '\.aws\credentials'
+            - '\.copilot\hosts.json'
+            - '\Cursor\User\globalStorage\state.vscdb'
+            - '\amazon-q\data.sqlite3'
+        Image|contains:
+            - '\AppData\Local\Temp\'
+            - '\Windows\Temp\'
+            - 'C:\Users\Public\'
+    selection_jetbrains:
+        TargetFilename|contains|all:
+            - '\JetBrains\'
+            - '\options\AIAssistantQuotaManager2.xml'
+        Image|contains:
+            - '\AppData\Local\Temp\'
+            - '\Windows\Temp\'
+            - 'C:\Users\Public\'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate tools that are executed from temporary or public directories and need to access these files.
+level: medium

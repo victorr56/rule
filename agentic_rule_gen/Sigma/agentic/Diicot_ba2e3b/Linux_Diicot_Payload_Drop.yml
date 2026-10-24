@@ -1,0 +1,29 @@
+title: Diicot Malware Payload Drop
+id: b5e921d7-2f78-43ec-95d1-b66a50e90899
+status: experimental
+description: Detects the creation of files associated with the Diicot malware by specific processes like curl, wget, or perl in hidden temporary directories.
+references:
+    - https://www.wiz.io/blog/diicot-threat-group-malware-campaign
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.defense_evasion
+    - attack.t1564.001
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection_downloader:
+        TargetFilename: '/var/tmp/.update-logs/.bisis'
+        Image|endswith:
+            - '/curl'
+            - '/wget'
+    selection_perlbot:
+        TargetFilename:
+            - '/var/tmp/.update-logs/Update'
+            - '/var/tmp/Documents/.diicot'
+        Image|endswith: '/perl'
+    condition: 1 of selection_*
+falsepositives:
+    - Custom update scripts or tools that use similar file paths in /var/tmp.
+level: high

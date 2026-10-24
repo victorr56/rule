@@ -1,0 +1,27 @@
+title: IcedID C2 URI Paths
+id: 1e9d15c7-9571-460d-959f-d31e5f8f533a
+status: experimental
+description: Detects HTTP requests with URI paths and methods characteristic of IcedID C2 communication.
+references:
+    - https://www.group-ib.com/blog/icedid/
+author: ioc-yara-daily (agentic)
+date: 2024-07-31
+tags:
+    - attack.command_and_control
+    - attack.t1071
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection_get:
+        HttpMethod: 'GET'
+        Url|contains: '/image/?id='
+    selection_post:
+        HttpMethod: 'POST'
+        Url|contains:
+            - '/audio/?id='
+            - '/video/?id='
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate applications that use these specific URI patterns, although this is unlikely.
+level: medium

@@ -1,0 +1,25 @@
+title: Kremlin RATs Associated C2 and Payload Domains
+id: b2572b8d-639a-4c28-9710-8b01c37b02c8
+status: experimental
+description: Detects DNS queries for domains known to be used by a Nigerian threat actor for C2 and payload delivery.
+references:
+    - https://www.group-ib.com/blog/rats-nigeria/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'screw-malwrhunterteams.com'
+            - 'putin-malwrhunterteams.com'
+            - 'office-cloud-reserve.com'
+            - 'ftp.centredebeautenellycettier.fr'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

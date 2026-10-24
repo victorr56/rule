@@ -1,0 +1,205 @@
+{
+  "malware_family": "FakeSecurity",
+  "threat_actor": "",
+  "platforms": [
+    "web",
+    "windows"
+  ],
+  "summary": "FakeSecurity is a JS-sniffer used to steal payment card data from Magento e-commerce websites. To gain access, threat actors distribute the Vidar password stealer using the Mephistophilus phishing kit and malicious email attachments, aiming to compromise administrator credentials to install the sniffer.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "Adobe-Reader-PDF-Plugin-2.37.2.exe",
+      "context": "Vidar stealer payload dropped by phishing page.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Adobe-Reader-PDF-Plugin-2.31.4.exe",
+      "context": "Vidar stealer payload dropped by phishing page.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Adobe-Reader-PDF-Plugin-2.35.8.exe",
+      "context": "Vidar stealer payload dropped by phishing page.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "msw070619.exe",
+      "context": "Vidar stealer payload dropped by phishing page.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "BankStatement0040918404.doc",
+      "context": "Malicious document with macro to drop Vidar stealer.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Download plugin",
+      "context": "Button text on Mephistophilus phishing landing page.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "Mephistophilus",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "magento-security.org",
+      "context": "C2 and sniffer source for early FakeSecurity versions.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "fiswedbesign.com",
+      "context": "Domain used for storing FakeSecurity JS-sniffer source code.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "alloaypparel.com",
+      "context": "Domain for FakeSecurity sniffer and Mephistophilus phishing kit.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "firstofbanks.com",
+      "context": "Malicious domain used to store Vidar payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "chuxagama.com",
+      "context": "Domain hosting Lokibot/AZORUlt C2 panels on shared infrastructure.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "umbra-diego.com",
+      "context": "Domain hosting Lokibot C2 panel on shared infrastructure.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "200.63.40.2",
+      "context": "Attacker infrastructure server hosting C2 panels.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.healthcare4all.co.uk/manuals/Statement00534521.html",
+      "context": "1st-level fake page URL from spam email.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://alloaypparel.com/view/public/Statement00534521/PDF/Statement001854.pdf",
+      "context": "2nd-level fake page content URL loaded in iframe.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.healthcare4all.co.uk/manuals/Adobe-Reader-PDF-Plugin-2.37.2.exe",
+      "context": "Download URL for Vidar stealer payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://chuxagama.com/web-obtain/Panel/five/PvqDq929BSx_A_D_M1n_a.php",
+      "context": "Lokibot C2 panel on shared infrastructure.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://umbra-diego.com/wp/Panel/five/PvqDq929BSx_A_D_M1n_a.php",
+      "context": "Lokibot C2 panel on shared infrastructure.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://chuxagama.com/web-obtain/Panel/five/index.php",
+      "context": "AZORUlt C2 panel on shared infrastructure.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "6ec8b7ce6c9858755964f94acdf618773275589024e2b66583e3634127b7e32c",
+      "description": "Vidar stealer payload (Adobe-Reader-PDF-Plugin-2.37.2.exe)"
+    },
+    {
+      "sha256": "15abc3f55703b89ff381880a10138591c6214dee7cc978b7040dd8b1e6f96297",
+      "description": "Vidar stealer payload (Adobe-Reader-PDF-Plugin-2.31.4.exe)"
+    },
+    {
+      "sha256": "af04334369878408898a223e63ec50e1434c512bc21d919769c97964492fee19",
+      "description": "Vidar stealer payload (Adobe-Reader-PDF-Plugin-2.35.8.exe)"
+    },
+    {
+      "sha256": "4587da5dca2374fd824a15e434dae6630b24d6be6916418cee48589aa6145ef6",
+      "description": "Vidar stealer payload (Adobe-Reader-PDF-Plugin-2.31.4.exe)"
+    },
+    {
+      "sha256": "0660059f3e2fb2ab0349242b4dde6bf9e37305dacc2da870935f4bede78aed34",
+      "description": "Vidar stealer payload (msw070619.exe)"
+    }
+  ],
+  "file_types": [
+    "script",
+    "pe",
+    "document"
+  ]
+}

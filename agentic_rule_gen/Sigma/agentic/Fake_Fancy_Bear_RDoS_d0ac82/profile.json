@@ -1,0 +1,142 @@
+{
+  "malware_family": "Fake Fancy Bear RDoS",
+  "threat_actor": "Fake Fancy Bear",
+  "platforms": [
+    "network_device"
+  ],
+  "summary": "Financially motivated actors, masquerading as Fancy Bear, conduct Ransom DDoS (RDoS) campaigns. They send extortion emails from sednit@ctemplar.com and perform demonstrative UDP floods, notably using port 3283 (Apple Remote Desktop), to pressure victims into paying.",
+  "mitre_techniques": [],
+  "host_artifacts": [],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "sednit@ctemplar.com",
+      "context": "Sender address of extortion emails.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "perform a Google search for Fancy Bear to have a look at some of their previous work",
+      "context": "String from extortion email body.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "UDP/3283",
+      "context": "DDoS traffic vector using Apple Remote Desktop (ARD) service port.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "UDP/3702",
+      "context": "DDoS UDP flood source/destination port.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "213.193.124.178:3283",
+      "context": "Source address for UDP flood.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "128.9.168.175:3283",
+      "context": "Source address for UDP flood.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "179.219.122.179:3702",
+      "context": "Source address for UDP flood.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "95.180.32.125:3702",
+      "context": "Source address for UDP flood.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "1.225.103.192:3740",
+      "context": "Source address for UDP flood.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "87.251.185.197:389",
+      "context": "Source address for UDP flood.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "186.249.86.98:42525",
+      "context": "Source address for UDP flood.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "91.211.245.17:389",
+      "context": "Source address for UDP flood.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "167.59.10.111",
+      "context": "Source address for ICMP flood.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.63.190.66",
+      "context": "Source address for ICMP flood.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "101.109.67.131",
+      "context": "Source address for ICMP flood.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "54.171.57.68",
+      "context": "Source IP from 2017 RDoS campaign.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

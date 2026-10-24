@@ -1,0 +1,21 @@
+title: LiteLlmSupplyChain C2 Domain
+id: a7f8c1b2-10d4-4a5c-897d-6f7f2b1d03c7
+status: experimental
+description: Detects DNS queries for the exfiltration domain used by the LiteLlmSupplyChain malware.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/10/23/inside-the-litellm-1-107-0-supply-chain-compromise-credential-theft-through-python-startup-hooks/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.command_and_control
+    - attack.t1102.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'www.litellm.dev'
+    condition: selection
+falsepositives:
+    - Legitimate traffic to the domain if it has been sinkholed or repurposed.
+level: high

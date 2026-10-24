@@ -1,0 +1,36 @@
+title: Potential Vidar Stealer File Creation
+id: 5b6c38f9-42e7-4f6c-9471-a083a2130e9d
+status: experimental
+description: Detects the creation of a file masquerading as an Adobe Reader PDF Plugin or other known names, a pattern observed in Vidar stealer distribution linked to the FakeSecurity campaign.
+references:
+    - https://www.group-ib.com/blog/fakesecurity/
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_adobe:
+        Image|endswith:
+            - '\chrome.exe'
+            - '\msedge.exe'
+            - '\firefox.exe'
+            - '\opera.exe'
+            - '\iexplore.exe'
+        TargetFilename|startswith: 'Adobe-Reader-PDF-Plugin-'
+        TargetFilename|endswith: '.exe'
+    selection_misc:
+        Image|endswith:
+            - '\chrome.exe'
+            - '\msedge.exe'
+            - '\firefox.exe'
+            - '\opera.exe'
+            - '\iexplore.exe'
+        TargetFilename: 'msw070619.exe'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate software downloads that happen to match this naming pattern.
+level: medium

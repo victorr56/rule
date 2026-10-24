@@ -1,0 +1,27 @@
+title: IcedID C2 Domains
+id: b1c4d5e2-f68a-4d7e-900a-569d8b74c3d3
+status: experimental
+description: Detects DNS queries for domains known to be used by IcedID for C2 communication.
+references:
+    - https://www.group-ib.com/blog/icedid/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.command_and_control
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'poloturtles.top'
+            - 'robertogunez.xyz'
+            - 'gotofresno.xyz'
+            - 'fordthunderbirth.site'
+            - 'luxcarlegend.top'
+            - 'nicebirththunder.cloud'
+            - 'totheocean.pw'
+    condition: selection
+falsepositives:
+    - Domains may be sinkholed or taken over.
+level: high

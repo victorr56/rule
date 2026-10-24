@@ -1,0 +1,24 @@
+title: GitLab Repository Download As Archive
+id: 11c33c39-3850-4d94-82a1-ff44033ce540
+status: experimental
+description: Detects the download of a GitLab repository as a zip or other archive format. This is a common method for attackers to exfiltrate entire source code repositories.
+references:
+    - https://www.group-ib.com/blog/gitlab-jenkins-forensics/
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.exfiltration
+    - attack.t1041
+logsource:
+    category: proxy
+    product: any
+detection:
+    selection:
+        Url.Path|contains: '/-/archive/'
+        Url.Path|endswith:
+            - '.tar.gz'
+            - '.tar.bz2'
+    condition: selection
+falsepositives:
+    - Legitimate downloads by developers or CI/CD systems.
+level: medium

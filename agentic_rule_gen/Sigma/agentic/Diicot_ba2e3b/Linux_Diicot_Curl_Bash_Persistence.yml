@@ -1,0 +1,28 @@
+title: Diicot Malware Cron Job Payload Download
+id: f43da658-0051-419b-a316-08e70a6c07a3
+status: experimental
+description: Detects a curl-to-bash command used by the Diicot malware for persistence, typically via a cron job. This command downloads and executes a script from a hardcoded C2 domain.
+references:
+    - https://www.wiz.io/blog/diicot-threat-group-malware-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.persistence
+    - attack.t1053.003
+    - attack.execution
+    - attack.t1059.004
+    - attack.ingress_tool_transfer
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/curl'
+        CommandLine|contains|all:
+            - 'digital.digitaldatainsights.org/.x/black3'
+            - '| bash'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

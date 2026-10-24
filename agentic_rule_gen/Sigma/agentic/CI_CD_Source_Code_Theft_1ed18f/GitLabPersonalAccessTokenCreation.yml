@@ -1,0 +1,23 @@
+title: GitLab Personal Access Token Creation
+id: f456860d-400a-484b-b72e-0675865239a5
+status: experimental
+description: Detects the creation of a Personal Access Token in GitLab. Attackers who have gained access to a user account may create a PAT for persistent API access.
+references:
+    - https://www.group-ib.com/blog/gitlab-jenkins-forensics/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.persistence
+    - attack.credential_access
+    - attack.t1528
+logsource:
+    category: proxy
+    product: any
+detection:
+    selection:
+        Url.Path|endswith: '/-/profile/personal_access_tokens'
+        Http.Method: 'POST'
+    condition: selection
+falsepositives:
+    - Legitimate creation of Personal Access Tokens by developers or administrators.
+level: high

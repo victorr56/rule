@@ -1,0 +1,24 @@
+title: Diicot Malware Removing File Attributes
+id: a0d2b76c-3729-4d62-9aa7-d8afb446a81d
+status: experimental
+description: Detects the use of 'chattr -iae' by the Diicot malware to remove immutable, append-only, and other attributes from its payload file before updating or replacing it.
+references:
+    - https://www.wiz.io/blog/diicot-threat-group-malware-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.defense_evasion
+    - attack.t1222.002
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/chattr'
+        CommandLine|contains|all:
+            - '-iae'
+            - '/var/tmp/Documents/.diicot'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

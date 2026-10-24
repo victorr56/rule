@@ -1,0 +1,23 @@
+title: PerSwaysion Phishing Domain DNS Query
+id: c6f5e8f4-6f0d-4078-9e5c-7d9c6c802421
+status: experimental
+description: Detects DNS queries for domains associated with the PerSwaysion phishing campaign.
+references:
+    - https://www.group-ib.com/blog/perswaysion/
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.command_and_control
+    - attack.t1566
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'odaiw3dda.bestnewsworld.info'
+            - 'uy6x.c3y5-tools.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,26 @@
+title: CPU_HU Appending Configuration To Postmaster Binary
+id: b44d6da2-d144-4860-985e-f00e2311681b
+status: experimental
+description: Detects the command used by JINX-0126 to append an encrypted configuration to the 'postmaster' binary.
+references:
+    - https://www.wiz.io/blog/postgresql-cryptomining
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.defense_evasion
+    - attack.t1027
+    - attack.execution
+    - attack.t1059.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/sh'
+        CommandLine|contains|all:
+            - 'printf ::::42Jz'
+            - ' >> postmaster '
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

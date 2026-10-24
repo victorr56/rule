@@ -1,0 +1,24 @@
+title: IcedID Execution via Regsvr32 and Specific Path
+id: 9a2b33c0-449e-4c7b-b539-786d5e744e88
+status: experimental
+description: Detects regsvr32.exe executing a DLL from a suspicious path structure `\lepuan\odnu\` associated with IcedID.
+references:
+    - https://www.group-ib.com/blog/icedid/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.defense_evasion
+    - attack.t1218.010
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\regsvr32.exe'
+        CommandLine|contains|all:
+            - '/s'
+            - '\lepuan\odnu\'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

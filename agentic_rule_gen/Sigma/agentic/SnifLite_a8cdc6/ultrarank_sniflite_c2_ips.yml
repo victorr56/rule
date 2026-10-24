@@ -1,0 +1,26 @@
+title: UltraRank SnifLite C2 IP Addresses
+id: b32a8f8d-c7d5-45d2-a72e-d00d984cfb7d
+status: experimental
+description: Detects network connections to IP addresses associated with the UltraRank group's SnifLite JavaScript skimmer infrastructure.
+references:
+    - https://www.group-ib.com/blog/ultrarank/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.command_and_control
+    - attack.t1071
+    - attack.exfiltration
+    - attack.t1041
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '45.141.84.239'
+            - '8.208.16.230'
+            - '8.208.96.88'
+    condition: selection
+falsepositives:
+    - These IPs may be reassigned to benign services over time.
+level: medium

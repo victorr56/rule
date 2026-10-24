@@ -1,0 +1,22 @@
+title: OldGremlin Persistence Via HKCU Registered Key
+id: a9d8c01b-c74b-4b2e-a579-2ef5318d18e2
+status: experimental
+description: Detects the creation or modification of the registry key 'HKCU\Software\Classes\Registered' where the value is a path to an executable file. This behavior is used by OldGremlin for persistence.
+references:
+    - https://www.group-ib.com/blog/oldgremlin/
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Classes\Registered'
+        Details|endswith: '.exe'
+    condition: selection
+falsepositives:
+    - Legitimate software that stores a path to an executable in this specific, non-standard registry key.
+level: high

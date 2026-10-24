@@ -1,0 +1,57 @@
+title: Fake Fancy Bear RDoS Network Activity
+id: 55da9092-23c2-4eb2-bc32-15f57335606d
+status: experimental
+description: |-
+  Detects network traffic associated with Fake Fancy Bear Ransom DDoS (RDoS) campaigns. These actors conduct demonstrative UDP and ICMP floods from a known set of IP addresses to extort victims.
+references:
+  - https://www.group-ib.com/blog/fakeapt28/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+  - attack.impact
+  - attack.t1499.001
+logsource:
+  category: network_connection
+detection:
+  selection_udp_3283:
+    Protocol: 'udp'
+    DestinationPort: 3283 # Apple Remote Desktop
+    SourceIp:
+      - '128.9.168.175'
+      - '213.193.124.178'
+  selection_udp_3702:
+    Protocol: 'udp'
+    DestinationPort: 3702 # WS-Discovery
+    SourceIp:
+      - '179.219.122.179'
+      - '95.180.32.125'
+  selection_udp_3740:
+    Protocol: 'udp'
+    DestinationPort: 3740
+    SourceIp:
+      - '1.225.103.192'
+  selection_udp_389:
+    Protocol: 'udp'
+    DestinationPort: 389 # LDAP
+    SourceIp:
+      - '87.251.185.197'
+      - '91.211.245.17'
+  selection_udp_42525:
+    Protocol: 'udp'
+    DestinationPort: 42525
+    SourceIp:
+      - '186.249.86.98'
+  selection_icmp:
+    Protocol: 'icmp'
+    SourceIp:
+      - '101.109.67.131'
+      - '103.63.190.66'
+      - '167.59.10.111'
+  selection_legacy:
+    # Source IP from a 2017 campaign with no port/protocol specified
+    SourceIp:
+      - '54.171.57.68'
+  condition: 1 of selection_*
+falsepositives:
+  - These IP addresses may be reassigned over time. Legitimate traffic from these IPs is possible, but unlikely when combined with the specific destination ports and protocols associated with the demonstrative flood attacks.
+level: high

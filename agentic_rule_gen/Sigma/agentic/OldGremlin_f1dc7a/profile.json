@@ -1,0 +1,353 @@
+{
+  "malware_family": "OldGremlin",
+  "threat_actor": "OldGremlin",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "OldGremlin is a Russian-speaking threat actor notable for targeting Russian entities, violating the unspoken rule of not attacking within post-Soviet countries. They conduct spear-phishing campaigns using custom backdoors (TinyNode, TinyPosh) for initial access, leverage Cobalt Strike for lateral movement, and deploy their custom ransomware, TinyCryptor, for financial gain. The group is classified as a 'Big Game Hunting' operator.",
+  "mitre_techniques": [
+    "T1566.002",
+    "T1204.002",
+    "T1059.001",
+    "T1059.007",
+    "T1547.001",
+    "T1218.005",
+    "T1218.011",
+    "T1055.004",
+    "T1027",
+    "T1555.003",
+    "T1552.001",
+    "T1518",
+    "T1018",
+    "T1570",
+    "T1021.001",
+    "T1021.002",
+    "T1113",
+    "T1090.003",
+    "T1573.001",
+    "T1486"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "Bill due",
+      "context": "Subject line of phishing email.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Your files have been encrypted",
+      "context": "Ransom note text on screen.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Your files are encrypted. To decrypt them, contact us at…",
+      "context": "Ransom note text on screen.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Nationwide survey of the banking and financial sectors during the coronavirus pandemic",
+      "context": "Phishing email lure.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "uploaded the questions to the cloud",
+      "context": "Phishing email lure.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Unfortunately, about a week ago the prosecutor’s office inspected MTZ. It is clear that this happened because of a strike we organized to protest against Lukashenko",
+      "context": "Phishing email lure from fake Minsk Tractor Works.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\Registered",
+      "context": "Persistence or configuration storage.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Microsoft\\Windows\\Security",
+      "context": "Persistence or configuration storage.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "context": "Persistence for TinyPosh and TinyNode backdoors.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "TinyNode",
+      "context": "Custom backdoor used for downloading and launching other malware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "TinyPosh",
+      "context": "Custom trojan used in early campaigns.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "TinyCryptor",
+      "context": "Custom ransomware used to encrypt corporate networks.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "WebBrowserPassView.exe",
+      "context": "Used to extract passwords from web browsers.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "NirSoft",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Mail PassView.exe",
+      "context": "Used to extract passwords from email clients.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "NirSoft",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "mshta.exe executing JS-script",
+      "context": "Used to run obfuscated JS-scripts.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Injects Cobalt Strike via APC queue",
+      "context": "Injection into legitimate processes like svchost.exe and rundll32.exe.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PsExec",
+      "context": "Cobalt Strike's PsExec module used to deploy TinyCryptor ransomware.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "rbcholding.press",
+      "context": "Phishing or C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "broken-poetry-de86.nscimupf.workers.dev",
+      "context": "C2 domain using Cloudflare Workers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "calm-night-6067.bhrcaoqf.workers.dev",
+      "context": "C2 domain using Cloudflare Workers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "rough-grass-45e9.poecdjusb.workers.dev",
+      "context": "C2 domain using Cloudflare Workers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ksdkpwprtyvbxdobr0.tyvbxdobr0.workers.dev",
+      "context": "C2 domain using Cloudflare Workers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ksdkpwpfrtyvbxdobr1.tiyvbxdobr1.workers.dev",
+      "context": "C2 domain using Cloudflare Workers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wispy-surf-fabd.bhrcaoqf.workers.dev",
+      "context": "C2 domain using Cloudflare Workers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "noisy-cell-7d07.poecdjusb.workers.dev",
+      "context": "C2 domain using Cloudflare Workers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wispy-fire-1da3.nscimupf.workers.dev",
+      "context": "C2 domain using Cloudflare Workers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hello.tyvbxdobr0.workers.dev",
+      "context": "C2 domain using Cloudflare Workers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "curly-sound-d93e.ygrhxogxiogc.workers.dev",
+      "context": "C2 domain using Cloudflare Workers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "old-mud-23cb.tkbizulvc.workers.dev",
+      "context": "C2 domain using Cloudflare Workers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "136.244.67.59",
+      "context": "C2 Infrastructure.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "95.179.252.217",
+      "context": "C2 Infrastructure.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.61.138.170",
+      "context": "C2 Infrastructure.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "5.181.156.84",
+      "context": "C2 Infrastructure.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "RC4",
+      "context": "Symmetric encryption algorithm for C2 traffic.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Tor",
+      "context": "Used as a multi-hop proxy for C2 communication.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

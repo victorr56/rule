@@ -1,0 +1,24 @@
+title: Kremlin RATs Themed C2 Domain Query
+id: 593b4a20-318e-4f11-827d-7881c2cd9e8c
+status: experimental
+description: Detects DNS queries for domains containing 'kremlin' originating from a Java process. This pattern has been used by T-Triad for C2 infrastructure, which was delivered as a JAR file.
+references:
+    - https://www.group-ib.com/blog/rats-nigeria/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.command_and_control
+    - attack.t1568.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\java.exe'
+            - '\javaw.exe'
+        QueryName|contains: 'kremlin'
+    condition: selection
+falsepositives:
+    - Legitimate Java applications that connect to domains containing the word 'kremlin'.
+level: medium

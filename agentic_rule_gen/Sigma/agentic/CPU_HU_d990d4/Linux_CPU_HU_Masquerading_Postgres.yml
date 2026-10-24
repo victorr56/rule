@@ -1,0 +1,23 @@
+title: CPU_HU Masquerading As Postgres Process
+id: 59eb0700-1c9f-4318-97fe-cfb297b1029c
+status: experimental
+description: Detects the execution of the CPU_HU 'postmaster' component which masquerades as a legitimate PostgreSQL process using a command line containing a Cyrillic 'o' character.
+references:
+    - https://www.wiz.io/blog/postgresql-cryptomining
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/postmaster'
+        CommandLine|contains: 'pоstgres: replication launcher' # Note: Contains Cyrillic 'o' (U+043e)
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,205 @@
+{
+  "malware_family": "E1RB",
+  "threat_actor": "",
+  "platforms": [
+    "web"
+  ],
+  "summary": "E1RB is a JavaScript sniffer family based on Grelos that steals payment card information from e-commerce websites. It employs server-side polymorphism to generate unique script samples for each visitor, including randomizing function/variable names and using time-based obfuscation. The sniffer is loaded when checkout-related keywords are found in the URL and injects a fake payment form to capture and exfiltrate data.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "onepage",
+      "context": "Keyword in URL that triggers loading of the malicious script.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "onestepcheckout",
+      "context": "Keyword in URL that triggers loading of the malicious script.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "val",
+      "context": "Variable name storing the Base64-encoded fake payment form HTML.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "getUTCMinutes()",
+      "context": "Function used for time-based deobfuscation.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "E1RB",
+      "context": "Name of the main object in the sniffer's source code.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Grelos",
+      "context": "Base JS sniffer family that E1RB is a variation of.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Grelos",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "http://google-analitics.org/diem/stat",
+      "context": "URL hosting the main JS sniffer script (sample 1).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://google-analitics.org/diem/track",
+      "context": "Exfiltration gate for stolen data (sample 1).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://cdn-gstat.com/thredzonline/script",
+      "context": "URL hosting the main JS sniffer script (sample 2).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cdn-gstat.com/thredzonline/data",
+      "context": "Exfiltration gate for stolen data (sample 2).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "google-analitics.org",
+      "context": "Domain for hosting malicious files and collecting stolen data.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cdn-host.org",
+      "context": "Malicious domain registered with the same email as google-analitics.org.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "telrshop.com",
+      "context": "Malicious domain typosquatting a payment gateway.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "jquery-live.com",
+      "context": "Malicious domain used in attacks.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cdn-gstat.com",
+      "context": "Domain for hosting malicious files and collecting stolen data.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "jquery-on.com",
+      "context": "Malicious domain used in attacks.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/diem/stat",
+      "context": "Path for loading the JS sniffer payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/diem/track",
+      "context": "Path for exfiltrating stolen data.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/thredzonline/script",
+      "context": "Path for loading the JS sniffer payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/thredzonline/data",
+      "context": "Path for exfiltrating stolen data.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "zlayivrag@yandex.com",
+      "context": "Registrant email for google-analitics.org and cdn-host.org.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "zlayivrag@mail.com",
+      "context": "Registrant email for telrshop.com, jquery-live.com, cdn-gstat.com, jquery-on.com.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

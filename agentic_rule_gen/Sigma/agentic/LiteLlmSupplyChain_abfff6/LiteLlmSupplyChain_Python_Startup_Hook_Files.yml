@@ -1,0 +1,26 @@
+title: LiteLlmSupplyChain Python Startup Hook File Creation
+id: 3c85f7a0-9e6e-44d5-8664-df0a8b9e6931
+status: experimental
+description: Detects the creation of malicious 'cook.pth' or 'cook.py' files, characteristic of the LiteLlmSupplyChain attack, within a Python library directory.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/10/23/inside-the-litellm-1-107-0-supply-chain-compromise-credential-theft-through-python-startup-hooks/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.persistence
+    - attack.t1546.018
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\python.exe'
+            - '\pip.exe'
+        TargetFilename|endswith:
+            - '\site-packages\cook.pth'
+            - '\site-packages\cook.py'
+    condition: selection
+falsepositives:
+    - Legitimate package installations that coincidentally match the pattern (very unlikely).
+level: high

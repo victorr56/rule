@@ -1,0 +1,29 @@
+title: CPU_HU 'pg_core' Payload Download
+id: 571d7bb2-ce53-488f-bb7e-f513d7890aa9
+status: experimental
+description: Detects the download of the 'pg_core' first stage payload via curl or wget.
+references:
+    - https://www.wiz.io/blog/postgresql-cryptomining
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_curl:
+        Image|endswith: '/curl'
+        CommandLine|contains|all:
+            - '-o pg_core'
+            - '/JzICbeMxNQHwfwHLiCOFnumixtqYBv'
+    selection_wget:
+        Image|endswith: '/wget'
+        CommandLine|contains|all:
+            - '-Opg_core'
+            - '/JzICbeMxNQHwfwHLiCOFnumixtqYBv'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

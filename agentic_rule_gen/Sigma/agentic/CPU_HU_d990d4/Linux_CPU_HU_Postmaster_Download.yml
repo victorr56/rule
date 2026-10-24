@@ -1,0 +1,28 @@
+title: CPU_HU 'postmaster' Payload Download via Bash TCP Redirect
+id: 53d262d4-1a3b-4ed3-bce5-6019a797c276
+status: experimental
+description: Detects the command used by JINX-0126 to download the 'postmaster' payload in a fileless manner using bash and TCP redirection.
+references:
+    - https://www.wiz.io/blog/postgresql-cryptomining
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.execution
+    - attack.t1059.004
+    - attack.defense_evasion
+    - attack.t1564.001
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/bash'
+        CommandLine|contains|all:
+            - 'exec 5<>/dev/tcp/'
+            - ' > postmaster'
+            - 'exec 5>&-'
+            - 'GET /'
+    condition: selection
+falsepositives:
+    - Highly specific script patterns are unlikely to be used legitimately.
+level: high

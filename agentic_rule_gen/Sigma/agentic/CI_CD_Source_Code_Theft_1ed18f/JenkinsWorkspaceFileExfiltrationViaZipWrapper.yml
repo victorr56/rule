@@ -1,0 +1,22 @@
+title: Jenkins Workspace File Exfiltration Via Zip Wrapper
+id: a0a3901b-c74b-4f81-bf96-eb5e40e6c4e0
+status: experimental
+description: Detects the use of the Jenkins feature to download files from a job's workspace by wrapping them in a zip archive on-the-fly. This can be abused by attackers to exfiltrate sensitive files, such as source code or build artifacts.
+references:
+    - https://www.group-ib.com/blog/gitlab-jenkins-forensics/
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.exfiltration
+    - attack.t1213
+logsource:
+    category: proxy
+    product: any
+detection:
+    selection:
+        Url.Path|contains: '/ws/*zip*/'
+        Referrer: null
+    condition: selection
+falsepositives:
+    - Legitimate use of this feature by automated CI/CD jobs or scripts to download build artifacts. This kind of access may not have a referrer and would trigger the rule.
+level: medium

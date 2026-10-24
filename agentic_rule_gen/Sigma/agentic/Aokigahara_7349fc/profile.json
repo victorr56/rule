@@ -1,0 +1,407 @@
+{
+  "malware_family": "Aokigahara",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Aokigahara is a new infostealer notable for targeting AI applications and developer tools alongside traditional targets like browsers and cryptocurrency wallets. It exfiltrates credentials, session data, and configuration files from tools such as ChatGPT Desktop, GitHub Copilot, and various cloud CLI tools. The malware uses a custom C2 protocol over HTTP with AES-GCM encrypted data and X25519 for key exchange.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "config_marker",
+      "value": "STGC",
+      "context": "Four-byte magic value at the start of the encrypted configuration blob.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".stgcfg",
+      "context": "PE section name where the encrypted configuration is stored.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "aokigahara",
+      "context": "Fixed string used with SHA-256 to derive the C2 communication key.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "\\\\.\\pipe\\akg_%lx_%lx",
+      "context": "Format string for a named pipe, seen in a YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Microsoft\\Vault",
+      "context": "Directory where a separate clipper component is dropped.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "Messengers/Discord/Tokens.txt",
+      "context": "Output path for stolen Discord tokens within the exfiltration archive.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%s\\.claude\\credentials.json",
+      "context": "Targeted file for Claude AI application credentials.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%s\\Packages\\OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0\\LocalCache\\Roaming\\ChatGPT",
+      "context": "Targeted path for ChatGPT Desktop session data.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%s\\.aws\\credentials",
+      "context": "Targeted file for AWS CLI credentials.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%s\\.copilot\\hosts.json",
+      "context": "Targeted configuration file for GitHub Copilot.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%s\\Cursor\\User\\globalStorage\\state.vscdb",
+      "context": "Targeted state database for the Cursor IDE.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%s\\amazon-q\\data.sqlite3",
+      "context": "Targeted data file for the Amazon Q developer agent.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%s\\.gemini-cli-workspace-token.json",
+      "context": "Targeted token file for Google Gemini CLI.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%s\\JetBrains\\%s\\options\\AIAssistantQuotaManager2.xml",
+      "context": "Targeted settings file for JetBrains AI Assistant.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "COMPLETE",
+      "context": "Eight-byte message sent to the C2 to signal the end of uploads.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "kamidere",
+      "context": "A possible earlier name for the malware, found in strings.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AISessions/",
+      "context": "Prefix for AI session data in the exfiltration archive.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AKGRES",
+      "context": "A unique string found in the binary via a YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".ROBLOSECURITY",
+      "context": "A string related to Roblox cookie theft, found via YARA.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x6C0400C8601",
+      "context": "Bitmask representing language IDs for which the malware will exit.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "WDAGUtilityAccount",
+      "context": "One of several usernames checked to detect analysis environments.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Screenshot.jpg",
+      "context": "Filename used when saving a captured screenshot.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Clipboard.txt",
+      "context": "Filename used when saving captured clipboard contents.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "Microsoft-CryptoAPI/10.0",
+      "context": "User-Agent used in C2 communications.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/gate/handshake",
+      "context": "C2 endpoint for session establishment.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/gate/chunk",
+      "context": "C2 endpoint for uploading stolen data archives.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/gate/complete",
+      "context": "C2 endpoint to signal completion of data upload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Build-ID",
+      "context": "Custom header containing the malware's build ID.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Gate-Token",
+      "context": "Custom header containing a token from the decrypted configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Session",
+      "context": "Custom header containing the upload session ID.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-HWID",
+      "context": "Custom header containing the victim's hardware ID.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-KEX",
+      "context": "Custom header identifying the key exchange algorithm (x25519).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Chunk",
+      "context": "Custom header identifying the type of data being uploaded.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Chunk-Index",
+      "context": "Custom header identifying the sequence number of the data chunk.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Total",
+      "context": "Custom header specifying the total number of chunks to be uploaded.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "2.26.252.48:8080",
+      "context": "Aokigahara C&C server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dfwioeiofwr.info",
+      "context": "Aokigahara C&C server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dobeqnesmot.cc",
+      "context": "Aokigahara C&C server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gate.dfwioeiofwr.info",
+      "context": "Aokigahara C&C server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hjazfioe.surf",
+      "context": "Aokigahara C&C server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "kkeyyou.cc",
+      "context": "Aokigahara C&C server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "neihite.cc",
+      "context": "Aokigahara C&C server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "somelitersofblood.pw",
+      "context": "Aokigahara C&C server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

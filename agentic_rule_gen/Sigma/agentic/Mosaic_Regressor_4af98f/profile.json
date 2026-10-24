@@ -1,0 +1,364 @@
+{
+  "malware_family": "Mosaic Regressor",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Mosaic Regressor is a UEFI bootkit developed from the leaked HackingTeam Vector-EDK framework. It establishes persistence by embedding malicious drivers and applications into the system's firmware, which then drop a payload (IntelUpdate.exe) into the startup folder before the OS boots. The payload communicates with C2 infrastructure to download additional modules.",
+  "mitre_techniques": [
+    "T1542.001",
+    "T1547.001",
+    "T1559.001",
+    "T1197",
+    "T1027",
+    "T1105"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "F50258A9-2F4D-4DA9-861E-BDA84D07A44C",
+      "context": "GUID for SmmInterfaceBase DXE-driver.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "F50258A9-2F4D-4DE9-86AE-BDA84D07A41C",
+      "context": "GUID for Ntfs DXE-driver.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "EAEA9AEC-C9C1-46E2-9D52-432AD25A9B0C",
+      "context": "GUID for SmmReset EFI-application.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "EAEA9AEC-C9C1-46E2-9D52-432AD25A9B0B",
+      "context": "GUID for SmmAccessSub EFI-application.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "NTFS",
+      "context": "Human-readable name section for the Ntfs.efi module.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "fTA",
+      "context": "NVRAM variable infection marker created by SmmReset.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%PROGRAMDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\IntelUpdate.exe",
+      "context": "Payload dropped by SmmAccessSub UEFI module.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%WINDIR%\\setupinf.log",
+      "context": "Infection marker file checked before dropping payload.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Microsoft\\Internet Explorer\\%Computername%.dat",
+      "context": "Payload-related file path.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Microsoft\\Windows\\SendTo\\cryptui.sep",
+      "context": "Payload-related file path.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "IntelUpdate.exe",
+      "context": "Main payload dropped by UEFI implant.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Microsoft\\Windows\\Start Menu\\Programs\\Startup\\IntelUpdate.exe",
+      "context": "Payload launched from startup folder.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "foregrounduu state",
+      "context": "Mutex created by payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "set instance state",
+      "context": "Mutex created by payload.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "single UI",
+      "context": "Mutex created by payload.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Office Module",
+      "context": "Mutex created by payload.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "process attach Module",
+      "context": "Mutex created by payload.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "CallA",
+      "context": "Function called from downloaded DLL.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "CallB",
+      "context": "Function called from downloaded DLL.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "CallC",
+      "context": "Function called from downloaded DLL.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "CallD",
+      "context": "Function called from downloaded DLL.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "CallE",
+      "context": "Function called from downloaded DLL.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "menjitghyukl.myfirewall.org",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.56.115.69",
+      "context": "C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.215.80.1",
+      "context": "C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.39.109.252",
+      "context": "C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.229.126.101",
+      "context": "C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "117.18.4.6",
+      "context": "C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.229.126.246",
+      "context": "C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.39.109.231",
+      "context": "C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "43.252.228.252",
+      "context": "C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.56.113.61",
+      "context": "C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.82.52.18",
+      "context": "C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "122.10.82.30",
+      "context": "C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "144.48.240.101",
+      "context": "C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.216.117.91",
+      "context": "C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "150.129.81.21",
+      "context": "C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

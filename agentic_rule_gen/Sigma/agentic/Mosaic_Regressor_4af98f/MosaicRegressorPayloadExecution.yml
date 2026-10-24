@@ -1,0 +1,24 @@
+title: Mosaic Regressor Payload Execution From Startup Folder
+id: d7d4d42b-5e6a-4977-96a9-0639b7f573f5
+status: experimental
+description: Detects the execution of 'IntelUpdate.exe' from the ProgramData startup folder, a characteristic behavior of the Mosaic Regressor bootkit's payload.
+references:
+    - https://www.group-ib.com/blog/bootkits/
+author: ioc-yara-daily (agentic)
+date: 2024-06-03
+tags:
+    - attack.persistence
+    - attack.t1547.001
+    - attack.pre-os_boot
+    - attack.t1542.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\IntelUpdate.exe'
+        ParentImage|endswith: '\explorer.exe'
+    condition: selection
+falsepositives:
+    - Legitimate but poorly named software updaters.
+level: high

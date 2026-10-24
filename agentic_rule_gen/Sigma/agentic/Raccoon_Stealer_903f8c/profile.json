@@ -1,0 +1,294 @@
+{
+  "malware_family": "Raccoon Stealer",
+  "threat_actor": "FakeSecurity",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "FakeSecurity distributes Raccoon Stealer using phishing pages (Mephistophilus kit) and malicious documents, continuing a campaign that previously used the Vidar stealer. Raccoon exfiltrates credentials and crypto wallet data, using a public Telegram channel to retrieve its C2 server address. In some cases, Raccoon was also used to download the AveMaria RAT as a secondary payload.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "Raccoon Stealer. We steal, You deal!",
+      "context": "Slogan from darknet forum advertisement.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Raccoon Stealer",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Private key, gate address, and other string values are heavily encrypted",
+      "context": "Feature described in the Raccoon Stealer advertisement.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Raccoon Stealer",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "blintick",
+      "context": "Telegram channel name used by Raccoon to retrieve C2 address.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "officebuilder",
+      "context": "Raccoon stealer payload downloaded by a malicious macro.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "officebuilder",
+      "context": "Raccoon stealer process name.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "adobe-reader-v13.11.1.3.exe",
+      "context": "Raccoon stealer payload downloaded from phishing page.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "MyBankStatement_*.xlsm",
+      "context": "Filename pattern for macro-based droppers for Raccoon.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "My_Statement_*.xlsm",
+      "context": "Filename pattern for macro-based droppers for Raccoon.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "msofficeupdate.exe",
+      "context": "Vidar stealer payload downloaded during the first wave.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "Vidar",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "adobe-reader-update-10.21.01.exe",
+      "context": "Vidar stealer payload from Mephistophilus phishing page.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Vidar",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "officeupdate.exe",
+      "context": "AveMaria RAT payload downloaded by Raccoon as a second stage.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "AveMaria",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "buer.exe",
+      "context": "Buer Loader payload downloaded as part of the campaign.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Buer",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "loader.exe",
+      "context": "Smoke Loader payload downloaded as part of the campaign.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "Smoke Loader",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "test page",
+      "context": "Content of parked page on actor-controlled domains.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://telete.in/blintick",
+      "context": "URL for Telegram channel used by Raccoon to retrieve C2 address.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Raccoon Stealer"
+    },
+    {
+      "kind": "ip",
+      "value": "35.228.95.80",
+      "context": "Raccoon C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "35.198.88.195",
+      "context": "Raccoon C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cloud-server-updater22.co.za",
+      "context": "Domain hosting Raccoon stealer payload 'officebuilder'.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://cloud-server-updater22.co.za/doc/officebuilder",
+      "context": "Download URL for Raccoon stealer payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "microsoft-cloud13.co.za",
+      "context": "Domain hosting Raccoon stealer payload 'msofficeupdate.exe'.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://microsoft-cloud13.co.za/msofficeupdate.exe",
+      "context": "Download URL for Raccoon stealer payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "updateforadobenew.co.za",
+      "context": "Domain hosting Raccoon stealer payload from phishing page.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://updateforadobenew.co.za/file_d/adobe-reader-v13.11.1.3.exe",
+      "context": "Download URL for Raccoon stealer payload from phishing page.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://cloud-server-updater1.co.za/doc/officeupdate.exe",
+      "context": "Download URL for AveMaria RAT, requested by Raccoon.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "AveMaria"
+    },
+    {
+      "kind": "ip",
+      "value": "102.130.118.152",
+      "context": "C2 server for AveMaria RAT.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "AveMaria"
+    },
+    {
+      "kind": "domain",
+      "value": "badlandsparks.com",
+      "context": "Vidar stealer C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Vidar"
+    },
+    {
+      "kind": "url",
+      "value": "ip-api.com/line/",
+      "context": "URL used by Vidar to get victim network info.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "Vidar"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/nss3.dll",
+      "context": "Vidar attempts to download this required DLL.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Vidar"
+    },
+    {
+      "kind": "domain",
+      "value": "documents-cloud-server.co.za",
+      "context": "Domain hosting Mephistophilus phishing kit.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Mephistophilus"
+    },
+    {
+      "kind": "url",
+      "value": "http://cloud-server-updater2.co.za/doc/buer.exe",
+      "context": "Download URL for Buer Loader.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Buer"
+    },
+    {
+      "kind": "url",
+      "value": "http://google-document.co.za/doc/loader.exe",
+      "context": "Download URL for Smoke Loader.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Smoke Loader"
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "document"
+  ]
+}

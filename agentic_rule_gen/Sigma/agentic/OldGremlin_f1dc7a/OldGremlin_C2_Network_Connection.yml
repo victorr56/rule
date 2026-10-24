@@ -1,0 +1,25 @@
+title: OldGremlin C2 Network Connection
+id: 8876a4e3-23a5-48b4-8490-ffb34f6bb9f1
+status: experimental
+description: Detects network connections to IP addresses known to be part of OldGremlin's C2 infrastructure.
+references:
+    - https://www.group-ib.com/blog/oldgremlin/
+author: ioc-yara-daily (agentic)
+date: 2026-10-24
+tags:
+    - attack.command_and_control
+    - attack.t1090.003
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '5.181.156.84'
+            - '45.61.138.170'
+            - '95.179.252.217'
+            - '136.244.67.59'
+    condition: selection
+falsepositives:
+    - These IPs could be reassigned to benign services in the future.
+level: high
