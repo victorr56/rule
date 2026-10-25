@@ -1,0 +1,21 @@
+title: Sliver C2 DNS Query (CVE-2024-0012 Exploitation)
+id: 28f607c3-3054-4cae-9080-877ce54659b8
+status: experimental
+description: Detects DNS queries for a domain known to be associated with Sliver C2 infrastructure used in campaigns exploiting CVE-2024-0012.
+references:
+    - https://www.wiz.io/blog/cve-2024-0012-pan-os-vulnerability-exploited-in-the-wild
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'censysinspect.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

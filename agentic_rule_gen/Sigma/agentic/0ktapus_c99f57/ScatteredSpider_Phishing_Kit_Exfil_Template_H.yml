@@ -1,0 +1,21 @@
+title: Scattered Spider/0ktapus Phishing Kit Data Exfiltration (Template H)
+id: 59a117b9-1d07-4e78-bc46-5b72e1ab5a7d
+status: experimental
+description: Detects POST requests to a specific and unusual URI path associated with the 0ktapus/Scattered Spider phishing kit (Template H), likely indicating credential submission.
+references:
+    - https://www.wiz.io/blog/unmasking-phishing-strategies-for-identifying-0ktapus-domains
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url.Original|contains: '../tmo/data/login.php'
+        HttpMethod: 'POST'
+    condition: selection
+falsepositives:
+    - Unlikely. The combination of a path traversal-like string in a URI and a POST method is highly suspicious.
+level: high

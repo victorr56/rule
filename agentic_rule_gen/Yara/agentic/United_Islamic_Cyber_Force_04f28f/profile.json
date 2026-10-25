@@ -1,0 +1,318 @@
+{
+  "malware_family": "United Islamic Cyber Force",
+  "threat_actor": "United Islamic Cyber Force (UICF)",
+  "platforms": [
+    "web",
+    "multi"
+  ],
+  "summary": "United Islamic Cyber Force (UICF) is a pro-Islamic hacktivist collective known for DDoS attacks and website defacements against government, media, and business entities. The group uses custom web shells, leaves slogans and contact info on compromised sites, and uses social media to publicize its activities.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "United Islamic Cyber Force, Salami Ala Aqsha",
+      "context": "Threatening text on a defaced website.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "#OpFrance",
+      "context": "Hashtag for a joint attack campaign on French resources.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "#OpIsrael",
+      "context": "Hashtag for 'Hackintifada' campaign against Israeli websites.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "#Free_Palestine",
+      "context": "Hashtag for an operation related to the Israel-Palestine conflict.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "#FreeAlaqsa",
+      "context": "Hashtag for an attack in response to an Israeli prohibition.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AnoaGhost Shell File Manager v3.0",
+      "context": "Web shell software used by the 'AnoaGhost' member.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "gunz_berry xh3LL Backd00r 1.0",
+      "context": "Web shell software used by the 'Gunz_Berry' member.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "GaLers xh3LL Backd00r",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "AnoaGhost",
+      "context": "Alias of a UICF member from Indonesia.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ShiroTenshi",
+      "context": "Alternate alias used by 'AnoaGhost'.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Gunz_Berry",
+      "context": "Alias of a UICF member from Indonesia.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "W3bh4x0r",
+      "context": "Alias of a UICF member from Nigeria.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Lakhdar DZ",
+      "context": "Alias of a UICF member from Algeria.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Zishan Rider",
+      "context": "Alias of a UICF member from India.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "lakhdar.222",
+      "context": "Skype account associated with member 'Lakhdar DZ'.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "anoaghost.gov@gmail.com",
+      "context": "Contact email left on a defaced website by 'AnoaGhost'.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://cakrahacker.blogspot.com",
+      "context": "Inactive blog associated with 'AnoaGhost'.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "shiro-tenshi.ml",
+      "context": "Website associated with 'AnoaGhost' and mentioned in their web shell.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://pastebin.com/u/anoaghost",
+      "context": "Pastebin account of 'AnoaGhost'.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://twitter.com/shirotenshii",
+      "context": "Twitter account of 'AnoaGhost' (using alias ShiroTenshi).",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "gunzberry@yahoo.co.id",
+      "context": "Contact email left on a defaced website by 'Gunz_Berry'.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gunz-berry.com",
+      "context": "Domain name owned by 'Gunz_Berry'.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.facebook.com/newbieyangtakbisaapaapa",
+      "context": "Facebook profile of 'Gunz_Berry'.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.facebook.com/web.haxor",
+      "context": "Facebook profile of 'W3bh4x0r'.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://nigeriacyberforce.blogspot.ru/",
+      "context": "Blog associated with the 'United Nigeria Cyber Force' group.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://www.mp3loaded.com.ng/",
+      "context": "Website belonging to 'W3bh4x0r'.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Lakhdar46Dz@gmail.com",
+      "context": "Contact email left on a defaced website by 'Lakhdar DZ'.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://twitter.com/LakhdarX33",
+      "context": "Twitter account of 'Lakhdar DZ'.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "news-ar.com",
+      "context": "Domain registered by 'Lakhdar DZ'.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "geek-ar.com",
+      "context": "Domain registered by 'Lakhdar DZ'.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "lakhdar-dz.info",
+      "context": "Website associated with 'Lakhdar DZ'.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "lakhdar-dz.net",
+      "context": "Website associated with 'Lakhdar DZ'.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "zishanrider@cyberdude.com",
+      "context": "Contact email left on a defaced website by 'Zishan Rider'.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "zishanrider@mail.com",
+      "context": "Contact email left on a defaced website by 'Zishan Rider'.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "zishanrider.com",
+      "context": "Blog domain used by 'Zishan Rider'.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

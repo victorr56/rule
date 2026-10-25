@@ -1,0 +1,22 @@
+title: ICEDID Core Binary Dropped As license.dat
+id: 2a9e52c8-8a8c-4a37-b45a-c5d012e84d1b
+status: experimental
+description: Detects the ICEDID loader process, often rundll32.exe, creating the 'license.dat' payload in a directory named 'UponBetter'. This is a specific behavior of the ICEDID banking trojan.
+references:
+    - https://www.elastic.co/security-labs/blog/unpacking-icedid
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        TargetFilename|endswith: '\UponBetter\license.dat'
+    condition: selection
+falsepositives:
+    - Legitimate software creating a file with this name and path via rundll32.exe is not expected.
+level: high

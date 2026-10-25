@@ -1,0 +1,29 @@
+title: HERMETICWIPER Disabling Explorer Visual Cues
+id: 978931fc-8c46-455b-b9d1-37f2277d337d
+status: experimental
+description: >-
+  Detects registry modifications to disable visual cues in Windows Explorer for items
+  such as compressed or encrypted files. This is a technique used by HERMETICWIPER to
+  operate more stealthily before its destructive payload executes.
+references:
+  - https://www.elastic.co/security-labs/threat-command/elastic-protects-against-data-wiper-malware-targeting-ukraine-hermeticwiper
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+  - attack.defense_evasion
+  - attack.t1112
+logsource:
+  category: registry_set
+  product: windows
+detection:
+  selection_compcolor:
+    TargetObject|endswith: '\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\ShowCompColor'
+    Details: '0'
+  selection_infotip:
+    TargetObject|endswith: '\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\ShowInfoTip'
+    Details: '0'
+  condition: 1 of selection_*
+falsepositives:
+  - Use of system tweaking or privacy tools that modify these settings.
+  - Manual configuration by a user, although setting these specific values to zero is uncommon.
+level: medium

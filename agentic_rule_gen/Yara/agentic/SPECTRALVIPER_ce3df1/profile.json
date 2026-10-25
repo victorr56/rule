@@ -1,0 +1,342 @@
+{
+  "malware_family": "SPECTRALVIPER",
+  "threat_actor": "Canvas Cyclone",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "SPECTRALVIPER is a heavily obfuscated 64-bit C++ backdoor attributed to the Vietnamese threat actor APT32/Canvas Cyclone. It supports PE injection, file manipulation, and token impersonation, communicating via HTTP or a named pipe. It is often deployed alongside the P8LOADER PE loader and the POWERSEAL PowerShell runner.",
+  "mitre_techniques": [
+    "T1055",
+    "T1036",
+    "T1071.001",
+    "T1134",
+    "T1083",
+    "T1057",
+    "T1007",
+    "T1033",
+    "T1135",
+    "T1018",
+    "T1592",
+    "T1590"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\Libraries\\dbg.config",
+      "context": "Malicious unsigned DLL dropped over SMB.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "windbg.exe",
+      "context": "SysInternals ProcDump utility renamed to masquerade.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dnsapi.dll",
+      "context": "Malicious DLL side-loaded by nslookup.exe.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "spectralviper.exe",
+      "context": "Example executable name for SPECTRALVIPER.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "for($i=0; $i -lt 20; $i++){.\\rundll-ng\\rundll64-ng.exe \".\\7e35ba39c2c77775b0394712f89679308d1a4577b6e5d0387835ac6c06e556cb.dll\" \"#$i\"}",
+      "context": "PowerShell loop to find the correct SPECTRALVIPER DLL export.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "\\\\.\\pipe\\raSeCIR4gg",
+      "context": "SPECTRALVIPER hardcoded named pipe for C2.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "\\\\.\\pipe\\ydZb0bIrT",
+      "context": "SPECTRALVIPER named pipe for C2 (REF4322 victim).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "H9mktfe2k0ukk64nZjw1ow==",
+      "context": "Example AES key in SPECTRALVIPER's initial HTTP C2 beacon.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\\x00\\x01\\x02\\x03\\x04\\x05\\x06\\x07\\x08\\x09\\x0a\\x0b\\x0c\\x0d\\x0e\\x0f",
+      "context": "Hardcoded AES key for SPECTRALVIPER string decryption.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "P8exit",
+      "context": "Export in P8LOADER malware, used for naming.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "dotnet_user_string",
+      "value": "PowerSeal.dll",
+      "context": "String in POWERSEAL, from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "InvokePs",
+      "context": "String in POWERSEAL, from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "dotnet_user_string",
+      "value": "amsiInitFailed",
+      "context": "String in POWERSEAL, from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[+] Loading PowerSeal",
+      "context": "String in POWERSEAL, from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[!] Failed to exec PowerSeal",
+      "context": "String in POWERSEAL, from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AppDomain: unable to get the name!",
+      "context": "String in POWERSEAL, from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\\t[+] Create pipe direct std success\\n",
+      "context": "Debug string in P8LOADER.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\\tPEAddress: %p\\n",
+      "context": "Debug string in P8LOADER.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DynamicLoad(%s, %s) %d\\n",
+      "context": "Debug string in P8LOADER.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "LoadLibraryA(%s) FAILED in %s function, line %d",
+      "context": "Debug string in P8LOADER.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 00 48 89 C6 0F 29 30 0F 29 70 10 0F 29 70 20 0F 29 70 30 0F 29 70 40 0F 29 70 50 48 C7 40 60 00 00 00 00 48 89 C1 E8 }",
+      "context": "SPECTRALVIPER code pattern from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 41 0F 45 C0 45 84 C9 41 0F 45 C0 EB BA 48 89 4C 24 08 89 D0 EB B1 48 8B 44 24 08 48 83 C4 10 C3 56 57 53 48 83 EC 30 8B 05 }",
+      "context": "SPECTRALVIPER code pattern from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 83 EC 28 4C 8B 41 18 4C 8B C9 48 B8 AB AA AA AA AA AA AA AA 48 F7 61 10 48 8B 49 08 48 C1 EA }",
+      "context": "SPECTRALVIPER code pattern from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "http_header",
+      "value": "Cookie: euconsent-v2",
+      "context": "Used by SPECTRALVIPER to send encrypted host info.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "stablewindowsapp.com",
+      "context": "SPECTRALVIPER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "webmanufacturers.com",
+      "context": "SPECTRALVIPER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "toppaperservices.com",
+      "context": "SPECTRALVIPER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hosting-wordpress-services.com",
+      "context": "SPECTRALVIPER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "appointmentmedia.com",
+      "context": "SPECTRALVIPER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "56d2d05988b6c23232b013b38c49b7a9143c6649d81321e542d19ae46f4a4204",
+      "description": "SPECTRALVIPER sample"
+    },
+    {
+      "sha256": "d1c32176b46ce171dbce46493eb3c5312db134b0a3cfa266071555c704e6cff8",
+      "description": "SPECTRALVIPER sample (1.dll)"
+    },
+    {
+      "sha256": "7e35ba39c2c77775b0394712f89679308d1a4577b6e5d0387835ac6c06e556cb",
+      "description": "SPECTRALVIPER sample (asdgb.exe)"
+    },
+    {
+      "sha256": "4e3a88cf00e0b4718e7317a37297a185ff35003192e5832f5cf3020c4fc45966",
+      "description": "SPECTRALVIPER sample (Settings.db)"
+    },
+    {
+      "sha256": "7b5e56443812eed76a94077763c46949d1e49cd7de79cde029f1984e0d970644",
+      "description": "SPECTRALVIPER sample (Microsoft.MicrosoftEdge_8wekyb3d8bbwe.pkg)"
+    },
+    {
+      "sha256": "5191fe222010ba7eb589e2ff8771c3a75ea7c7ffc00f0ba3f7d716f12010dd96",
+      "description": "SPECTRALVIPER sample (UpdateConfig.json)"
+    },
+    {
+      "sha256": "4775fc861bc2685ff5ca43535ec346495549a69891f2bf45b1fcd85a0c1f57f7",
+      "description": "SPECTRALVIPER sample (Microsoft.OneDriveUpdatePackage.mca)"
+    },
+    {
+      "sha256": "2482c7ececb23225e090af08feabc8dec8d23fe993306cb1a1f84142b051b621",
+      "description": "SPECTRALVIPER sample (ms-certificates.sst)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet"
+  ]
+}

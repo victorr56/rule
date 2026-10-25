@@ -1,0 +1,162 @@
+{
+  "malware_family": "AWS Phishing",
+  "threat_actor": "Unknown",
+  "platforms": [
+    "web"
+  ],
+  "summary": "An unknown threat actor is conducting a phishing campaign targeting AWS users. The attack starts with an email containing a link to a credential harvesting page designed to look like the AWS login page. The campaign uses lookalike domains, link shorteners, and infrastructure hosted on services like Namecheap and Hostinger to achieve its objectives.",
+  "mitre_techniques": [
+    "T1566"
+  ],
+  "host_artifacts": [],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "admin@alchemistdigital.ae",
+      "context": "Sender of the phishing email.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://giraffe-viola-p262.squarespace.com/",
+      "context": "Initial redirect link from the phishing email.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cli.re/j9PQ88",
+      "context": "Link shortener used in the redirect chain.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "consoleportal.tech",
+      "context": "Primary phishing domain hosting the fake login page.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://console.aws.consoleportal.tech/IgXlrDYW",
+      "context": "Attacker-controlled redirect URL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://signin.aws.consoleportal.tech/signin",
+      "context": "Final credential harvesting page URL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://d35uxhjf90umnp.cloudfront.net/index.js",
+      "context": "JavaScript loaded by the phishing page.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "162.0.216.98",
+      "context": "Historic IP for consoleportal.tech (Namecheap).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.170.198.250",
+      "context": "Historic IP for consoleportal.tech (Hostinger).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "officequalcomm.com",
+      "context": "Related phishing domain on shared infrastructure.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "webportal.tech",
+      "context": "Related phishing domain on shared infrastructure.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "docshare.tech",
+      "context": "Related phishing domain on shared infrastructure.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "signin.aws.*",
+      "context": "Common subdomain format for AWS phishing.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "portal.aws.*",
+      "context": "Common subdomain format for AWS phishing.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "console.aws.*",
+      "context": "Common subdomain format for AWS phishing.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "signin.aws.amaonz.com",
+      "context": "Lookalike domain identified via OSINT.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "signin.aws.hashcrp.in",
+      "context": "Lookalike domain identified via OSINT.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "signin.aws.safelinks-protection.com",
+      "context": "Lookalike domain identified via OSINT.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "document"
+  ]
+}

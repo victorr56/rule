@@ -1,0 +1,24 @@
+title: UAC Bypass Attempt via '.exe.local' DLL Redirection
+id: 0da644f1-3444-4869-906d-a1c6a6f1d8ef
+status: experimental
+description: Detects the creation of a file within a '.exe.local' subdirectory inside 'C:\Windows\System32'. This is a specific UAC bypass technique where an attacker leverages DLL search order hijacking by creating a folder named after a target executable (e.g., 'consent.exe.local') to force it to load a malicious DLL.
+references:
+    - https://www.elastic.co/security-labs/threat-command/exploring-windows-uac-bypasses-techniques-and-detection-strategies
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1548.002
+    - attack.t1574.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\Windows\System32\'
+        TargetFilename|contains: '.exe.local\'
+    condition: selection
+falsepositives:
+    - Unlikely. This technique is highly specific to exploitation and has no known legitimate use cases for folders within 'C:\Windows\System32'.
+level: critical

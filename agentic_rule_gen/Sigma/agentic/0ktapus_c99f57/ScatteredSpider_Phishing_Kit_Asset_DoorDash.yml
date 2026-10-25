@@ -1,0 +1,21 @@
+title: Scattered Spider/0ktapus Phishing Kit Asset Request (DoorDash)
+id: f8b64e5e-18d4-42f4-a035-2aa0bb644b41
+status: experimental
+description: Detects HTTP requests for a specific image filename associated with a 0ktapus/Scattered Spider phishing page mimicking DoorDash.
+references:
+    - https://www.wiz.io/blog/unmasking-phishing-strategies-for-identifying-0ktapus-domains
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url.Path|endswith: '/fs0j3qtrrcYDqTZYW0x7.png'
+        Referer|contains: 'doordash'
+    condition: selection
+falsepositives:
+    - Unlikely, as it requires a highly specific filename in the URL path requested from a page with 'doordash' in its own URL (the referer).
+level: high

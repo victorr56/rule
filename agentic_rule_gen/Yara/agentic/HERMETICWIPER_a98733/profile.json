@@ -1,0 +1,223 @@
+{
+  "malware_family": "HERMETICWIPER",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "HERMETICWIPER is a data wiper malware observed in attacks against Ukrainian organizations. It leverages a legitimate, signed driver from EaseUS Partition Manager to gain raw disk access for destructive operations. The malware corrupts file data, partition information, and the boot sector to render systems unbootable.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "certificate_subject",
+      "value": "Hermetica Digital Ltd.",
+      "context": "The malware is signed with a now-revoked certificate.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "epmntdrv.sys",
+      "context": "Legitimate driver from EaseUS Partition Master abused by the malware.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "EaseUS Partition Manager",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "\\Device\\EPMNTDRV",
+      "context": "Device name created by the abused driver to expose to user mode.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "ShowCompColor",
+      "context": "Set to 0 to hide visual cues for compressed/encrypted files.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "ShowInfoTip",
+      "context": "Set to 0 to hide visual cues for compressed/encrypted files.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "::$INDEX_ALLOCATION",
+      "context": "Appended to filenames to bypass ACLs during wiping operations.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x560000",
+      "context": "IOCTL parameter for IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS to find root drive.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\\\?\\C:\\Windows\\System32\\winevt\\Logs",
+      "context": "YARA string match, likely a folder targeted for wiping.",
+      "specificity": "low",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\\\\.\\EPMNTDRV\\%u",
+      "context": "YARA string match for a format string to interact with the driver.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "tdrv.pdb",
+      "context": "PDB path string found in the wiper's binary.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "%s%.2s",
+      "context": "YARA string match for a format string.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ccessdri",
+      "context": "YARA string match for a string fragment.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Hermetica Digital",
+      "context": "YARA string match related to the code signing certificate.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ctf::ShredTarget",
+      "context": "Internal struct name for shredding targets.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ctf::FilePart",
+      "context": "Internal struct name for file parts to be shredded.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ctf::QueueFileShred",
+      "context": "Internal function name for queuing a file to be shredded.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ctf::QueueFolderShred",
+      "context": "Internal function name for queuing a folder to be shredded.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ctf::callback::QueuePartitionShred",
+      "context": "Internal callback function name for partition shredding.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ctf::callback::QueueNtfsBitmapAndLogAttributeShred",
+      "context": "Internal callback function for shredding NTFS metadata.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [],
+  "samples": [
+    {
+      "sha256": "1bc44eef75779e3ca1eefb8ff5a64807dbc942b1e4a2672d77b9f6928d292591",
+      "description": "HERMETICWIPER wiper malware"
+    },
+    {
+      "sha256": "0385eeab00e946a302b24a91dea4187c1210597b8e17cd9e2230450f5ece21da",
+      "description": "HERMETICWIPER wiper malware"
+    },
+    {
+      "sha256": "3c557727953a8f6b4788984464fb77741b821991acbf5e746aebdd02615b1767",
+      "description": "HERMETICWIPER wiper malware"
+    },
+    {
+      "sha256": "2c10b2ec0b995b88c27d141d6f7b14d6b8177c52818687e4ff8e6ecf53adf5bf",
+      "description": "HERMETICWIPER wiper malware"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

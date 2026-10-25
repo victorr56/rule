@@ -1,0 +1,23 @@
+title: Mozi Botnet Payload Server Artifacts
+id: a7769cf3-fa32-4770-87a3-5c2084c8a29a
+status: experimental
+description: Detects HTTP traffic patterns consistent with a device infected by Mozi serving payloads to other potential victims.
+references:
+    - https://www.elastic.co/security-labs/threat-command/collecting-and-operationalizing-threat-data-from-the-mozi-botnet
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.command_and_control
+    - attack.t1102
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        sc_status: 200
+        Server: 'nginx'
+        HttpContentType: 'application/zip'
+    condition: selection
+falsepositives:
+    - Legitimate software updates or file downloads served from Nginx web servers. This is best used for threat hunting on IoT or restricted networks.
+level: medium

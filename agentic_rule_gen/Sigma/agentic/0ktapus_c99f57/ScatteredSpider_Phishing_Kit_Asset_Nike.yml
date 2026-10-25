@@ -1,0 +1,21 @@
+title: Scattered Spider/0ktapus Phishing Kit Asset Request (Nike)
+id: 5e6a0c5c-7557-4638-952b-426ab568d407
+status: experimental
+description: Detects HTTP requests for a specific replicated JavaScript asset filename associated with a 0ktapus/Scattered Spider phishing page mimicking Nike.
+references:
+    - https://www.wiz.io/blog/unmasking-phishing-strategies-for-identifying-0ktapus-domains
+author: ioc-yara-daily (agentic)
+date: 2024-06-21
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url.Original|endswith: '/discoveryIframe-82e613074a3700abe11a.min.js.download'
+        Http.StatusCode: 200
+    condition: selection
+falsepositives:
+    - Unlikely due to the high specificity of the filename.
+level: high

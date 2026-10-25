@@ -1,0 +1,441 @@
+{
+  "malware_family": "BabLock",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "BabLock is a ransomware family targeting Windows, Linux, and ESXi systems, first observed in mid-2022. The sophisticated Windows version employs DLL side-loading, process injection, and GPO modification for lateral movement, while the Linux/ESXi variants are based on the leaked Babuk source code. The group operates stealthily, forgoing a public data leak site and using email for communication.",
+  "mitre_techniques": [
+    "T1190",
+    "T1106",
+    "T1053.005",
+    "T1059.001",
+    "T1059.003",
+    "T1059.004",
+    "T1047",
+    "T1078",
+    "T1484.001",
+    "T1574.002",
+    "T1055.002",
+    "T1140",
+    "T1027",
+    "T1562.001",
+    "T1564.010",
+    "T1497",
+    "T1070.001",
+    "T1112",
+    "T1003",
+    "T1110",
+    "T1018",
+    "T1135",
+    "T1057",
+    "T1007",
+    "T1083",
+    "T1021.001",
+    "T1021.004",
+    "T1570",
+    "T1071",
+    "T1105",
+    "T1573",
+    "T1486",
+    "T1489",
+    "T1490"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "winutils.dll",
+      "context": "Malicious DLL for side-loading, original name XLOADERDLL.dll.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "XLOADERDLL.dll",
+      "context": "Original name of the malicious side-loaded DLL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "cy.exe",
+      "context": "Legitimate Palo Alto cydump.exe used for side-loading winutils.dll.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "config.ini",
+      "context": "File containing the RC4 encrypted shellcode payload.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "_r_e_a_d_m_e.txt",
+      "context": "Ransom note file name used by all BabLock variants.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".slpqne",
+      "context": "Hardcoded extension for encrypted files.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "80CE038F-6317-984D-C0A7-FA0A1EED0199",
+      "context": "Mutex used to prevent multiple instances from running.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "3306",
+      "context": "Hardcoded key required via --run= argument to launch ransomware.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 75 EC 81 78 B9 DB 87 B0 E3 99 75 5D 8D 03 F9 65 }",
+      "context": "16-byte marker for encrypted files in Windows version metadata.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ CE AD 38 DE F9 00 }",
+      "context": "Marker for single-block encrypted files in Linux version metadata.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Babuk",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ CE AD 38 DE F9 01 }",
+      "context": "Marker for multi-block encrypted files in Linux version metadata.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Babuk",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "notepad.exe",
+      "context": "Injected with shellcode by winutils.dll loader.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "cy.exe -> notepad.exe",
+      "context": "Legitimate host process launches target for process injection.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "1_MMdd_Services",
+      "context": "GPO-created task to terminate processes on domain hosts.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "2_MMdd_cy.exe",
+      "context": "GPO-created task to execute the ransomware on domain hosts.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "vssadmin.exe Delete Shadows /All /Quiet",
+      "context": "Executed by ransomware to delete volume shadow copies.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "bcdedit.exe /set {default} recoveryenabled No",
+      "context": "Executed by ransomware to disable Windows recovery.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wevtutil.exe clear-log Security",
+      "context": "Executed by ransomware to clear Windows Security event log.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wmic.exe SHADOWCOPY /nointeractive",
+      "context": "Buggy attempt to delete shadow copies (missing DELETE argument).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "netsh.exe advfirewall set currentprofile state off",
+      "context": "Executed by ransomware to disable the Windows firewall.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell.exe -Command \"Get-ADComputer -filter * -Searchbase 'AD_SEARCHPATH' | foreach{ Invoke-GPUpdate -computer $_.name -force -RandomDelayInMinutes 0}\"",
+      "context": "Used to force GPO updates on domain computers for lateral movement.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "s86.out <PATH> [esxi]",
+      "context": "Command line syntax for the Linux/ESXi version of the ransomware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Babuk",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "419",
+      "context": "Language ID for Russian, checked to avoid encryption.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "go1.18.3",
+      "context": "GOVERSION string found in the Linux variant.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "C:\\Users\\Administrator\\go",
+      "context": "GOPATH string found in the Linux variant.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "decryptions@onionmail.org",
+      "context": "Threat actor contact email address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "decryptions@tutanota.com",
+      "context": "Threat actor contact email address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "decryptions@mail2tor.com",
+      "context": "Threat actor contact email address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "decryptions@email.tg",
+      "context": "Threat actor contact email address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "recovery@onionmail.org",
+      "context": "Threat actor contact email address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "recovery@tutanota.com",
+      "context": "Threat actor contact email address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "recovery@mail2tor.com",
+      "context": "Threat actor contact email address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "recovery@email.tg",
+      "context": "Threat actor contact email address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "bablock@onionmail.org",
+      "context": "Threat actor contact email address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "bablock@tutanota.com",
+      "context": "Threat actor contact email address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "bablock@mail2tor.com",
+      "context": "Threat actor contact email address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "bablock@email.tg",
+      "context": "Threat actor contact email address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "4874d336c5c7c2f558cfd5954655cacfc85bcfcb512a45fb0ff461ce9c38b86d",
+      "description": "cy.exe - Legitimate Palo Alto tool used for DLL side-loading."
+    },
+    {
+      "sha256": "2fd264f58ba82a2675280ec8c6759612def2bcc62aa6160f5e23071f67bb67ab",
+      "description": "winutils.dll - Malicious side-loaded DLL."
+    },
+    {
+      "sha256": "03c41019faf7e4cc26ca0dd3a2c41b2115e4c4ebd561402079bc4a20256c1813",
+      "description": "config.ini - Encrypted shellcode payload."
+    },
+    {
+      "sha256": "38c610102129be21d8d99ac92f3369c6650767ed513e5744c0cda54e68b33812",
+      "description": "Dumped BabLock Windows payload."
+    },
+    {
+      "sha256": "e14b88795bde45cf736c8363c71a77171aa710a4e7fa9ce38470082cb1bdadbb",
+      "description": "Dumped BabLock Windows payload."
+    },
+    {
+      "sha256": "7d62a33e9a2fedff6cf27aaa142ff15838a766ccd4a8d326424611e155442775",
+      "description": "BabLock Linux/ESXi sample."
+    },
+    {
+      "sha256": "83052cc23c45ecaa09fe5c87fd650c7f8e708aea46756a2b9d452d40ce3b9c00",
+      "description": "BabLock Linux/ESXi sample."
+    },
+    {
+      "sha256": "b711579e33b0df2143c7cb61246233c7f9b4d53db6a048427a58c0295d8daf1c",
+      "description": "BabLock Linux/ESXi sample."
+    },
+    {
+      "sha256": "de5a53131225dd97040d48221d9afd98760f7ff2f55613f0d08436891ca632b9",
+      "description": "BabLock Linux/ESXi sample."
+    },
+    {
+      "sha256": "66bcad0829a59c424d062b949c2a556b11c509b17515dffecb9cbf65f13f3dc6",
+      "description": "winutils.dll - Malicious side-loaded DLL."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "elf"
+  ]
+}

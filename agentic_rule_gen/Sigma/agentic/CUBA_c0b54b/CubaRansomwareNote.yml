@@ -1,0 +1,26 @@
+title: CUBA Ransomware Note Creation
+id: c383d478-f99a-4fd2-8c10-85f0ef3538c2
+status: experimental
+description: Detects the creation of the CUBA ransomware ransom note, "!! READ ME !!.txt", by a process executing from a suspicious location.
+references:
+    - https://www.elastic.co/security-labs/threat-command/cuba-ransomware-malware-analysis
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.impact
+    - attack.t1486
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '!! READ ME !!.txt'
+        Image|startswith:
+            - 'C:\ProgramData\'
+            - 'C:\Users\Public\'
+            - 'C:\Windows\Temp\'
+            - 'C:\PerfLogs\'
+    condition: selection
+falsepositives:
+    - Legitimate software is unlikely to create a file with this name from these paths.
+level: high

@@ -1,0 +1,22 @@
+title: CUBA Ransomware Tor Leak Site Access
+id: 5f190e2f-ed3a-4422-9b2c-2921df0c946e
+status: experimental
+description: Detects network connections to a known CUBA ransomware Tor leak site.
+references:
+    - https://www.elastic.co/security-labs/threat-command/cuba-ransomware-malware-analysis
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.impact
+    - attack.t1486
+logsource:
+    product: proxy
+    category: network_traffic
+detection:
+    selection:
+        Url|contains: 'cuba4ikm4jakjgmkezytyawtdgr2xymvy6nvzgw5cglswg3si76icnqd.onion'
+        DestinationHostname|contains: 'cuba4ikm4jakjgmkezytyawtdgr2xymvy6nvzgw5cglswg3si76icnqd.onion'
+    condition: 1 of selection
+falsepositives:
+    - Unlikely.
+level: critical

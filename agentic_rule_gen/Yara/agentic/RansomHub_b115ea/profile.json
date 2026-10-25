@@ -1,0 +1,63 @@
+{
+  "malware_family": "RansomHub",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "RansomHub gains initial access via VPN from a specific attacker device and moves laterally with RDP. The malware distributes payloads via SMB, exfiltrates data using HTTP POSTs to a hardcoded IP on port 5000, and encrypts files, appending the '.b2a830' extension and dropping a corresponding ransom note.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "DESKTOP-QIDRDSI",
+      "context": "Likely attacker-controlled device name used to enter the network via VPN.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "README_b2a830.txt",
+      "context": "Ransom note name distributed via SMB.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".b2a830",
+      "context": "File extension added to the names of encrypted files.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "104.194.10.170",
+      "context": "Exfiltration server, a likely ReliableSite Bare Metal server.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "5000",
+      "context": "TCP port for data exfiltration via HTTP POSTs.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

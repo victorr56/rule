@@ -1,0 +1,25 @@
+title: Lazarus Group C2 IP Connection
+id: f5493018-8f83-49d7-8e6f-124b6e51240c
+status: experimental
+description: Detects network connections to IP addresses known to be used by the Lazarus Group for command and control.
+references:
+    - https://www.group-ib.com/blog/lazarus/
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '210.52.109.22'
+            - '175.45.178.222'
+            - '175.45.178.19'
+            - '175.45.178.97'
+    condition: selection
+falsepositives:
+    - These IPs could be reallocated to benign services over time, though they are from a specific North Korean IP block.
+level: high

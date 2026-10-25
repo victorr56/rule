@@ -1,0 +1,32 @@
+title: Suspicious Load of EaseUS Driver
+id: d178b54e-a61f-490b-99f5-7037f59bb7fc
+status: experimental
+description: >-
+  Detects the loading of the legitimate EaseUS Partition Manager driver 'epmntdrv.sys' by an
+  unexpected process. Malware such as HERMETICWIPER abuses this signed driver to gain raw
+  disk access. This rule filters for known legitimate EaseUS processes.
+references:
+  - https://www.elastic.co/security-labs/threat-command/elastic-protects-against-data-wiper-malware-targeting-ukraine-hermeticwiper
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+  - attack.privilege_escalation
+  - attack.t1068
+  - detection.threat_hunting
+logsource:
+  category: image_load
+  product: windows
+detection:
+  selection:
+    ImageLoaded|endswith: '\epmntdrv.sys'
+    Company: 'CHENGDU YIWO Tech Development Co., Ltd.'
+  filter:
+    Image|endswith:
+      - '\EPMaint.exe'
+      - '\ep_setup.exe'
+      - '\Loader.exe'
+      - '\epm.exe'
+  condition: selection and not filter
+falsepositives:
+  - Legitimate EaseUS executables not included in the filter. This may require tuning based on the specific version of the software in use.
+level: medium

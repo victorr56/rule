@@ -1,0 +1,22 @@
+title: Lazarus Server_RAT C2 Activity
+id: 5790b48c-1e82-4217-bbd3-6379f64e2671
+status: experimental
+description: Detects network connections from the Lazarus Server_RAT component on its default C2 port 3365.
+references:
+    - https://www.group-ib.com/blog/lazarus/
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\Server_RAT.exe'
+        DestinationPort: 3365
+    condition: selection
+falsepositives:
+    - Other legitimate or malicious software using the same port in conjunction with a process not named "Server_RAT.exe".
+level: high

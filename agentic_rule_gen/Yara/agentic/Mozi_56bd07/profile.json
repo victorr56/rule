@@ -1,0 +1,217 @@
+{
+  "malware_family": "Mozi",
+  "threat_actor": "",
+  "platforms": [
+    "linux",
+    "network_device"
+  ],
+  "summary": "Mozi is a P2P botnet that has been active since at least 2019, targeting vulnerable Internet of Things (IoT) devices. It spreads by exploiting weak/default credentials and unpatched vulnerabilities, and infected devices are used to propagate the malware further. Mozi samples are often packed with a modified version of UPX to hinder analysis.",
+  "mitre_techniques": [
+    "T1027"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "hex_pattern",
+      "value": "{ 55 50 58 21 ?? ?? ?? ?? 00 00 00 00 00 00 00 00 00 00 00 00 }",
+      "context": "YARA pattern for Mozi's corrupted UPX header, with 12 zeroed bytes.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "UPX",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "iptables -I OUTPUT -p udp --source-port %d -j ACCEPT",
+      "context": "String for firewall rule modification command.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "iptables -I PREROUTING  -t nat -p udp --destination-port %d -j ACCEPT",
+      "context": "String for firewall rule modification command.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "iptables -I POSTROUTING -t nat -p udp --source-port %d -j ACCEPT",
+      "context": "String for firewall rule modification command.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "iptables -I INPUT  -p udp --dport %d -j ACCEPT",
+      "context": "String for firewall rule modification command.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[idp]",
+      "context": "Hardcoded string found in unpacked sample.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "This node doesn't accept announces",
+      "context": "Hardcoded string related to DHT functionality.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "v2s",
+      "context": "Hardcoded string found in unpacked sample.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "NfZ",
+      "context": "Hardcoded string found in unpacked sample.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Oo~Mn",
+      "context": "Hardcoded string found in unpacked sample.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "g5=",
+      "context": "Hardcoded string found in unpacked sample.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "N]%",
+      "context": "Hardcoded string found in unpacked sample.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "HTTP/1.1 200 OK\r\nServer: nginx\r\nContent-Length: *\r\nConnection: close\r\nContent-Type: application/zip",
+      "context": "Shodan query for identifying payload-hosting servers based on HTTP response.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dht.transmissionbt.com:6881",
+      "context": "Hardcoded DHT bootstrap node.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "router.bittorrent.com:6881",
+      "context": "Hardcoded DHT bootstrap node.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "router.utorrent.com:6881",
+      "context": "Hardcoded DHT bootstrap node.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bttracker.debian.org:6881",
+      "context": "Hardcoded DHT bootstrap node.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Server: nginx",
+      "context": "HTTP response header from payload-hosting server on infected device.",
+      "specificity": "low",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Content-Type: application/zip",
+      "context": "HTTP response header from payload-hosting server on infected device.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Absence of HTTP Date Header",
+      "context": "Characteristic of HTTP response from payload-hosting server on infected device.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "6000",
+      "context": "Dominant TCP port observed in C2 data.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "832fb4090879c1bebe75bea939a9c5724dbf87898febd425f94f7e03ee687d3b",
+      "description": "UPX-packed Mozi ELF sample for ARM with corrupted header."
+    }
+  ],
+  "file_types": [
+    "elf"
+  ]
+}

@@ -1,0 +1,26 @@
+title: Sliver Implant Execution from PAN-OS Font Path
+id: 541f5da3-9b16-410a-85d1-3b7c4d03e5c9
+status: experimental
+description: Detects the execution of a Sliver implant staged in a font-related path on a Palo Alto Networks device, a TTP observed in post-exploitation of CVE-2024-0012.
+references:
+    - https://www.wiz.io/blog/cve-2024-0012-pan-os-vulnerability-exploited-in-the-wild
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.execution
+    - attack.t1203
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/usr/local/lib/gps/portal/fonts/Latte-Regular.woff'
+        ParentImage|endswith:
+            - '/bin/sh'
+            - '/usr/bin/sh'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

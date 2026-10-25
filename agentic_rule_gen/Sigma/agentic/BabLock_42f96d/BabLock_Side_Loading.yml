@@ -1,0 +1,22 @@
+title: BabLock Side-Loading via Palo Alto cydump.exe
+id: 288ff63e-324e-4baf-8469-c6e3b5e4c0d0
+status: experimental
+description: Detects the BabLock ransomware side-loading 'winutils.dll' via a legitimate Palo Alto 'cydump.exe' executable, which is renamed to 'cy.exe'.
+references:
+    - https://www.group-ib.com/blog/bablock-ransomware/
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.defense_evasion
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cy.exe'
+        ImageLoaded|endswith: '\winutils.dll'
+    condition: selection
+falsepositives:
+    - Unlikely, as this combination of a renamed executable and a specific DLL is unique to this attack.
+level: high

@@ -1,0 +1,22 @@
+title: BabLock Ransomware Note Creation
+id: c8635824-de52-4752-9447-0e9e4f553f47
+status: experimental
+description: Detects the creation of the BabLock ransomware note file "_r_e_a_d_m_e.txt", typically by a process masquerading as node.exe.
+references:
+    - https://www.group-ib.com/blog/bablock-ransomware/
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.impact
+    - attack.t1486
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\_r_e_a_d_m_e.txt'
+        Image|endswith: '\node.exe'
+    condition: selection
+falsepositives:
+    - Legitimate node.js applications creating a file with this name.
+level: high

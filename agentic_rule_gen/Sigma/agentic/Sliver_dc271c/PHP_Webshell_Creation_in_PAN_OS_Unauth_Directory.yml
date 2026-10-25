@@ -1,0 +1,22 @@
+title: PHP Webshell Creation in PAN-OS Unauth Directory
+id: 48f95c5d-0d6d-4767-9c98-4cf53d9e8790
+status: experimental
+description: Detects the creation of PHP files in a directory used by attackers to drop webshells after exploiting PAN-OS vulnerabilities like CVE-2024-0012.
+references:
+    - https://www.wiz.io/blog/cve-2024-0012-pan-os-vulnerability-exploited-in-the-wild
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.persistence
+    - attack.t1505.003
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: '/var/appweb/htdocs/unauth/'
+        TargetFilename|endswith: '.php'
+    condition: selection
+falsepositives:
+    - 'This rule detects file creation in a Linux path. It is written for a Windows logsource as a generic representation and may need to be adapted for specific Linux file monitoring solutions.'
+level: high

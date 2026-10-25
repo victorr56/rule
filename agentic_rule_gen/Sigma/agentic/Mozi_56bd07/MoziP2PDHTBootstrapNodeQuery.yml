@@ -1,0 +1,25 @@
+title: Mozi Botnet P2P DHT Bootstrap Node Query
+id: c383c27e-ba5e-4404-b9c1-7f0d04005aa2
+status: experimental
+description: Detects DNS queries for hardcoded DHT bootstrap nodes used by the Mozi botnet for its P2P communication.
+references:
+    - https://www.elastic.co/security-labs/threat-command/collecting-and-operationalizing-threat-data-from-the-mozi-botnet
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'dht.transmissionbt.com'
+            - 'router.bittorrent.com'
+            - 'router.utorrent.com'
+            - 'bttracker.debian.org'
+    condition: selection
+falsepositives:
+    - Legitimate use of BitTorrent clients. This activity is anomalous on servers and IoT devices.
+level: medium

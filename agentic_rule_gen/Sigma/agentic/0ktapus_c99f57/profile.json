@@ -1,0 +1,320 @@
+{
+  "malware_family": "0ktapus",
+  "threat_actor": "Scattered Spider",
+  "platforms": [
+    "web"
+  ],
+  "summary": "0ktapus (Scattered Spider) is a financially motivated threat actor known for using sophisticated social engineering and phishing to gain initial access. Their campaigns leverage numerous phishing kits and web page templates with distinct characteristics, which are used to mimic legitimate login pages and harvest credentials. The actor frequently reuses infrastructure and targets organizations in the IT, finance, and insurance sectors.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/bundles/modernizr",
+      "context": "File path observed in phishing pages using DOM Template A.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Scripts/jquery-2.2.3.min.js",
+      "context": "Script path observed in phishing pages using DOM Template A.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CMS Dashboard Login",
+      "context": "Page title used by phishing pages with DOM Template A.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "height\"",
+      "context": "Syntax error in image tag from a bug in the phishing kit (Template A).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "someone@bt.com",
+      "context": "Example placeholder attribute in DOM Template A.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "factor.html",
+      "context": "File name for 2FA page redirect in DOM Template B.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "factor.php",
+      "context": "Form submission target in DOM Template B.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "_nuxt",
+      "context": "Keyword found in image tags within DOM Template C.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Poll.js",
+      "context": "Script file name used in DOM Template D.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "${credential}:${password}",
+      "context": "Template string found in DOM Template D.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "authorization.php",
+      "context": "File name used in DOM Template J.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "index-CDmh8I23.js",
+      "context": "Unique script file name from DOM Template K.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "index-aNURsHR-.css",
+      "context": "Unique CSS file name from DOM Template K.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "discoveryIframe-82e613074a3700abe11a.min.js.download",
+      "context": "Replicated JavaScript asset from legitimate site found on phishing page.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "fs0j3qtrrcYDqTZYW0x7.png",
+      "context": "Original name of a replicated logo image used for pivoting.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/WebResource.axd?d=pynGkmcFUV13He1Qd6_TZLoUdzwz5K_EBm8AWI6FxtTYIwM2mR9JkVPmU9lmAROI48C_2gf57cT3vej31U2u1A2&t=637814660020000000",
+      "context": "Unique script src value in phishing pages using DOM Template A.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ns3.my-ndns.com",
+      "context": "Nameserver used to register phishing domains.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/login/identifier",
+      "context": "POST target for credential submission in DOM Template E.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "../tmo/data/login.php",
+      "context": "Path for POSTing victim data in DOM Template H.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "files/common.php",
+      "context": "Path for POSTing victim response in DOM Template J.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "revolut-ticket.com",
+      "context": "Example phishing domain using DOM Template A.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gemini-sso.com",
+      "context": "Example phishing domain using DOM Template B.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dashboard-mailgun.com",
+      "context": "Phishing domain that revealed DOM Template E.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mgmresorts-okta.com",
+      "context": "Example phishing domain using DOM Template F.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "calendar-dd.com",
+      "context": "Example phishing domain using DOM Template G.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "t-mobile-okta.com",
+      "context": "Example phishing domain using DOM Template H.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "nike-support.com",
+      "context": "Phishing page hosting replicated assets from a legitimate site.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "login.doordash-support.com",
+      "context": "Phishing domain identified by pivoting on a replicated image hash.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "okta",
+      "context": "Common keyword used in typosquatted phishing domains.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "sso",
+      "context": "Common keyword used in typosquatted phishing domains.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "fb1d07ab6c54c7380a93a507b48bc5ba0aee77ca32b7d4c57c38f007857a6fd1",
+      "description": "SHA256 hash of a phishing page's DOM, defined as Template F."
+    },
+    {
+      "sha256": "95a0eca17ee49bebb333bbb1c96ab54ed361c2f233b2adf8c4374814c633a53b",
+      "description": "SHA256 hash of a phishing page's DOM, defined as Template G."
+    },
+    {
+      "sha256": "69b575025bd763e58fcb95035b9b6e358f43737d91e01ebdaa19934e0206a966",
+      "description": "SHA256 hash of the authorization.php file from DOM Template J."
+    },
+    {
+      "sha256": "98ca25eef00efcafee4f9cb07908776d0ad976296a5e6eb07a724c31ae4bfc61",
+      "description": "SHA256 hash of a phishing page's DOM, defined as Template L."
+    },
+    {
+      "sha256": "dd4782fc37ada8c2411fd65877eb3c3199aa67224ffa6c65b81c2e4b8658f727",
+      "description": "SHA256 hash of a replicated company logo (fs0j3qtrrcYDqTZYW0x7.png) used to pivot to phishing domains."
+    },
+    {
+      "sha256": "f8b7bb31e7e8c574d74e52eba7dcf3de48c7f5fa6d39d64685d39355d688defb",
+      "description": "A DOM sample uploaded to VirusTotal, characteristic of DOM Template A."
+    },
+    {
+      "sha256": "5dd491b89daadabfe8419d5d1e436a6dd9b4eea25fc4ba5898e6a1bca34f06e9",
+      "description": "A DOM sample uploaded to VirusTotal, characteristic of DOM Template A."
+    },
+    {
+      "sha256": "46e7cf1fb46a73f098fa6f0f46732bdd298af690ec1452fac9b97884ca8b5a39",
+      "description": "A DOM sample uploaded to VirusTotal, characteristic of DOM Template A."
+    }
+  ],
+  "file_types": [
+    "script"
+  ]
+}

@@ -1,0 +1,23 @@
+title: Scattered Spider/0ktapus Phishing Kit Asset Request (Template K)
+id: ffa8f5c9-d91d-4072-aa6d-f0b2da82b810
+status: experimental
+description: Detects HTTP requests for specific and unique JS/CSS filenames associated with the 0ktapus/Scattered Spider phishing kit (Template K).
+references:
+    - https://www.wiz.io/blog/unmasking-phishing-strategies-for-identifying-0ktapus-domains
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        http.method: 'GET'
+        Url.Original|endswith:
+            - '/index-CDmh8I23.js'
+            - '/index-aNURsHR-.css'
+    condition: selection
+falsepositives:
+    - Unlikely due to the high specificity of the filenames.
+level: high

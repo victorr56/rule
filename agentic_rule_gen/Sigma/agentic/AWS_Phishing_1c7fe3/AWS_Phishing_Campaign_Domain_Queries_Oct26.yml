@@ -1,0 +1,27 @@
+title: AWS Phishing Campaign Domain Queries (2026-10)
+id: 593a8637-88ab-41c3-a3b0-75d11de44548
+status: experimental
+description: Detects DNS queries for domains associated with a phishing campaign targeting AWS users.
+references:
+    - https://www.wiz.io/blog/emerging-phishing-campaign-targeting-aws-accounts
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.initial_access
+    - attack.t1566
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'consoleportal.tech'
+            - 'officequalcomm.com'
+            - 'webportal.tech'
+            - 'docshare.tech'
+            - 'signin.aws.amaonz.com'
+            - 'signin.aws.hashcrp.in'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

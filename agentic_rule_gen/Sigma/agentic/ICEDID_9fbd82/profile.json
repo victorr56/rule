@@ -1,0 +1,162 @@
+{
+  "malware_family": "ICEDID",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "ICEDID is a banking trojan that uses a Gzip-masquerading variant for initial payload delivery. The malware unpacks an encrypted core binary and configuration file, which contains C2 domains and a specific beacon URI, to deploy its primary modules like browser hooking payloads.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "UponBetter/license.dat",
+      "context": "Path to the encrypted core binary extracted from the fake Gzip file.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "lake_x32.tmp",
+      "context": "The persistence loader (stage 2) extracted from the fake Gzip file.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "configuration.bin",
+      "context": "The encrypted configuration file extracted from the fake Gzip file.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "license.dat",
+      "context": "The encrypted core binary file dropped to disk.",
+      "specificity": "medium",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "UponBetter",
+      "context": "Directory created by the first stage to store the core binary.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "browser_hook_payload_0.cpe",
+      "context": "x64 browser hook payload extracted from the core binary.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "browser_hook_payload_1.cpe",
+      "context": "x86 browser hook payload extracted from the core binary.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 1F 8B 08 }",
+      "context": "GZip magic bytes used to masquerade the initial payload.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "129",
+      "context": "Size of garbage bytes at the start of the decrypted core binary.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "#1",
+      "context": "Ordinal export used as the entry point of the persistence loader.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "alishaskainz.com",
+      "context": "C2 domain from decrypted configuration.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "villageskaier.com",
+      "context": "C2 domain from decrypted configuration.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/news/",
+      "context": "Beaconing URI from decrypted configuration.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x3B7D6BA4",
+      "context": "Botnet ID from decrypted configuration.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x00000038",
+      "context": "Auth var from decrypted configuration.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "54d064799115f302a66220b3d0920c1158608a5ba76277666c4ac532b53e855f",
+      "description": "ICEDID Gzip variant dropper."
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

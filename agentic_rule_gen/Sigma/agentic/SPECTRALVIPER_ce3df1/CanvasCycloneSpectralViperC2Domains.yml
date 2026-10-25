@@ -1,0 +1,26 @@
+title: Canvas Cyclone SPECTRALVIPER C2 Domains
+id: 97ac7b12-1f41-4775-b6d4-86a079234190
+status: experimental
+description: Detects DNS queries for domains associated with Canvas Cyclone's SPECTRALVIPER C2 infrastructure.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-charms-spectralviper
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'stablewindowsapp.com'
+            - 'webmanufacturers.com'
+            - 'toppaperservices.com'
+            - 'hosting-wordpress-services.com'
+            - 'appointmentmedia.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

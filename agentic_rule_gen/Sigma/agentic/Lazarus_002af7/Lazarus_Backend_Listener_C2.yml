@@ -1,0 +1,22 @@
+title: Lazarus Backend_Listener C2 Activity
+id: 11e5f86c-4ec7-463e-bbba-c335e3b5dd45
+status: experimental
+description: Detects network connections from the Lazarus Backend_Listener component on its default C2 port 9090.
+references:
+    - https://www.group-ib.com/blog/lazarus/
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\Backend_Listener.exe'
+        DestinationPort: 9090
+    condition: selection
+falsepositives:
+    - Port 9090 is commonly used for web proxies and development servers. This rule should be considered high-confidence only due to the specificity of the process name.
+level: high

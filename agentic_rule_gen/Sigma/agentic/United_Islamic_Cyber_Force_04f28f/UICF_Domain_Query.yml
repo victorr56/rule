@@ -1,0 +1,29 @@
+title: United Islamic Cyber Force Associated Domain Query
+id: a19d381c-0e7d-41a4-9411-d007c5763b0a
+status: experimental
+description: Detects DNS queries for domains associated with members of the United Islamic Cyber Force (UICF) hacktivist group.
+references:
+    - https://www.group-ib.com/blog/uicf/
+author: ioc-yara-daily (agentic)
+date: 2023-10-25
+tags:
+    - attack.command_and_control
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'shiro-tenshi.ml'
+            - 'gunz-berry.com'
+            - 'mp3loaded.com.ng'
+            - 'news-ar.com'
+            - 'geek-ar.com'
+            - 'lakhdar-dz.info'
+            - 'lakhdar-dz.net'
+            - 'zishanrider.com'
+    condition: selection
+falsepositives:
+    - Legitimate access to these websites, though unlikely in a corporate environment.
+level: medium

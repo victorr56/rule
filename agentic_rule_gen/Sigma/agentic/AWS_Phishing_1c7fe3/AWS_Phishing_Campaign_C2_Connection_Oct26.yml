@@ -1,0 +1,23 @@
+title: AWS Phishing Campaign C2 Connection (2026-10)
+id: 3c5e884d-282c-4861-8b2c-6de7187a4128
+status: experimental
+description: Detects network connections to IPs associated with a phishing campaign targeting AWS users.
+references:
+    - https://www.wiz.io/blog/emerging-phishing-campaign-targeting-aws-accounts
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.initial_access
+    - attack.t1566
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '162.0.216.98'
+            - '185.170.198.250'
+    condition: selection
+falsepositives:
+    - These IPs belong to hosting providers (Namecheap, Hostinger) and may be reassigned to benign services over time.
+level: medium

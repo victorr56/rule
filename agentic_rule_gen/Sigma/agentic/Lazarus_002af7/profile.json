@@ -1,0 +1,231 @@
+{
+  "malware_family": "Lazarus",
+  "threat_actor": "Lazarus Group",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Lazarus Group, attributed to North Korea, conducts financial espionage and theft targeting global financial institutions. The malware suite is modular, using a three-tier C2 infrastructure with encrypted channels, and components like Server_RAT and Client_RAT for control. They leverage watering hole attacks and legitimate tools like SoftEther VPN, while employing masquerade techniques to complicate attribution.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "process_name",
+      "value": "Server_RAT",
+      "context": "Manages windows-based server infrastructure, part of C2.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "3365",
+      "context": "Server_RAT listening port for C2 connections.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Server_TrafficForwarder",
+      "context": "Forwards traffic between C2 servers.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Client_TrafficForwarder",
+      "context": "Proxies traffic from C2 server to PCs in the local network.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Backend_Listener",
+      "context": "Software on Layer 3 servers, receives commands from admin.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "9090",
+      "context": "Backend_Listener listening port for Admin_Tool.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Admin_Tool",
+      "context": "Admin tool to send commands to infected computers.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Client_RAT",
+      "context": "RAT providing full control over a target system.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Recon",
+      "context": "Backdoor installed initially for reconnaissance.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Loader",
+      "context": "Decrypts and injects payload (Client_RAT).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "Loader -> lsass.exe",
+      "context": "Loader injects Client_RAT or Client_TrafficForwarder into lsass.exe.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "poluchit",
+      "context": "Russian command string in Client_TrafficForwarder module.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Enigma Protector",
+      "context": "Commercial packer used to protect executables.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "wolfSSL",
+      "context": "Open source library used by Backend_Listener for encryption.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "wolfSSL",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "SoftEther VPN",
+      "context": "Legitimate VPN client used for anonymity.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "SoftEther VPN",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "210.52.109.22",
+      "context": "IP from which attack was controlled; linked to North Korea.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "175.45.178.222",
+      "context": "North Korean IP from which attack was controlled.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "175.45.178.19",
+      "context": "IP address used to control Ghost RAT malware (seen on TV report).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "175.45.178.97",
+      "context": "IP address used to control Ghost RAT malware (seen on TV report).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "knf.gov.pl",
+      "context": "Watering hole website (Polish Financial Supervision Authority).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cnvb.gob.mx",
+      "context": "Watering hole website (National Banking and Securities Commission, Mexico).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "brou.com.uy",
+      "context": "Watering hole website (state-owned bank in Uruguay).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "softether.net",
+      "context": "Website for SoftEther VPN client used by actors.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

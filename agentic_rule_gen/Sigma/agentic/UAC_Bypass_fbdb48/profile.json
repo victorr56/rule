@@ -1,0 +1,231 @@
+{
+  "malware_family": "UAC Bypass",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "This threat profile covers techniques used to bypass Windows User Account Control (UAC) for silent privilege escalation. Malware achieves this by hijacking the execution flow of auto-elevating applications through methods like registry manipulation, DLL hijacking, and abuse of elevated COM interfaces. Detections can focus on the specific primitives used or on broader behavioral patterns, such as tracking process token security attributes to identify descendants of auto-elevated processes.",
+  "mitre_techniques": [
+    "T1548.002",
+    "T1134",
+    "T1574.001",
+    "T1053.005"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\*\\shell\\open\\command",
+      "context": "Abused key for redirecting execution flow of elevated programs via default handler.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Environment\\windir",
+      "context": "Manipulated to redirect DLL loads for elevated processes like taskhostw.exe.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "{3AD05575-8857-4850-9277-11B85BDB8E09}",
+      "context": "IFileOperation COM classId seen in dllhost.exe command line for UAC bypass.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wow64log.dll",
+      "context": "Sideloaded into WerFault.exe during UACME method 30 execution.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "UACME",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "npmproxy.dll",
+      "context": "Hijacked DLL loaded by taskhostw.exe during CDSSync scheduled task execution.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "byeintegrity5",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "api-ms-win-core-kernel32-legacy-l1.dll",
+      "context": "Missing dependency for SilentCleanup scheduled task that can be hijacked.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\system32\\*.exe.local\\*",
+      "context": "DLL redirection path pattern targeting system applications.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "comctl32.dll",
+      "context": "Loaded by consent.exe from a malicious .local directory in UACME method 22.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "UACME",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ICMLuaUtil",
+      "context": "Elevated COM Interface abused by DarkSide, LockBit, and TrickBot for UAC bypass.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "LUA://HdAutoAp",
+      "context": "Token security attribute indicating an auto-elevated application.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "LUA://DecHdAutoAp",
+      "context": "Token security attribute for a descendant of an auto-elevated application.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "CurVer",
+      "context": "Subkey used to redirect shell's Default handler, bypassing path-based detections.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "UACME",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "SymbolicLinkValue",
+      "context": "Value name indicating a registry symbolic link, used for evasion.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "UACME",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "*\\System32\\*.dll",
+      "context": "DLL loaded from a path masquerading as system32, but not C:\\Windows\\System32.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "fodhelper.exe",
+      "context": "Auto-elevating binary commonly hijacked for UAC bypass (e.g., by Glupteba).",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "ComputerDefaults.exe",
+      "context": "Execution hijacked by malware like ClipBanker and Quasar RAT for UAC bypass.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "DiskCleanup",
+      "context": "Scheduled task hijacked by RedLine Stealer and Glupteba.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "SilentCleanup",
+      "context": "Scheduled task abused for UAC bypass via file write race or missing dependency.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "DismHost.exe",
+      "context": "Process spawned by hijacked SilentCleanup task, executing from an AppData subfolder.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\*",
+      "context": "Suspicious execution path for a descendant of an auto-elevated process.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\*",
+      "context": "Suspicious execution path for a descendant of an auto-elevated process.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

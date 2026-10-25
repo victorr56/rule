@@ -1,0 +1,57 @@
+title: Mozi Botnet Firewall Rule Modification
+id: 54641619-35c8-4720-94e0-5d660e5095d3
+status: experimental
+description: Detects firewall rule modification commands characteristic of the Mozi botnet, which adds rules to allow its P2P UDP traffic.
+references:
+    - https://www.elastic.co/security-labs/threat-command/collecting-and-operationalizing-threat-data-from-the-mozi-botnet
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.defense_evasion
+    - attack.t1562.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_input:
+        Image|endswith:
+            - '/iptables'
+            - '/sbin/iptables'
+        CommandLine|contains|all:
+            - '-I INPUT'
+            - '-p udp'
+            - '--dport'
+            - '-j ACCEPT'
+    selection_output:
+        Image|endswith:
+            - '/iptables'
+            - '/sbin/iptables'
+        CommandLine|contains|all:
+            - '-I OUTPUT'
+            - '-p udp'
+            - '--source-port'
+            - '-j ACCEPT'
+    selection_prerouting:
+        Image|endswith:
+            - '/iptables'
+            - '/sbin/iptables'
+        CommandLine|contains|all:
+            - '-I PREROUTING'
+            - '-t nat'
+            - '-p udp'
+            - '--destination-port'
+            - '-j ACCEPT'
+    selection_postrouting:
+        Image|endswith:
+            - '/iptables'
+            - '/sbin/iptables'
+        CommandLine|contains|all:
+            - '-I POSTROUTING'
+            - '-t nat'
+            - '-p udp'
+            - '--source-port'
+            - '-j ACCEPT'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate firewall modifications for UDP-based services, though this specific combination of chains and arguments is highly suspicious on systems not expected to run P2P software.
+level: high

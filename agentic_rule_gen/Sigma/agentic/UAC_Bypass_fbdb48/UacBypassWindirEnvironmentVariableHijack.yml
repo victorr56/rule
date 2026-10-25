@@ -1,0 +1,26 @@
+title: UAC Bypass Attempt via HKCU windir Environment Variable
+id: c4316886-4e58-45e3-a6cd-4f514b788a1e
+status: experimental
+description: Detects the use of reg.exe to create or modify the 'windir' environment variable under the HKEY_CURRENT_USER registry hive. The legitimate 'windir' variable is a system-level variable. Setting it in the user's hive is a known UAC bypass technique to redirect elevated processes to load DLLs from a malicious path. This rule specifically looks for the command-line execution.
+references:
+    - https://www.elastic.co/security-labs/threat-command/exploring-windows-uac-bypasses-techniques-and-detection-strategies
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1548.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\reg.exe'
+        CommandLine|contains|all:
+            - 'add'
+            - 'HKEY_CURRENT_USER\Environment'
+            - '/v windir'
+    condition: selection
+falsepositives:
+    - Legitimate scripts might use reg.exe to modify this user-level environment variable for testing or specific application needs, but it is highly unusual.
+level: high

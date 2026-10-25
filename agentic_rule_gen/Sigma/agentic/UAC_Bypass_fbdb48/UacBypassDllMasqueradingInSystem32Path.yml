@@ -1,0 +1,26 @@
+title: UAC Bypass Attempt via DLL Path Masquerading
+id: af547b71-3310-4497-8494-b7782b5f5f4b
+status: experimental
+description: Detects the loading of a DLL from a path that includes the string 'System32' but is not the legitimate 'C:\Windows\System32' directory. This is a known technique used in UAC bypasses to trick an elevated application into loading a malicious DLL.
+references:
+    - https://www.elastic.co/security-labs/threat-command/exploring-windows-uac-bypasses-techniques-and-detection-strategies
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1548.002
+    - attack.t1574.001
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        ImageLoaded|contains: '\System32\'
+        ImageLoaded|endswith: '.dll'
+    filter:
+        ImageLoaded|startswith: 'C:\Windows\System32\'
+    condition: selection and not filter
+falsepositives:
+    - Unlikely, but some legitimate installers or applications might create subdirectories that happen to be named 'System32'.
+level: high

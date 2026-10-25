@@ -1,0 +1,29 @@
+title: Canvas Cyclone SPECTRALVIPER DLL Sideloading via Nslookup
+id: f4a7c1b1-2244-4e2b-986c-59530432f837
+status: experimental
+description: Detects the loading of a malicious 'dnsapi.dll' by 'nslookup.exe' from a non-standard directory, a technique used to load SPECTRALVIPER.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-charms-spectralviper
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.defense_evasion
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\nslookup.exe'
+        ImageLoaded|endswith: '\dnsapi.dll'
+    filter_legit:
+        ImageLoaded|startswith:
+            - 'C:\Windows\System32\'
+            - 'C:\Windows\SysWOW64\'
+            - 'C:\Windows\WinSxS\'
+    condition: selection and not filter_legit
+falsepositives:
+    - Unlikely
+level: high

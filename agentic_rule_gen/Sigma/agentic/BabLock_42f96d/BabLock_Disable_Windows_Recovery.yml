@@ -1,0 +1,28 @@
+title: BabLock Disabling Windows Automatic Repair
+id: f45ec260-2646-4c4f-9556-9a3c9424750c
+status: experimental
+description: Detects BabLock ransomware disabling the Windows recovery environment via bcdedit.
+references:
+    - https://www.group-ib.com/blog/bablock-ransomware/
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.impact
+    - attack.t1490
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\bcdedit.exe'
+        CommandLine|contains|all:
+            - '/set'
+            - '{default}'
+            - 'recoveryenabled'
+            - 'No'
+    condition: selection
+falsepositives:
+    - This is a legitimate command, but its use is rare and indicative of potentially malicious or destructive activity.
+level: high

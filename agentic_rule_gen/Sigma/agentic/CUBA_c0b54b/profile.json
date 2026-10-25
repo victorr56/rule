@@ -1,0 +1,286 @@
+{
+  "malware_family": "CUBA",
+  "threat_actor": "CUBA",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "CUBA is a Windows ransomware that encrypts local and network shares, controlled via command-line arguments. It terminates specific processes and services before encrypting files with ChaCha20/RSA and adding a '.cuba' extension, leaving behind a ransom note.",
+  "mitre_techniques": [
+    "T1486",
+    "T1135",
+    "T1057",
+    "T1562.001",
+    "T1070.004",
+    "T1027.002",
+    "T1016",
+    "T1614.001",
+    "T1134"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "config_marker",
+      "value": "FIDEL.CA",
+      "context": "Header string/magic bytes for encrypted files.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "!! READ ME !!.txt",
+      "context": "Ransom note file name.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".cuba",
+      "context": "File extension appended to encrypted files.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Good day. All your files are encrypted. For decryption contact us.",
+      "context": "Ransom note content.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "We also inform that your databases, ftp server and file server were downloaded by us to our servers.",
+      "context": "Ransom note content.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "c:\\system32\\cmd.exe c/ del PATH_TO_BINARY",
+      "context": "Self-deletion command if Russian language is present.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "network",
+      "context": "Argument to encrypt network shares from ARP table.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "local",
+      "context": "Argument to encrypt all local volumes.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "sqlservr.exe",
+      "context": "Hardcoded process to be terminated.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "outlook.exe",
+      "context": "Hardcoded process to be terminated.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Microsoft.Exchange.Store.Worker.exe",
+      "context": "Hardcoded process to be terminated.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "MSSQLSERVER",
+      "context": "Hardcoded service to be terminated.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "SQLWriter",
+      "context": "Hardcoded service to be terminated.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "MSExchangeIS",
+      "context": "Hardcoded service to be terminated.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "vmms",
+      "context": "Hardcoded service to be terminated.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\program files\\microsoft office\\",
+      "context": "Directory excluded from encryption.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\program files (x86)\\microsoft office\\",
+      "context": "Directory excluded from encryption.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 8B 06 81 38 46 49 44 45 75 ?? 81 78 04 4C 2E 43 41 74 }",
+      "context": "YARA pattern checking for encrypted file marker \"FIDEL.CA\".",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "wc_InitRsaKey",
+      "context": "WolfSSL function for RSA key initialization.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "WolfSSL",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "wc_RsaPublicKeyDecode",
+      "context": "WolfSSL function to decode DER public key.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "WolfSSL",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "wc_RNG_GenerateBlock",
+      "context": "WolfSSL function to generate ChaCha20 key/IV.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "WolfSSL",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "http://cuba4ikm4jakjgmkezytyawtdgr2xymvy6nvzgw5cglswg3si76icnqd.onion/",
+      "context": "Tor leak site in ransom note.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "waterstatus@cock.li",
+      "context": "Contact email in ransom note.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "admin@encryption-support.com",
+      "context": "Reserve contact email in ransom note.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "cuba_support@exploit.im",
+      "context": "Contact Jabber ID in ransom note.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "0f385cc69a93abeaf84994e7887cb173e889d309a515b55b2205805bdfe468a3",
+      "description": "CUBA Ransomware (Packed)"
+    },
+    {
+      "sha256": "3654af86dc682e95c811e4fd87ea405b627bca81c656f3a520a4b24bf2de879f",
+      "description": "CUBA Ransomware (Unpacked)"
+    },
+    {
+      "sha256": "32beefe2c5e28e87357813c0ef91f47b631a3dff4a6235256aa123fc77564346",
+      "description": "CUBA Ransomware"
+    },
+    {
+      "sha256": "bcf0f202db47ca671ed6146040795e3c8315b7fb4f886161c675d4ddf5fdd0c4",
+      "description": "CUBA Ransomware"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

@@ -1,0 +1,23 @@
+title: BabLock GPO-Based Scheduled Task Creation
+id: 5e638e4a-115f-402c-a0e2-e1d51a66e4a2
+status: experimental
+description: Detects the creation of scheduled tasks used by BabLock for lateral movement and execution, pushed via GPO. The task names follow a specific pattern like '1_MMdd_Services' or '2_MMdd_cy.exe'.
+references:
+    - https://www.group-ib.com/blog/bablock-ransomware/
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.execution
+    - attack.t1053.005
+    - attack.lateral_movement
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\'
+        TargetObject|re: '\\[12]_[0-1][0-9][0-3][0-9]_(Services|cy\.exe)$'
+    condition: selection
+falsepositives:
+    - Unlikely due to the specific and unusual task name pattern.
+level: high

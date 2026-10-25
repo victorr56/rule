@@ -1,0 +1,75 @@
+{
+  "malware_family": "Sliver",
+  "threat_actor": "Opportunistic Actors",
+  "platforms": [
+    "linux",
+    "network_device"
+  ],
+  "summary": "Opportunistic actors are exploiting PAN-OS vulnerabilities CVE-2024-0012 and CVE-2024-9474 for unauthenticated remote code execution. Post-exploitation activity includes deploying simple PHP web shells, Sliver implants, and crypto miners. A specific Sliver implant has been observed communicating with a C2 at 77.221.158.154.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/var/appweb/htdocs/unauth/",
+      "context": "Directory where random-named PHP webshells are dropped post-exploitation.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<?php eval($_POST[1]); ?>",
+      "context": "Simple PHP webshell content found on compromised devices.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "global-protect/portal/fonts/Latte-Regular.woff",
+      "context": "Path on compromised PAN-OS devices used to stage Sliver implants.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "watchTowr.php",
+      "context": "Filename from a public PoC exploit, indicating actor may be repurposing it.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "77.221.158.154",
+      "context": "C2 address for a specific Sliver implant.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "censysinspect.com",
+      "context": "Domain that previously resolved to the Sliver C2 IP address.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "elf",
+    "script"
+  ]
+}

@@ -1,0 +1,25 @@
+title: UAC Bypass Attempt via DismHost Execution from Non-System Location
+id: 59e218fc-032a-436f-b1e8-78c642646271
+status: experimental
+description: Detects the execution of 'DismHost.exe' from a location other than the default 'C:\Windows\System32\' when spawned by 'cleanmgr.exe'. This is a specific behavior associated with the UAC bypass technique abusing the 'SilentCleanup' scheduled task, where a copy of 'DismHost.exe' is executed from a user-writable location.
+references:
+    - https://www.elastic.co/security-labs/threat-command/exploring-windows-uac-bypasses-techniques-and-detection-strategies
+author: ioc-yara-daily (agentic)
+date: 2024-05-20
+tags:
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1548.002
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '\DismHost.exe'
+        ParentImage|endswith: '\cleanmgr.exe'
+    filter:
+        Image|startswith: 'C:\Windows\System32\'
+    condition: selection and not filter
+falsepositives:
+    - Unlikely
+level: high

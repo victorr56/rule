@@ -1,0 +1,28 @@
+title: BabLock Buggy WMIC Shadow Copy Deletion Attempt
+id: a7d057a6-fe2c-4977-bc6d-cae1296c00d5
+status: experimental
+description: Detects a buggy attempt by BabLock ransomware to delete shadow copies using WMIC without the 'DELETE' argument.
+references:
+    - https://www.group-ib.com/blog/bablock-ransomware/
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+    - attack.impact
+    - attack.t1490
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\wmic.exe'
+        CommandLine|contains|all:
+            - 'SHADOWCOPY'
+            - '/nointeractive'
+    filter:
+        CommandLine|contains: ' DELETE'
+    condition: selection and not filter
+falsepositives:
+    - Unlikely, as the command is malformed for its likely intent and will fail.
+level: high

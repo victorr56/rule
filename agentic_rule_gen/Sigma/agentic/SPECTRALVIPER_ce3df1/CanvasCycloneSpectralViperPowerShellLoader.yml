@@ -1,0 +1,26 @@
+title: Canvas Cyclone PowerShell SPECTRALVIPER Loader
+id: 59a1cf6a-0430-4c17-91a5-8e6f1f456c64
+status: experimental
+description: Detects a specific PowerShell command line used by Canvas Cyclone to iterate through exports of the SPECTRALVIPER DLL.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-charms-spectralviper
+author: ioc-yara-daily (agentic)
+date: 2026-10-25
+tags:
+    - attack.execution
+    - attack.t1059.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'for($i=0; $i -lt 20; $i++)'
+            - 'rundll-ng'
+            - '.dll'
+            - '"#$i"'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
