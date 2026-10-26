@@ -1,0 +1,29 @@
+title: SeleniumGreed Miner or Runner Download
+id: 9c01777d-c2f8-4fc5-998e-4a6c6c57d76f
+status: experimental
+description: Detects the download of the XMRig miner ('xm') or its runner script ('wxm') to the /bin directory, a behavior observed in the SeleniumGreed campaign.
+references:
+    - https://www.wiz.io/blog/seleniumgreed-cryptomining-exploit-attack-flow-remediation-steps
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_xm:
+        Image|endswith: '/curl'
+        CommandLine|contains|all:
+            - '-o /bin/xm'
+            - '/xm2'
+    selection_wxm:
+        Image|endswith: '/curl'
+        CommandLine|contains|all:
+            - '-o /bin/wxm'
+            - '/wxm'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

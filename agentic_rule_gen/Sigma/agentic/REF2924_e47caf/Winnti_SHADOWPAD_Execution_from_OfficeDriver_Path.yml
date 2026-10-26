@@ -1,0 +1,23 @@
+title: Winnti SHADOWPAD Execution From OfficeDriver Path
+id: 9fae5e6e-6701-443b-a25e-04f87a6c2fa2
+status: experimental
+description: Detects the execution of svchost.exe from the C:\ProgramData\OfficeDriver\ directory, a known path used by the SHADOWPAD malware associated with the Winnti group.
+references:
+    - https://www.elastic.co/security-labs/threat-command/update-to-the-REF2924-intrusion-set-and-related-campaigns
+author: ioc-yara-daily (agentic)
+date: 2024-07-24
+tags:
+    - attack.execution
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\svchost.exe'
+        Image|contains: '\ProgramData\OfficeDriver\'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

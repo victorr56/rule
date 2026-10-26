@@ -1,0 +1,22 @@
+title: WAVESHAPER PowerShell Masquerading as Windows Terminal
+id: 42ab3c13-a444-42b1-b9a3-a8019b884d69
+status: experimental
+description: Detects the execution of a masquerading PowerShell instance named 'wt.exe' from the 'ProgramData' folder, as used by the WAVESHAPER malware.
+references:
+    - https://www.elastic.co/security-labs/threat-command/axios-one-rat-to-rule-them-all
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.t1036.005
+    - attack.t1059.001
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image: 'C:\ProgramData\wt.exe'
+        OriginalFileName: 'PowerShell.exe'
+    condition: selection
+falsepositives:
+    - The legitimate 'wt.exe' (Windows Terminal) is not located in 'C:\ProgramData' and will not have 'PowerShell.exe' as its original file name.
+level: critical

@@ -1,0 +1,22 @@
+title: PRT-Scan Temporary Workflow File Creation via API
+id: c5d6b412-1f48-4394-857c-fe71b87fc153
+status: experimental
+description: Detects the GitHub API call used to create a temporary workflow file, a key step in the prt-scan supply chain attack.
+references:
+    - https://www.wiz.io/blog/six-accounts-one-actor-inside-the-prt-scan-supply-chain-campaign
+author: ioc-yara-daily (agentic)
+date: 2024-05-22
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.t1195.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        cs-method: 'PUT'
+        Url|contains: '/contents/.github/workflows/.prt_tmp_'
+    condition: selection
+falsepositives:
+    - Legitimate tools that might use a similar naming convention for temporary files in GitHub workflows, although highly unlikely.
+level: high

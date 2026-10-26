@@ -1,0 +1,311 @@
+{
+  "malware_family": "prt-scan",
+  "threat_actor": "ezmtebo",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "prt-scan is an automated supply chain attack targeting GitHub Actions. The actor uses AI-generated, language-aware payloads injected via misconfigured `pull_request_target` workflows to steal secrets and probe cloud metadata. Exfiltration occurs through Base64-encoded data in workflow logs and pull request comments.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "prt-scan-",
+      "context": "Prefix for malicious branch names, e.g., prt-scan-{12-hex-chars}.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ci: update build configuration",
+      "context": "Title of malicious pull requests.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Automated build configuration update.",
+      "context": "Body of malicious pull requests.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "==PRT_EXFIL_START_",
+      "context": "Payload marker in workflow logs.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "==PRT_RECON_START_",
+      "context": "Payload marker in workflow logs.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "==PRT_HARVEST_START_",
+      "context": "Payload marker in workflow logs.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PRT_GIT_AUTH",
+      "context": "Payload marker in workflow logs.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".PHONY: __prt_exfil",
+      "context": "Malicious Makefile target used in early waves.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".github/prt_exfil.sh",
+      "context": "Path to a 351-line raw bash script payload.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".github/workflows/.prt_tmp_",
+      "context": "Prefix for temporary workflow file created by DISPATCH stage.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "(env; echo \"PRT_GIT_AUTH=$(git config --get-all http.https://github.com/.extraheader 2> /dev/null || true)\") | gzip -c | base64",
+      "context": "EXFIL stage command to dump env vars and git token.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "secrets\\.([A-Za-z_][A-Za-z0-9_]*)",
+      "context": "Regex used in DISPATCH stage to find secret references in workflows.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "label\\.name\\s*==\\s*[\"']([^\"']+)[\"']",
+      "context": "Regex used in LABEL_BYPASS stage to find label-gated conditions.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/proc/{pid}/environ",
+      "context": "File scanned by DELAYED stage to find secrets in process environments.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DEEPSEEK",
+      "context": "Keyword searched in process environments by DELAYED stage.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "COHERE",
+      "context": "Keyword searched in process environments by DELAYED stage.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AWS_SECRET",
+      "context": "Keyword searched in process environments by DELAYED stage.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ezmtebo",
+      "context": "Attacker GitHub account.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "69tf420",
+      "context": "Attacker GitHub account.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "testedbefore",
+      "context": "Attacker GitHub account.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "@codfish/eslint-config",
+      "context": "Compromised npm package name.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "@codfish/actions",
+      "context": "Compromised npm package name.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0.0.0-PR-",
+      "context": "Version prefix of compromised npm packages.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "python-requests/2.32.5",
+      "context": "User-Agent for attacker HTTP requests.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://169.254.169.254/latest/meta-data/iam/",
+      "context": "RECON stage probe of AWS metadata service.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://169.254.169.254/metadata/instance",
+      "context": "RECON stage probe of Azure metadata service.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://metadata.google.internal/",
+      "context": "RECON stage probe of GCP metadata service.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/actions/secrets",
+      "context": "GitHub API path for enumerating repository secrets.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/actions/organization-secrets",
+      "context": "GitHub API path for enumerating organization secrets.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/repos/$REPO/labels",
+      "context": "GitHub API path for creating/applying labels.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/contents/.github/workflows/.prt_tmp_",
+      "context": "GitHub API path prefix for creating temporary workflow file.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

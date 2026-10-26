@@ -1,0 +1,23 @@
+title: LOBSHOT Malware Module Dropped
+id: 84a7541f-8278-4384-93c4-ec036a16174a
+status: experimental
+description: Detects the creation of LOBSHOT malware module files in the C:\ProgramData directory.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-security-labs-discovers-lobshot-malware
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\ProgramData\hmr_'
+        TargetFilename|endswith: '.dat'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: medium

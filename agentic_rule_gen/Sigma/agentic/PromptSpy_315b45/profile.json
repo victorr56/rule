@@ -1,0 +1,233 @@
+{
+  "malware_family": "PromptSpy",
+  "threat_actor": "",
+  "platforms": [
+    "android"
+  ],
+  "summary": "PromptSpy is an Android malware family that leverages Google's Gemini generative AI to achieve persistence by dynamically navigating the UI to lock itself in the recent apps list. Its primary purpose is to deploy a VNC module for remote device control, and it also features capabilities for data theft, screen recording, and anti-removal via invisible overlays.",
+  "mitre_techniques": [
+    "T1398",
+    "T1541",
+    "T1516",
+    "T1417.002",
+    "T1426",
+    "T1418",
+    "T1513",
+    "T1663",
+    "T1521.001",
+    "T1646"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "You are an Android automation assistant. The user will give you the UI XML data of the current screen. You need to analyze the XML and output operation instructions in JSON format to achieve the user's goal.",
+      "context": "Start of the hardcoded initial prompt sent to the Gemini API.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "User Goal: Lock the current MorganArgs app in the recent apps list.",
+      "context": "Part of the hardcoded prompt sent to the Gemini API.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "I have accessed the recent apps list. I can see 'MorganArgs' listed in the recent apps. The next step is to long-click on the 'MorganArgs' app card to bring up the options menu, which should include an option to lock it.",
+      "context": "Example of Gemini 'reasoning' text based on malware's goal.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "MorganArg",
+      "context": "The application name displayed to the user, mimicking Chase Bank.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "app-release.apk",
+      "context": "Filename of the PromptSpy payload embedded in the dropper's asset directory.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "stop",
+      "context": "Substring used to identify buttons to block with invisible overlays.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "end",
+      "context": "Substring used to identify buttons to block with invisible overlays.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "clear",
+      "context": "Substring used to identify buttons to block with invisible overlays.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Uninstall",
+      "context": "Substring used to identify buttons to block with invisible overlays.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "net.ustexas.myavlive.apk",
+      "context": "Filename of VNCSpy sample from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "nlll4.un7o6.q38l5.apk",
+      "context": "Filename of VNCSpy sample from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ppyzz.dpk0p.ln441.apk",
+      "context": "Filename of VNCSpy sample from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mgappc-1.apk",
+      "context": "Filename of PromptSpy dropper from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mgappm-1.apk",
+      "context": "Filename of PromptSpy dropper from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mgappn-0.apk",
+      "context": "Filename of PromptSpy dropper from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mgappn-1.apk",
+      "context": "Filename of PromptSpy dropper from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "54.67.2.84",
+      "context": "Hardcoded C&C server for VNC communication.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mgardownload.com",
+      "context": "Distribution website for PromptSpy dropper.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "m-mgarg.com",
+      "context": "Phishing website impersonating Chase Bank opened by dropper.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "52.222.205.45",
+      "context": "IP hosting the phishing domain m-mgarg.com.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.21.91.170",
+      "context": "IP hosting the distribution domain mgardownload.com.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "4ee3b09dd9a787ebbb02a637f8af192a7e91d4b7af1515d8e5c21e1233f0f1c7",
+      "description": "Android/Phishing.Agent.M sample, companion app to PromptSpy."
+    }
+  ],
+  "file_types": [
+    "apk"
+  ]
+}

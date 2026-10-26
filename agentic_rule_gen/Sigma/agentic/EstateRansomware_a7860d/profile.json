@@ -1,0 +1,283 @@
+{
+  "malware_family": "EstateRansomware",
+  "threat_actor": "EstateRansomware",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "EstateRansomware gains initial access via a FortiGate SSL VPN using a dormant account. The actors deploy a backdoor, move laterally via RDP, and exploit CVE-2023-27532 in Veeam to create a rogue SQL account. After discovery and credential harvesting with tools like AdFind and Nirsoft utilities, they disable Windows Defender and deploy the ransomware using PsExec.",
+  "mitre_techniques": [
+    "T1078",
+    "T1133",
+    "T1053.005",
+    "T1571",
+    "T1505.001",
+    "T1136.001",
+    "T1555",
+    "T1018",
+    "T1087.002",
+    "T1562.001",
+    "T1204.002",
+    "T1569.002",
+    "T1486",
+    "T1021.001",
+    "T1070.001",
+    "T1070.004",
+    "T1071.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "Acc1",
+      "context": "Dormant username for FortiGate SSL VPN initial access.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "svchost.exe",
+      "context": "Persistent backdoor dropped on failover server.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\TaskCache\\Tree\\svchost.exe",
+      "context": "Scheduled task registry key for backdoor persistence.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\[redacted]\\Downloads\\veeam-creds-main",
+      "context": "Folder containing Veeam credential dumping tool.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "sadshade/veeam-creds",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\[redacted]\\Downloads\\Debug\\Debug\\net6.0\\CVE-2023-27532.exe",
+      "context": "Full path to the Veeam exploit executable.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Horizon3/sfewer-r7 PoC",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\[redacted]\\Downloads\\Debug\\Debug\\Veeamhax",
+      "context": "Folder containing Veeam exploit tool.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Horizon3/sfewer-r7 PoC",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "xp_cmdshell",
+      "context": "SQL Server stored procedure enabled via Veeam exploit.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "VeeamBkp",
+      "context": "Rogue SQL account created after exploitation.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "netscan.exe",
+      "context": "SoftPerfect Netscan used for network discovery.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "SoftPerfect Netscan",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AdFind.exe",
+      "context": "Tool to enumerate domain users from Active Directory.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "joeware.net",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ad_users.txt",
+      "context": "Output file from AdFind execution.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DC.exe",
+      "context": "Defender Control used to disable Windows Defender.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Defender Control",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DC.ini",
+      "context": "Configuration file for Defender Control.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Defender Control",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "LB3.exe",
+      "context": "EstateRansomware payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\PerfLogs\\LB3.exe",
+      "context": "Staging path for EstateRansomware payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\PerfLogs\\PsExec.exe",
+      "context": "Staging path for PsExec utility.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "Sysinternals",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "PSEXESVC",
+      "context": "Service installed by PsExec for remote execution.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Sysinternals",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ChromePass.exe",
+      "context": "Nirsoft tool for recovering Google Chrome passwords.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "NirSoft",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "WebBrowserPassView.exe",
+      "context": "Nirsoft tool for recovering web browser passwords.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "NirSoft",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "mailpv.exe",
+      "context": "Nirsoft tool for recovering email client passwords.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "NirSoft",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "149.28.106.252",
+      "context": "Threat actor IP for initial VPN login.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "149.28.99.61",
+      "context": "Threat actor IP for subsequent VPN connections.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.76.232.205",
+      "context": "Threat actor IP for subsequent VPN connections.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "77.238.245.11",
+      "context": "C2 server for svchost.exe backdoor.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "30001",
+      "context": "C2 port for svchost.exe backdoor, uses HTTP protocol.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://www.joeware.net/freetools/tools/adfind/",
+      "context": "Download URL for AdFind tool.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

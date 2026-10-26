@@ -1,0 +1,22 @@
+title: CikaBika Bot Nim Loader Execution
+id: daf2d2fd-7262-4217-bc45-e6a8d672d5b6
+status: experimental
+description: Detects the execution of the CikaBika Bot's Nim-based loader from a temporary file.
+references:
+    - https://www.darktrace.com/blog/darktrace-releases-2024-half-year-threat-insights-2
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\cmd.exe'
+        Image|endswith: '\IfyuUapz.txt'
+    condition: selection
+falsepositives:
+    - Unlikely due to the specific file name.
+level: high

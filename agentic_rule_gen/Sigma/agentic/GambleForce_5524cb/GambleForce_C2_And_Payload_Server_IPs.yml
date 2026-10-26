@@ -1,0 +1,23 @@
+title: GambleForce C2 And Payload Server IPs
+id: 6185bbcf-4a7b-48c0-bc6f-506076ac64d4
+status: experimental
+description: Detects network connections to IP addresses known to be used by GambleForce for C2 and payload hosting.
+references:
+    - https://www.group-ib.com/blog/gambleforce-gang/
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '212.60.5.129'
+            - '38.54.40.156'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

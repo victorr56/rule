@@ -1,0 +1,23 @@
+title: PUMAKIT C2 Domain Query
+id: 57404a3e-7ca2-48cd-b8ad-064b38d380e2
+status: experimental
+description: Detects DNS queries for domains known to be used by PUMAKIT for command and control.
+references:
+    - https://www.elastic.co/security-labs/threat-command/declawing-pumakit
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'rhel.opsecurity1.art'
+            - 'sec.opsecurity1.art'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

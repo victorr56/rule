@@ -1,0 +1,328 @@
+{
+  "malware_family": "Tiflux",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Threat actors use malspam with service agreement lures to deliver malicious MSI installers for the Tiflux RMM. The malware establishes persistence by installing multiple RMMs (UltraVNC, Splashtop, ScreenConnect) and uses a vulnerable driver for potential privilege escalation. The ultimate goal is persistent remote access for system profiling and data theft.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "Network Solutions Agreement.msi",
+      "context": "Tiflux installer filename.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Adobeclient-33.2.msi",
+      "context": "Tiflux installer filename.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "HwRwDrv.x64",
+      "context": "Vulnerable driver dropped in TEMP directory.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\HwRwDrv.x64",
+      "context": "Path where vulnerable driver is dropped.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "si.exe",
+      "context": "Benign Tiflux installer component used for post-install pop-up.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "osqueryl.exe",
+      "context": "Tool run by Splashtop service for system profiling.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "TiService",
+      "context": "Main Tiflux RMM service.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "SplashtopRemoteService",
+      "context": "Splashtop service installed by Tiflux.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Splashtop",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "tvnserver",
+      "context": "TightVNC service configured to run in Safe Mode.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "TightVNC",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "msiexec.exe /i \"Splashtop_Streamer_Windows_v3.5.8.0.msi\" /qn CID=R8K6C786A75A",
+      "context": "TiService installs Splashtop via msiexec.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sc.exe start \"SplashtopRemoteService\"",
+      "context": "TiService starts the Splashtop service.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\PeopleOne\\dependencies\\tightvnc\\tvnserver.exe -service",
+      "context": "Service command line for TightVNC found in registry file.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\SafeBoot\\Network\\tvnserver",
+      "context": "Registry key for TightVNC to run in Safe Mode.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKEY_CURRENT_USER\\Software\\SimonTatham\\PuTTY\\SshHostKeys",
+      "context": "Registry key storing SSH host keys for PuTTY.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "PuTTY",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "rsa2@22:remote1a.peopleone.com.br",
+      "context": "Registry value name for a hardcoded PuTTY SSH host key.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "C:\\Users\\Pessoa1\\Documents\\Visual Studio 2010\\Projects\\VNC\\UltraVNC Project\\UltraVNC\\UltraVNC_MSI_project\\UltraVNC\\x86\\Debug\\ultravnc.ini",
+      "context": "Build path string in 32-bit ultravnc.ini.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Password=6D21689531E29A51",
+      "context": "Hardcoded hex-encoded password in ultravnc.ini.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PasswordViewOnly=D7824888D18C29E7",
+      "context": "Hardcoded hex-encoded view-only password in ultravnc.ini.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "A instalação foi bem-sucedida! O aplicativo será iniciado automaticamente.",
+      "context": "Popup message string from si.exe in Portuguese.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "mv video hook driver2",
+      "context": "Name of legacy UltraVNC video hook driver.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "UltraVNC",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "uvnc bvba",
+      "context": "Subject of an expired certificate for bundled UltraVNC components.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "UltraVNC",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "businessservices@hg.lawdepotisland.com",
+      "context": "Sender email address for malspam.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "lenwillfilenetwork.com",
+      "context": "Phishing and payload delivery domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "remote1a.peopleone.com.br",
+      "context": "SSH server for hardcoded PuTTY key.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "s1.tiflux.com.br",
+      "context": "Tiflux C2 server from config file.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "shankar.woremix.icu",
+      "context": "Threat actor controlled domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "anythinghere.woremix.icu",
+      "context": "Threat actor controlled domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "84.54.33.192",
+      "context": "ScreenConnect download and C2 IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://lenwillfilenetwork.com/downloads/Network%20Solutions%20Agreement.msi",
+      "context": "Tiflux MSI payload URL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://anythinghere.woremix.icu/Viewfiles/download.php",
+      "context": "Payload URL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://84.54.33.192:8040/Bin/ScreenConnect.ClientSetup.msi",
+      "context": "ScreenConnect MSI payload URL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "21116/udp",
+      "context": "TiPeerToPeer C2 communication port.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "f792d82e4472c001852998a3575e492907f38daa8d58ecdb3b3604b38d7b8a07",
+      "description": "Tiflux installer msi file (Network Solutions Agreement.msi)"
+    },
+    {
+      "sha256": "87074c1bfd071fc47410a52af863e9ca62b2b85950c4cf643a220f0ea5717952",
+      "description": "Tiflux installer msi file (Adobeclient-33.2.msi)"
+    },
+    {
+      "sha256": "0b95524e5b00688f7f5efe56a74b93985feb2152d9336d44ca7a8dd9ca25d2d5",
+      "description": "ScreenConnect installer msi file"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

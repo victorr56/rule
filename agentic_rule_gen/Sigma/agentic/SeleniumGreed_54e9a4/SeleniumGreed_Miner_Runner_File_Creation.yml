@@ -1,0 +1,24 @@
+title: SeleniumGreed Miner or Runner File Creation
+id: e86b856c-a25e-4c70-98d9-2e061730048e
+status: experimental
+description: Detects the creation of the XMRig miner ('xm') or its runner script ('wxm') in the /bin directory by curl.
+references:
+    - https://www.wiz.io/blog/seleniumgreed-cryptomining-exploit-attack-flow-remediation-steps
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.persistence
+    - attack.t1105
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/curl'
+        TargetFilename|endswith:
+            - '/bin/xm'
+            - '/bin/wxm'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

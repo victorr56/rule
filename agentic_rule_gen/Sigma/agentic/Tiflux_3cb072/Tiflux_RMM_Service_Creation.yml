@@ -1,0 +1,22 @@
+title: Tiflux RMM Service Creation
+id: 9a783e71-9258-45e0-84eb-f08a54160408
+status: experimental
+description: Detects the creation or modification of the 'TiService' service ImagePath registry value to point to the Tiflux RMM executable.
+references:
+    - https://www.huntress.com/blog/tiflux-rmm-install
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.persistence
+    - attack.t1543.003
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\System\CurrentControlSet\Services\TiService\ImagePath'
+        Details|contains: 'Tiflux Remote Access\TiService.exe'
+    condition: selection
+falsepositives:
+    - Legitimate installations of Tiflux RMM.
+level: high

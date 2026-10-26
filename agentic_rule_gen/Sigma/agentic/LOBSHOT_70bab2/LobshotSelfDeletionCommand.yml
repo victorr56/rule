@@ -1,0 +1,25 @@
+title: LOBSHOT Malware Self-Deletion
+id: e4f5e717-b7bd-4672-870f-155e9758f8ed
+status: experimental
+description: Detects the self-deletion command line pattern used by LOBSHOT, which involves a ping delay followed by a file deletion command.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-security-labs-discovers-lobshot-malware
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.defense_evasion
+    - attack.t1070.004
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - '(ping -n 10 127.0.0.1)'
+            - '& (del /F /Q'
+    condition: selection
+falsepositives:
+    - Custom legitimate scripts performing a delayed self-deletion.
+level: medium

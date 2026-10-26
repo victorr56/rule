@@ -1,0 +1,202 @@
+{
+  "malware_family": "GHOSTPULSE",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "GHOSTPULSE is a multi-stage loader delivered via signed MSIX packages that masquerade as legitimate software installers. The loader uses PowerShell to download an encrypted payload, which is then decrypted and injected into other processes using evasion techniques like module stomping and Process Doppelgänging. The final payload is typically a known information stealer such as Lumma or Vidar.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "echo 'putin' | .$env:APPDATA\\gpg.exe --batch --yes --passphrase-fd 0 --decrypt --output $env:APPDATA\\$xxx.rar $env:APPDATA\\$xxx.gpg",
+      "context": "PowerShell decrypts stage 1 archive using bundled GPG.exe.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "putin",
+      "context": "GPG passphrase for Stage 1 archive decryption.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "VBoxSVC.exe",
+      "context": "Renamed gup.exe used to sideload malicious libcurl.dll.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "libcurl.dll",
+      "context": "Malicious DLL used for sideloading by VBoxSVC.exe.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "handoff.wav",
+      "context": "File containing encrypted Stage 2 payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x1003F",
+      "context": "Multiplier constant in Stage 1 API hashing algorithm.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "IDAT",
+      "context": "String marker preceding encrypted data chunks in payload file.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0xA1B2D3B4",
+      "context": "Constant for stage 2 sub-blob encryption key generation.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "1msbuild.exe1",
+      "context": "Target process for final payload injection (Process Doppelgänging).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "GFHZNIOWWLVYTESHRTGAVC",
+      "context": "Example random environment variable name pointing to payload file.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "Futurity Designs Ltd",
+      "context": "Code signer for malicious Chrome-x64.msix installer.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "Fodere Titanium Limited",
+      "context": "Code signer for malicious Brave-x64.msix installer.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "IMPERIOUS TECHNOLOGIES LIMITED",
+      "context": "Code signer for malicious Webex.msix installer.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://manojsinghnegi.com/2.tar.gpg",
+      "context": "Stage 0 download URL for encrypted payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "manojsinghnegi.com",
+      "context": "Stage 0 C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "78.24.180.93",
+      "context": "Stage 0 C2 IP.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "195.201.198.179",
+      "context": "C2 IP for SectopRAT final payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "0c01324555494c35c6bbd8babd09527bfc49a2599946f3540bb3380d7bec7a20",
+      "description": "Malicious MSIX installer masquerading as Chrome-x64.msix."
+    },
+    {
+      "sha256": "ee4c788dd4a173241b60d4830db128206dcfb68e79c68796627c6d6355c1d1b8",
+      "description": "Malicious MSIX installer masquerading as Brave-x64.msix."
+    },
+    {
+      "sha256": "4283563324c083f243cf9335662ecc9f1ae102d619302c79095240f969d9d356",
+      "description": "Malicious MSIX installer masquerading as Webex.msix."
+    },
+    {
+      "sha256": "eb2addefd7538cbd6c8eb42b70cafe82ff2a8210e885537cd94d410937681c61",
+      "description": "Stage 0 PowerShell downloader script (new1109.ps1)."
+    },
+    {
+      "sha256": "49e6a11453786ef9e396a9b84aeb8632f395477abc38f1862e44427982e8c7a9",
+      "description": "GHOSTPULSE tar archive (decrypted from .gpg)."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script",
+    "archive"
+  ]
+}

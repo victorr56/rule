@@ -1,0 +1,23 @@
+title: PUMAKIT Kernel-Mode Execution Anomaly
+id: d2691515-d91f-4279-8471-a48e718b5b54
+status: experimental
+description: Detects the 'truncate' command being spawned by the kernel thread daemon 'kthreadd' (PID 2), which is a behavior exhibited by the PUMAKIT rootkit to execute commands from kernel space.
+references:
+    - https://www.elastic.co/security-labs/threat-command/declawing-pumakit
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.execution
+    - attack.defense_evasion
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        ParentProcessId: 2
+        Image|endswith: '/truncate'
+    condition: selection
+falsepositives:
+    - Legitimate kernel modules that need to spawn userland processes, though this is rare for 'truncate'.
+level: high

@@ -1,0 +1,24 @@
+title: PRT-Scan Temporary Workflow File Creation
+id: 3c8e42f9-7d07-4e5c-ac94-37053075c35b
+status: experimental
+description: Detects the creation of a temporary workflow file with a specific prefix by node.exe, a behavior observed in the prt-scan malware campaign.
+references:
+    - https://www.wiz.io/blog/six-accounts-one-actor-inside-the-prt-scan-supply-chain-campaign
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.t1554
+    - attack.t1053
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '.github/workflows/.prt_tmp_'
+        Image|endswith: '\node.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

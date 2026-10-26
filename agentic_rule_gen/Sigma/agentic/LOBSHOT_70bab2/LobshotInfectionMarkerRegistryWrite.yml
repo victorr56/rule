@@ -1,0 +1,23 @@
+title: LOBSHOT Malware Infection Marker
+id: bc954848-0c6a-4933-b467-3323063f1011
+status: experimental
+description: Detects the creation of a specific registry value used by LOBSHOT malware as an infection marker.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-security-labs-discovers-lobshot-malware
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.defense_evasion
+    - attack.t1547.001
+    - detection.threat_hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Microsoft\Windows NT\CurrentVersion\Devices\Display'
+        Details: '134a1160'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

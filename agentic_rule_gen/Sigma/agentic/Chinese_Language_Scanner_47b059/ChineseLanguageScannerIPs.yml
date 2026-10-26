@@ -1,0 +1,26 @@
+title: Chinese Language Scanner IP Address Connection
+id: 3c267e81-a7b6-455b-b9f1-33da44c1d8d2
+status: experimental
+description: Detects network connections to IP addresses associated with a Chinese language scanning campaign.
+references:
+    - https://isc.sans.edu/diary/rss/33442
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.reconnaissance
+    - attack.t1595
+logsource:
+    category: network_connection
+detection:
+    selection:
+        DestinationIp:
+            - '165.154.11.140'
+            - '165.154.29.93'
+            - '165.154.33.72'
+            - '165.154.36.91'
+            - '165.154.120.226'
+            - '165.154.182.221'
+    condition: selection
+falsepositives:
+    - These IPs may be reassigned and used for legitimate purposes in the future.
+level: high

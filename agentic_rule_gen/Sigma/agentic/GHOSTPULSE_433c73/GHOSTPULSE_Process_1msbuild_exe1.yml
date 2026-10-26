@@ -1,0 +1,22 @@
+title: GHOSTPULSE Process Doppelganging Target Process
+id: c71d5b7a-a628-4e31-97b7-5f7823f9906d
+status: experimental
+description: Detects the creation of a process with the highly unusual name '1msbuild.exe1', which is used by GHOSTPULSE as a target for payload injection via Process Doppelganging.
+references:
+    - https://www.elastic.co/security-labs/threat-command/ghostpulse-haunts-victims-using-defense-evasion-bag-o-tricks
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.defense_evasion
+    - attack.t1055.013
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\1msbuild.exe1'
+        CommandLine|contains: '1msbuild.exe1'
+    condition: selection
+falsepositives:
+    - Legitimate processes are highly unlikely to be named '1msbuild.exe1'.
+level: high

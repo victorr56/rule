@@ -1,0 +1,30 @@
+title: PRT-Scan Secret Exfiltration Command Line
+id: a70cf321-c24d-4076-928d-195c6b65ec2e
+status: experimental
+description: Detects a specific command line pattern used by the prt-scan malware to collect and prepare environment variables and git credentials for exfiltration from a GitHub Actions runner.
+references:
+    - https://www.wiz.io/blog/six-accounts-one-actor-inside-the-prt-scan-supply-chain-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.credential_access
+    - attack.t1552
+    - attack.collection
+    - attack.t1560
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+        CommandLine|contains|all:
+            - 'PRT_GIT_AUTH=$('
+            - 'git config --get-all http.https://github.com/.extraheader'
+            - 'gzip -c'
+            - 'base64'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

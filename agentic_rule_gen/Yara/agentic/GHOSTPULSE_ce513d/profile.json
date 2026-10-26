@@ -1,0 +1,176 @@
+{
+  "malware_family": "GHOSTPULSE",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "GHOSTPULSE, also known as HIJACKLOADER, is a loader that has evolved to embed its encrypted configuration and payload within the pixel structure of a PNG image, moving away from its previous IDAT chunk method. The malware locates its config by iterating through the image's RGB data in 16-byte blocks, validating a CRC32 hash to find the structure containing the payload, size, and a 4-byte XOR key for decryption.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "config_marker",
+      "value": "IDAT",
+      "context": "Marker for encrypted data in older GHOSTPULSE versions.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "Gdiplus",
+      "context": "Library used to parse pixels from image.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 49 63 D0 42 8B 0C 0A 41 03 CA 89 0C 1A 8B 05 ?? ?? ?? ?? 44 03 C0 8B 05 ?? ?? ?? ?? 44 3B C0 }",
+      "context": "YARA rule Windows_Trojan_GHOSTPULSE_1, string $stage_1",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 89 01 48 8B 84 24 D8 00 00 00 48 8B 4C 24 78 8B 49 0C 89 08 C7 44 24 44 00 00 00 00 }",
+      "context": "YARA rule Windows_Trojan_GHOSTPULSE_1, string $stage_2",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 83 EC 18 C7 04 24 00 00 00 00 8B 04 24 48 8B 4C 24 20 0F B7 04 41 85 C0 74 0A 8B 04 24 FF C0 89 04 24 EB E6 C7 44 24 08 00 00 00 00 8B 04 24 FF C8 8B C0 48 8B 4C 24 20 0F B7 04 41 83 F8 5C }",
+      "context": "YARA rule Windows_Trojan_GHOSTPULSE_2, string $a1",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Setup.exe",
+      "context": "GHOSTPULSE sample filename.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Setup_light.exe",
+      "context": "GHOSTPULSE sample filename.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "winrar01.b-cdn.net",
+      "context": "Infrastructure hosting GHOSTPULSE sample",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "reinforcenh.shop",
+      "context": "LUMMASTEALER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "stogeneratmns.shop",
+      "context": "LUMMASTEALER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "fragnantbui.shop",
+      "context": "LUMMASTEALER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "drawzhotdog.shop",
+      "context": "LUMMASTEALER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "vozmeatillu.shop",
+      "context": "LUMMASTEALER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "offensivedzvju.shop",
+      "context": "LUMMASTEALER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ghostreedmnu.shop",
+      "context": "LUMMASTEALER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gutterydhowi.shop",
+      "context": "LUMMASTEALER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "riderratttinow.shop",
+      "context": "LUMMASTEALER C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "57ebf79c384366162cb0f13de0de4fc1300ebb733584e2d8887505f22f877077",
+      "description": "GHOSTPULSE sample (Setup.exe)"
+    },
+    {
+      "sha256": "b54d9db283e6c958697bfc4f97a5dd0ba585bc1d05267569264a2d700f0799ae",
+      "description": "GHOSTPULSE sample (Setup_light.exe)"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

@@ -1,0 +1,23 @@
+title: Tiflux TightVNC Service Execution
+id: f0e9b62c-8051-46ab-ac88-78c6e73081e6
+status: experimental
+description: Detects the execution of TightVNC from a specific, non-standard path used by the Tiflux RMM.
+references:
+    - https://www.huntress.com/blog/tiflux-rmm-install
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.execution
+    - attack.t1204
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\tvnserver.exe'
+        CommandLine|contains: 'C:\PeopleOne\dependencies\tightvnc\'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

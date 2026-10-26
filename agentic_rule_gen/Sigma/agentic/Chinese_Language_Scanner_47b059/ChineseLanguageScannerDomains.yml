@@ -1,0 +1,23 @@
+title: Chinese Language Scanner Domain Query
+id: 8d1f211e-28c0-40e9-b5fe-a1e6490333ba
+status: experimental
+description: Detects DNS queries for domains associated with a Chinese language scanning campaign.
+references:
+    - https://isc.sans.edu/diary/rss/33442
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.reconnaissance
+    - attack.t1595
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName:
+            - tzrhxln.cn
+            - leheedu.cn
+            - mail.brossy.com.cn
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

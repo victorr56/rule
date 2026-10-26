@@ -1,0 +1,22 @@
+title: Winnti SHADOWPAD Side-Loading via BDReinit.exe
+id: 5a251020-f5a0-47b2-a4f6-06834be20c35
+status: experimental
+description: Detects the side-loading of 'log.dll' by 'BDReinit.exe', a technique used by the SHADOWPAD malware associated with the Winnti group.
+references:
+    - https://www.elastic.co/security-labs/threat-command/update-to-the-REF2924-intrusion-set-and-related-campaigns
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.defense_evasion
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\BDReinit.exe'
+        ImageLoaded|endswith: '\log.dll'
+    condition: selection
+falsepositives:
+    - Legitimate instances of BDReinit.exe from Bitdefender are unlikely to load a DLL named 'log.dll'.
+level: high

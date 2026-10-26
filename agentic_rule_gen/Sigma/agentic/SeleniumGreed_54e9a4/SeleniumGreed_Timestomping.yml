@@ -1,0 +1,26 @@
+title: SeleniumGreed Timestomping Activity
+id: 5e63b652-520c-403d-85ad-2974b1f41344
+status: experimental
+description: Detects timestomping of the downloaded miner and runner script to a specific past date using the 'touch' command.
+references:
+    - https://www.wiz.io/blog/seleniumgreed-cryptomining-exploit-attack-flow-remediation-steps
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.defense_evasion
+    - attack.t1070.006
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/touch'
+        CommandLine|contains|all:
+            - '-d'
+            - 'Fri, 12 Jul 2019'
+            - '/bin/xm'
+            - '/bin/wxm'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

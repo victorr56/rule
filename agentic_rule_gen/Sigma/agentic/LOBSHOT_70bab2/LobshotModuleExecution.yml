@@ -1,0 +1,26 @@
+title: LOBSHOT Malware Module Execution via Rundll32
+id: 593784ae-df83-497b-9519-c615a9ab2ed6
+status: experimental
+description: Detects the execution of a LOBSHOT malware module, typically a .dat file in C:\ProgramData, via rundll32.exe with a specific export function call.
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-security-labs-discovers-lobshot-malware
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.execution
+    - attack.t1218.011
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains|all:
+            - 'C:\ProgramData\hmr_'
+            - '.dat'
+            - ', #1 hmod'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

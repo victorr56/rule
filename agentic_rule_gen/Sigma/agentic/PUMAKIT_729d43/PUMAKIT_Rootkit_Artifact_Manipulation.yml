@@ -1,0 +1,24 @@
+title: PUMAKIT Rootkit Artifact Manipulation
+id: c8b0a5f9-e39d-43c3-8f69-dd00e3532f8a
+status: experimental
+description: Detects the execution of 'truncate' to clear a specific file ('/usr/share/zov_f/zov_latest') used by the PUMAKIT rootkit. This command is reportedly executed by a kernel thread created by the malware.
+references:
+    - https://www.elastic.co/security-labs/threat-command/declawing-pumakit
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.defense_evasion
+    - attack.t1070.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/truncate'
+        CommandLine|contains|all:
+            - '-s 0'
+            - '/usr/share/zov_f/zov_latest'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

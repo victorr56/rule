@@ -1,0 +1,23 @@
+title: PromptSpy Malware DNS Query
+id: 58f4a3f1-d0b8-4720-94a2-140b2a59a35e
+status: experimental
+description: Detects DNS queries for domains associated with the PromptSpy Android malware family's C2 and distribution infrastructure.
+references:
+    - https://www.welivesecurity.com/en/eset-research/promptspy-ushers-in-era-android-threats-using-genai/
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'mgardownload.com'
+            - 'm-mgarg.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

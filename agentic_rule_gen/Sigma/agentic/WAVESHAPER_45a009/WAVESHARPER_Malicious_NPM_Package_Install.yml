@@ -1,0 +1,24 @@
+title: WAVESHAPER Malicious NPM Package Post-Install Script
+id: 97f394c8-37d4-4824-9dfa-f761fc59942a
+status: experimental
+description: Detects the execution of a 'setup.js' script via node, characteristic of the malicious 'plain-crypto-js' npm package used in the WAVESHAPER campaign.
+references:
+    - https://www.elastic.co/security-labs/threat-command/axios-one-rat-to-rule-them-all
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.t1195.002
+    - attack.t1059.007
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\node.exe'
+        CommandLine|contains|all:
+            - 'plain-crypto-js'
+            - 'setup.js'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

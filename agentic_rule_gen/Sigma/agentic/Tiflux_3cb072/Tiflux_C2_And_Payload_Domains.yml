@@ -1,0 +1,25 @@
+title: Tiflux C2 and Payload Domains
+id: 5a8a1837-251f-4ed7-99f6-1798361099e0
+status: experimental
+description: Detects DNS queries for domains associated with Tiflux C2 and payload delivery.
+references:
+    - https://www.huntress.com/blog/tiflux-rmm-install
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.command_and_control
+    - attack.t1071
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'lenwillfilenetwork.com'
+            - 'remote1a.peopleone.com.br'
+            - '.woremix.icu'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

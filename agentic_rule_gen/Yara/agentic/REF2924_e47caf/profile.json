@@ -1,0 +1,383 @@
+{
+  "malware_family": "REF2924",
+  "threat_actor": "Winnti Group / ChamelGang",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "REF2924 is an intrusion set associated with Winnti Group and ChamelGang, utilizing a trio of malware families. DOORME is a native IIS module backdoor, SIESTAGRAPH is a .NET implant that uses Microsoft Graph API for C2, and SHADOWPAD is a modular loader. The malware exhibits advanced obfuscation and persistence techniques, targeting telecommunications and government entities with apparent national strategic interests.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "79cfdd0e92b120faadd7eb253eb800d0",
+      "context": "DOORME: MD5 hash used as authentication token in a specific cookie.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VZkW6UKaPY8JR0bnMmzI4ugtCxsX2ejiE5q/9OH3vhfw1D+lQopdABTLrcNFGSy7",
+      "context": "DOORME: Custom Base64 index table.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "5a430ab45c7e142c70018b99fe0d2da3",
+      "context": "DOORME: Hardcoded AES key (MD5 of auth hash).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "57ce15b304a97772",
+      "context": "DOORME: Hardcoded AES IV (MD5 of AES key).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "It works!",
+      "context": "DOORME: Response to GET request for status check.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x42",
+      "context": "DOORME: Command ID to generate a GUID.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x43",
+      "context": "DOORME: Command ID to execute shellcode in memory.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x63",
+      "context": "DOORME: Command ID to receive shellcode in chunks.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x44",
+      "context": "DOORME: Command ID to interact with shellcode via named pipe.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "RegisterModule",
+      "context": "DOORME: Export of the malicious C++ DLL.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".?AVDoorme@@",
+      "context": "DOORME: String from YARA rule, likely C++ RTTI.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 8A 45 ?? 8A 4D ?? C0 E0 ?? 89 CA C0 EA ?? 80 E2 ?? 08 C2 88 55 ?? C0 E1 ?? 8A 45 ?? C0 E8 ?? 24 ?? 08 C8 88 45 ?? 41 83 C4 ?? 31 F6 44 39 E6 7D ?? 66 90 }",
+      "context": "DOORME: Hex pattern for custom Base64 implementation from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "typelib_guid",
+      "value": "d3590ed6-52b3-4102-aeff-aad2292ab01c",
+      "context": "SIESTAGRAPH: Microsoft Office GUID used during setup.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "dotnet_user_string",
+      "value": "sendsession",
+      "context": "SIESTAGRAPH: Method name to exfiltrate system information.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "dotnet_user_string",
+      "value": "ListDrives",
+      "context": "SIESTAGRAPH: C2 command to list logical drives.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "dotnet_user_string",
+      "value": "Del OK",
+      "context": "SIESTAGRAPH: Part of a C2 response string.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "createEmailDraft",
+      "context": "SIESTAGRAPH: C2 method using draft emails.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "OK|C:\\foo\\file.txt",
+      "context": "SIESTAGRAPH: Example format of a successful file upload response.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c <command>",
+      "context": "SIESTAGRAPH: Execution of C2 commands via the runCommand method.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Core.bin",
+      "context": "SIESTAGRAPH: File checked for existence by 'UU' command.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "w3wp.exe spawns suspicious processes",
+      "context": "DOORME: General suspicious activity to monitor.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\OfficeDriver\\svchost.exe",
+      "context": "SHADOWPAD: Path where malware copies itself.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "log.dll",
+      "context": "SHADOWPAD: Loader DLL side-loaded by BDReinit.exe.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "log.dll.dat",
+      "context": "SHADOWPAD: File containing the shellcode to be executed.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "13802 AR.exe",
+      "context": "SHADOWPAD: Example name for vulnerable Bitdefender Crash Handler sideload host.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "BDReinit.exe",
+      "context": "SHADOWPAD: Compiled name of the Bitdefender executable used for sideloading.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "13802 AR.exe spawns wmplayer.exe",
+      "context": "SHADOWPAD: Injected process spawns Windows Media Player post-loading.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "13802 AR.exe spawns dllhost.exe",
+      "context": "SHADOWPAD: Injected process spawns DCOM Surrogate post-loading.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\WOW6432Node\\CLSID\\{1845df8d-241a-a0e4-02ea341a79878897}\\D752E7A8\\",
+      "context": "SHADOWPAD: Registry key where encrypted shellcode is stored.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "{%8.8x-%4.4x-%4.4x-%8.8x%8.8x}",
+      "context": "SHADOWPAD: Format string from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "hH#whH#w",
+      "context": "SHADOWPAD: Obfuscated string from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Yuv~YuvsYuvhYuv]YuvRYuvGYuv1:tv<Yuvb#tv1Yuv-8tv&Yuv",
+      "context": "SHADOWPAD: Obfuscated string from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "79cfdd0e92b120faadd7eb253eb800d0",
+      "context": "DOORME: Value in a specific cookie for authentication.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "graph.microsoft.com",
+      "context": "SIESTAGRAPH: C2 domain for Microsoft Graph API.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Authorization: Bearer ",
+      "context": "SIESTAGRAPH: Used in HTTP requests to the Graph API.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "<sessionToken>:<Command>:<command arguments>",
+      "context": "SIESTAGRAPH: C2 command structure within email drafts.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "(HTTPS|TCP|UDP)://<host>:443",
+      "context": "SHADOWPAD: C2 connection pattern from YARA rule regex.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "386eb7aa33c76ce671d6685f79512597f1fab28ea46c8ec7d89e58340081e2bd",
+      "description": "Vulnerable Bitdefender BDReinit.exe binary used for SHADOWPAD sideloading."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet"
+  ]
+}

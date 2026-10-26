@@ -1,0 +1,24 @@
+title: GHOSTPULSE VBoxSVC.exe Sideloading libcurl.dll
+id: 61e1b12b-3132-474c-851c-0e788c6e7a2b
+status: experimental
+description: Detects the DLL sideloading technique used by GHOSTPULSE, where a legitimate but renamed executable (VBoxSVC.exe) is used to load a malicious libcurl.dll.
+references:
+    - https://www.elastic.co/security-labs/threat-command/ghostpulse-haunts-victims-using-defense-evasion-bag-o-tricks
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.defense_evasion
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\VBoxSVC.exe'
+        ImageLoaded|endswith: '\libcurl.dll'
+    filter_legit:
+        Image|startswith: 'C:\Program Files\Oracle\VirtualBox\'
+    condition: selection and not filter_legit
+falsepositives:
+    - Unlikely, as the rule filters out legitimate VirtualBox installations.
+level: high

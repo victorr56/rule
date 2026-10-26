@@ -1,0 +1,20 @@
+title: PromptSpy Phishing Domain Access
+id: 8d2c0b4d-93f5-467c-9b0d-b94a2e58e65e
+status: experimental
+description: Detects web traffic to a phishing domain associated with the PromptSpy Android malware.
+references:
+    - https://www.welivesecurity.com/en/eset-research/promptspy-ushers-in-era-android-threats-using-genai/
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.initial_access
+    - attack.t1566
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname|endswith: 'm-mgarg.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,23 @@
+title: GambleForce C2 Domains
+id: a7d0e46a-7429-41a4-9e32-a521469e779a
+status: experimental
+description: Detects DNS queries for domains known to be used by GambleForce for Cobalt Strike C2.
+references:
+    - https://www.group-ib.com/blog/gambleforce-gang/
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'Dns-supports.online'
+            - 'Windows.updates.wiki'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

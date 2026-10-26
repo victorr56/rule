@@ -1,0 +1,24 @@
+title: PromptSpy Malware C2 Network Connection
+id: 7c55b9e0-c11e-451e-8484-911a7de6290e
+status: experimental
+description: Detects network connections to IP addresses associated with the PromptSpy Android malware family's C2 and distribution infrastructure.
+references:
+    - https://www.welivesecurity.com/en/eset-research/promptspy-ushers-in-era-android-threats-using-genai/
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    product: windows
+    category: network_connection
+detection:
+    selection:
+        DestinationIp:
+            - '54.67.2.84' # VNC C2
+            - '52.222.205.45' # m-mgarg.com
+            - '104.21.91.170' # mgardownload.com
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

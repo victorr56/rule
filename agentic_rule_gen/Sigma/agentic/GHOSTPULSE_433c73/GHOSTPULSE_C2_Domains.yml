@@ -1,0 +1,22 @@
+title: GHOSTPULSE C2 Domain DNS Query
+id: 57d812fe-8f43-4632-9c17-106437d806d2
+status: experimental
+description: Detects DNS queries for a domain known to be used by GHOSTPULSE for C2 communications.
+references:
+    - https://www.elastic.co/security-labs/threat-command/ghostpulse-haunts-victims-using-defense-evasion-bag-o-tricks
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'manojsinghnegi.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

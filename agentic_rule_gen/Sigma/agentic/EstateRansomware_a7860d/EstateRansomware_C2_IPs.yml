@@ -1,0 +1,25 @@
+title: EstateRansomware Group C2 Activity
+id: c5575518-e87f-444a-9040-cfc0919310d5
+status: experimental
+description: Detects network connections to IP addresses known to be used by the EstateRansomware group for C2 communications and other malicious activities.
+references:
+    - https://www.group-ib.com/blog/estate-ransomware/
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '149.28.106.252'
+            - '149.28.99.61'
+            - '45.76.232.205'
+            - '77.238.245.11'
+    condition: selection
+falsepositives:
+    - Unlikely, these IPs were specifically attributed to the threat actor's infrastructure.
+level: critical

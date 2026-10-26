@@ -1,0 +1,21 @@
+title: PUMAKIT C2 Connection
+id: 978939c4-1188-466d-8c1d-1e1b10705a61
+status: experimental
+description: Detects network connections to an IP address known to be used by PUMAKIT for command and control.
+references:
+    - https://www.elastic.co/security-labs/threat-command/declawing-pumakit
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '89.23.113.204'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

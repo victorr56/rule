@@ -1,0 +1,26 @@
+title: CikaBika Bot UAC Bypass via ms-settings
+id: 34b41ac6-f6d3-4a11-b0e2-63236e7a2b9a
+status: experimental
+description: Detects the specific registry modification used by CikaBika Bot to perform a UAC bypass. This involves setting the 'ms-settings' handler to a command that moves the malicious DLL into the Edge application directory.
+references:
+    - https://www.darktrace.com/blog/darktrace-releases-2024-half-year-threat-insights-2
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1548.002
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Classes\ms-settings\shell\open\command\(Default)'
+        Details|contains|all:
+            - 'move'
+            - 'dbghelp.tmp'
+            - '\Microsoft\Edge\Application\dbghelp.dll'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

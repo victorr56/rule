@@ -1,0 +1,295 @@
+{
+  "malware_family": "JOKERSPY",
+  "threat_actor": "REF9134",
+  "platforms": [
+    "macos"
+  ],
+  "summary": "REF9134 uses the JOKERSPY malware, a toolset including the xcc binary and the sh.py backdoor, in intrusions targeting macOS environments. Observed activity includes reconnaissance, defense evasion via TCC database manipulation, and deployment of the open-source Swiftbelt enumeration tool. The campaign has targeted a Japanese cryptocurrency exchange.",
+  "mitre_techniques": [
+    "T1059",
+    "T1574.006",
+    "T1068",
+    "T1548",
+    "T1564",
+    "T1036",
+    "T1027",
+    "T1553",
+    "T1010",
+    "T1113",
+    "T1005"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "pdb_path",
+      "value": "/Users/joker/Developer/Xcode/DerivedData/",
+      "context": "Anomalous path identified during analysis of the xcc binary.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "/Users/joker/Downloads/Spy/XProtectCheck/XProtectCheck/",
+      "context": "Anomalous path identified during analysis of the xcc binary.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Public/Safari/sar.dat",
+      "context": "Configuration file for the sh.py backdoor.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "XProtectCheck-55554944f74096a836b73310bd55d97d1dff5cd4",
+      "context": "Self-signing identifier used with codesign on the xcc binary.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 58 50 72 6f 74 65 63 74 43 68 65 63 6b 2d 35 35 35 35 34 39 34 34 66 37 34 30 39 36 61 38 33 36 62 37 33 33 31 30 62 64 35 35 64 39 37 64 31 64 66 66 35 63 64 34 }",
+      "context": "Hex for 'XProtectCheck-55554944f74096a836b73310bd55d97d1dff5cd4' signing id.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "eck13XProtectCheck",
+      "context": "String from Macos_Hacktool_JokerSpy YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "kMDItemDisplayName = *TCC.db",
+      "context": "String from Macos_Hacktool_JokerSpy YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SwiftBelt/Sources/SwiftBelt",
+      "context": "String from MacOS_Hacktool_Swiftbelt YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "Swiftbelt",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Users/Shared/sb /bin/sh -c /users/shared/sb > /users/shared/sb.log 2>&1",
+      "context": "Full command line observed for Swiftbelt execution.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "bash -> xcc",
+      "context": "xcc was executed via bash by IntelliJ, iTerm2, or VSCode.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Users/shared/keybag/libcrypto.1.0.0.dylib",
+      "context": "Non-native DyLib deployed by threat actor for defense evasion.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Users/shared/keybag/libncursesw.5.dylib",
+      "context": "Non-native DyLib deployed by threat actor for defense evasion.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Users/shared/keybag/libssl.1.0.0.dylib",
+      "context": "Non-native DyLib deployed by threat actor for defense evasion.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Users/Shared/tcc.db",
+      "context": "Copied over system TCC database for permission abuse.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Library/Application Support/com.apple.TCC/TCC.db",
+      "context": "System TCC database replaced by actor.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Users/shared/sb",
+      "context": "Path where Swiftbelt was written.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/users/shared/sb.log",
+      "context": "Output log file from Swiftbelt execution.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "xcc",
+      "context": "Permission evaluation tool written in Swift.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ScreenRecording: NO",
+      "context": "String from Macos_Hacktool_JokerSpy YARA rule.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Accessibility: NO",
+      "context": "String from Macos_Hacktool_JokerSpy YARA rule.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SSH/AWS/gcloud Credentials Search:",
+      "context": "String from MacOS_Hacktool_Swiftbelt YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "Swiftbelt",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Library/CS/falcond",
+      "context": "Path checked by Swiftbelt for Crowdstrike Falcon.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "Swiftbelt",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Library/Objective-See/Lulu",
+      "context": "Path checked by Swiftbelt for LuLu firewall.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "Swiftbelt",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "sh.py",
+      "context": "Python backdoor used to deploy other capabilities.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "app.influmarket.org",
+      "context": "Hardcoded C2 domain found in a version of sh.py.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "d895075057e491b34b0f8c0392b44e43ade425d19eaaacea6ef8c5c9bd3487d8",
+      "description": "xcc binary (Macos.Hacktool.JokerSpy)"
+    },
+    {
+      "sha256": "8ca86f78f0c73a46f31be366538423ea0ec58089f3880e041543d08ce11fa626",
+      "description": "Swiftbelt sample (/Users/Shared/sb)"
+    },
+    {
+      "sha256": "aa951c053baf011d08f3a60a10c1d09bbac32f332413db5b38b8737558a08dc1",
+      "description": "sh.py script"
+    },
+    {
+      "sha256": "452c832a17436f61ad5f32ee1c97db05575160105ed1dcd0d3c6db9fb5a9aea1",
+      "description": "Reference sample for MacOS_Hacktool_Swiftbelt YARA rule"
+    }
+  ],
+  "file_types": [
+    "macho",
+    "script"
+  ]
+}

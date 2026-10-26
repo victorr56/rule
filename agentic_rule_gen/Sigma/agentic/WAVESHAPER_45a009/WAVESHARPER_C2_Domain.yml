@@ -1,0 +1,20 @@
+title: WAVESHAPER C2 Domain Query
+id: 11c6d3de-678a-4f59-994c-8fa0ef353995
+status: experimental
+description: Detects DNS queries for a known WAVESHAPER command and control (C2) domain.
+references:
+    - https://www.elastic.co/security-labs/threat-command/axios-one-rat-to-rule-them-all
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'sfrclak.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

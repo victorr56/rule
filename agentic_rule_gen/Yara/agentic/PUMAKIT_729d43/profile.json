@@ -1,0 +1,295 @@
+{
+  "malware_family": "PUMAKIT",
+  "threat_actor": "",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "PUMAKIT is a multi-stage Linux malware comprising a dropper, memory-resident modules, and a kernel rootkit named PUMA. It uses ftrace to hook syscalls for stealth, privilege escalation, and C2 communications. A key feature is its abuse of the rmdir syscall for command-and-control, such as retrieving its configuration or gaining root privileges.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "/memfd:tgt (deleted)",
+      "context": "Benign cron binary executed from memory by the dropper.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "/memfd:wpn (deleted)",
+      "context": "Rootkit loader executed from memory by the dropper.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Huinder",
+      "context": "Command-line keyword to trigger extraction of embedded components.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PUMA %s",
+      "context": "Status message format string from the rootkit.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Kitsune PID %ld",
+      "context": "Status message string from the Kitsune SO userland rootkit.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "zarya",
+      "context": "Magic prefix for commands sent via the rmdir syscall hook.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "zov_",
+      "context": "Prefix for files and directories to be hidden by getdents hook.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".puma-config",
+      "context": "Section name within the LKM rootkit kernel object file.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ping_interval_s",
+      "context": "Configuration key for C2 ping interval.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "session_timeout_s",
+      "context": "Configuration key for C2 session timeout.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "c2_timeout_s",
+      "context": "Configuration key for C2 communication timeout.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/share/zov_f",
+      "context": "Directory used by the rootkit, found in strings.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rmdir zarya.t",
+      "context": "Command to test if the rootkit has been loaded successfully.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rmdir zarya.v",
+      "context": "Command to retrieve the running rootkit version.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rmdir zarya.0",
+      "context": "Command to trigger privilege escalation to root.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "truncate -s 0 /usr/share/zov_f/zov_latest",
+      "context": "Command executed by a kernel thread created by the rootkit.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "240513",
+      "context": "Rootkit version returned via a hooked rmdir error message.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "LD_PRELOAD=/lib64/libs.so",
+      "context": "String suggesting persistence mechanism using the Kitsune SO file.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "started with executable stack",
+      "context": "Syslog message generated upon dropper execution.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "module verification failed: signature and/or required key missing - tainting kernel",
+      "context": "Syslog message generated upon loading the unsigned LKM rootkit.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 1f 8b 08 }",
+      "context": "Gzip magic bytes (in octal \\037\\213\\010) searched by script.sh.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "kthreadd -> truncate",
+      "context": "Rootkit executes commands via kernel threads.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "rhel.opsecurity1.art",
+      "context": "C2 Server domain embedded in configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sec.opsecurity1.art",
+      "context": "C2 Server domain embedded in configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "89.23.113.204",
+      "context": "C2 Server IP address embedded in configuration.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "8443",
+      "context": "C2 port embedded in configuration.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "30b26707d5fb407ef39ebee37ded7edeea2890fb5ec1ebfa09a3b3edfc80db1f",
+      "description": "PUMAKIT dropper (cron)"
+    },
+    {
+      "sha256": "cb070cc9223445113c3217f05ef85a930f626d3feaaea54d8585aaed3c2b3cfe",
+      "description": "PUMAKIT loader (/memfd:wpn)"
+    },
+    {
+      "sha256": "934955f0411538eebb24694982f546907f3c6df8534d6019b7ff165c4d104136",
+      "description": "Benign Cron binary payload (/memfd:tgt)"
+    },
+    {
+      "sha256": "bc9193c2a8ee47801f5f44beae51ab37a652fda02cd32d01f8e88bb793172491",
+      "description": "LKM rootkit (puma.ko)"
+    },
+    {
+      "sha256": "1aab475fb8ad4a7f94a7aa2b17c769d6ae04b977d984c4e842a61fb12ea99f58",
+      "description": "Kitsune SO file (kitsune.so)"
+    },
+    {
+      "sha256": "8ef63f9333104ab293eef5f34701669322f1c07c0e44973d688be39c94986e27",
+      "description": "Kitsune shared object reference (libs.so)"
+    }
+  ],
+  "file_types": [
+    "elf",
+    "script"
+  ]
+}

@@ -1,0 +1,27 @@
+title: CikaBika Bot Reconnaissance File Creation
+id: a7d092d6-444a-4a81-bbda-45e0f5be893d
+status: experimental
+description: Detects the creation of specific text files used by CikaBika Bot to store the output of its initial reconnaissance commands.
+references:
+    - https://www.darktrace.com/blog/darktrace-releases-2024-half-year-threat-insights-2
+author: ioc-yara-daily (agentic)
+date: 2024-07-24
+tags:
+    - attack.discovery
+    - attack.t1057
+    - attack.t1016
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_ipconfig:
+        Image|endswith: '\ipconfig.exe'
+        TargetFilename|endswith: '\network_info.txt'
+    selection_tasklist:
+        Image|endswith: '\tasklist.exe'
+        TargetFilename|endswith: '\tasklist_startup.txt'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate administrative scripts that redirect the output of ipconfig.exe or tasklist.exe to files with these specific names.
+level: medium

@@ -1,0 +1,27 @@
+title: PUMAKIT C2 Interaction via rmdir
+id: 59ebcc59-ff22-49d7-8d2b-5ca51167bbab
+status: experimental
+description: Detects the use of the 'rmdir' command with specific 'zarya' directory names, a technique used by the PUMAKIT rootkit to handle command and control, configuration retrieval, and privilege escalation.
+references:
+    - https://www.elastic.co/security-labs/threat-command/declawing-pumakit
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.command_and_control
+    - attack.privilege_escalation
+    - attack.t1071
+    - attack.t1068
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/rmdir'
+        CommandLine|contains:
+            - 'zarya.t'
+            - 'zarya.v'
+            - 'zarya.0'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

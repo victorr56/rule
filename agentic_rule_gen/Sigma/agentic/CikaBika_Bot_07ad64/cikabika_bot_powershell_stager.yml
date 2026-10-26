@@ -1,0 +1,32 @@
+title: CikaBika Bot PowerShell Stager
+id: 5b7d90d7-0130-4e36-a36c-9dd64c0ab0c4
+status: experimental
+description: Detects the execution of a specific PowerShell command line used by the CikaBika Bot stager to decode and execute a payload from a decoy PDF file using a single-byte XOR key.
+references:
+    - https://www.darktrace.com/blog/darktrace-releases-2024-half-year-threat-insights-2
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.defense_evasion
+    - attack.t1027
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'System.IO.File'
+            - 'ReadAllBytes'
+            - 'ForEach-Object'
+            - '-bxor'
+            - 'WriteAllBytes'
+            - '$env:TEMP\'
+            - 'cmd /c'
+    condition: selection
+falsepositives:
+    - Legitimate scripts performing file read, XOR, and write operations, although the combination is highly suspicious.
+level: high

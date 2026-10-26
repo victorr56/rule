@@ -1,0 +1,275 @@
+{
+  "malware_family": "WAVESHAPER",
+  "threat_actor": "UNC1069",
+  "platforms": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "summary": "A supply chain attack compromised the 'axios' npm package, using malicious versions to distribute a cross-platform RAT. The dropper, hidden in the 'plain-crypto-js' dependency, executed via a postinstall hook and fetched platform-specific implants for Windows, macOS, and Linux. All implants share a C2 protocol and use a distinctive, anachronistic IE8 User-Agent string for C2 communications.",
+  "mitre_techniques": [
+    "T1195.002",
+    "T1059.007",
+    "T1059.001",
+    "T1059.002",
+    "T1059.004",
+    "T1059.006",
+    "T1547.001",
+    "T1027",
+    "T1036",
+    "T1564.001",
+    "T1055",
+    "T1070.004",
+    "T1082",
+    "T1057",
+    "T1083",
+    "T1071.001",
+    "T1571",
+    "T1132.001",
+    "T1105"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "node setup.js",
+      "context": "postinstall script in plain-crypto-js package.json",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "OrDeR_7077",
+      "context": "XOR key used in setup.js dropper",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "packages.npm.org/product0",
+      "context": "POST body for macOS payload download",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "packages.npm.org/product1",
+      "context": "POST body for Windows payload download",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "packages.npm.org/product2",
+      "context": "POST body for Linux payload download",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Library/Caches/com.apple.act.mond",
+      "context": "macOS RAT payload location",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\6202033.ps1",
+      "context": "Windows RAT payload location (transient)",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%PROGRAMDATA%\\wt.exe",
+      "context": "Renamed PowerShell used to execute payload",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/ld.py",
+      "context": "Linux RAT payload location",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "mozilla/4.0 (compatible; msie 8.0; windows nt 5.1; trident/4.0)",
+      "context": "Hardcoded in all three RAT variants for C2",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "FirstInfo",
+      "context": "Outbound C2 message type for initial beacon",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "peinject",
+      "context": "Inbound C2 command for binary execution",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "runscript",
+      "context": "Inbound C2 command for script execution",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "rundir",
+      "context": "Inbound C2 command for directory listing",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.\\",
+      "context": "Linux binary drop location for peinject command",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ifstap@proton.me",
+      "context": "Email of attacker in malicious npm package metadata",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "nrwise@proton.me",
+      "context": "Email of attacker for plain-crypto-js package",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "plain-crypto-js",
+      "context": "Malicious npm package dependency",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "sfrclak.com",
+      "context": "C2 for payload download and RAT communication",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "142.11.206.73",
+      "context": "C2 IP address",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/6202033",
+      "context": "Payload download path from C2 server",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "mozilla/4.0 (compatible; msie 8.0; windows nt 5.1; trident/4.0)",
+      "context": "Hardcoded in all RAT variants for C2 comms",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "8000",
+      "context": "Non-standard port for HTTP C2 communication",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "617b67a8e1210e4fc87c92d1d1da45a2f311c08d26e89b12307cf583c900d101",
+      "description": "6202033.ps1 (Windows payload)"
+    },
+    {
+      "sha256": "92ff08773995ebc8d55ec4b8e1a225d0d1e51efa4ef88b8849d0071230c9645a",
+      "description": "com.apple.act.mond (MacOS payload)"
+    },
+    {
+      "sha256": "fcb81618bb15edfdedfb638b4c08a2af9cac9ecfa551af135a8402bf980375cf",
+      "description": "ld.py (Linux payload)"
+    }
+  ],
+  "file_types": [
+    "script",
+    "pe",
+    "macho",
+    "dotnet"
+  ]
+}

@@ -1,0 +1,28 @@
+title: Suspicious Cobalt Strike Certificate Generation
+id: e4b45579-22a4-4a57-a50d-6e428e1d7468
+status: experimental
+description: Detects the use of keytool to generate a self-signed certificate with parameters known to be used by GambleForce for their Cobalt Strike C2 infrastructure. This activity typically occurs on attacker-controlled servers.
+references:
+    - https://www.group-ib.com/blog/gambleforce-gang/
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.defense_evasion
+    - attack.t1587.003
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/keytool'
+        CommandLine|contains|all:
+            - '-alias windows.updates.wiki'
+            - '-dname "CN=Microsec e-Szigno Root CA'
+            - 'O=Microsec Ltd.'
+            - 'CobaltStrikepro.store'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

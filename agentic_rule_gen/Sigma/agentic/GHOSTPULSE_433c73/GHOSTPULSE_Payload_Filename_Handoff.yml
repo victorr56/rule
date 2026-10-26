@@ -1,0 +1,22 @@
+title: GHOSTPULSE Payload File Creation (handoff.wav)
+id: 541f5a5e-63f5-4428-bfa9-1da018d99818
+status: experimental
+description: Detects the creation of 'handoff.wav', a specific filename used by GHOSTPULSE to store its encrypted Stage 2 payload, typically written by a PowerShell process.
+references:
+    - https://www.elastic.co/security-labs/threat-command/ghostpulse-haunts-victims-using-defense-evasion-bag-o-tricks
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.defense_evasion
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        TargetFilename|endswith: '\handoff.wav'
+    condition: selection
+falsepositives:
+    - Legitimate applications using a file with the same name.
+level: medium

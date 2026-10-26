@@ -1,0 +1,175 @@
+{
+  "malware_family": "Chinese Language Scanner",
+  "threat_actor": "",
+  "platforms": [
+    "multi",
+    "web"
+  ],
+  "summary": "An automated scanning campaign, primarily from AS-7456 (Canada), probes internet-facing endpoints. The activity is distinguished by the use of specific HTTP headers that indicate a strong preference for Chinese language character sets (GBK, zh-CN).",
+  "mitre_techniques": [],
+  "host_artifacts": [],
+  "network_artifacts": [
+    {
+      "kind": "http_header",
+      "value": "Accept-Charset: GBK,utf-8;q=0.7,*;q=0.3",
+      "context": "Value of the Accept-Charset HTTP header sent in requests.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.628",
+      "context": "Value of http.request.accept-language header from AS-7456.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Accept-Language: zh-CN,zh;q=0.83",
+      "context": "Value of http.request.accept-language header from AS-7456.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cgi-bin/login",
+      "context": "A value seen in http.request.body.content during scanning.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/config.json",
+      "context": "A value seen in http.request.body.content during scanning.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/sitemap.xml",
+      "context": "A value seen in http.request.body.content during scanning.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/robots.txt",
+      "context": "A value seen in http.request.body.content during scanning.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/favicon.ico",
+      "context": "A value seen in http.request.body.content during scanning.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/",
+      "context": "A value seen in http.request.body.content during scanning.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "7456",
+      "context": "Source ASN (source.geo.as.number) for scanning activity.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "165.154.36.91",
+      "context": "Scanning host from AS-7456.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "165.154.29.93",
+      "context": "Scanning host from AS-7456.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "165.154.11.140",
+      "context": "Scanning host from AS-7456.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "165.154.120.226",
+      "context": "Scanning host from AS-7456.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "165.154.33.72",
+      "context": "Scanning host from AS-7456.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "165.154.182.221",
+      "context": "Scanning host from AS-7456.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tzrhxln.cn",
+      "context": "Suspect high entropy domain from AS-7456.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "leheedu.cn",
+      "context": "Source domain value from AS-7456.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mail.,brossy.com.cn",
+      "context": "Source domain value (with typo) from AS-7456.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mail.brossy.com.cn",
+      "context": "Source domain value from AS-7456.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

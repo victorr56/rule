@@ -1,0 +1,24 @@
+title: Chinese Language Scanner Activity With GBK Accept-Charset Header
+id: 54101e42-9cd5-46a2-9b2f-7634f19b22a6
+status: experimental
+description: Detects HTTP requests containing a specific Accept-Charset header ("GBK,utf-8;q=0.7,*;q=0.3") and a blank User-Agent, as seen in some Chinese language scanning campaigns.
+references:
+    - https://isc.sans.edu/diary/rss/33442
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.reconnaissance
+    - attack.t1595
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        HttpHeader|contains: 'Accept-Charset: GBK,utf-8;q=0.7,*;q=0.3'
+        c-useragent: '-'
+    condition: selection
+falsepositives:
+    - Legitimate clients that use this combination of a specific Accept-Charset string and a blank User-Agent.
+    - Activity related to this campaign that does not use a blank User-Agent.
+    - The 'HttpHeader' field is non-standard and needs to be mapped to the field in your logs that contains the full HTTP request headers.
+level: medium

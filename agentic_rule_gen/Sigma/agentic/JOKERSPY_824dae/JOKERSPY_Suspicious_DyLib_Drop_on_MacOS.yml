@@ -1,0 +1,22 @@
+title: JOKERSPY - Suspicious DyLib Drop on macOS
+id: e4b84b63-0d67-4638-a15d-f152d0a4c28f
+status: experimental
+description: Detects the creation of dynamic library (.dylib) files in the non-standard '/Users/shared/keybag/' directory. This behavior was observed being used by REF9134 to stage libraries for hijacking purposes as part of the JOKERSPY toolset.
+references:
+    - https://www.elastic.co/security-labs/threat-command/inital-research-of-jokerspy
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.t1574.006
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: macos
+detection:
+    selection:
+        TargetFilename|startswith: '/Users/shared/keybag/'
+        TargetFilename|endswith: '.dylib'
+    condition: all of them
+falsepositives:
+    - Legitimate but poorly written software installers might use this path.
+level: medium

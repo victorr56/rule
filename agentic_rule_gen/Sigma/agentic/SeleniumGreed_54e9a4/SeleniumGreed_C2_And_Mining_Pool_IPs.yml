@@ -1,0 +1,27 @@
+title: SeleniumGreed C2 and Mining Pool Communication
+id: 0e86b297-f58c-4a39-ab90-a2373079b7b9
+status: experimental
+description: Detects network connections to IP addresses known to be used by the SeleniumGreed campaign for C2, payload delivery, or as mining pool proxies.
+references:
+    - https://www.wiz.io/blog/seleniumgreed-cryptomining-exploit-attack-flow-remediation-steps
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.command_and_control
+    - attack.impact
+    - attack.t1105
+    - attack.t1496
+logsource:
+    category: network_connection
+    product: linux
+detection:
+    selection:
+        DestinationIp:
+            - '164.90.149.104'
+            - '192.241.144.69'
+            - '165.227.63.241'
+            - '165.22.195.35'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

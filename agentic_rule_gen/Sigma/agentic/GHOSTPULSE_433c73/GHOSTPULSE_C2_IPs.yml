@@ -1,0 +1,23 @@
+title: GHOSTPULSE C2 IP Network Connection
+id: 869036c0-639a-4c28-98e3-0d6768393c3e
+status: experimental
+description: Detects network connections to IP addresses known to be used by GHOSTPULSE for C2 communications.
+references:
+    - https://www.elastic.co/security-labs/threat-command/ghostpulse-haunts-victims-using-defense-evasion-bag-o-tricks
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '78.24.180.93'
+            - '195.201.198.179'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

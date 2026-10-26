@@ -1,0 +1,21 @@
+title: JOKERSPY - C2 DNS Query
+id: 5698b671-5509-41ac-847e-89a1f26a5c1a
+status: experimental
+description: Detects DNS queries for a domain known to be used as a command and control server for the JOKERSPY 'sh.py' backdoor.
+references:
+    - https://www.elastic.co/security-labs/threat-command/inital-research-of-jokerspy
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.t1071
+    - attack.t1568
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'app.influmarket.org'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

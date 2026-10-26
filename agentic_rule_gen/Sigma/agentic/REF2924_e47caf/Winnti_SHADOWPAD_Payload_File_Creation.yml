@@ -1,0 +1,22 @@
+title: Winnti SHADOWPAD Payload File Creation
+id: 28f64bdc-24ed-4f24-bc6d-621f2d348a1c
+status: experimental
+description: Detects the creation of 'log.dll.dat', the encrypted payload file used by SHADOWPAD, by the vulnerable 'BDReinit.exe' loader.
+references:
+    - https://www.elastic.co/security-labs/threat-command/update-to-the-REF2924-intrusion-set-and-related-campaigns
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.defense_evasion
+    - attack.t1574.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\BDReinit.exe'
+        TargetFilename|endswith: '\log.dll.dat'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

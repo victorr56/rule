@@ -1,0 +1,32 @@
+title: Suspected Sqlmap Database Exfiltration
+id: 512b1d3d-c128-400d-90c0-f8f4a4d6f83b
+status: experimental
+description: Detects sqlmap execution attempting to dump table columns with names that are highly specific to user account information, as seen in GambleForce campaigns.
+references:
+    - https://www.group-ib.com/blog/gambleforce-gang/
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.collection
+    - attack.t1005
+    - attack.exfiltration
+    - attack.t1048
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/sqlmap'
+            - '/sqlmap.py'
+        CommandLine|contains|all:
+            - '--dump'
+            - 'mb_id'
+            - 'mb_password'
+            - 'mb_bank_name'
+            - 'mb_bank_no'
+    condition: selection
+falsepositives:
+    - Legitimate penetration testing.
+level: medium

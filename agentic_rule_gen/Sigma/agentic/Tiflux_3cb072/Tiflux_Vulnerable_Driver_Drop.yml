@@ -1,0 +1,27 @@
+title: Tiflux Vulnerable Driver Drop
+id: 251f2f0a-115f-4a0b-85d0-94e8250009c9
+status: experimental
+description: Detects the creation of the vulnerable 'HwRwDrv.x64' driver file in a temporary directory by rundll32.exe.
+references:
+    - https://www.huntress.com/blog/tiflux-rmm-install
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.defense_evasion
+    - attack.privilege_escalation
+    - attack.t1548.002
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        TargetFilename|endswith: '\HwRwDrv.x64'
+        TargetFilename|contains:
+            - '\AppData\Local\Temp\'
+            - '\Windows\Temp\'
+    condition: selection
+falsepositives:
+    - Legitimate installers using rundll32.exe to drop a driver with this name, though this is unlikely.
+level: medium

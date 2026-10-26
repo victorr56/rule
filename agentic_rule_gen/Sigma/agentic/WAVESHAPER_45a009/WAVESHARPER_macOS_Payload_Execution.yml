@@ -1,0 +1,23 @@
+title: WAVESHAPER macOS Payload Execution
+id: da2629b3-3f14-4114-8772-f850e045a1c0
+status: experimental
+description: Detects the execution of the WAVESHAPER RAT payload from its specific installation path on macOS.
+references:
+    - https://www.elastic.co/security-labs/threat-command/axios-one-rat-to-rule-them-all
+author: ioc-yara-daily (agentic)
+date: 2024-05-22
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.t1543.001
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image: '/Library/Caches/com.apple.act.mond'
+        ParentImage|endswith: '/launchd'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

@@ -1,0 +1,22 @@
+title: PromptSpy APK Download via Proxy
+id: 1a9f8b4a-a4e9-467f-94a5-6ab5f50a8b13
+status: experimental
+description: Detects the download of PromptSpy APK files from its known distribution domain. This malware targets Android devices.
+references:
+    - https://www.welivesecurity.com/en/eset-research/promptspy-ushers-in-era-android-threats-using-genai/
+author: ioc-yara-daily (agentic)
+date: 2024-06-18
+tags:
+    - attack.initial_access
+    - attack.t1105
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname|endswith: 'mgardownload.com'
+        UrlPath|contains: 'MgApp_' # Based on filenames like MgApp_1.apk, MgApp_2.apk
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

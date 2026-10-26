@@ -1,0 +1,22 @@
+title: Tiflux C2 IP Address
+id: b5e523f6-49a0-410a-8d77-628d61741cfb
+status: experimental
+description: Detects network connections to a known Tiflux C2 and payload delivery IP address.
+references:
+    - https://www.huntress.com/blog/tiflux-rmm-install
+author: ioc-yara-daily (agentic)
+date: 2026-10-26
+tags:
+    - attack.command_and_control
+    - attack.t1071
+    - detection.threat_hunting
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '84.54.33.192'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
