@@ -1,0 +1,189 @@
+{
+  "malware_family": "ldapnomnom",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "ldapnomnom is a tool for unauthenticated Active Directory username enumeration using a technique called LDAP Ping. By default, it uses TCP, making connection attempts visible via Event 5156, while the LDAP Ping mechanism itself bypasses Event 1644. All queries are logged with usernames but no source IP in netlogon.log if debug logging is enabled.",
+  "mitre_techniques": [
+    "T1087.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "fmt.Sprintf(\"(&(NtVer=\\x06\\x00\\x00\\x00)(AAC=\\x10\\x00\\x00\\x00)(User=\"+username+\"))\")",
+      "context": "The Go format string used by ldapnomnom to construct the LDAP Ping filter.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "ldapnomnom",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "(&(NtVer=\\x06\\x00\\x00\\x00)(AAC=\\x10\\x00\\x00\\x00))",
+      "context": "The LDAP Ping filter used in ldapnomnom's benchmark code path.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "ldapnomnom",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 17 00 }",
+      "context": "First two bytes of a successful LDAP Ping response (LOGON_SAM_LOGON_RESPONSE_EX).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "ldapnomnom",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "NetLogon",
+      "context": "The pseudo-attribute requested to trigger the Netlogon response path.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "nltest /dbflag:0x2080ffff",
+      "context": "Command to enable Netlogon service debug logging on a Domain Controller.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "netlogon.log",
+      "context": "Log file that captures LDAP Ping attempts if debug logging is enabled.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[MISC] NlSamVerifyUserAccountEnabled",
+      "context": "Log entry in netlogon.log indicating a disabled account was probed.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Sam User Unknown Ex",
+      "context": "Log entry in netlogon.log for a nonexistent or disabled account.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Sam Logon Response Ex",
+      "context": "Log entry in netlogon.log for an existing, enabled account.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "LSASS.exe",
+      "context": "Application name in Event 5156 for inbound LDAP Ping connections.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\device\\harddiskvolume2\\windows\\system32\\LSASS.exe",
+      "context": "Application path in Event 5156 for inbound ldapnomnom connection.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x2080ffff",
+      "context": "The debug flag value for enabling full Netlogon logging.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ldeep ldap -d newjersey.sopranos.local -s ldap://10.0.1.10 -a enum_users /tmp/sopranos.txt",
+      "context": "Example command to enumerate users with ldeep, using TCP.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "ldeep",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "(&(NtVer=\\x06\\x00\\x00\\x00)(AAC=\\x10\\x00\\x00\\x00)(User=...))",
+      "context": "The LDAP filter that distinguishes ldapnomnom from legitimate DC Locator pings.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "cldap://",
+      "context": "URL scheme indicating true connectionless (UDP) LDAP.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "LOGON_SAM_LOGON_RESPONSE_EX",
+      "context": "Opcode name for a successful LDAP Ping user lookup (0x17).",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "LOGON_SAM_USER_UNKNOWN_EX",
+      "context": "Opcode name for a failed LDAP Ping user lookup (0x19).",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "NETLOGON_SAM_LOGON_RESPONSE_EX",
+      "context": "The fixed-format blob returned on a successful LDAP Ping.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

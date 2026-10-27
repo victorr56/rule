@@ -1,0 +1,29 @@
+title: XWORM/AGENTTESLA File Creation in MinMinons Folder
+id: 6a2c286d-67e3-4d40-b6f7-c999335832a4
+status: experimental
+description: Detects the creation of malicious files in the "C:\ProgramData\MinMinons" directory by XWORM/AGENTTESLA malware, typically by powershell.exe or a Windows script host process.
+references:
+    - https://www.elastic.co/security-labs/threat-command/attack-chain-leads-to-xworm-and-agenttesla
+author: ioc-yara-daily (agentic)
+date: 2024-05-27
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1059.007
+    - attack.persistence
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_js:
+        Image|endswith: '\powershell.exe'
+        TargetFilename: 'C:\ProgramData\MinMinons\miguan.js'
+    selection_exe:
+        Image|endswith:
+            - '\wscript.exe'
+            - '\cscript.exe'
+        TargetFilename: 'C:\ProgramData\MinMinons\Candlegraphy.\___'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

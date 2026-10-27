@@ -1,0 +1,26 @@
+title: AWS SNS Data Publication via Command Line
+id: 97891823-c919-4809-bd9a-60563b7e7ab4
+status: experimental
+description: Detects data being published to an AWS Simple Notification Service (SNS) topic from the command line. This is a common method for exfiltrating stolen data, such as credentials, from a compromised system.
+references:
+    - https://www.elastic.co/security-labs/threat-command/aws-sns-abuse
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.exfiltration
+    - attack.t1567
+    - attack.t1530
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/aws'
+        CommandLine|contains|all:
+            - 'sns'
+            - 'publish'
+            - '--message'
+    condition: selection
+falsepositives:
+    - Legitimate scripts publishing notifications or data via the AWS CLI.
+level: high

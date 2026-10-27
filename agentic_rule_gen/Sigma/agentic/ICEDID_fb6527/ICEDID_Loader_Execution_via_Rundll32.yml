@@ -1,0 +1,25 @@
+title: ICEDID Loader Execution via Rundll32
+id: 59a16f5c-86c5-430c-8438-e6d425b07248
+status: experimental
+description: Detects the execution of the ICEDID loader DLL 'olasius.dll' via rundll32.exe.
+references:
+    - https://www.elastic.co/security-labs/threat-command/icedids-network-infrastructure-is-alive-and-well
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.defense_evasion
+    - attack.signed_binary_proxy_execution
+    - attack.t1218.011
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains|all:
+            - 'olasius.dll'
+            - 'PluginInit'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

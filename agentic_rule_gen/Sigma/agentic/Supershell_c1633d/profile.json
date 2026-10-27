@@ -1,0 +1,72 @@
+{
+  "malware_family": "Supershell",
+  "threat_actor": "",
+  "platforms": [
+    "multi"
+  ],
+  "summary": "An active exploitation campaign targets a Gogs RCE vulnerability (CVE-2025-8110) via symlink abuse to gain initial access. Attackers overwrite the .git/config file to execute commands, subsequently deploying a Go-based payload from the open-source Supershell C2 framework to establish a reverse SSH shell.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": ".git/config",
+      "context": "Target file for overwrite via symlink to achieve RCE.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "sshCommand",
+      "context": "Maliciously set config key inside .git/config to execute commands.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "8-character random repository names",
+      "context": "Created on compromised Gogs instances to stage the exploit.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "119.45.176.196",
+      "context": "Supershell C2 Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Supershell"
+    },
+    {
+      "kind": "ip",
+      "value": "106.53.108.81",
+      "context": "Payload Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "119.91.42.53",
+      "context": "Payload Server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "elf"
+  ]
+}

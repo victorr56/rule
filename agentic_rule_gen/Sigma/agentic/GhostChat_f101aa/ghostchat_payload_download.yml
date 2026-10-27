@@ -1,0 +1,29 @@
+title: GhostChat Payload Download via PowerShell
+id: acb797f1-7546-4cd4-b816-1f63a4bb4853
+status: experimental
+description: Detects the specific PowerShell command line used to download the GhostChat 'notepad2.dll' payload.
+references:
+    - https://www.welivesecurity.com/en/eset-research/love-actually-fake-dating-app-used-lure-targeted-spyware-campaign-pakistan/
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.defense_evasion
+    - attack.command_and_control
+    - attack.t1105
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'Invoke-WebRequest'
+            - 'notepad2.dll'
+            - '-OutFile'
+            - '\notepad2.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
+logsource:
+    category: process_creation
+    product: windows

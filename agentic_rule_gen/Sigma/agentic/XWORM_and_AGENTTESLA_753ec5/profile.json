@@ -1,0 +1,331 @@
+{
+  "malware_family": "XWORM and AGENTTESLA",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A multi-stage attack chain uses a weaponized Word document to fetch an RTF object, which in turn executes a malicious PowerShell script. The script establishes persistence, bypasses AMSI, and uses a custom .NET loader to inject either XWORM or AGENTTESLA into a legitimate process's memory. The malware exfiltrates data, with AGENTTESLA using Discord webhooks for C2.",
+  "mitre_techniques": [
+    "T1055",
+    "T1070.004",
+    "T1053.005",
+    "T1204.002",
+    "T1566.001",
+    "T1059.001",
+    "T1027",
+    "T1562.001",
+    "T1136"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "Card & Booking Details.docx",
+      "context": "Initial malicious word document used to deceive the victim.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "p2.rtf",
+      "context": "RTF object fetched by the initial document.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Excel.SheetMacroEnabled",
+      "context": "Embedded OLE object within the RTF file.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "7000m.txt",
+      "context": "File containing the malicious PowerShell script downloaded by the VBA macro.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Winword.exe",
+      "context": "Process killed by the PowerShell script to delete the initial document.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\MinMinons",
+      "context": "Directory created by malware to store scripts and binaries.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\MinMinons\\Candlegraphy.\\_\\_\\_",
+      "context": "Path where the running PowerShell script is copied for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "MOperaChrome",
+      "context": "Scheduled task created to run a JScript file for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "System32",
+      "context": "Name of local administrator account created by the malware.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\MinMinons\\miguan.js",
+      "context": "JScript file created for malware update mechanism.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "miguaned",
+      "context": "Scheduled task created to execute the malware update JScript.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "{F935DC22-1CF0-11D0-ADB9-00C04FD58A0B}",
+      "context": "CLSID for WScript.Shell used by the update JScript.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\RegSvcs.exe",
+      "context": "Legitimate process targeted for process hollowing by the .NET loader.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Microsoft.NET\\Framework\\v2.0.50727\\RegSvcs.exe",
+      "context": "Legitimate process targeted for process hollowing by the .NET loader.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Microsoft.NET\\Framework\\v3.5\\Msbuild.exe",
+      "context": "Legitimate process targeted for process hollowing by the .NET loader.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "startsp",
+      "context": "String found in XWORM samples.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "injRun",
+      "context": "String found in XWORM samples.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Xinfo",
+      "context": "String found in XWORM samples.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "openhide",
+      "context": "String found in XWORM samples.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "hidefolderfile",
+      "context": "String found in XWORM samples.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GetMozillaFromLogins",
+      "context": "String found in AGENTTESLA samples.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AccountConfiguration+username",
+      "context": "String found in AGENTTESLA samples.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MailAccountConfiguration",
+      "context": "String found in AGENTTESLA samples.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "KillTorProcess",
+      "context": "String found in AGENTTESLA samples.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SmtpAccountConfiguration",
+      "context": "String found in AGENTTESLA samples.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GetMozillaFromSQLite",
+      "context": "String found in AGENTTESLA samples.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "http://www.mediafire.com/file/79jzbqigitjp2v2/p2.rtf",
+      "context": "URL hosting the malicious RTF object.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://www.mediafire.com/file/xnqxmqlcj51501d/7000m.txt/file",
+      "context": "URL hosting the malicious PowerShell script.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://billielishhui.blogspot.com/atom.xml",
+      "context": "URL used by the update mechanism to download new malware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://discord.com/api/webhooks/1089956337733087274/uYNA_D8Ns1z9NZ3B1mGp0XXyGq-785KLGIfEAZsrz3TJd5fvOjXA927F7bUTTzbNT6Zk",
+      "context": "AGENTTESLA Discord webhook for C2 communications.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "bf5ea8d5fd573abb86de0f27e64df194e7f9efbaadd5063dee8ff9c5c3baeaa2",
+      "description": "Reference sample for XWORM Trojan."
+    },
+    {
+      "sha256": "65463161760af7ab85f5c475a0f7b1581234a1e714a2c5a555783bdd203f85f4",
+      "description": "Reference sample for AGENTTESLA Trojan."
+    }
+  ],
+  "file_types": [
+    "document",
+    "script",
+    "dotnet",
+    "pe"
+  ]
+}

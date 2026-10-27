@@ -1,0 +1,25 @@
+title: Skilldrop C2 and Exfiltration Domains
+id: 597a7a10-2b1d-4074-9f2d-864b73e5141e
+status: experimental
+description: Detects DNS queries for domains associated with the Skilldrop malware's C2, exfiltration, and payload delivery infrastructure.
+references:
+    - https://blog.virustotal.com/2026/10/how-some-malicious-ai-skills-hide.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.t1071.001
+    - attack.command_and_control
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.config-verify.helpdesk-api.com'
+            - '.zkorman.com'
+            - '.onlyflies.buzz'
+            - '.text-proc.io'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

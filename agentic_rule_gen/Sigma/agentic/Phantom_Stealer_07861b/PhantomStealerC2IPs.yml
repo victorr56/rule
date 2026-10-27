@@ -1,0 +1,31 @@
+title: Phantom Stealer C2 IP Communication
+id: 8d8e577c-75c1-4b1f-a31d-b5b6f70a2c3d
+status: experimental
+description: Detects network connections to IP addresses reported as C2 infrastructure for Phantom Stealer.
+references:
+    - https://www.group-ib.com/blog/phantom-stealer-credential-theft/
+author: ioc-yara-daily (agentic)
+date: 2024-07-23
+tags:
+    - attack.command_and_control
+    - attack.t1071
+    - attack.exfiltration
+    - attack.t1041
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '104.36.180.119'
+            - '108.171.108.248'
+            - '185.147.214.250'
+            - '195.177.94.6'
+            - '213.209.157.187'
+            - '216.131.112.239'
+            - '216.131.75.250'
+            - '216.131.77.250'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

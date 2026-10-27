@@ -1,0 +1,26 @@
+title: ICEDID C2 TLS Certificate
+id: b341355e-de3d-4c3e-8c38-8924b1a457a4
+status: experimental
+description: Detects network connections using the specific self-signed TLS certificate subject and issuer characteristic of ICEDID C2 servers.
+references:
+    - https://www.elastic.co/security-labs/threat-command/icedids-network-infrastructure-is-alive-and-well
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Tls.Subject|contains|all:
+            - 'CN=localhost'
+            - 'O=Internet Widgits Pty Ltd'
+        Tls.Issuer|contains|all:
+            - 'CN=localhost'
+            - 'O=Internet Widgits Pty Ltd'
+    condition: selection
+falsepositives:
+    - Unlikely. This certificate could be reused by other threat actors.
+level: critical

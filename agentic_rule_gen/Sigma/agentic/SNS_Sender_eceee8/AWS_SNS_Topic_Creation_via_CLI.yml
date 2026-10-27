@@ -1,0 +1,25 @@
+title: AWS SNS Topic Creation via Command Line
+id: db04a37b-4029-4176-acbe-35105221c5b8
+status: experimental
+description: Detects the creation of an AWS Simple Notification Service (SNS) topic using the AWS command-line interface. Adversaries may create SNS topics as a staging area for data exfiltration.
+references:
+    - https://www.elastic.co/security-labs/threat-command/aws-sns-abuse
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.exfiltration
+    - attack.t1567
+    - attack.t1530
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/aws'
+        CommandLine|contains|all:
+            - 'sns'
+            - 'create-topic'
+    condition: selection
+falsepositives:
+    - Legitimate administrative or DevOps activity, though creation of SNS topics from the command line on a production host is often unusual.
+level: high

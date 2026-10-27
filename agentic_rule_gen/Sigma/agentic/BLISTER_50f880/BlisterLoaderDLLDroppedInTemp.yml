@@ -1,0 +1,25 @@
+title: Blister Loader DLL Dropped in Temp
+id: 8c3d9e4a-55b1-4f1e-8e8f-7b0a1c6e4d2f
+status: experimental
+description: Detects the creation of Blister loader DLLs in a subdirectory of the Temp folder named "Framwork" (a misspelling of Framework).
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-security-uncovers-blister-malware-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.t1218.011
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\Temp\Framwork\'
+        TargetFilename|endswith:
+            - 'axsssig.dll'
+            - 'Colorui.dll'
+            - 'TermService.dll'
+            - 'rdpencom.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

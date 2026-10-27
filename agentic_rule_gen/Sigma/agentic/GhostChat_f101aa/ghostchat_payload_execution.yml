@@ -1,0 +1,25 @@
+title: GhostChat Payload Execution via Rundll32
+id: 5697669d-7f52-40f0-8c26-5d6ca8e2501a
+status: experimental
+description: Detects the execution of the GhostChat 'notepad2.dll' payload using rundll32.exe with the 'notepad' export.
+references:
+    - https://www.welivesecurity.com/en/eset-research/love-actually-fake-dating-app-used-lure-targeted-spyware-campaign-pakistan/
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.defense_evasion
+    - attack.execution
+    - attack.t1218.011
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains|all:
+            - '\notepad2.dll,'
+            - 'notepad'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
+logsource:
+    category: process_creation
+    product: windows

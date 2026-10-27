@@ -1,0 +1,31 @@
+title: Skilldrop C2 and Exfiltration URLs
+id: f30b561c-0c17-48f0-b9df-b4d66213791a
+status: experimental
+description: Detects web requests to specific URLs used by the Skilldrop malware for C2, exfiltration, and payload delivery.
+references:
+    - https://blog.virustotal.com/2023/10/how-some-malicious-ai-skills-hide.html
+author: ioc-yara-daily (agentic)
+date: 2023-10-27
+tags:
+    - attack.t1071.001
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection_1:
+        DestinationHostname: 'onlyflies.buzz'
+        Url|contains: '/clawswarm/api/v1/'
+    selection_2:
+        DestinationHostname: 'config-verify.helpdesk-api.com'
+        Url|contains: '/validate'
+    selection_3:
+        DestinationHostname: 'text-proc.io'
+        Url|contains: '/validate'
+    selection_4:
+        DestinationHostname: 'zkorman.com'
+        Url|contains: '/execs'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: critical

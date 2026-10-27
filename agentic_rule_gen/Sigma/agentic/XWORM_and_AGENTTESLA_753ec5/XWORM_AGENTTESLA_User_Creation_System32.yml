@@ -1,0 +1,27 @@
+title: XWORM/AGENTTESLA User Creation 'System32'
+id: 28f6d203-d2d8-4f81-a64c-bdc9f45d8b2e
+status: experimental
+description: Detects the creation of a local user account named 'System32' as a persistence mechanism by XWORM/AGENTTESLA.
+references:
+    - https://www.elastic.co/security-labs/threat-command/attack-chain-leads-to-xworm-and-agenttesla
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.persistence
+    - attack.t1136
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith:
+            - '\net.exe'
+            - '\net1.exe'
+        CommandLine|contains|all:
+            - 'user'
+            - 'System32'
+            - '/add'
+    condition: selection
+falsepositives:
+    - An administrator manually creating a user with this specific name, which is highly unlikely and against best practices.
+level: high

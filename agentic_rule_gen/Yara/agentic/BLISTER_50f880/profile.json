@@ -1,0 +1,255 @@
+{
+  "malware_family": "BLISTER",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "BLISTER is a novel loader that uses valid code-signing certificates to evade detection. It is typically dropped as a DLL, executed by rundll32.exe, and establishes persistence via the user's Startup folder. The loader decodes and injects second-stage payloads like Cobalt Strike or BitRat into memory, often into a WerFault.exe process.",
+  "mitre_techniques": [
+    "T1218.011",
+    "T1055",
+    "T1547.001",
+    "T1036"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "certificate_subject",
+      "value": "Blist LLC",
+      "context": "The 'Issued to' field for the abused code signing certificate.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%temp%\\Framwork\\axsssig.dll",
+      "context": "Path where a dropper writes the signed BLISTER loader DLL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Rundll32.exe C:\\Users\\user\\AppData\\Local\\Temp\\Framwork\\axsssig.dll,LaunchColorCpl",
+      "context": "Example command line to execute the BLISTER loader DLL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "LaunchColorCpl",
+      "context": "A common DLL export name used by BLISTER as its entry point.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "explorer.exe -> *",
+      "context": "Persistence link in Startup folder is launched by explorer.exe at logon.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "WerFault.exe",
+      "context": "BLISTER spawns and injects its embedded payload into this process.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "axsssig.dll",
+      "context": "A name used for the BLISTER loader DLL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Launcher V7.3.13.exe",
+      "context": "Filename observed for dropper executables.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "GuiFramwork.exe",
+      "context": "Filename observed for dropper executables.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Colorui.dll",
+      "context": "Filename observed for BLISTER loader DLLs.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "TermService.dll",
+      "context": "Filename observed for BLISTER loader DLLs.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "rdpencom.dll",
+      "context": "Filename observed for BLISTER loader DLLs.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 8D 45 DC 89 5D EC 50 6A 04 8D 45 F0 50 8D 45 EC 50 6A FF FF D7 }",
+      "context": "YARA rule pattern for BLISTER.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 75 F7 39 4D FC 0F 85 F3 00 00 00 64 A1 30 00 00 00 53 57 89 75 }",
+      "context": "YARA rule pattern for BLISTER.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "moduleloader.s3.eu-west-2.amazonaws.com",
+      "context": "Malware C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "discountshadesdirect.com",
+      "context": "Malware C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "bimelectrical.com",
+      "context": "Malware C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "clippershipintl.com",
+      "context": "Malware C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "188.68.221.203",
+      "context": "Malware C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "93.115.18.248",
+      "context": "Malware C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "52.95.148.162",
+      "context": "Malware C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "84.38.183.174",
+      "context": "Malware C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "0a7778cf6f9a1bd894e89f282f2e40f9d6c9cd4b72be97328e681fe32a1b1a00",
+      "description": "Unsigned BLISTER Loader DLL (YARA reference sample)."
+    },
+    {
+      "sha256": "ed6910fd51d6373065a2f1d3580ad645f443bf0badc398aa77185324b0284db8",
+      "description": "Signed dropper."
+    },
+    {
+      "sha256": "df8142e5cf897af65972041024ebe74c7915df0e18c6364c5fb9b2943426ed1a",
+      "description": "Unsigned BLISTER Loader DLL."
+    },
+    {
+      "sha256": "afb77617a4ca637614c429440c78da438e190dd1ca24dc78483aa731d80832c2",
+      "description": "Signed BLISTER Loader DLL."
+    },
+    {
+      "sha256": "7b9091c41525f1721b12dcef601117737ea990cee17a8eecf81dcfb25ccb5a8f",
+      "description": "Signed dropper."
+    },
+    {
+      "sha256": "a34821b50aadee0dd85c382c43f44dae1e5fef0febf2f7aed6abf3f3e21f7994",
+      "description": "Unsigned BLISTER Loader DLL."
+    },
+    {
+      "sha256": "8ae2c205220c95f0f7e1f67030a9027822cc18e941b669e2a52a5dbb5af74bc9",
+      "description": "Signed BLISTER Loader DLL."
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

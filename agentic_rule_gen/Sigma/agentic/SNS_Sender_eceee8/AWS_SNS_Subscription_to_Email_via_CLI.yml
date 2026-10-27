@@ -1,0 +1,28 @@
+title: AWS SNS Subscription to External Email via Command Line
+id: 5693029f-07e8-4660-848e-f823e80d4187
+status: experimental
+description: Detects a subscription to an AWS Simple Notification Service (SNS) topic using an email endpoint via the command line. Adversaries abuse this functionality to exfiltrate data by having it sent to an email address they control.
+references:
+    - https://www.elastic.co/security-labs/threat-command/aws-sns-abuse
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.exfiltration
+    - attack.t1567
+    - attack.t1530
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/aws'
+        CommandLine|contains|all:
+            - 'sns'
+            - 'subscribe'
+            - '--protocol'
+            - 'email'
+            - '--notification-endpoint'
+    condition: selection
+falsepositives:
+    - Legitimate administrative or DevOps activity where email notifications are configured from the command line.
+level: high

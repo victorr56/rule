@@ -1,0 +1,37 @@
+title: ClickFix Crypto Drainer Payload Execution
+id: e4b8686a-7ed4-406c-8a28-98e87493a387
+status: experimental
+description: Detects the execution of the ClickFix crypto drainer payload from one of its known masquerading paths within the user's Library/Caches directory.
+references:
+    - https://www.huntress.com/blog/mac-crypto-draining-malware
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.execution
+    - attack.t1059
+    - attack.defense_evasion
+    - attack.t1036.005
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection_stage1:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+            - '/zsh'
+        CommandLine|contains: '/Library/Caches/com.apple.trustd/com.apple.verified'
+    selection_stage2:
+        Image|contains: '/Library/Caches/com.apple.softwareupdate/SoftwareUpdate'
+        ParentImage|endswith:
+            - '/sh'
+            - '/bash'
+            - '/zsh'
+    selection_stage3:
+        Image|contains: '/Library/Caches/homeenergyd/com.apple.homeenergyd'
+        ParentImage|contains: '/Library/Caches/com.apple.softwareupdate/SoftwareUpdate'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate software installing and running executables from user cache directories that match the patterns, although this behavior is very unlikely.
+level: critical

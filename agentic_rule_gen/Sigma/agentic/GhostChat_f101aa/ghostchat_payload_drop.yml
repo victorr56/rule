@@ -1,0 +1,22 @@
+title: GhostChat Payload Dropped in Temp Directory
+id: 9fa16c4c-42b7-4c3e-8c34-eb1a9960ff69
+status: experimental
+description: Detects the creation of the 'notepad2.dll' file, a payload associated with GhostChat, in a user's temporary directory.
+references:
+    - https://www.welivesecurity.com/en/eset-research/love-actually-fake-dating-app-used-lure-targeted-spyware-campaign-pakistan/
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.persistence
+    - attack.t1541
+detection:
+    selection:
+        TargetFilename|contains: '\AppData\Local\Temp\'
+        TargetFilename|endswith: '\notepad2.dll'
+    condition: selection
+falsepositives:
+    - A legitimate developer tool or library with the same name, if written to the Temp directory.
+level: medium
+logsource:
+    category: file_event
+    product: windows

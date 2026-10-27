@@ -1,0 +1,164 @@
+{
+  "malware_family": "ICEDID",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "ICEDID, also known as Bokbot, is a modular trojan often used to deliver secondary payloads like Cobalt Strike. Initial access is typically via phishing with a LNK file executing a loader DLL, which drops an encrypted payload as license.dat. The malware notably uses TLS certificate pinning, checking for a specific self-signed certificate subject and issuer ('CN=localhost, ... O=Internet Widgits Pty Ltd'), to validate its C2 infrastructure.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "%windir%\\system32\\rundll32.exe olasius.dll,PluginInit",
+      "context": "LNK file target to execute the first stage ICEDID loader.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "olasius.dll",
+      "context": "The first stage ICEDID loader DLL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "PluginInit",
+      "context": "Export called by rundll32.exe to start the infection.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "license.dat",
+      "context": "Encrypted core payload written to disk by the first stage.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "hollow.dat",
+      "context": "Second loader component downloaded in a GZIP payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "CN=localhost, C=AU, ST=Some-State, O=Internet Widgits Pty Ltd",
+      "context": "Hardcoded self-signed TLS certificate subject and issuer DN for C2 validation.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 74 ?? 8B 50 ?? E8 ?? ?? ?? ?? 48 8B 4C 24 ?? 0F BA F0 ?? 48 8B 51 ?? 48 8B 4A ?? 39 01 74 ?? 35 14 24 4A 38 39 01 74 ?? }",
+      "context": "YARA rule pattern for the TLS certificate pinning function.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "http_header",
+      "value": "__gads",
+      "context": "C2 cookie parameter for campaign ID, ticks, and process count.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "__gat",
+      "context": "C2 cookie parameter for OS version and architecture.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "__ga",
+      "context": "C2 cookie parameter for hypervisor/processor information.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "__u",
+      "context": "C2 cookie parameter for computer name, username, and bot ID.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "__io",
+      "context": "C2 cookie parameter for the victim's Security Identifier (SID).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "__gid",
+      "context": "C2 cookie parameter for the encrypted MAC address.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "2ad2ad16d2ad2ad22c2ad2ad2ad2adc110bab2c0a19e5d4e587c17ce497b15",
+      "context": "JARM fingerprint associated with ICEDID C2 servers.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "yolneanz.com",
+      "context": "ICEDID C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "51.89.190.220",
+      "context": "ICEDID C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "db91742b64c866df2fc7445a4879ec5fc256319e234b1ac5a25589455b2d9e32",
+      "description": "ICEDID malware sample."
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

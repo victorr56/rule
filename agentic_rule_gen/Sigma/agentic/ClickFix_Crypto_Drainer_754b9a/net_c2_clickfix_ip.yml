@@ -1,0 +1,26 @@
+title: ClickFix Crypto Drainer C2 Communication
+id: 86bcf641-030f-48d1-9f93-02f43501a5da
+status: experimental
+description: Detects network connections to IP addresses known to be used by the ClickFix crypto drainer for payload download and C2 communication.
+references:
+    - https://www.huntress.com/blog/mac-crypto-draining-malware
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.command_and_control
+    - attack.t1071
+    - attack.t1105
+    - detection.threat_hunting
+logsource:
+    category: network_connection
+    product: macos # Using macos, but 'windows' or generic product is also acceptable
+detection:
+    selection:
+        DestinationIp:
+            - '193.29.224.151'
+            - '77.221.152.34'
+            - '138.124.118.69'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

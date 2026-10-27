@@ -1,0 +1,23 @@
+title: Ldeep LDAP User Enumeration
+id: 86b72d2e-073c-411a-8280-53900b393798
+status: experimental
+description: Detects user enumeration via the ldeep tool. While the profile is about ldapnomnom, the reference article provides an example of ldeep, a similar tool for Active Directory enumeration.
+references:
+    - https://www.huntress.com/blog/ldap-active-directory-detection-part-six
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.t1087.002
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/ldeep'
+        CommandLine|contains|all:
+            - 'ldap'
+            - 'enum_users'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

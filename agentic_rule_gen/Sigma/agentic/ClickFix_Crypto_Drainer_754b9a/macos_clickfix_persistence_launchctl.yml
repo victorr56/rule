@@ -1,0 +1,26 @@
+title: ClickFix Crypto Drainer Persistence via Launchctl
+id: 97b9875f-14ae-4b07-8e68-3e4b3b14d872
+status: experimental
+description: Detects the use of `launchctl bootstrap` to load a malicious LaunchAgent for persistence, a technique used by the ClickFix crypto drainer.
+references:
+    - https://www.huntress.com/blog/mac-crypto-draining-malware
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.persistence
+    - attack.t1543.001
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        Image|endswith: '/bin/launchctl'
+        CommandLine|contains|all:
+            - 'bootstrap'
+            - 'gui/'
+            - '/Library/LaunchAgents/com.apple.softwareupdated.plist'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

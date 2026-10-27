@@ -1,0 +1,24 @@
+title: Netlogon Full Debug Logging Enabled Via Nltest
+id: 9a044d47-66a7-4b53-b3c4-f72671510d9c
+status: experimental
+description: Detects the use of nltest.exe to enable full debug logging for the Netlogon service. This is a prerequisite for capturing LDAP Ping enumeration attempts, such as those from ldapnomnom, in the netlogon.log file.
+references:
+    - https://www.huntress.com/blog/ldap-active-directory-detection-part-six
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.t1087.002
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\nltest.exe'
+        CommandLine|contains|all:
+            - '/dbflag:'
+            - '0x2080ffff'
+    condition: selection
+falsepositives:
+    - Legitimate, but rare, administrative activity for deep debugging of the Netlogon service.
+level: high

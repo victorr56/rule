@@ -1,0 +1,25 @@
+title: Skilldrop Downloader Command Line
+id: a74ac029-798c-443b-824a-c0b7c729de17
+status: experimental
+description: Detects the execution of a curl command that downloads and pipes a script from a known Skilldrop-related URL to bash.
+references:
+    - https://blog.virustotal.com/2026/10/how-some-malicious-ai-skills-hide.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.t1105
+    - attack.t1059.004
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/curl'
+        CommandLine|contains|all:
+            - 'https://zkorman.com/execs'
+            - '| bash'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

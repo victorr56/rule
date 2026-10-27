@@ -1,0 +1,23 @@
+title: GhostChat C2 Domain Query
+id: e4b2320b-0dbd-4299-a1b7-a36fd4e17ef7
+status: experimental
+description: Detects DNS queries for domains associated with GhostChat C2 and distribution infrastructure.
+references:
+    - https://www.welivesecurity.com/en/eset-research/love-actually-fake-dating-app-used-lure-targeted-spyware-campaign-pakistan/
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+detection:
+    selection:
+        QueryName:
+            - 'hitpak.org'
+            - 'buildthenations.info'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
+logsource:
+    category: dns_query
+    product: windows

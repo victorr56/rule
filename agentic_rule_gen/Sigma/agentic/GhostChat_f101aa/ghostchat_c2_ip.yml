@@ -1,0 +1,22 @@
+title: GhostChat C2 IP Connection
+id: c616a2ef-9ac5-4927-99d0-08f32ac30e38
+status: experimental
+description: Detects network connections to an IP address associated with GhostChat C2 and distribution infrastructure.
+references:
+    - https://www.welivesecurity.com/en/eset-research/love-actually-fake-dating-app-used-lure-targeted-spyware-campaign-pakistan/
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+detection:
+    selection:
+        DestinationIp:
+            - '188.114.96.10'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
+logsource:
+    category: network_connection
+    product: windows

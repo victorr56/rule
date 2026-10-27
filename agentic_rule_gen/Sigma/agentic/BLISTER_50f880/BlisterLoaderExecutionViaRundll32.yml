@@ -1,0 +1,23 @@
+title: Blister Loader Execution via Rundll32
+id: 569a7b9e-11f8-4a9d-b845-a10d9f0c2e3d
+status: experimental
+description: Detects the execution of the Blister loader via rundll32.exe, characteristically using a DLL path containing a misspelled "Framwork" folder in the Temp directory and a specific export function "LaunchColorCpl".
+references:
+    - https://www.elastic.co/security-labs/threat-command/elastic-security-uncovers-blister-malware-campaign
+author: ioc-yara-daily (agentic)
+date: 2026-10-27
+tags:
+    - attack.t1218.011
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains|all:
+            - '\Temp\Framwork\'
+            - ',LaunchColorCpl'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
