@@ -1,0 +1,99 @@
+{
+  "malware_family": "ShinyHunters",
+  "threat_actor": "ShinyHunters",
+  "platforms": [
+    "unknown"
+  ],
+  "summary": "ShinyHunters is a data extortion group that steals sensitive information and uses a dedicated leak site, shinywire.com, to pressure victims into paying a ransom. The group has demonstrated close relationships with ransomware negotiators, with some associates allegedly helping to operate the extortion infrastructure. Operators communicate via Telegram, complaining about incident response firms that advise victims against payment.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "ghostbyte",
+      "context": "Online username/nickname for negotiator Daniel Tobok on multiple services.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Go on my website, majority of those companies would’ve paid if it weren’t for Coveware giving them misinformation",
+      "context": "ShinyHunters operator complaining in a Telegram chat about IR firm Coveware.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Someone (100% Coveware) is going out of their way to make sure i am not paid.",
+      "context": "ShinyHunters operator complaining in a Telegram chat about IR firm Coveware.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "eliminate the problem",
+      "context": "ShinyHunters operator referring to IR firm Coveware in a Telegram chat.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "I’m sure the company will pay but in this specific case I am aware of Coveware and their involvement, and I’ve probably been not getting a lot of other negotiations mostly likely because Coveware keeps getting involved",
+      "context": "ShinyHunters operator complaining about Coveware's interference in negotiations.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "shinywire.com",
+      "context": "The now-defunct ShinyHunters victim extortion website.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "ghostbyte@tutanota.com",
+      "context": "Email address for a negotiator, recommended by Dharma ransomware group.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "dtobok@me.com",
+      "context": "Personal email address of Daniel Tobok, associated with 'ghostbyte' alias.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "luckygoodlucky@tuta.io",
+      "context": "Email address used by a Dharma ransomware representative.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "unknown"
+  ]
+}

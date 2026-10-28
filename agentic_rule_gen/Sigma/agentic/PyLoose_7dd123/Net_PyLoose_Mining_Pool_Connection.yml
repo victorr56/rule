@@ -1,0 +1,23 @@
+title: PyLoose Mining Pool Connection
+id: 59e21715-6ac4-42b7-84a1-b8429ef9eb23
+status: experimental
+description: Detects network connections to the MoneroOcean mining pool IP and port used by PyLoose.
+references:
+    - https://www.wiz.io/blog/pyloose-first-python-based-fileless-attack-on-cloud-workloads
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+    - attack.resource_hijacking
+    - attack.t1496
+logsource:
+    product: linux
+    category: network_connection
+detection:
+    selection:
+        DestinationIp: '51.75.64.249'
+        DestinationPort: 20128
+    condition: selection
+falsepositives:
+    - Legitimate connections to the MoneroOcean mining pool, which is highly unlikely in a corporate environment.
+level: high

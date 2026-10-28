@@ -1,0 +1,28 @@
+title: N0n Actor Hides User Account via SpecialAccounts
+id: a2903525-452f-4889-a2a4-e9104c96aa28
+status: experimental
+description: Detects the registry modification used to hide the 'svc_upd' or 'svc_reg' user accounts from the logon screen, a technique used by the N0n actor.
+references:
+    - https://socradar.io/blog/n0n-ransomware-ai-assisted-extortion/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.defense_evasion
+    - attack.t1564.002
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains|all:
+            - '\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList\'
+            - 'svc_'
+        Details: '0'
+    filter_known:
+        TargetObject|endswith:
+            - '\svc_upd'
+            - '\svc_reg'
+    condition: selection and filter_known
+falsepositives:
+    - Unlikely, unless other software coincidentally uses the same account names and hiding technique.
+level: high

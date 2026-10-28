@@ -1,0 +1,25 @@
+title: Insecure AI Agent Prompt Log Creation
+id: 38e3e4a2-2b62-4211-a8df-6a6c2317f23c
+status: experimental
+description: Detects the creation of log files in a '.prompt-log' directory, a pattern associated with the 'prompt-log' AI skill. These logs are known to store sensitive data, including secrets and PII, in plaintext.
+references:
+    - https://snyk.io/blog/openclaw-skills-credential-leaks-research/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.credential_access
+    - attack.t1552.002
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/python'
+            - '/python3'
+        TargetFilename|contains: '/.prompt-log/'
+    condition: selection
+falsepositives:
+    - Unlikely, but other Python-based tools could potentially use a similar logging directory structure.
+level: medium

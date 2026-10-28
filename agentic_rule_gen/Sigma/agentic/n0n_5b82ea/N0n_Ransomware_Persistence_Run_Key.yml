@@ -1,0 +1,22 @@
+title: N0n Ransomware Persistence via Run Key (n0nNote)
+id: f057f920-d336-47b8-a6b1-382a63cc6742
+status: experimental
+description: Detects the creation of a registry value in the "Run" key used by N0n ransomware to display the ransom note at logon.
+references:
+    - https://socradar.io/blog/n0n-ransomware-ai-assisted-extortion/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Microsoft\Windows\CurrentVersion\Run\n0nNote'
+        Details|endswith: '\n0nNote.hta'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

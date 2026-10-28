@@ -1,0 +1,21 @@
+title: Clawhub AI Skill Installation
+id: 8527a4d5-53df-4bd9-9ce7-d86b72a0889f
+status: experimental
+description: Detects the installation of an AI agent skill using the 'clawhub' package manager. ClawHub has been associated with skills that insecurely handle sensitive data.
+references:
+    - https://snyk.io/blog/openclaw-skills-credential-leaks-research/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/clawhub'
+        CommandLine|contains: ' install '
+    condition: selection
+falsepositives:
+    - Legitimate use of the clawhub tool.
+level: medium

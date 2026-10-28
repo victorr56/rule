@@ -1,0 +1,28 @@
+title: Yoba Malware DGA Communication via DNS-over-HTTPS
+id: e4b2c17d-847e-4074-b5a0-96f30d075253
+status: experimental
+description: Detects Yoba malware performing DNS-over-HTTPS (DoH) requests to Google's DNS resolver to retrieve C2 information from TXT records of DGA-generated domains.
+references:
+    - https://research.checkpoint.com/2026/tricks-from-the-past-deployed-via-signed-chatgpt-and-claude-binaries/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - attack.t1568.002
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        cs_host: 'dns.google'
+        cs_uri_path|startswith: '/resolve'
+        cs_uri_query|contains|all:
+            - 'type=TXT'
+            - 'name='
+            - '.dedyn.io'
+        cs_uri_query|re: 'name=[a-z]+-[a-z]+-[a-z]+-\d+\.dedyn\.io'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

@@ -1,0 +1,206 @@
+{
+  "malware_family": "kkkkevin777 Tooling",
+  "threat_actor": "kkkkevin777",
+  "platforms": [
+    "linux",
+    "windows"
+  ],
+  "summary": "A financially motivated actor known as kkkkevin777 conducted an extortion campaign against Japanese real estate websites using custom PHP web shells and stolen credentials. The actor's staging server was found exposed, revealing tools, stolen data, and preparations to weaponize the PHP2Shell exploit (CVE-2026-109618, CVE-2026-109619) for future operations.",
+  "mitre_techniques": [
+    "T1190",
+    "T1505.003",
+    "T1053.003",
+    "T1059.001",
+    "T1552.004",
+    "T1021.004",
+    "T1078",
+    "T1114",
+    "T1071.001",
+    "T1491.002",
+    "T1490"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": ".whk.php",
+      "context": "Web shell placed in victim web root.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "index.php.orig20261010",
+      "context": "Backup of overwritten homepage.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "manage/index.php.orig20261010",
+      "context": "Backup of overwritten management page.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "htaccess.their20261010",
+      "context": "Backup of victim's .htaccess file.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "[a-f0-9]{32}\\.php",
+      "context": "Randomly named PHP web shells in image/upload directories.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "Require all granted",
+      "context": "A cron job rewrites .htaccess with this content every minute.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "96.126.130.81:9001",
+      "context": "C2 address inside injected PHP beacon code (e.g., file_get_contents).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "administrator@chenzicccc",
+      "context": "Comment in authorized SSH key.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "96.126.130.81",
+      "context": "Staging server for tools, stolen data, and C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "96.126.130.81:9001",
+      "context": "PHP beacon listener on staging server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "96.126.130.81:8443",
+      "context": "PowerShell C2 listener on staging server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "96.126.130.81:9999",
+      "context": "Open directory listing on staging server.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "96.126.130.81:888",
+      "context": "SSH service on staging server.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/b?h=",
+      "context": "PHP beacon callback URI pattern.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/h?h=",
+      "context": "PHP beacon callback URI pattern for hook.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/c?h=",
+      "context": "PHP beacon callback URI pattern.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/c",
+      "context": "PowerShell C2 URI on port 8443.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/d",
+      "context": "PowerShell C2 URI on port 8443.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "kkkkevin777@tutamail.com",
+      "context": "Attacker contact email address for extortion.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "theudinhthi421@gmail.com",
+      "context": "Secondary attacker contact email address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

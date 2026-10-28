@@ -1,0 +1,319 @@
+{
+  "malware_family": "ABYSSWORKER",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "ABYSSWORKER is a revoked certificate-signed Windows driver used to disable EDR products. It accepts a range of IOCTL commands to terminate processes, remove kernel callbacks, and manipulate driver objects after being enabled with a hardcoded password. This driver is deployed by a loader packed with HEARTCRYPT as part of campaigns delivering MEDUSA ransomware.",
+  "mitre_techniques": [
+    "T1562",
+    "T1222",
+    "T1553.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "smuol.sys",
+      "context": "File name of the driver, imitates a legitimate CrowdStrike Falcon driver.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\device\\czx9umpTReqbOOKF",
+      "context": "Device path created by the driver during initialization.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\??\\fqg0Et4KlNt4s1JT",
+      "context": "Symbolic link path created by the driver during initialization.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "7N6bCAoECbItsUR5-h4Rp2nkQxybfKb0F-wgbJGHGh20pWUuN1-ZxfXdiOYps6HTp0X",
+      "context": "Hardcoded password sent via IOCTL 0x222080 to enable the driver.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x222080",
+      "context": "IOCTL code to enable the malware with a password.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x222184",
+      "context": "IOCTL code to copy a file.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x222400",
+      "context": "IOCTL code to remove callbacks and devices by module name.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x222404",
+      "context": "IOCTL code to replace driver major functions by module name.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x222408",
+      "context": "IOCTL code to kill system threads by module name.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x222440",
+      "context": "IOCTL code to detach mini filter devices.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x222180",
+      "context": "IOCTL code to delete a file.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x222084",
+      "context": "IOCTL code to disable the malware.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x2220c0",
+      "context": "IOCTL code to load kernel APIs from a user-provided structure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x222144",
+      "context": "IOCTL code to terminate a process by PID.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x222140",
+      "context": "IOCTL code to terminate a thread by TID.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x222444",
+      "context": "IOCTL code to remove hooks from Ntfs and Pnp drivers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x222664",
+      "context": "IOCTL code to reboot the machine.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x8bb",
+      "context": "Access rights value used to strip handles from client process.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "FltMgr.sys",
+      "context": "Target module name for detaching mini filter devices via IOCTL 0x222440.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PspLoadImageNotifyRoutine",
+      "context": "String in user-provided API mapping structure passed to the driver.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PspCreateThreadNotifyRoutine",
+      "context": "String in user-provided API mapping structure passed to the driver.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PspCreateProcessNotifyRoutine",
+      "context": "String in user-provided API mapping structure passed to the driver.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "HalReturnToFirmware",
+      "context": "Undocumented function used by the driver to reboot the machine.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "Foshan Gaoming Kedeyu Insulation Materials Co., Ltd",
+      "context": "Subject name of a revoked signing certificate used by the driver.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "FEI XIAO",
+      "context": "Subject name of a revoked signing certificate used by the driver.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "Fuzhou Dingxin Trade Co., Ltd.",
+      "context": "Subject name of a revoked signing certificate used by the driver.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "Changsha Hengxiang Information Technology Co., Ltd",
+      "context": "Subject name of a revoked signing certificate used by the driver.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "Xinjiang Yishilian Network Technology Co., Ltd",
+      "context": "Subject name of a revoked signing certificate used by the driver.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "Shenzhen Yundian Technology Co., Ltd",
+      "context": "Subject name of a revoked signing certificate used by the driver.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [],
+  "samples": [
+    {
+      "sha256": "6a2a0f9c56ee9bf7b62e1d4e1929d13046cd78a93d8c607fe4728cc5b1e8d050",
+      "description": "ABYSSWORKER reference sample"
+    },
+    {
+      "sha256": "b7703a59c39a0d2f7ef6422945aaeaaf061431af0533557246397551b8eed505",
+      "description": "ABYSSWORKER sample"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

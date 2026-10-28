@@ -1,0 +1,358 @@
+{
+  "malware_family": "n0n",
+  "threat_actor": "n0n",
+  "platforms": [
+    "windows",
+    "linux",
+    "network_device"
+  ],
+  "summary": "n0n is a data exfiltration and destructive extortion group that uses an AI coding agent to generate attack scripts. Initial access relies on stolen or weak credentials for remote access services like FortiGate SSL-VPN and RDP. The malware, with Windows and Linux variants, encrypts files with a .n0n extension or destroys data and backups.",
+  "mitre_techniques": [
+    "T1595.001",
+    "T1078",
+    "T1078.004",
+    "T1133",
+    "T1059.001",
+    "T1053.005",
+    "T1651",
+    "T1547.001",
+    "T1136.001",
+    "T1098.004",
+    "T1562.001",
+    "T1564.002",
+    "T1070.004",
+    "T1110.004",
+    "T1110.002",
+    "T1555.003",
+    "T1539",
+    "T1111",
+    "T1003.003",
+    "T1046",
+    "T1580",
+    "T1619",
+    "T1021.001",
+    "T1021.006",
+    "T1530",
+    "T1114.002",
+    "T1115",
+    "T1113",
+    "T1071.001",
+    "T1001",
+    "T1572",
+    "T1090.003",
+    "T1041",
+    "T1567.002",
+    "T1486",
+    "T1485",
+    "T1490",
+    "T1489",
+    "T1565.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": ".n0n",
+      "context": "File extension appended to encrypted files",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "n0n_READ_ME.txt",
+      "context": "Ransom note file name",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\n0n\\",
+      "context": "Malware staging and persistence directory",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "n0nNote",
+      "context": "Registry Run key value to open ransom note at logon",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "n0n | no js | no mercy",
+      "context": "Group slogan displayed on leak portals",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "root@3090-AI",
+      "context": "String in authorized_keys entry on compromised FMC appliances",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "n0n-lock",
+      "context": "Snort rule name for n0n activity",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "2100001",
+      "context": "Snort rule SID for the 'n0n-lock' rule",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "nenc.exe",
+      "context": "Filename of the n0n Windows encryptor",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "NetAssist",
+      "context": "Persistence task name",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "ChromeDbg*",
+      "context": "Persistence task name pattern",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "AfricaSync",
+      "context": "Persistence scheduled task name",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "FinSoftSync*",
+      "context": "Persistence scheduled task name pattern",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "svc_upd",
+      "context": "Hidden administrator account name",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "svc_reg",
+      "context": "Hidden administrator account name",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "SpecialAccounts\\UserList = 0",
+      "context": "Registry value set to hide a user account",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "--remote-debugging-port",
+      "context": "Chrome argument for remote control",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ServerCertificateValidationCallback={$true}",
+      "context": "PowerShell code to ignore TLS certificate validation errors",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "185.157.161.148",
+      "context": "Agent box, kserver C2, beacon endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "81.161.239.10",
+      "context": "\"monster\" server, loot vault, implant C2",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "188.214.135.130",
+      "context": "\"raas\" server, leak site backend",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "217.18.55.185",
+      "context": "Self-hosted LLM service IP",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ntpsync.io",
+      "context": "Beacon cover domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "n0n-cases.net",
+      "context": "Domain used for sending extortion emails",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "nongzecboljwv3yfndkggsybsglfrkffw7bvk2zemuteoxe6etpusnad.onion",
+      "context": "Tor leak site",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/x/i",
+      "context": "C2 beacon endpoint for JSON POSTs",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/c2/.../out",
+      "context": "Exfiltration endpoint",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/remote/logincheck",
+      "context": "FortiGate SSL-VPN path targeted for credential stuffing",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Cookie: APBSID=n0n",
+      "context": "Cookie used in FortiGate credential stuffing requests",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "ippay-web",
+      "context": "String contained in JSON C2 beacon to /x/i",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "notice@n0n-cases.net",
+      "context": "Extortion email sender address",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "d1fd3a8ac4ada74b8ccbcdf5134797acff401b7fb50e16549b337781dfe1a486",
+      "description": "nenc.cpp - Windows locker v1 source code"
+    },
+    {
+      "sha256": "340172627cdf40927784956be784bd2b3f5d1584cb79cf31064f387bbe9acb28",
+      "description": "nenc2.cpp - Windows locker v2 source code"
+    },
+    {
+      "sha256": "886b3608d05069d314fa6300404de6627f96b13a95c5633f6c91dfc2a545ac87",
+      "description": "nenc2l.cpp - Linux locker source code"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "elf",
+    "script"
+  ]
+}

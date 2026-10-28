@@ -1,0 +1,23 @@
+title: Cobalt Strike C2 IP Connection (October 2026)
+id: 5971a8f6-a8d8-4f11-9e54-526e8484918e
+status: experimental
+description: Detects network connections to IP addresses used by Cobalt Strike.
+references:
+    - https://www.elastic.co/security-labs/blog/extracting-cobalt-strike-beacon-configurations
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '104.197.142.19'
+            - '192.64.119.19'
+    condition: selection
+falsepositives:
+    - This IP may be used by a benign host in the future.
+level: high

@@ -1,0 +1,23 @@
+title: STAC3725/DragonForce Registry Symlink LPE via RdpBus GUID
+id: 597a7605-649f-44e2-a006-25816913c1c7
+status: experimental
+description: Detects the creation of a registry symbolic link from within the RdpBus device class GUID to a Group Policy location. This is a specific technique used by STAC3725 to achieve privilege escalation before deploying DragonForce ransomware.
+references:
+    - https://www.huntress.com/blog/citrixbleed-2-dragonforce-ransomware
+author: ioc-yara-daily (agentic)
+date: 2023-10-28
+tags:
+    - attack.privilege_escalation
+    - attack.t1112
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\SYSTEM\CurrentControlSet\Control\DeviceClasses\{28d78fad-5a12-11d1-ae5b-0000f803a8c2}\'
+        TargetObject|endswith: '\SymbolicLinkValue'
+        Details|contains: '\Registry\Machine\SOFTWARE\Policies\Microsoft\Windows\Group Policy State\Machine\GPO-List\test'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

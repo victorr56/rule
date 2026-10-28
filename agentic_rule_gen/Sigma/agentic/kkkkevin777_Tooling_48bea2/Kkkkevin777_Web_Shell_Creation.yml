@@ -1,0 +1,25 @@
+title: kkkkevin777 Web Shell Creation (.whk.php)
+id: 61e1b8b6-a249-43c3-8f0a-73d8f3731853
+status: experimental
+description: Detects the creation of the .whk.php web shell by a web server process. This file is a known tool used by the kkkkevin777 actor.
+references:
+    - https://socradar.io/blog/php2shell-weaponized-japanese-real-estate-extortion/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.persistence
+    - attack.t1505.003
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '.whk.php'
+        Image|endswith:
+            - 'w3wp.exe'    # IIS
+            - 'httpd.exe'   # Apache
+            - 'apache.exe'  # Apache
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

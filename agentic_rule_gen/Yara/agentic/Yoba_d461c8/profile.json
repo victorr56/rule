@@ -1,0 +1,319 @@
+{
+  "malware_family": "Yoba",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Yoba is a malware campaign that leverages fake GitHub repositories impersonating AI tools like ChatGPT and Claude to distribute its initial payload. The malware uses DLL sideloading against legitimate signed executables to deploy a multi-stage infection chain. The final loader uses a novel DGA seeded by a Telegram profile picture and DNS-over-HTTPS (DoH) to retrieve payloads, which has included the XMRig cryptominer.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "process_name",
+      "value": "Setup.exe",
+      "context": "YobaDropper host process name check to prevent sandboxed execution.",
+      "specificity": "low",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "DJB2",
+      "hash_value": "0xE6C2F326"
+    },
+    {
+      "kind": "process_name",
+      "value": "WMPDMC.exe",
+      "context": "YobaLoader host process name check to prevent sandboxed execution.",
+      "specificity": "medium",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "DJB2",
+      "hash_value": "0x552751E3"
+    },
+    {
+      "kind": "process_name",
+      "value": "Cursor.exe",
+      "context": "Older YobaDropper host process name check.",
+      "specificity": "medium",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "DJB2",
+      "hash_value": "0x56221573"
+    },
+    {
+      "kind": "process_name",
+      "value": "svchost.exe",
+      "context": "YobaLoader injection target process name check.",
+      "specificity": "low",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "DJB2",
+      "hash_value": "0xC26CDEA5"
+    },
+    {
+      "kind": "other",
+      "value": "DebugObject",
+      "context": "Kernel object type name checked by older YobaLoader for anti-debugging.",
+      "specificity": "high",
+      "evidence": "hash_gated",
+      "origin_tool": "",
+      "hash_algo": "DJB2",
+      "hash_value": "0xCF9EE149"
+    },
+    {
+      "kind": "file_path",
+      "value": "ProgramData\\WMProcess",
+      "context": "Directory created by YobaDropper to store loader and host executable.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wmpdui.dll",
+      "context": "File name for the dropped YobaLoader payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Microsaft Difendir\\mswsock.dll",
+      "context": "Dropped payload path for older YobaDropper version.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "msdefender_scheduler{7940-8490-6670-1081}.lnk",
+      "context": "Persistence shortcut created in Startup folder by older YobaDropper.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\torbundle\\data",
+      "context": "Directory created by the XMRig payload for Tor data.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Local\\WindowsSecurity",
+      "context": "Singleton mutex used by the final XMRig payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IRANNUMBERONE",
+      "context": "XOR key used by YobaDropper to decrypt the embedded YobaLoader payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Please run this program as Administrator.",
+      "context": "Error message displayed if not running with elevated privileges.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "pddy",
+      "context": "Filler string used in anti-analysis sleep loop.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "Collects device metadata for Windows Media Player.",
+      "context": "Description of the persistence scheduled task created by YobaDropper.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0xEC0400C8401",
+      "context": "Bitmask used in the CIS region keyboard layout check.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ B5 C2 D2 06 23 D4 E6 64 7D 06 A4 28 64 ED D8 62 9F 82 C5 C3 84 B2 43 FD AE EE CA 24 B3 87 3D 64 }",
+      "context": "YobaLoader embedded Ed25519 public key for signature validation.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 1D 0D 13 68 B4 D5 3F 3A 63 22 CF 40 E8 4E 63 DB }",
+      "context": "YobaLoader embedded AES-ECB key for decrypting C2 response and payload.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-WindowStyle Hidden -ExecutionPolicy Bypass -File",
+      "context": "PowerShell parameters used to execute a downloaded .ps1 payload.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "t.me",
+      "context": "Domain for Telegram channel used to host DGA seed image.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/yoba_fanclub",
+      "context": "Telegram channel used to host DGA seed image.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "tgme_page_photo_image",
+      "context": "HTML class name parsed from Telegram channel to find profile image URL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "$adjective-$noun-$verb-$digit.dedyn.io",
+      "context": "DGA pattern used by YobaLoader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": ".aber.ir",
+      "context": "Top-level domain used in older YobaLoader DGA variants.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://dns.google/resolve?name=calm-piano-floats-313.dedyn.io&type=TXT",
+      "context": "Example DoH request to Google to retrieve a C2 TXT record.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://files.catbox.moe/z5zpy9.dat",
+      "context": "URL hosting the encrypted final payload, retrieved from DNS TXT record.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "3zciedc3enu4muwc5adxciyk6u3juhvhvbv6bfrk2arawlvb7k7ovxad.onion",
+      "context": "XMRig payload mining pool server endpoint.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "51.89.231.85:24526",
+      "context": "Tor bridge used by the XMRig payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "51.89.228.250:21668",
+      "context": "Tor bridge used by the XMRig payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64;)",
+      "context": "User-Agent used when connecting to the Telegram channel.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gpt-5-6.github.io",
+      "context": "Phishing landing page for fake ChatGPT application.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gpt-6-astra.github.io",
+      "context": "Phishing landing page for fake ChatGPT application.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://opus-5-0.github.io",
+      "context": "Phishing landing page for fake Claude application.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

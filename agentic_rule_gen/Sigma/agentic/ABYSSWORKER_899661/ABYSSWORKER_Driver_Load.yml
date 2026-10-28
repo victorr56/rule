@@ -1,0 +1,22 @@
+title: ABYSSWORKER Driver Load
+id: 9d8b1e4c-f12b-4d43-9a3b-18a8b13d2f09
+status: experimental
+description: 'Detects the loading of the ABYSSWORKER driver ''smuol.sys'', which masquerades as a legitimate Sysinternals Process Explorer driver. This driver is used to disable security products as part of MEDUSA ransomware campaigns.'
+references:
+    - https://www.elastic.co/security-labs/threat-command/abyssworker
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.t1562.001
+    - attack.t1036.005
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        ImageLoaded|endswith: '\smuol.sys'
+        Company: 'Sysinternals - www.sysinternals.com'
+    condition: selection
+falsepositives:
+    - Extremely unlikely. A legitimate file would not use this combination of file name and PE metadata.
+level: critical

@@ -1,0 +1,308 @@
+{
+  "malware_family": "JOMANGY",
+  "threat_actor": "INJ3CTOR3",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "INJ3CTOR3's JOMANGY webshell campaign has evolved to exfiltrate SIP trunk and other credentials from infected PBX systems, enabling toll fraud even after the host is disinfected. The malware uses self-healing persistence via cron and uploads credentials from 17 specific configuration files. While the actor rotates identifiers like watermarks and hashes, core behaviors and persistence techniques remain consistent.",
+  "mitre_techniques": [
+    "T1059.004",
+    "T1105",
+    "T1053.003",
+    "T1505.003",
+    "T1546.004",
+    "T1037.004",
+    "T1136.001",
+    "T1098",
+    "T1027",
+    "T1564.001",
+    "T1070.006",
+    "T1070.003",
+    "T1222.002",
+    "T1685.006",
+    "T1686",
+    "T1496",
+    "T1552.001",
+    "T1119",
+    "T1041"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "trace_bd42a8a0d23ae16c85dede7d2abaec05",
+      "context": "JOMANGY watermark for build from 45.95.147.178.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "trace_7544725ebaaadac217dfaa7ca8e8fe7e",
+      "context": "JOMANGY watermark for build from 160.119.69.4.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "8b3a1d970fda0c17a0b785a990fb7b6a",
+      "context": "Webshell gate hash for JOMANGY and ZenharR.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "$1$nRz1Cbtk$",
+      "context": "Password hash prefix for backdoor and compromised service accounts.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RewriteRule ^\\s+ config.php [L]",
+      "context": "Rule in .htaccess file to redirect requests with leading whitespace.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "k.php",
+      "context": "Main implant script; exfiltrates credentials and maintains persistence.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "/x",
+      "context": "The takeover script fetched and executed by cron.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "crond -> sh",
+      "context": "Cron daemon spawns a shell to download and run the implant.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/lib/asterisk/bin/zen2",
+      "context": "Persistence path for k.php beacon, executed by a watchdog cron job.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/asterisk/sip_additional.conf",
+      "context": "One of 17 config files targeted for credential exfiltration.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/asterisk/pjsip.auth.conf",
+      "context": "One of 17 config files targeted for credential exfiltration.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/freepbx.conf",
+      "context": "One of 17 config files targeted for credential exfiltration.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/amportal.conf",
+      "context": "One of 17 config files targeted for credential exfiltration.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/issabel.conf",
+      "context": "One of 17 config files targeted for credential exfiltration.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/elastix.conf",
+      "context": "One of 17 config files targeted for credential exfiltration.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/postfix/sasl_passwd",
+      "context": "One of 17 config files targeted for credential exfiltration.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/lib/.systemd/.cache",
+      "context": "Hidden backup location for the malicious crontab.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/tmp/.X11/.Xauthority",
+      "context": "Hidden backup location for the malicious crontab.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "zen2",
+      "context": "Watchdog process that re-runs cached k.php copy.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "devnull2",
+      "context": "Watchdog process that re-runs cached k.php copy.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "serv",
+      "context": "Watchdog process that re-runs cached k.php copy.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "45.95.147.178",
+      "context": "Staging host, used for base64-encoded commands and credential uploads.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "160.119.69.4",
+      "context": "Second staging host, used for plaintext commands and credential uploads.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://45.95.147.178/hima_data/index.php",
+      "context": "Credential upload endpoint on the primary staging host.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://160.119.69.4/hima_data/index.php",
+      "context": "Credential upload endpoint on the second staging host.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/hima_data/index.php",
+      "context": "Endpoint path for credential exfiltration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "c6e64453ea8bc0856333b6f57567c9efd8c440410787cae135d1c4a248c07c0d",
+      "description": "/x takeover script, identical on both hosts"
+    },
+    {
+      "sha256": "38edbfc4ac89619d2bdb3f4bb2626deaaf422868d6d7af640f59d7959903f838",
+      "description": "k.php from 45.95.147.178"
+    },
+    {
+      "sha256": "1c14a761620691a43b1a554a9eccd38d21c15d59463945250d4f57b10d20fce9",
+      "description": "k.php from 160.119.69.4"
+    },
+    {
+      "sha256": "adeb015fdb37814edc3ed45230f48d2b0e87bb195a5a7e4487c01549b47c744c",
+      "description": "JOMANGY webshell on disk, 45.95.147.178 build"
+    },
+    {
+      "sha256": "d345671e688ee807e1bb9b6fc45e6bb0611bbb1331c33888c8030ec2db47e672",
+      "description": "JOMANGY webshell on disk, 160.119.69.4 build"
+    }
+  ],
+  "file_types": [
+    "script"
+  ]
+}

@@ -1,0 +1,348 @@
+{
+  "malware_family": "Unspecified",
+  "threat_actor": "Unspecified",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "This threat profile describes techniques used by various malware to abuse process creation chains for execution and persistence. Key behaviors include Office applications leading to shell execution via DCOM and mshta.exe, creating persistence with scheduled tasks that run dropped files, and using LOLBINs like MSBuild.exe to steal browser credentials. Detections focus on identifying suspicious parent-child or ancestor-child process relationships.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "parent_child",
+      "value": "mshta.exe -> cmd.exe",
+      "context": "Suspicious child process of mshta.exe.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "mshta.exe -> powershell.exe",
+      "context": "Suspicious child process of mshta.exe.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "mshta.exe -> wscript.exe",
+      "context": "Suspicious child process of mshta.exe.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "mshta.exe -> regsvr32.exe",
+      "context": "Suspicious child process of mshta.exe.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "svchost.exe -> mshta.exe",
+      "context": "svchost.exe with 'dcomlaunch' argument spawning mshta.exe.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe \"/c POwERSHeLl.Exe ... -EX BypaSS -nOp -w 1 -ec ...\"",
+      "context": "Launched by mshta.exe to start PowerShell.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "westingcostringforme.vbe",
+      "context": "VBE script run by WScript.exe from a PowerShell process.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "XBRYINEZ.ps1",
+      "context": "PowerShell script executed from WScript.exe.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "dcomlaunch",
+      "context": "In command line of svchost.exe, grandparent of a shell process.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-Embedding",
+      "context": "Argument for mshta.exe when launched by DCOM service.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "!(wininit.exe) -> services.exe",
+      "context": "services.exe started by a process other than wininit.exe.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "wmiprvse.exe -> schtasks.exe",
+      "context": "Scheduled task creation via WMI.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\NlsLexicons0c1a\\services.exe",
+      "context": "Masquerading path for a fake services.exe.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\mfc42\\taskeng.exe",
+      "context": "Masquerading path for a fake taskeng.exe.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\MicrosoftWorker_e08ec640d\\",
+      "context": "Directory for dropped renamed conhost.exe and payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "--headless",
+      "context": "Argument for conhost.exe (or renamed variant) acting as parent of PowerShell.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Invoke-EnvironmentCheck",
+      "context": "Function name inside a decoded PowerShell script.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "rhpmx63snl.exe",
+      "context": "A renamed copy of conhost.exe.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "xd24mgasgb4.exe",
+      "context": "Payload executed by renamed conhost.exe via PowerShell.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-s schedule",
+      "context": "Argument identifying svchost.exe as the Task Scheduler service.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "taskeng.exe -> [dropped_file]",
+      "context": "Task Scheduler Engine process running a dropped executable.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "AdobeSecurityManager",
+      "context": "Task name used for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "PoItWjNFjv.vbs",
+      "context": "Dropped VBS script executed by a scheduled task.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "aspnet_compiler.exe",
+      "context": "LOLBIN used for payload injection, ancestor is often a script host.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "msbuild.exe",
+      "context": "LOLBIN used for payload injection, ancestor is often a script host.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "regasm.exe",
+      "context": "LOLBIN used for payload injection, ancestor is often a script host.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\User Data\\",
+      "context": "Path component indicating access to browser user profile data.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\Login Data",
+      "context": "Path component for browser credential database.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Login Data.tmp",
+      "context": "Temporary copy of browser credential database created by malware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/stext",
+      "context": "Argument for aspnet_compiler.exe when spawning a child instance.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [],
+  "samples": [
+    {
+      "sha256": "d30a0a6c09f664446943d82982f0630e85c447cbe84be8a74b6db6d66effbe80",
+      "description": "Excel file exploiting CVE-2017-0199, leads to DCOM mshta execution."
+    },
+    {
+      "sha256": "8d249972358268b7a00e182e3f1ecf93ec8bbbee65d22ef4d8a3c382783c1cfa",
+      "description": "Excel file (PO#3302-20260520002.xls) using similar DCOM execution chain."
+    },
+    {
+      "sha256": "2d199776cc50b9ad548132105e95af86b29ec8ebca03895a7ddecde58587306b",
+      "description": "Excel file (Request Quotation.xls) where aspnet_compiler.exe steals credentials."
+    },
+    {
+      "sha256": "fe8357febe314becf31510a7a2ecb0369e312ad58a448292f5f8a09075d7694c",
+      "description": ".NET executable that masquerades as services.exe in a non-standard path."
+    },
+    {
+      "sha256": "5c2ceaec797dfa79e81cde6d765898ee8102357e280fa322db6e5a4b0ce3fc4a",
+      "description": "Windows shortcut (.hwp.lnk) that uses conhost.exe --headless to run PowerShell."
+    },
+    {
+      "sha256": "77da8a02d71078564409863c358a544e981b9643c8f50c1daabc5d5d176e3c75",
+      "description": "Dropper that renames conhost.exe and sets up persistence via scheduled task."
+    },
+    {
+      "sha256": "a549a6c8c01da1d03e8da663eec70997a5bd5207e665d8e23f6fa75804dafc06",
+      "description": "VBS file using WMI and PowerShell to launch MSBuild.exe for credential theft."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "dotnet",
+    "document",
+    "script"
+  ]
+}

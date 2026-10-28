@@ -1,0 +1,22 @@
+title: PyLoose XMRig Miner Wallet ID
+id: 546d1bb0-80a5-48b4-845f-4a0044f2d348
+status: experimental
+description: Detects the execution of XMRig with a specific Monero wallet address used in the PyLoose campaign.
+references:
+    - https://www.wiz.io/blog/pyloose-first-python-based-fileless-attack-on-cloud-workloads
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.resource_hijacking
+    - attack.t1496
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/xmrig'
+        CommandLine|contains: '85DS3ShGZwtFffeQUrDK8Db12qwCcaCHofNcZdjMkjTCfWiRv9WLe4cR2W97eGnRXwBxDhTK7BbbE2Z7t4gjXRz1VLPmhn7'
+    condition: selection
+falsepositives:
+    - Legitimate use of the same wallet ID, which is highly unlikely.
+level: critical

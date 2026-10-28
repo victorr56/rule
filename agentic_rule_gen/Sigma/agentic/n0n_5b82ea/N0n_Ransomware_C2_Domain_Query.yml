@@ -1,0 +1,23 @@
+title: N0n Ransomware C2 Domain Query
+id: 110ef67c-d652-47d0-8ac1-ef06b251ce7c
+status: experimental
+description: Detects DNS queries for domains associated with N0n ransomware C2 infrastructure.
+references:
+    - https://socradar.io/blog/n0n-ransomware-ai-assisted-extortion/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'ntpsync.io'
+            - 'n0n-cases.net'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

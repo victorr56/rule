@@ -1,0 +1,362 @@
+{
+  "malware_family": "DragonForce",
+  "threat_actor": "STAC3725",
+  "platforms": [
+    "windows",
+    "network_device"
+  ],
+  "summary": "An Initial Access Broker cluster (STAC3725) exploits CitrixBleed 2 (CVE-2025-5777) for initial access to NetScaler appliances. The actors then use a custom registry symlink-based LPE tool to create rogue admin accounts, establish persistence with legitimate RMMs like ScreenConnect, and ultimately deploy DragonForce ransomware.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "ctxsvc",
+      "context": "Adversary-created user account name.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "CtxAppVCOMService",
+      "context": "Adversary-created user account name.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "test",
+      "context": "Adversary-created user account name.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "WIN-4E0AP4JTJR9",
+      "context": "Adversary client workstation name from printer mappings.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "WIN-VI960VQI4I6",
+      "context": "Adversary client workstation name from printer mappings.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "eng.exe",
+      "context": "Filename for LPE tool.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "legal.exe",
+      "context": "Filename for LPE tool.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "as.exe",
+      "context": "Filename for LPE tool.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "us.msi",
+      "context": "ScreenConnect installer filename.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "ScreenConnect",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "SC.msi",
+      "context": "ScreenConnect installer filename.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "ScreenConnect",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "1111.msi",
+      "context": "ScreenConnect installer filename.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "ScreenConnect",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "za.msi",
+      "context": "Zoho Assist installer filename.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "Zoho Assist",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "1.exe",
+      "context": "DragonForce ransomware payload filename.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c sc start AppMgmt >nul 2>nul",
+      "context": "Triggers LPE by starting AppMgmt service.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c gpupdate /force >nul 2>nul",
+      "context": "Forces group policy refresh as part of LPE.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "{28d78fad-5a12-11d1-ae5b-0000f803a8c2}",
+      "context": "RdpBus device class GUID where LPE plants a REG_LINK.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "\\Group Policy State\\Machine\\GPO-List\\test",
+      "context": "Target path for the LPE registry symlink.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "SymbolicLinkValue",
+      "context": "Value name used to create a REG_LINK symlink for LPE.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "AppMgmt",
+      "context": "Service abused to trigger privilege escalation.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "loko123",
+      "context": "Password for zip archive containing LPE tool.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Restoring registry…",
+      "context": "Cleanup message string from LPE tool.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "useeeer",
+      "context": "Typo in command line indicating manual interaction.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Login request is not expected to be encrypted",
+      "context": "Diagnostic log message on exploited NetScaler appliance.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "X509 cert not found",
+      "context": "Diagnostic log message on exploited NetScaler appliance.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "*_update.zip",
+      "context": "Pattern for password-protected archives from temp.sh.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "relay.dltsolutions.top",
+      "context": "ScreenConnect C2 relay host.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "ScreenConnect"
+    },
+    {
+      "kind": "domain",
+      "value": "relay.eurofin.digital:8041",
+      "context": "ScreenConnect C2 relay host and port.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "ScreenConnect"
+    },
+    {
+      "kind": "domain",
+      "value": "vtps.us",
+      "context": "ScreenConnect C2 relay host.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "ScreenConnect"
+    },
+    {
+      "kind": "domain",
+      "value": "opa.tlsd.shop",
+      "context": "Netbird C2 relay host.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Netbird"
+    },
+    {
+      "kind": "domain",
+      "value": "temp.sh",
+      "context": "File-sharing service used for dropping tools.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/p/u/doAuthentication.do",
+      "context": "NetScaler login endpoint targeted by CVE-2025-5777.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "9963f404a99f0fc4",
+      "context": "ScreenConnect instance ID.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "ScreenConnect"
+    },
+    {
+      "kind": "other",
+      "value": "aee74a66ea5bb239",
+      "context": "ScreenConnect instance ID.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "ScreenConnect"
+    },
+    {
+      "kind": "http_header",
+      "value": "Citrix-ns-orig-srcip",
+      "context": "Header seen in leaked NetScaler heap memory.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Citrix-ns-orig-destip",
+      "context": "Header seen in leaked NetScaler heap memory.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "c84739655ce1af0a0269138263d47567418f69e0f75e249f8e23bc21802209e2",
+      "description": "LPE tool"
+    },
+    {
+      "sha256": "eb083365dc70d0294e8c4f55a2e78be0edb0f3497f2a06a70c9f474dafab48d8",
+      "description": "LPE tool"
+    },
+    {
+      "sha256": "c4fcae3847946173bf0b3cedf5d97a9e3d18090023842f942ba544fa7fda180d",
+      "description": "DragonForce ransomware"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "archive"
+  ]
+}

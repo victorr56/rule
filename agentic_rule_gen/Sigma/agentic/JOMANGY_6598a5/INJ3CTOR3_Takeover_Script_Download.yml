@@ -1,0 +1,31 @@
+title: INJ3CTOR3 JOMANGY Takeover Script Download
+id: 5b6c0e5a-7140-4107-a681-37d4529edb3e
+status: experimental
+description: Detects the execution of curl or wget by a cron process to download a malicious script named 'x', a known TTP of the INJ3CTOR3 actor to gain initial access or re-infect a system.
+references:
+    - https://cyble.com/blog/hijacked-pbx-to-stolen-trunk-inj3ctor3s-campaign/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.execution
+    - attack.t1059.004
+    - attack.t1105
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_http:
+        ParentImage|endswith: '/crond'
+        CommandLine|contains|all:
+            - '/tmp/x'
+            - 'http://'
+    selection_https:
+        ParentImage|endswith: '/crond'
+        CommandLine|contains|all:
+            - '/tmp/x'
+            - 'https://'
+    condition: 1 of selection_*
+falsepositives:
+    - Highly unlikely, but a legitimate cron job could be configured to download a file named 'x'.
+level: high

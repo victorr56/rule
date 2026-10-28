@@ -1,0 +1,32 @@
+title: Non-Browser Process Creating 'Login Data.tmp'
+id: 7e5f4d3c-1a2b-4e6f-9d8c-0b7a6f5e4d3c
+status: experimental
+description: Detects the creation of a 'Login Data.tmp' file by a non-browser process, which is often a temporary copy of a browser's credential database made by credential stealing malware.
+references:
+    - https://blog.virustotal.com/2026/10/process-trees-in-livehunt-yara-rules.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.credential_access
+    - attack.t1555.003
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '\Login Data.tmp'
+        Image|startswith:
+            - 'C:\Users\'
+            - 'C:\ProgramData\'
+            - 'C:\Windows\Temp\'
+    filter_legit_browser:
+        Image|endswith:
+            - '\chrome.exe'
+            - '\msedge.exe'
+            - '\opera.exe'
+            - '\brave.exe'
+            - '\vivaldi.exe'
+    condition: selection and not filter_legit_browser
+falsepositives:
+    - Legitimate applications that run from user-profile directories (e.g. some updaters, portable apps) and interact with browser credential stores.
+level: high

@@ -1,0 +1,24 @@
+title: Svchost DCOM Launch Spawning Mshta
+id: b950c441-2b63-4467-b508-412217f25950
+status: experimental
+description: Detects svchost.exe, when initiated for DCOM, spawning mshta.exe. This is indicative of lateral movement or remote execution using DCOM.
+references:
+    - https://blog.virustotal.com/2026/10/process-trees-in-livehunt-yara-rules.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.execution
+    - attack.lateral_movement
+    - attack.t1021.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\svchost.exe'
+        ParentCommandLine|contains: 'dcomlaunch'
+        Image|endswith: '\mshta.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,27 @@
+title: Clawdbot AI Agent Session Log Created
+id: 3c574044-f8b0-4e4b-9e45-ca680c2f83d9
+status: experimental
+description: Detects the creation of session log files by the 'clawdbot' AI agent framework. These logs may contain sensitive information leaked by insecurely designed skills.
+references:
+    - https://snyk.io/blog/openclaw-skills-credential-leaks-research/
+author: ioc-yara-daily (agentic)
+date: 2024-07-24
+tags:
+    - attack.t1552.001
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/python'
+            - '/python3'
+        TargetFilename|contains|all:
+            - '/.clawdbot/agents/'
+            - '/sessions/'
+            - '.jsonl'
+    condition: selection
+falsepositives:
+    - Legitimate use of the clawdbot framework.
+level: medium

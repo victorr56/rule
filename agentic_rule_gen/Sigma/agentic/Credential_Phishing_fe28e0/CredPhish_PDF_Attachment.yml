@@ -1,0 +1,27 @@
+title: Credential Phishing PDF Attachment Creation
+id: b1b594b2-c01e-450a-9d90-379e45a27909
+status: experimental
+description: Detects the creation of a specific PDF file used as a lure in a credential phishing campaign.
+references:
+    - https://cofense.com/blog/locked-and-loaded-phishing-through-fake-bids-and-protected-documents
+author: ioc-yara-daily (agentic)
+date: 2022-10-27
+tags:
+    - attack.initial_access
+    - attack.t1566.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\OUTLOOK.EXE'
+            - '\chrome.exe'
+            - '\firefox.exe'
+            - '\msedge.exe'
+            - '\thunderbird.exe'
+        TargetFilename|endswith: '\MM LASERTECHNIK GMBH_protected.pdf'
+    condition: selection
+falsepositives:
+    - Legitimate creation of a file with this specific name by a user, which is highly unlikely.
+level: high

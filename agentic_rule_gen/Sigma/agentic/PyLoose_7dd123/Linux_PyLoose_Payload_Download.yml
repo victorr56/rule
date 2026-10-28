@@ -1,0 +1,26 @@
+title: PyLoose Payload Download Command
+id: 3c6e9b89-8d7d-417b-8b5e-990a8803a6ab
+status: experimental
+description: Detects the initial command used to download the PyLoose Python loader script from a paste site.
+references:
+    - https://www.wiz.io/blog/pyloose-first-python-based-fileless-attack-on-cloud-workloads
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+    - attack.t1105
+    - attack.ingenuity
+    - attack.t1102
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/wget'
+        CommandLine|contains|all:
+            - '-O-'
+            - 'https://paste.c-net.org/chattingloosened'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

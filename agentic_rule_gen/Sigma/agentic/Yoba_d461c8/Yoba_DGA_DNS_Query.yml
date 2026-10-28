@@ -1,0 +1,21 @@
+title: Yoba Malware DGA DNS Queries
+id: 9a7862f9-90d5-4927-99b1-5e982181512f
+status: experimental
+description: Detects DNS queries for subdomains of 'aber.ir', which is one of the patterns used by the Yoba malware DGA.
+references:
+    - https://research.checkpoint.com/2026/tricks-from-the-past-deployed-via-signed-chatgpt-and-claude-binaries/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+    - attack.t1568.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith: '.aber.ir'
+    condition: selection
+falsepositives:
+    - Legitimate use of the '.aber.ir' domain, though unlikely in most corporate environments.
+level: high

@@ -1,0 +1,26 @@
+title: PyLoose Related DNS Queries
+id: 0e7e1b5f-9721-4b19-b615-559d7249b5c3
+status: experimental
+description: Detects DNS queries for domains associated with the PyLoose cryptojacking attack, including payload hosting and mining pools.
+references:
+    - https://www.wiz.io/blog/pyloose-first-python-based-fileless-attack-on-cloud-workloads
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+    - attack.t1105
+    - attack.resource_hijacking
+    - attack.t1496
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith:
+            - '.paste.c-net.org'
+            - '.gulf.moneroocean.stream'
+            - '.pool.sabu-sabu.ml'
+            - '.pool.xiao.my.id'
+    condition: selection
+falsepositives:
+    - Legitimate access to the paste site (unlikely in corporate environments).
+level: medium

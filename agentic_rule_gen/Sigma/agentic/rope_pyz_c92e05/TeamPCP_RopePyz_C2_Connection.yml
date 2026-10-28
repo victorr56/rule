@@ -1,0 +1,19 @@
+title: TeamPCP Rope.pyz C2 Connection
+id: 7e73523f-4e09-49c6-8f35-9488e0b6b23d
+status: experimental
+description: Detects network connections to a command and control IP address associated with the TeamPCP rope.pyz malware.
+references:
+    - https://www.wiz.io/blog/durabletask-teampcp-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+logsource:
+    category: network_connection
+detection:
+    selection:
+        DestinationIp: '83.142.209.194'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

@@ -1,0 +1,24 @@
+title: DNS Query for Leaky Skills Associated Domain
+id: 549320ae-e7c6-4d0f-bdc7-8c387063462d
+status: experimental
+description: Detects DNS queries for domains associated with the Leaky Skills / OpenClaw ecosystem, which has been found to contain AI agent skills that insecurely handle sensitive data.
+references:
+    - https://snyk.io/blog/openclaw-skills-credential-leaks-research/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'clawhub.ai'
+            - 'moltyverse.email'
+            - 'api.moltyverse.email'
+            - 'roarin.ai'
+    condition: selection
+falsepositives:
+    - Legitimate use of the OpenClaw ecosystem.
+level: high

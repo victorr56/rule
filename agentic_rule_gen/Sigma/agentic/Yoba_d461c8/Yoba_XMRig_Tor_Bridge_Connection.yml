@@ -1,0 +1,22 @@
+title: Yoba XMRig Payload Tor Bridge Connection
+id: 7f0a1c1d-157d-411a-8287-3475bb77d079
+status: experimental
+description: Detects network connections to Tor bridge IP addresses used by the Yoba XMRig payload.
+references:
+    - https://research.checkpoint.com/2026/tricks-from-the-past-deployed-via-signed-chatgpt-and-claude-binaries/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+    - attack.t1090.003
+logsource:
+    category: network_connection
+detection:
+    selection:
+        DestinationIp:
+            - '51.89.231.85'
+            - '51.89.228.250'
+    condition: selection
+falsepositives:
+    - The IP addresses could be reassigned or used by other services in the future.
+level: medium

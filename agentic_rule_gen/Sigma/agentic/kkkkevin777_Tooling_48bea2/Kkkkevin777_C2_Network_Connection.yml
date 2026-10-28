@@ -1,0 +1,24 @@
+title: kkkkevin777 C2 Network Connection
+id: c46d9d1b-3b60-4927-b501-83d8e579339f
+status: experimental
+description: Detects network connections to an IP address and ports (9001/TCP, 8443/TCP) identified as C2 infrastructure for the kkkkevin777 actor.
+references:
+    - https://socradar.io/blog/php2shell-weaponized-japanese-real-estate-extortion/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '96.126.130.81'
+        DestinationPort:
+            - 9001  # PHP beacon C2
+            - 8443  # PowerShell C2
+    condition: selection
+falsepositives:
+    - This IP address may be reallocated to a benign service in the future.
+level: critical

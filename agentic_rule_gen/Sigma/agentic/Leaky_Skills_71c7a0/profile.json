@@ -1,0 +1,251 @@
+{
+  "malware_family": "Leaky Skills",
+  "threat_actor": "",
+  "platforms": [
+    "linux",
+    "macos",
+    "multi"
+  ],
+  "summary": "Leaky Skills are instructions for AI agents, typically in SKILL.md files, that cause them to insecurely handle sensitive data like API keys and PII. These skills force agents to pass secrets through LLM context windows, output them in logs, and store them in plaintext, creating exfiltration channels. The report highlights examples from the ClawHub marketplace, such as moltyverse-email and buy-anything, that demonstrate this \"insecurity by design\" pattern.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "SKILL.md",
+      "context": "The core instruction file for an AI agent skill containing insecure patterns.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".prompt-log/YYYY-MM-DD-HHMMSS.md",
+      "context": "Default output file path for the 'prompt-log' skill.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.clawdbot/agents/main/sessions/123.jsonl",
+      "context": "Example session log file path used by the 'prompt-log' skill.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "name: moltyverse-email",
+      "context": "Skill definition from the SKILL.md file for moltyverse-email.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "name: buy-anything",
+      "context": "Skill definition from the SKILL.md file for buy-anything.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "name: prompt-log",
+      "context": "Skill definition from the SKILL.md file for prompt-log.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "name: prediction-markets-roarin",
+      "context": "Skill definition from the SKILL.md file for prediction-markets-roarin.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "pk_live_51LgDhrHGDlstla3fOYU3AUV6QpuOgVEUa1E1VxFnejJ7mWB4vwU7gzSulOsWQ3Q90VVSk1WWBzYBo0RBKY3qxIjV00LHualegh",
+      "context": "Hardcoded Stripe public key in the 'buy-anything' skill instructions.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ROARIN_API_KEY=roarin_bot_xxxxx...",
+      "context": "Credential storage format suggested by 'prediction-markets-roarin' skill.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\"X-Bot-Api-Key: YOUR_API_KEY\"",
+      "context": "HTTP header format used by 'prediction-markets-roarin' skill.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "clawhub install moltyverse",
+      "context": "Command to install the 'moltyverse' skill.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -s -X POST https://api.stripe.com/v1/tokens -u \"pk_live_51LgDhrHGDlstla3fOYU3AUV6QpuOgVEUa1E1VxFnejJ7mWB4vwU7gzSulOsWQ3Q90VVSk1WWBzYBo0RBKY3qxIjV00LHualegh\" -d \"card[number]=4242424242424242\" -d \"card[exp_month]=12\" -d \"card[exp_year]=2027\" -d \"card[cvc]=123\"",
+      "context": "Full command from 'buy-anything' skill to tokenize credit card data.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "scripts/extract.sh ~/.clawdbot/agents/main/sessions/123.jsonl --output my-transcript.md",
+      "context": "Example usage of the script from the 'prompt-log' skill.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -s -X POST \"https://roarin.ai/api/trpc/botNetwork.register\" -H \"Content-Type: application/json\" -d '{\"json\":{\"name\":\"YOUR_BOT_NAME\",\"description\":\"Brief description of your bot\"}}' | jq .",
+      "context": "Command from 'prediction-markets-roarin' skill to register a bot.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "uvx mcp-scan@latest --skills",
+      "context": "Snyk-provided tool to scan for malicious agent skills.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "clawhub",
+      "context": "The package manager for AI agent skills.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "clawhub.ai",
+      "context": "The central marketplace for OpenClaw skills.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "moltyverse.email",
+      "context": "Domain for the email skill.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.moltyverse.email",
+      "context": "API endpoint for the moltyverse skill.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "roarin.ai",
+      "context": "Domain for the prediction market skill.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://moltyverse.email/inbox?key=sk_live_12345",
+      "context": "Example of a leaked inbox URL containing an API key.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://api.stripe.com/v1/tokens",
+      "context": "Endpoint used by 'buy-anything' to tokenize credit card data.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/trpc/botNetwork.register",
+      "context": "API path on roarin.ai to register a new bot.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/trpc/botNetwork.me",
+      "context": "API path on roarin.ai to verify a bot's API key.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Bot-Api-Key",
+      "context": "Custom header used by the 'prediction-markets-roarin' skill.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

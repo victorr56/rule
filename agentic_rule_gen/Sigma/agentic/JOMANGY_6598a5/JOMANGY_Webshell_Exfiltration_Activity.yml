@@ -1,0 +1,30 @@
+title: JOMANGY Webshell Exfiltration Activity
+id: 59a1176b-968e-4a6c-941e-58c084ac91ac
+status: experimental
+description: Detects a web server process spawning a command-line utility like curl or wget to exfiltrate data to a known JOMANGY C2 endpoint.
+references:
+    - https://cyble.com/blog/hijacked-pbx-to-stolen-trunk-inj3ctor3s-campaign/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.exfiltration
+    - attack.t1041
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        ParentImage|endswith:
+            - '/httpd'
+            - '/apache2'
+            - '/nginx'
+            - '/php-fpm'
+        Image|endswith:
+            - '/wget'
+            - '/curl'
+        CommandLine|contains: '/hima_data/index.php'
+    condition: selection
+falsepositives:
+    - Legitimate web server maintenance or application scripts that use curl or wget to access a path containing '/hima_data/index.php'.
+level: high

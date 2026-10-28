@@ -1,0 +1,25 @@
+title: Linux TeamPCP Rope.pyz Infection Marker Creation
+id: 59d587c6-7640-4217-bc75-c54d24f0c436
+status: experimental
+description: Detects the execution of TeamPCP's rope.pyz malware, which is known to create infection marker files.
+references:
+    - https://www.wiz.io/blog/durabletask-teampcp-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.defense_evasion
+    - attack.t1059.006
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/python'
+            - '/python3'
+        CommandLine|contains:
+            - 'rope.pyz'
+    condition: selection
+falsepositives:
+    - 'Legitimate custom scripts named "rope.pyz".'
+level: high

@@ -1,0 +1,21 @@
+title: Cobalt Strike C2 Domain (clevelandclinic.cloud)
+id: f98a5840-798b-4b13-a7d1-e6e73a0e69b0
+status: experimental
+description: Detects DNS queries for the Cobalt Strike C2 domain clevelandclinic.cloud.
+references:
+    - https://www.elastic.co/security-labs/blog/extracting-cobalt-strike-beacon-configurations
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith: '.clevelandclinic.cloud'
+    condition: selection
+falsepositives:
+    - Legitimate traffic to the domain if it has been re-purposed.
+level: high

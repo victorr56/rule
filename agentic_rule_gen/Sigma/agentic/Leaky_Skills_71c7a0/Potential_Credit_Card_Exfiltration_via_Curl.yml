@@ -1,0 +1,26 @@
+title: Potential Credit Card Exfiltration via Curl to Stripe API
+id: a1a0e10b-b15c-4a37-9759-e9ecb98544e4
+status: experimental
+description: Detects the use of curl to send credit card details to the Stripe API directly from the command line. This insecure pattern was observed in the 'buy-anything' AI agent skill from the ClawHub marketplace, which leads to sensitive payment information being exposed in shell history and logs.
+references:
+    - https://snyk.io/blog/openclaw-skills-credential-leaks-research/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.exfiltration
+    - attack.t1041
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/curl'
+        CommandLine|contains|all:
+            - 'https://api.stripe.com/v1/tokens'
+            - 'card[number]='
+            - 'card[exp_month]='
+            - 'card[exp_year]='
+    condition: selection
+falsepositives:
+    - Unlikely, as sending raw credit card details via command-line curl is highly irregular and insecure.
+level: high

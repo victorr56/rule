@@ -1,0 +1,205 @@
+{
+  "malware_family": "Cobalt Strike",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "This report details the manual extraction and analysis of a Cobalt Strike beacon configuration from a memory-dumped payload. Key configuration fields such as sleeptime, jitter, C2 server, public key, license ID (watermark), and process injection settings can be used for detection, infrastructure tracking, and clustering threat activity. The process-inject.stub field contains an MD5 hash of the Cobalt Strike JAR file, allowing for version identification.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "45000",
+      "context": "Beacon configuration 'sleeptime' in milliseconds.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "37",
+      "context": "Beacon configuration 'jitter' percentage.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GNEtW6h/g4dQzm0dOkL5NA==",
+      "context": "Beacon configuration 'spawnto' value (Base64 encoded).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "334850267",
+      "context": "Beacon configuration 'license_id' (watermark).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "2021-12-24",
+      "context": "Beacon configuration 'kill_date'.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MIGfMA0GCSqGSIb3DQEBAQUAA4G...",
+      "context": "Beacon configuration 'server.publickey' for C2 communication.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "NtMapViewOfSection",
+      "context": "Beacon configuration 'process-inject.allocator'.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CreateThread 'ntdll!RtlUserThreadStart'",
+      "context": "Beacon configuration 'process-inject.execute' list item.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "NtQueueApcThread-s",
+      "context": "Beacon configuration 'process-inject.execute' list item.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RtlCreateUserThread",
+      "context": "Beacon configuration 'process-inject.execute' list item.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IiuPJ9vfuo3dVZ7son6mSA==",
+      "context": "Beacon configuration 'process-inject.stub' (Base64 MD5 of CS JAR).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "prepend '\\x90\\x90'",
+      "context": "Beacon configuration 'process-inject.transform-x86' value.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "222b8f27dbdfba8ddd559eeca27ea648",
+      "context": "MD5 hash of the Cobalt Strike Java archive, derived from stub field.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "clevelandclinic.cloud",
+      "context": "Cobalt Strike Malleable C2 domain from beacon configuration.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.197.142.19",
+      "context": "Cobalt Strike Malleable C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.64.119.19",
+      "context": "Cobalt Strike Malleable C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "443",
+      "context": "Beacon configuration 'server.port'.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "other",
+      "value": "HTTPS",
+      "context": "Beacon configuration 'beacontype'.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Cobalt Strike"
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "7af9c759ac78da920395debb443b9007fdf51fa66a48f0fbdaafb30b00a8a858",
+      "description": "Cobalt Strike 4.4 Java archive (JAR)."
+    },
+    {
+      "sha256": "697fddfc5195828777622236f2b133c0a24a6d0dc539ae7da41798c4456a3f89",
+      "description": "Cobalt Strike Malleable C2 beacon payload."
+    },
+    {
+      "sha256": "7475a6c08fa90e7af36fd7aa76be6e06b9e887bc0a6501914688a87a43ac7ac4",
+      "description": "Cobalt Strike Malleable C2 beacon payload."
+    },
+    {
+      "sha256": "f9b38c422a89d73ebdab7c142c8920690ee3a746fc4eea9175d745183c946fc5",
+      "description": "Cobalt Strike Malleable C2 beacon payload."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "jar"
+  ]
+}

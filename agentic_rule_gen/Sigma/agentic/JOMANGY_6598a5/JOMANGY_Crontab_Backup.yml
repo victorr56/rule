@@ -1,0 +1,26 @@
+title: JOMANGY Malware Crontab Backup
+id: 0e86b403-883a-4a64-96fe-78a0fd8a32a6
+status: experimental
+description: Detects the creation of files in hidden directories used by JOMANGY malware to backup its malicious crontab for persistence.
+references:
+    - https://cyble.com/blog/hijacked-pbx-to-stolen-trunk-inj3ctor3s-campaign/
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.persistence
+    - attack.t1053.003
+    - attack.defense_evasion
+    - attack.t1564.001
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/cp'
+        TargetFilename:
+            - '/usr/lib/.systemd/.cache'
+            - '/var/tmp/.X11/.Xauthority'
+    condition: selection
+falsepositives:
+    - Legitimate administrative activity copying crontab files to non-standard backup locations, although highly unlikely.
+level: high

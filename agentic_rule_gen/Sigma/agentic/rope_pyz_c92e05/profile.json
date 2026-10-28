@@ -1,0 +1,189 @@
+{
+  "malware_family": "rope.pyz",
+  "threat_actor": "TeamPCP",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "TeamPCP compromised the `durabletask` PyPi package to distribute a Linux worm. The payload, `rope.pyz`, steals credentials for various cloud services and password managers, and propagates using AWS SSM and Kubernetes. It exfiltrates data to hardcoded C2 servers and uses specific file paths as infection markers.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "~/.cache/.sys-update-check",
+      "context": "Infection marker for general Linux systems.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.cache/.sys-update-check-k8s",
+      "context": "Infection marker for Kubernetes environments.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/managed.pyz",
+      "context": "Downloaded payload file name.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/rope-*.pyz",
+      "context": "Downloaded payload file name pattern.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.rope_state/ssm_instances.json",
+      "context": "State file for AWS SSM propagation.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "python3 /tmp/managed.pyz",
+      "context": "Execution of the downloaded payload.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "rope.pyz",
+      "context": "Payload name within the compromised package.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".bash_history",
+      "context": "Shell history file scraped for credentials.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": ".zsh_history",
+      "context": "Shell history file scraped for credentials.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "check.git-service.com",
+      "context": "Primary C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "t.m-kosche.com",
+      "context": "Backup C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "83.142.209.194",
+      "context": "Legacy C2 IP from related campaign.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://check.git-service.com/rope.pyz",
+      "context": "Primary payload download URL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://t.m-kosche.com/rope.pyz",
+      "context": "Backup payload download URL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/models",
+      "context": "Killswitch or command endpoint.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/audio.mp3",
+      "context": "Wipe audio endpoint (Israel/Iran only).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/public/version",
+      "context": "Data exfiltration endpoint.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "069ac1dc7f7649b76bc72a11ac700f373804bfd81dab7e561157b703999f44ce",
+      "description": "rope.pyz payload"
+    },
+    {
+      "sha256": "7d80b3ef74ad7992b93c31966962612e4e2ceb93e7727cdbd1d2a9af47d44ba8",
+      "description": "durabletask-1.4.1-py3-none-any.whl compromised package"
+    },
+    {
+      "sha256": "aeaf583e20347bf850e2fabdcd6f4982996ba023f8c2cd56bbd299cfd56516f5",
+      "description": "durabletask-1.4.2-py3-none-any.whl compromised package"
+    },
+    {
+      "sha256": "877ff2531a63393c4cb9c3c86908b62d9c4fc3db971bc231c48537faae6cb3ec",
+      "description": "durabletask-1.4.3-py3-none-any.whl compromised package"
+    }
+  ],
+  "file_types": [
+    "script",
+    "archive"
+  ]
+}

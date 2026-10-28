@@ -1,0 +1,21 @@
+title: Linux TeamPCP Rope.pyz Execution
+id: 597a73f7-df6c-4861-a4f6-7b4438bb4e16
+status: experimental
+description: Detects the execution of the rope.pyz payload, named managed.pyz, by TeamPCP's malware.
+references:
+    - https://www.wiz.io/blog/durabletask-teampcp-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.execution
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/python3'
+        CommandLine|contains: '/tmp/managed.pyz'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

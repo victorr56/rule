@@ -1,0 +1,23 @@
+title: Credential Phishing DNS Query for LastingOnlineExperiences
+id: d866752c-735c-4861-8cf3-1563f8ed04d4
+status: experimental
+description: Detects DNS queries associated with a credential phishing campaign using subdomains of `lastingonlineexperiences.de` and other related domains.
+references:
+    - https://cofense.com/blog/locked-and-loaded-phishing-through-fake-bids-and-protected-documents
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.credential_access
+    - attack.t1566
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName:
+            - 'slotpastimaxwin50jt.online'
+            - 'mm-lasertechnik.lastingonlineexperiences.de'
+            - 'nbpn.lastingonlineexperiences.de'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

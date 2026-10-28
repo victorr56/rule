@@ -1,0 +1,26 @@
+title: Suspected STAC3725 RMM C2 Domains
+id: 5e61d8b6-398d-4fcf-8433-25a839a8c160
+status: experimental
+description: Detects DNS queries for domains known to be used by STAC3725 for ScreenConnect and Netbird C2 communications.
+references:
+    - https://www.huntress.com/blog/citrixbleed-2-dragonforce-ransomware
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - attack.t1219
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'relay.dltsolutions.top'
+            - 'relay.eurofin.digital'
+            - 'vtps.us'
+            - 'opa.tlsd.shop'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

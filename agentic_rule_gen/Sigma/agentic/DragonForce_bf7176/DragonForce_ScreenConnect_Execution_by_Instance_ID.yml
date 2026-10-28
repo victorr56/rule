@@ -1,0 +1,25 @@
+title: Suspected DragonForce ScreenConnect Execution by Instance ID
+id: d769152b-7b71-419b-a36c-94ccf6955a50
+status: experimental
+description: Detects the execution of the ScreenConnect client with a command line containing a specific instance ID observed in STAC3725/DragonForce intrusions.
+references:
+    - https://www.huntress.com/blog/citrixbleed-2-dragonforce-ransomware
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+    - attack.execution
+    - attack.t1219
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\ScreenConnect.Client.exe'
+        CommandLine|contains:
+            - '9963f404a99f0fc4'
+            - 'aee74a66ea5bb239'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

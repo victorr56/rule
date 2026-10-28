@@ -1,0 +1,25 @@
+title: Linux TeamPCP Rope.pyz State File Creation
+id: 97f354f9-25bb-41e9-a068-085e6dd0ccae
+status: experimental
+description: Detects the creation of a state file used for AWS SSM propagation by TeamPCP's rope.pyz malware.
+references:
+    - https://www.wiz.io/blog/durabletask-teampcp-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.lateral_movement
+    - attack.t1210
+    - attack.t1059.006
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/python'
+            - '/python3'
+        TargetFilename: '/tmp/.rope_state/ssm_instances.json'
+    condition: selection
+falsepositives:
+    - Legitimate software is not expected to create this file path.
+level: high

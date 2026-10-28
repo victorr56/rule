@@ -1,0 +1,26 @@
+title: kkkkevin777 Backup File Creation Pattern
+id: 59715570-5b56-4c4f-a957-c81ca800366a
+status: experimental
+description: Detects the creation of backup files with a pattern ".origYYYYMMDD" or ".theirYYYYMMDD" by a web server process. This pattern is used by the kkkkevin777 actor before overwriting files.
+references:
+    - https://socradar.io/blog/php2shell-weaponized-japanese-real-estate-extortion/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.impact
+    - attack.t1490
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - 'w3wp.exe'
+            - 'httpd.exe'
+            - 'apache.exe'
+            - 'nginx.exe'
+        TargetFilename|re: '\.(orig|their)\d{8}$'
+    condition: selection
+falsepositives:
+    - Legitimate backup or deployment scripts might use a similar naming convention, although the combination is uncommon.
+level: medium

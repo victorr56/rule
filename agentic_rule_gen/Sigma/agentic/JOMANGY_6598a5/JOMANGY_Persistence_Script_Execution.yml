@@ -1,0 +1,27 @@
+title: JOMANGY Malware Persistence Script Execution
+id: 9c3b8a1e-84df-4161-9f93-18d2d6c1f016
+status: experimental
+description: Detects the execution of JOMANGY malware persistence scripts as the 'asterisk' user. The malware places its scripts ('zen2', 'devnull2', 'serv') in a legitimate Asterisk binary path to blend in.
+references:
+    - https://cyble.com/blog/hijacked-pbx-to-stolen-trunk-inj3ctor3s-campaign/
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.persistence
+    - attack.t1546.004
+    - attack.execution
+    - attack.t1059.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/var/lib/asterisk/bin/zen2'
+            - '/var/lib/asterisk/bin/devnull2'
+            - '/var/lib/asterisk/bin/serv'
+        User: 'asterisk'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

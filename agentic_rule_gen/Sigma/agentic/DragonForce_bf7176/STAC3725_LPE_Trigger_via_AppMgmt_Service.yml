@@ -1,0 +1,28 @@
+title: STAC3725 LPE Trigger via AppMgmt Service
+id: 031ec7a2-f2de-42ed-a2d9-138374a2b662
+status: experimental
+description: Detects the command used by STAC3725 to trigger their registry symlink LPE by starting the 'AppMgmt' service and redirecting output to nul.
+references:
+    - https://www.huntress.com/blog/citrixbleed-2-dragonforce-ransomware
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.privilege_escalation
+    - attack.execution
+    - attack.t1059.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - 'sc'
+            - 'start'
+            - 'AppMgmt'
+            - '>nul'
+            - '2>nul'
+    condition: selection
+falsepositives:
+    - Custom administrative scripts that start this service and hide output, although this specific combination is suspicious.
+level: medium

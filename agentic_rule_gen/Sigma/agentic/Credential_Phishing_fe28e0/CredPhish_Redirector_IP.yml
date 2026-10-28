@@ -1,0 +1,20 @@
+title: Credential Phishing Redirector IP Address
+id: f78e1c6b-9520-410a-b855-f2038753239a
+status: experimental
+description: Detects network connections to an IP address associated with a credential phishing campaign's redirector.
+references:
+    - https://cofense.com/blog/locked-and-loaded-phishing-through-fake-bids-and-protected-documents
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+    - attack.t1566
+logsource:
+    category: network_connection
+detection:
+    selection:
+        DestinationIp: '67.205.150.245'
+    condition: selection
+falsepositives:
+    - 'This IP address belongs to a cloud provider (DigitalOcean) and may be used by legitimate services or other unrelated malicious activity.'
+level: medium

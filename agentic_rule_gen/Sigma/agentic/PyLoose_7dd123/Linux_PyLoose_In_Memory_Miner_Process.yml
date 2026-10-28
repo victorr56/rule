@@ -1,0 +1,26 @@
+title: PyLoose In-Memory Miner Process 'smd'
+id: f4568e65-21d3-4a0f-8700-1126ac5e4d25
+status: experimental
+description: Detects the execution of the in-memory XMRig miner used by PyLoose, which spoofs its process name to include "smd", for example "[kworker/u8:0-smd]". This name is set as argv[0] when the ELF is executed from memory using a fileless technique.
+references:
+    - https://www.wiz.io/blog/pyloose-first-python-based-fileless-attack-on-cloud-workloads
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.resource_hijacking
+    - attack.t1496
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        ParentImage|endswith:
+            - '/python'
+            - '/python3'
+        CommandLine|re: '\[kworker\/[^\s]+-smd\]'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

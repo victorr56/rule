@@ -1,0 +1,21 @@
+title: ShinyHunters Extortion Site DNS Query (shinywire.com)
+id: 5971512f-98ab-4318-b2ac-6f299d453880
+status: experimental
+description: Detects DNS queries for shinywire.com, the known extortion and data leak site used by the ShinyHunters group.
+references:
+    - https://krebsonsecurity.com/2026/10/feds-suspect-ransom-negotiator-ran-shinyhunters-extortion-site/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.impact
+    - attack.t1657
+    - detection.threat_hunting
+logsource:
+    category: dns
+detection:
+    selection:
+        QueryName|endswith: 'shinywire.com'
+    condition: selection
+falsepositives:
+    - Legitimate access by security researchers or threat intelligence analysts.
+level: high

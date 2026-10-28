@@ -1,0 +1,30 @@
+title: N0n Ransomware Persistence via Scheduled Task
+id: e30d7b29-e85d-4f0e-b7d6-c247be9405e3
+status: experimental
+description: Detects the creation of scheduled tasks with names used by the N0n ransomware for persistence.
+references:
+    - https://socradar.io/blog/n0n-ransomware-ai-assisted-extortion/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.persistence
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/sc'
+            - '/tn'
+        CommandLine|contains:
+            - 'NetAssist'
+            - 'ChromeDbg'
+            - 'AfricaSync'
+            - 'FinSoftSync'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,23 @@
+title: ABYSSWORKER Driver Symbolic Link Creation
+id: c1a3e144-8d45-4a6c-9410-b9835811802b
+status: experimental
+description: Detects the creation of a specific symbolic link by the ABYSSWORKER driver. This driver is used to disable security products as part of MEDUSA ransomware campaigns. This may be logged as a registry key creation in the DOS Devices path.
+references:
+    - https://www.elastic.co/security-labs/threat-command/abyssworker
+author: ioc-yara-daily (agentic)
+date: 2024-07-24
+tags:
+    - attack.t1562
+    - attack.t1222
+    - detection.threat_hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        Image: 'System'
+        TargetObject|endswith: '\Control\Session Manager\DOS Devices\fqg0Et4KlNt4s1JT'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

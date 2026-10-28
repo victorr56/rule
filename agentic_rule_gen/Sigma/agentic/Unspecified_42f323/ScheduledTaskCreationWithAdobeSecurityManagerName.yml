@@ -1,0 +1,25 @@
+title: Scheduled Task Creation With 'AdobeSecurityManager' Name
+id: f023a4b9-83d1-4a57-b08e-e2b2c938c5b0
+status: experimental
+description: Detects the creation of a scheduled task named 'AdobeSecurityManager', which is a known persistence mechanism used by malware.
+references:
+    - https://blog.virustotal.com/2026/10/process-trees-in-livehunt-yara-rules.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.persistence
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn'
+            - 'AdobeSecurityManager'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

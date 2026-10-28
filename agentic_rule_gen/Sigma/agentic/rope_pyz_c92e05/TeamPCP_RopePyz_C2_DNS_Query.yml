@@ -1,0 +1,21 @@
+title: TeamPCP Rope.pyz C2 DNS Query
+id: a8c2c62c-7b06-44c1-8486-1eb8a5563a6a
+status: experimental
+description: Detects DNS queries to command and control domains associated with the TeamPCP rope.pyz malware.
+references:
+    - https://www.wiz.io/blog/durabletask-teampcp-supply-chain-attack
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName:
+            - 'check.git-service.com'
+            - 't.m-kosche.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

@@ -1,0 +1,24 @@
+title: Leaked API Key in URL Query Parameter to Moltyverse
+id: 9a385fcf-523c-40ce-8260-84c4897d91e6
+status: experimental
+description: Detects web requests to moltyverse.email that include a 'key' parameter in the URL. This pattern was observed as a method by which an insecure AI agent skill leaks API keys.
+references:
+    - https://snyk.io/blog/openclaw-skills-credential-leaks-research/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.exfiltration
+    - attack.t1552
+logsource:
+    category: proxy
+    service: any
+detection:
+    selection:
+        DestinationHostname|endswith: 'moltyverse.email'
+        Url|contains|all:
+            - '/inbox'
+            - '?key='
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

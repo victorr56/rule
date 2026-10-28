@@ -1,0 +1,24 @@
+title: Mshta Spawning Scripting Engine
+id: 5691d12a-0a4a-4c28-94d7-c373a695e1e1
+status: experimental
+description: Detects Microsoft HTML Application Host (mshta.exe) spawning a script interpreter process. This is a common technique used by adversaries to proxy execution of malicious code.
+references:
+    - https://blog.virustotal.com/2026/10/process-trees-in-livehunt-yara-rules.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.defense_evasion
+    - attack.t1218.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\mshta.exe'
+        Image|endswith:
+            - '\wscript.exe'
+            - '\cscript.exe'
+    condition: selection
+falsepositives:
+    - Legitimate but rare administrative scripts or legacy applications.
+level: medium

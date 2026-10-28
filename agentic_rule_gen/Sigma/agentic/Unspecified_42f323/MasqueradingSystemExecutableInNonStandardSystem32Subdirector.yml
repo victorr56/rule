@@ -1,0 +1,25 @@
+title: Masquerading System Executable In Non-Standard System32 Subdirectory
+id: e4b2c1f0-5d6e-4f3a-9a01-c87d3a8e9e4f
+status: experimental
+description: Detects execution of binaries masquerading as legitimate system executables but located in unusual subdirectories of the System32 folder.
+references:
+    - https://blog.virustotal.com/2026/10/process-trees-in-livehunt-yara-rules.html
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_services:
+        Image|endswith: '\NlsLexicons0c1a\services.exe'
+        OriginalFileName: 'services.exe'
+    selection_taskeng:
+        Image|endswith: '\mfc42\taskeng.exe'
+        OriginalFileName: 'taskeng.exe'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: critical

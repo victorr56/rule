@@ -1,0 +1,20 @@
+title: PyLoose Payload URL Access
+id: d13ac5d0-9d90-4a8e-a9b3-6c84c1f9d6a3
+status: experimental
+description: Detects web proxy events for the URL hosting the PyLoose Python loader script.
+references:
+    - https://www.wiz.io/blog/pyloose-first-python-based-fileless-attack-on-cloud-workloads
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|contains: 'https://paste.c-net.org/chattingloosened'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

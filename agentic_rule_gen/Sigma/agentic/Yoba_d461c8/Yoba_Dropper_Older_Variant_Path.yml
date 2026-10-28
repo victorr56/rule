@@ -1,0 +1,28 @@
+title: Yoba Dropper Older Variant File Path
+id: b2a8f89e-4e42-4f05-8e89-688126b472e3
+status: experimental
+description: Detects the creation of 'mswsock.dll' in a typosquatted path used by an older version of the Yoba dropper.
+references:
+    - https://research.checkpoint.com/2026/tricks-from-the-past-deployed-via-signed-chatgpt-and-claude-binaries/
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.execution
+    - attack.t1105
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        TargetFilename|contains|all:
+            - '\Microsaft Difendir\'
+            - 'mswsock.dll'
+        Image|startswith:
+            - 'C:\Users\'
+            - 'C:\ProgramData\'
+            - 'C:\Windows\Temp\'
+            - 'C:\Temp\'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,138 @@
+{
+  "malware_family": "Credential Phishing",
+  "threat_actor": "Unknown",
+  "platforms": [
+    "web"
+  ],
+  "summary": "This credential phishing campaign uses an email with a password-protected PDF attachment themed around a project bid invitation. The PDF contains a link to a fake document sharing site, which then redirects the user to a fake Microsoft login page to harvest their credentials.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "Project Bid Invitation - Proposal Due August 35, 2026",
+      "context": "Subject line of the initial phishing email.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "MM LASERTECHNIK GMBH_protected.pdf",
+      "context": "Filename of the malicious PDF attachment.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "slotpastimaxwin50jt.online",
+      "context": "Domain for the first stage redirector page.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mm-lasertechnik.lastingonlineexperiences.de",
+      "context": "Domain hosting the fake Microsoft login page.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "nbpn.lastingonlineexperiences.de",
+      "context": "Domain for credential exfiltration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://slotpastimaxwin50jt.online/autoproject@autoproject.com/index.php",
+      "context": "URL behind button in malicious PDF.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/autoproject@autoproject.com/index.php",
+      "context": "Path on the first stage redirector URL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://mm-lasertechnik.lastingonlineexperiences.de/1Dmw9/?key=NKsIDYXvtY",
+      "context": "URL of the fake Microsoft login page.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/1Dmw9/",
+      "context": "Path on the fake login page URL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://nbpn.lastingonlineexperiences.de/nasa.php",
+      "context": "Credential exfiltration URL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/nasa.php",
+      "context": "Path on the credential exfiltration URL.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "67.205.150.245",
+      "context": "IP resolving slotpastimaxwin50jt.online.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.21.82.118",
+      "context": "IP resolving mm-lasertechnik.lastingonlineexperiences.de.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "172.67.157.109",
+      "context": "IP resolving mm-lasertechnik.lastingonlineexperiences.de.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "9ca705d6466d4d71c3fb0cae5097933afe1de1bc139d53bb63565a52dc9ebccb",
+      "description": "Malicious password-protected PDF attachment."
+    }
+  ],
+  "file_types": [
+    "document"
+  ]
+}

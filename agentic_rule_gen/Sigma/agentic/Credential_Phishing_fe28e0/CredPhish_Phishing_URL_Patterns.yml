@@ -1,0 +1,26 @@
+title: Credential Phishing URL Patterns
+id: a937c449-3663-4770-9883-7977a456c6f6
+status: experimental
+description: Detects HTTP requests to specific URL patterns used in a credential phishing campaign for redirection and credential harvesting.
+references:
+    - https://cofense.com/blog/locked-and-loaded-phishing-through-fake-bids-and-protected-documents
+author: ioc-yara-daily (agentic)
+date: 2026-10-28
+tags:
+    - attack.credential_access
+    - attack.t1566
+logsource:
+    category: proxy
+detection:
+    selection_redirect:
+        DestinationHostname|endswith: 'slotpastimaxwin50jt.online'
+        Url|contains: '/autoproject@autoproject.com/index.php'
+    selection_phish:
+        DestinationHostname|endswith: 'lastingonlineexperiences.de'
+        Url|contains:
+            - '/1Dmw9/'
+            - '/nasa.php'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high
