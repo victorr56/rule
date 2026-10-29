@@ -1,0 +1,21 @@
+title: NIK C2 C2 Domain Query
+id: 28f64069-b003-4f99-88dd-7d9fcb3fc9fa
+status: experimental
+description: Detects DNS queries for a known NIK C2 command and control domain.
+references:
+    - https://blog.talosintelligence.com/nik-c2-new-ai-enabled-framework/
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'total-sitevv.lol'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

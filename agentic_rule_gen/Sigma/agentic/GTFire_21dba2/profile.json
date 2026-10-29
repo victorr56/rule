@@ -1,0 +1,111 @@
+{
+  "malware_family": "GTFire",
+  "threat_actor": "GTFire",
+  "platforms": [
+    "web"
+  ],
+  "summary": "GTFire is a large-scale phishing campaign that abuses Google Firebase (web.app) for hosting and Google Translate (translate.goog) as a redirector to evade detection. The scheme uses multi-step credential harvesting via commercial PHP phishing kits and exfiltrates data, including Base64-encoded passwords, through HTTP GET requests.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "All-in-1.php",
+      "context": "Name of the credential collection PHP script.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "All-in-1",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "contraseña incorrecta",
+      "context": "Fake error message shown after first credential submission.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "LiteSpeed Web Server",
+      "context": "Server software identified on the C2 infrastructure.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "jnhwzs.fyi",
+      "context": "C2 server domain from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "gnpnia.lat",
+      "context": "C2 server domain from IOC list.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "*.web.app",
+      "context": "Pattern for phishing pages hosted on Google Firebase, used with redirects.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gxvv3mrr1-xn--wtsyr9q6-xn----c1a2cj-xn----p1ai.translate.goog/mon9K20E/KvQkJ/Y6Ufj?WTJGc2JDNTJhWEowZFdGc09VQmlZVzV5ZFhKaGJDNWpiMjB1WjNRPTpCNEkzWA+&_x_tr_sch=http&_x_tr_sl=deBoGBII&_x_tr_tl=wFpmJDGb",
+      "context": "Example of initial phishing URL using Google Translate redirector.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://it1lhz.web.app/host:-%20%20login.:4592?+&_x_tr_sl=pJeMrUFy&_x_tr_tl=pJeMrUFy",
+      "context": "Example of final phishing page URL on Google Firebase.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/myown/All-in-1.php",
+      "context": "Credential exfiltration path on the C2 server.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "All-in-1"
+    },
+    {
+      "kind": "other",
+      "value": "WTJGc2JDNTJhWEowZFdGc09VQmlZVzV2Y25SbExtTnZiUT09OkI0STNY",
+      "context": "Example of a double Base64-encoded URL parameter.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "translate.goog",
+      "context": "Google service abused as a redirector for phishing URLs.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

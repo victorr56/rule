@@ -1,0 +1,25 @@
+title: Potential SSRF via URL Parameter with Path Traversal
+id: c6f5195b-381f-49b8-a1dd-2384a3c10a45
+status: experimental
+description: Detects potential Server-Side Request Forgery (SSRF) attempts using multiple path traversal sequences in a URL that appears to be passed as a parameter from a referring URL.
+references:
+    - https://www.wiz.io/blog/red-agent-pov-ssrf
+author: ioc-yara-daily (agentic)
+date: 2023-10-26
+tags:
+    - attack.initial_access
+    - attack.t1190
+logsource:
+    category: proxy
+detection:
+    selection:
+        Referer|contains:
+            - '?url=http'
+            - '&url=http'
+            - '?uri=http'
+            - '&uri=http'
+        Url|contains: '..%2f..%2f'
+    condition: selection
+falsepositives:
+    - Legitimate web services that redirect or fetch content from user-supplied URLs which may incidentally contain path traversal-like strings, though multiple traversals are less common.
+level: medium

@@ -1,0 +1,28 @@
+title: NIK C2 Ransomware and Bootkit Staging File Creation
+id: c656834b-b0b3-4bd1-abf6-73595e347e33
+status: experimental
+description: Detects the creation of specific staging files related to the NIK C2 ransomware and bootkit capabilities, such as MBR backups and lock screen components, in temporary locations.
+references:
+    - https://blog.talosintelligence.com/nik-c2-new-ai-enabled-framework/
+author: ioc-yara-daily (agentic)
+date: 2024-10-29
+tags:
+    - attack.impact
+    - attack.t1490
+    - attack.defense_evasion
+    - attack.t1027
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\Temp\'
+        TargetFilename|endswith:
+            - '\mbr_backup.bin'
+            - '\lock_screen.html'
+            - '\lock_start.bat'
+            - '\bootkit.bin'
+    condition: selection
+falsepositives:
+    - Unlikely, but file names could collide with unrelated developer or test files.
+level: critical

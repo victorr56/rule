@@ -1,0 +1,29 @@
+title: QBot Scheduled Task Creation For Persistence
+id: 3c26d833-289b-449e-874b-e60da3d1796d
+status: experimental
+description: Detects the creation of a scheduled task with a specific combination of arguments commonly used by QBot for persistence.
+references:
+    - https://www.elastic.co/security-labs/blog/qbot-configuration-extractor
+author: ioc-yara-daily (agentic)
+date: 2024-07-24
+tags:
+    - attack.persistence
+    - attack.execution
+    - attack.t1053.005
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/Create'
+            - '/RU "NT AUTHORITY\SYSTEM"'
+            - '/SC ONSTART'
+            - '/NP'
+            - '/F'
+    condition: selection
+falsepositives:
+    - Legitimate administrative scripts might use some of these flags, but the complete combination is highly indicative of QBot's behavior.
+level: high

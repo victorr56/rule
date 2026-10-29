@@ -1,0 +1,22 @@
+title: NIK C2 Implant Execution As Simvol.exe
+id: 48946761-073c-473d-8ab1-1ca0a83e0c7a
+status: experimental
+description: Detects the execution of the NIK C2 implant masquerading as 'simvol.exe' with the 'watchdog' argument.
+references:
+    - https://blog.talosintelligence.com/nik-c2-new-ai-enabled-framework/
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\simvol.exe'
+        CommandLine|contains: 'watchdog'
+    condition: selection
+falsepositives:
+    - A legitimate tool named 'simvol.exe' that also uses a 'watchdog' argument, which is unlikely.
+level: high

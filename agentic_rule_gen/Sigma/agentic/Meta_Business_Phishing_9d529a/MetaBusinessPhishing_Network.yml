@@ -1,0 +1,25 @@
+title: Suspicious Network Connections Related to Meta Business Phishing Campaign
+id: 1735165a-4632-4467-8822-b062ff8e75e9
+status: experimental
+description: Detects network connections to domains associated with a phishing campaign targeting Meta Business users.
+references:
+    - https://www.huntress.com/blog/meta-business-manager-phishing
+author: ioc-yara-daily (agentic)
+date: 2023-10-29
+tags:
+    - attack.initial_access
+    - attack.t1566
+    - attack.t1566.002
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationHostname|endswith:
+            - 'aussiecleaningservices.com'
+            - 'api.goautolink.com'
+            - 'sw.run'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

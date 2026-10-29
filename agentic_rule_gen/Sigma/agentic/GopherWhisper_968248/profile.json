@@ -1,0 +1,105 @@
+{
+  "malware_family": "GopherWhisper",
+  "threat_actor": "GopherWhisper",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "GopherWhisper is a China-aligned APT group targeting Mongolian governmental entities with a custom Go-based toolset. The malware family includes backdoors like LaxGopher, RatGopher, and BoxOfFriends that use legitimate services (Slack, Discord, Outlook) for C2. A common TTP is injecting the payload, disguised as whisper.dll, into a new svchost.exe process.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "whisper.dll",
+      "context": "Malicious component that is side-loaded; contains LaxGopher backdoor.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "svchost.exe",
+      "context": "JabGopher creates a new instance to inject LaxGopher into.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "cmd.exe",
+      "context": "LaxGopher executes commands via cmd.exe.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "FriendDelivery",
+      "context": "Malicious DLL file serving as a loader and injector for BoxOfFriends.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "barrantaya.1010@outlook.com",
+      "context": "C2 account for BoxOfFriends backdoor using Microsoft Graph API.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/kardianos/service",
+      "context": "Found in Slack C2 messages, likely for development reference.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/NHAS/stab",
+      "context": "Found in Slack C2 messages, likely for development reference.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/kirinlabs/utils",
+      "context": "Found in Slack C2 messages, likely for development reference.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/wumansgy/goEncrypt",
+      "context": "Found in Slack C2 messages, likely for development reference.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "file.io",
+      "context": "Exfiltration target for CompactGopher file collection tool.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

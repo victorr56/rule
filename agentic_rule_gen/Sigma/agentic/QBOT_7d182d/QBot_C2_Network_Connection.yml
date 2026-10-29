@@ -1,0 +1,29 @@
+title: QBot C2 Network Connection
+id: 6e4e5e4a-5b1b-4d4b-9f9b-6d4f7e5b2a0c
+status: experimental
+description: Detects network connections to IP addresses known to be used as QBot C2 servers.
+references:
+    - https://www.elastic.co/security-labs/blog/qbot-configuration-extractor
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.command_and_control
+    - attack.t1071
+    - detection.threat_hunting
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '41.228.22.180'
+            - '47.23.89.62'
+            - '176.67.56.94'
+            - '103.107.113.120'
+            - '148.64.96.100'
+            - '47.180.172.159'
+            - '181.118.183.98'
+    condition: selection
+falsepositives:
+    - IP addresses may be reassigned, though these are known malicious indicators at the time of writing.
+level: high

@@ -1,0 +1,28 @@
+title: WhisperGate Deletes Windows Defender Directory via AdvancedRun
+id: e15e100f-d1a1-4389-9a7c-658b7654f058
+status: experimental
+description: Detects the use of NirSoft's AdvancedRun utility to delete the Windows Defender program data directory, as seen in WhisperGate attacks.
+references:
+    - https://www.elastic.co/security-labs/threat-command/operation-bleeding-bear
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.t1562.001
+    - attack.defense_evasion
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\AdvancedRun.exe'
+        CommandLine|contains|all:
+            - '/EXEFilename'
+            - 'powershell.exe'
+            - '/CommandLine'
+            - 'rmdir'
+            - 'Windows Defender'
+            - '-Recurse'
+    condition: selection
+falsepositives:
+    - Unlikely, but an administrator could use this tool for unorthodox system management or cleanup tasks.
+level: high

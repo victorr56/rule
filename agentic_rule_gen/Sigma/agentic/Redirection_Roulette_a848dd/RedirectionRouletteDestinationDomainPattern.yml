@@ -1,0 +1,25 @@
+title: Redirection Roulette Destination Domain (alibb.xyz)
+id: f450e184-7629-4a4b-91d1-67fd3b7fcce9
+status: experimental
+description: Detects DNS queries for domains known to be used as destination websites in the Redirection Roulette campaign.
+references:
+    - https://www.wiz.io/blog/redirection-roulette
+author: ioc-yara-daily (agentic)
+date: 2023-10-29
+tags:
+    - attack.command_and_control
+    - attack.t1566.002
+    - detection.threat_hunting
+logsource:
+    product: windows
+    category: dns_query
+detection:
+    selection:
+        QueryName:
+            - 'alibb.xyz'
+            - 'alibb-2.xyz'
+            - 'alibb-3.xyz'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

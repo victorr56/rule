@@ -1,0 +1,22 @@
+title: Potential All-in-1 Phishing Kit Exfiltration
+id: 5979f4c1-6b83-42e1-a083-d9d3004b321a
+status: experimental
+description: Detects HTTP requests to a URI path known to be used by the 'All-in-1' phishing kit for credential exfiltration.
+references:
+    - https://www.group-ib.com/blog/gtfire-phishing-scheme-es/
+author: ioc-yara-daily (agentic)
+date: 2024-05-22
+tags:
+    - attack.exfiltration
+    - attack.t1041
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|endswith: '/myown/All-in-1.php'
+        HttpMethod: 'POST'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

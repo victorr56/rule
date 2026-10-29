@@ -1,0 +1,51 @@
+title: QBot C2 Network Connection
+id: 5a2c2b3d-8e4f-4a1b-9f8c-1d0e9a7b6c5d
+status: experimental
+description: Detects network connections to known QBot C2 servers and ports.
+references:
+    - https://www.elastic.co/security-labs/threat-command/qbot-malware-analysis
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection_1:
+        DestinationIp: '181.118.183.98'
+        DestinationPort: 443
+    selection_2:
+        DestinationIp: '1.161.71.109'
+        DestinationPort:
+            - 443
+            - 995
+    selection_3:
+        DestinationIp: '100.1.108.246'
+        DestinationPort: 443
+    selection_4:
+        DestinationIp: '103.87.95.133'
+        DestinationPort: 2222
+    selection_5:
+        DestinationIp: '140.82.49.12'
+        DestinationPort: 443
+    selection_6:
+        DestinationIp: '176.205.119.81'
+        DestinationPort: 2078
+    selection_7:
+        DestinationIp: '196.233.79.3'
+        DestinationPort: 80
+    selection_8:
+        DestinationIp: '45.63.1.12'
+        DestinationPort: 443
+    selection_9:
+        DestinationIp: '75.99.168.194'
+        DestinationPort: 61201
+    selection_10:
+        DestinationIp: '84.241.8.23'
+        DestinationPort: 32103
+    condition: 1 of selection_*
+falsepositives:
+    - These IP/port combinations are highly specific to QBot C2 infrastructure but could be recycled or used for other services in the future.
+level: critical

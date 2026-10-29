@@ -1,0 +1,22 @@
+title: NetamLoader COM Hijacking Persistence
+id: 5e638d06-1d16-4191-88f5-900593b4ff04
+status: experimental
+description: Detects the creation of a registry key associated with NetamLoader for persistence via COM hijacking, using a specific CLSID and the DllSurrogate value.
+references:
+    - https://securelist.com/netamloader/121676/
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.persistence
+    - attack.t1546.015
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\SOFTWARE\Classes\appid\{ff259bcd-2f0a-44de-b34a-0092fec1d8a2}'
+        Details: 'DllSurrogate'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

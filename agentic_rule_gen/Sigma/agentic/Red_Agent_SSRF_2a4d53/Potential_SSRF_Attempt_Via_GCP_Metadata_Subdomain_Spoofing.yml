@@ -1,0 +1,22 @@
+title: Potential SSRF Attempt via GCP Metadata Subdomain Spoofing
+id: 79f7cc9c-3088-4682-82ea-e902b3c00449
+status: experimental
+description: Detects DNS queries for subdomains of 'metadata.google.internal', which is a technique used to bypass SSRF protection. Legitimate queries should only be for the root domain itself.
+references:
+    - https://www.wiz.io/blog/red-agent-pov-ssrf
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.credential_access
+    - attack.t1552.005
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith: '.metadata.google.internal'
+    filter:
+        QueryName: 'metadata.google.internal'
+    condition: selection and not filter
+falsepositives:
+    - Unlikely, as subdomains are not used for the GCP metadata service.
+level: high

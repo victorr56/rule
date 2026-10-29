@@ -1,0 +1,25 @@
+title: Suspicious Google Translate Redirector Usage
+id: d73595f4-34de-4034-8ddc-0f9c21e64627
+status: experimental
+description: Detects the use of Google Translate as a URL redirector, a technique used in phishing campaigns like GTFire to mask the final destination URL.
+references:
+    - https://www.group-ib.com/blog/gtfire-phishing-scheme-es/
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.initial_access
+    - attack.t1566.002
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname|endswith: '.translate.goog'
+        Url|contains|all:
+            - '_x_tr_sch='
+            - '_x_tr_sl='
+            - '_x_tr_tl='
+    condition: selection
+falsepositives:
+    - Legitimate, although uncommon, use of Google Translate with specific parameters to translate a web page.
+level: medium

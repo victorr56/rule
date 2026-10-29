@@ -1,0 +1,177 @@
+{
+  "malware_family": "Red Agent SSRF",
+  "threat_actor": "Red Agent",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "An AI-driven tool, Red Agent, discovered a critical SSRF vulnerability in a GCP Cloud Run service by chaining multiple observations. The exploit bypassed a strict GitHub URL validator by appending a double-slash `//` to force the backend to interpret the subsequent string as an absolute local file path. This allowed unauthenticated file reads, leading to the theft of GCP service account credentials and application source code.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/proc/self/environ",
+      "context": "Targeted to exfiltrate container environment variables and credentials.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/task/graph_api.py",
+      "context": "Source code file exfiltrated via the SSRF vulnerability.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/task/graph.zip",
+      "context": "Application bundle metadata exfiltrated via the SSRF vulnerability.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/app/main.py",
+      "context": "Targeted during path traversal attempts to get application entrypoint.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/app/requirements.txt",
+      "context": "Targeted during path traversal attempts to get dependency manifest.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GoogleCloudPlatform/graph-explorer",
+      "context": "Real repository name used to fingerprint the target environment.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "graph-explorer-file-reader",
+      "context": "Guessed internal naming convention based on repository enumeration.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "https://github.com/{owner}/{repo}/blob/{branch}/{path}",
+      "context": "The strict URL structure enforced by the application's validator.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://github.com/x/y/blob/z//proc/self/environ",
+      "context": "Winning SSRF payload in '?url=' parameter to read environment variables.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/x/y/blob/z//var/task/graph_api.py",
+      "context": "Winning SSRF payload in '?url=' parameter to read source code.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "metadata.google.internal",
+      "context": "Targeted GCP metadata server for credential theft.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token",
+      "context": "Initial direct SSRF attempt to steal GCP service account token.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/f",
+      "context": "The target endpoint of the GCP Cloud Run service.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "github.com@metadata.google.internal/computeMetadata/v1/",
+      "context": "URL parser confusion payload using authority/userinfo.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "github.com#@metadata.google.internal",
+      "context": "URL parser confusion payload using fragment injection.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "github.com.metadata.google.internal",
+      "context": "URL parser confusion payload using subdomain spoofing.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "gcs://graph-explorer/repo/dir.py",
+      "context": "URL parser confusion payload using scheme switching.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "github.com/owner/..%2f..%2fapp/blob/main/main.py",
+      "context": "Repo name injection payload with path traversal.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

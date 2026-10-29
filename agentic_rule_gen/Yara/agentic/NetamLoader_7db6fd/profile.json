@@ -1,0 +1,337 @@
+{
+  "malware_family": "NetamLoader",
+  "threat_actor": "Unknown APT",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "NetamLoader is a sophisticated, multi-stage .NET loading framework observed in a supply-chain attack targeting government entities in Asia. It uses AppDomainManager injection via legitimate tools, XAML-based loaders, and an AMSI bypass to execute its final C2 plugin in a separate dllhost.exe process. The malware is characterized by its use of complex layered encryption, long sleep timers, and unique logic for anti-analysis and forensic evasion.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\SoftwareDistribution\\Download\\e4537a1762fcafd2fd96bfc825bad34f9db9a24d",
+      "context": "Path to the initial CAB archive.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\SoftwareDistribution\\Download\\Install\\PatchMyPC-ScriptRunner.exe.config",
+      "context": "Configuration file for AppDomainManager injection.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\SoftwareDistribution\\Download\\Install\\fabric.config",
+      "context": "Configuration file read by DataCacheFactoryConfiguration.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\SoftwareDistribution\\Download\\Install\\Resources.resx",
+      "context": "Resource file containing the first serialized payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%WINDIR%\\Logs\\CmitUpdateAgent\\20????\\20??????",
+      "context": "Log file path pattern targeted for evidence tampering.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%LOCALAPPDATA%\\Microsoft\\CLR_v4.0\\UsageLogs\\PatchMyPC-ScriptRunner.exe.log",
+      "context": "CLR usage log deleted for forensics evasion.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%WINDIR%\\Prefetch\\PATCHMYPC-SCRIPTRUNNER.EXE-*.pf",
+      "context": "Prefetch file deleted for forensics evasion.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "C:\\Windows\\SoftwareDistribution\\Download\\Install\\PatchMyPC-ScriptRunner.exe -updatepackage -applicationid=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "context": "Initial execution command line of the host process.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "dllhost.exe",
+      "context": "Host process for Stage 2 plugin, injected via COM.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Microsoft.ApplicationServer.Caching.DataCacheFactoryConfiguration",
+      "context": "appDomainManagerType value in config file.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Microsoft.HostIntegration.Connectors, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
+      "context": "appDomainManagerAssembly value in config file.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "System.Resources.ResXResourceSet, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+      "context": "className attribute in fabric.config used for deserialization.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "fdb00e52-a214-4aa1-8fba-4357bb0072ec",
+      "context": "CLSID of AMSI COM object instance created for patching.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ab8902b4-09ca-4bb6-b78d-a8f59079a8d5",
+      "context": "CLSID for remote COM object used to inject into dllhost.exe.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0202097a-5c1e-460d-b5e0-030b9756b242",
+      "context": "Fixed GUID value in C2 status report JSON.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GetExtendedUpdateInfoHandler",
+      "context": "Substring filtered from logs to tamper with evidence.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CmitUpdateAgent",
+      "context": "Keyword in log path, possibly linked to custom Windows build.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "W7BHmIRBRY3FOIfWprbW/ZJh5GbPND3sY+qCBDY7O2A=",
+      "context": "Base64 AES key ('ibk') for decrypting XAML-3 template collection.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "9fT04e03tAiZAPogcDWt0w==",
+      "context": "Base64 AES master key ('ec') for C2 traffic encryption.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "m.C()",
+      "context": "Entry method name called in .NET loaders and plugins.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 14 43 9B 64 }",
+      "context": "Byte sequence concatenated with SusClientId for GUID generation.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 41 C7 00 01 00 00 00 33 C0 C3 }",
+      "context": "Memory patch for Console.Clear() used in AMSI bypass.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SOFTWARE\\Classes\\appid\\{bde7ddc2-1f6f-4397-a0df-ae7c7d67d65a}",
+      "context": "Exception state logging key (exception occurred indicator).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SOFTWARE\\Classes\\appid\\{ff259bcd-2f0a-44de-b34a-0092fec1d8a2}",
+      "context": "Persistence-related registry key created by .NET 2 Plugin.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "DllSurrogate",
+      "context": "Value name under persistence key HKLM\\SOFTWARE\\Classes\\appid\\{ff259bcd-2f0a-44de-b34a-0092fec1d8a2}.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "COMPlus_ETWEnabled",
+      "context": "Environment variable set to 0 to disable .NET ETW provider.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "(?:([a-zA-Z]+)=)?(.*)",
+      "context": "Regex used to parse WinHTTP proxy configuration.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "openaigpt4v.com",
+      "context": "C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.18.14.219",
+      "context": "C2 IP address (Cloudflare).",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/model_v4/",
+      "context": "Base path for C2 communication.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "b",
+      "context": "URL parameter name for encrypted system information blob.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "c",
+      "context": "URL parameter name for UID generated from SusClientId.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "*",
+      "context": "Value for 'tp' config, disabling SSL certificate validation.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "dotnet",
+    "pe",
+    "script"
+  ]
+}

@@ -1,0 +1,21 @@
+title: SSRF Attempt Against GCP Metadata Service via URL Authority Bypass
+id: 5418b765-b732-4e4b-bb29-9e60f8789311
+status: experimental
+description: Detects a Server-Side Request Forgery (SSRF) attempt targeting the GCP metadata service using a URL authority bypass (`@` syntax). This technique is used to trick URL validators into sending a request to an internal service.
+references:
+    - https://www.wiz.io/blog/red-agent-pov-ssrf
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.credential_access
+    - attack.t1552.005
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname|endswith: 'metadata.google.internal'
+        Url|contains: '@'
+    condition: selection
+falsepositives:
+    - Legitimate URLs accessing the GCP metadata service should not use the '@' character for user information in the authority part of the URL.
+level: critical

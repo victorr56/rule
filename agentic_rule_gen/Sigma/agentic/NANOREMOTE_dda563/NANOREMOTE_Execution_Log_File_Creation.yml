@@ -1,0 +1,27 @@
+title: NANOREMOTE Execution Log File Creation
+id: 79f75d5a-8b1c-4b35-8027-4c74070a927a
+status: experimental
+description: Detects the creation of a log file named 'pe_exe_run.log' in a 'Log' subdirectory by a process running from a common malware staging location. This behavior is associated with the NANOREMOTE/NanoCore RAT.
+references:
+    - https://www.elastic.co/security-labs/threat-command/nanoremote
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.execution
+    - attack.t1204
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|contains:
+            - '\AppData\Local\'
+            - '\AppData\Roaming\'
+            - '\ProgramData\'
+            - '\Users\Public\'
+            - '\Windows\Temp\'
+        TargetFilename|endswith: '\Log\pe_exe_run.log'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

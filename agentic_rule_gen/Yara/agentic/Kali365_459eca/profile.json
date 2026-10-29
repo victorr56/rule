@@ -1,0 +1,289 @@
+{
+  "malware_family": "Kali365",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "web"
+  ],
+  "summary": "Kali365, also known as Octopi365, is a Phishing-as-a-Service (PhaaS) platform using the device code flow and Adversary-in-the-Middle (AiTM) to steal Microsoft 365 tokens. The ecosystem includes web-based panels and companion Electron desktop apps (OctoLink Live, OctoLink Sender) for session replay and mass-mailing. Advanced versions feature AI-assisted BEC drafting, credential scanning, and Exchange admin abuse capabilities to monetize stolen access.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "process_name",
+      "value": "OctoLink Live",
+      "context": "Desktop app for session replay via stolen tokens.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Electron",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "OctoLink Sender",
+      "context": "Desktop app for mass mailing via stolen tokens.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Electron",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "serviceWindow.js",
+      "context": "Source file within the OctoLink Live application.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ipc/sender.js",
+      "context": "Source file within the OctoLink Sender application.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Document Expired",
+      "context": "Message displayed to victim after successful token theft.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Exchange a refresh token at Microsoft's token endpoint inside a real hidden browser window. This is the only way to get Microsoft to set ESTSAUTH cookies — it must be a real Chromium page load, not fetch() or net.request.",
+      "context": "Code comment in serviceWindow.js explaining token exchange technique.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "This two-step approach avoids hitting Exchange Online Protection's anti-spam heuristics",
+      "context": "Code comment in OctoLink Sender explaining mail sending pattern.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "persist:svc-{tokenId}-{service}",
+      "context": "Electron session partition name format in OctoLink Live.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "octolink-live",
+      "context": "User agent string in older versions of OctoLink Live.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "octolink-sender",
+      "context": "User agent string in older versions of OctoLink Sender.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bad outbound sender",
+      "context": "Exchange error string monitored by OctoLink Sender.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "suspected of sending spam",
+      "context": "Exchange error string monitored by OctoLink Sender.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "404 or error means \"still active.\"",
+      "context": "Code comment for subscription check fail-open logic.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MAX_CONCURRENT_JOBS = 1",
+      "context": "Constant in ipc/sender.js limiting concurrent mail jobs.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "d3590ed6-52b3-4102-aeff-aad2292ab01c",
+      "context": "Client ID for Microsoft Office app used for token requests.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "43.173.64.0/20",
+      "context": "CIDR range hosting Kali365 panels, from hunting rule.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "132203",
+      "context": "Tencent Cloud ASN used for device code authentication.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "python-requests",
+      "context": "User agent observed in SigninLogs from operator IP.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/dash/bec/analyze",
+      "context": "Panel endpoint for AI-powered BEC analysis.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/dash/highvalue",
+      "context": "Panel endpoint for high-value email triage queue.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/downloads/",
+      "context": "Panel endpoint for downloading companion desktop apps.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/recover-account",
+      "context": "Panel endpoint for self-service operator account recovery.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/extend-subscription",
+      "context": "Panel endpoint for self-service operator subscription extension.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/dash/tokens",
+      "context": "Panel endpoint to list captured session tokens.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/dash/token/{id}/raw",
+      "context": "Panel endpoint to retrieve raw data for a captured token.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "outlook.office365.com/owa/auth.owa",
+      "context": "Target URL for exchanging a stolen access token for OWA cookies.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-API-Key",
+      "context": "Header used by OctoLink Sender to authenticate with the panel.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "https://outlook.office365.com/.default offline_access",
+      "context": "OAuth scope requested by OctoLink Live for OWA access.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "https://admin.microsoft.com/.default offline_access",
+      "context": "OAuth scope requested by OctoLink Live for admin center access.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "graph.microsoft.com/.default offline_access",
+      "context": "OAuth scope requested by OctoLink Sender for Graph API access.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

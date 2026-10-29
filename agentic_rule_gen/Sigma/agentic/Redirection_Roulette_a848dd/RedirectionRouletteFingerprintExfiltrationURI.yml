@@ -1,0 +1,21 @@
+title: Redirection Roulette Fingerprint Exfiltration URI
+id: 887ec347-19fd-426b-871d-5568bdc444f2
+status: experimental
+description: Detects HTTP requests to an API endpoint used by older Redirection Roulette scripts to exfiltrate browser fingerprint data.
+references:
+    - https://www.wiz.io/blog/redirection-roulette
+author: ioc-yara-daily (agentic)
+date: 2024-06-12
+tags:
+    - attack.exfiltration
+    - attack.t1041
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url.Path|endswith: '/top/record/addRecord'
+        HttpMethod: 'POST'
+    condition: selection
+falsepositives:
+    - Possible legitimate applications using the same API path, though unlikely.
+level: high

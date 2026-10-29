@@ -1,0 +1,148 @@
+{
+  "malware_family": "QBOT",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "QBOT is a Windows malware that stores its configuration, including C2 servers, within its resources. The malware contains hardcoded strings for command-line execution, such as using 'schtasks.exe' for persistence and a unique typo 'powershel1.exe' as a configuration key.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "ProgramData",
+      "context": "String from configuration blob.",
+      "specificity": "low",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/t4",
+      "context": "String from configuration blob.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "EBBA",
+      "context": "String from configuration blob.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "netstat -nao",
+      "context": "String from configuration blob.",
+      "specificity": "low",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "jHxastDcds)oMc=jvh7wdUhxcsdt2",
+      "context": "String from configuration blob, possibly a key or identifier.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "schtasks.exe /Create /RU \"NT AUTHORITY\\SYSTEM\" /SC ONSTART /TN %u /TR \"%s\" /NP /F",
+      "context": "String from configuration blob for scheduled task creation.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\System32\\WindowsPowerShel1\\v1.0\\powershel1.exe",
+      "context": "Key for a resource containing C2 servers.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "41.228.22.180:443",
+      "context": "Extracted C2 server from resource.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.23.89.62:995",
+      "context": "Extracted C2 server from resource.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "176.67.56.94:443",
+      "context": "Extracted C2 server from resource.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.107.113.120:443",
+      "context": "Extracted C2 server from resource.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "148.64.96.100:443",
+      "context": "Extracted C2 server from resource.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.180.172.159:443",
+      "context": "Extracted C2 server from resource.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "181.118.183.98:443",
+      "context": "Extracted C2 server from resource.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "c2ba065654f13612ae63bca7f972ea91c6fe97291caeaaa3a28a180fb1912b3a",
+      "description": "QBOT sample used in the configuration extractor tool's example usage."
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

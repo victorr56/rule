@@ -1,0 +1,22 @@
+title: NANOREMOTE C2 Communication
+id: 5a85de9b-f6fe-4f11-b0e5-7467e2ac1b2d
+status: experimental
+description: Detects C2 network communications associated with the NANOREMOTE backdoor based on its unique User-Agent and URI path.
+references:
+    - https://www.elastic.co/security-labs/threat-command/nanoremote
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        c-user-agent: 'NanoRemote/1.0'
+        cs-uri-path: '/api/client'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

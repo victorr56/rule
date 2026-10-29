@@ -1,0 +1,34 @@
+title: Red Agent SSRF Attempt via Double Slash Path Bypass
+id: b32a5df9-1662-4217-a065-276707f43372
+status: experimental
+description: Detects a Server-Side Request Forgery (SSRF) attempt that bypasses URL validation by using a double slash `//` to force the backend to interpret the subsequent string as an absolute local file path.
+references:
+    - https://www.wiz.io/blog/red-agent-pov-ssrf
+author: ioc-yara-daily (agentic)
+date: 2024-07-24
+tags:
+    - attack.initial_access
+    - attack.t1190
+logsource:
+    category: proxy
+detection:
+    selection_path:
+        Url|startswith: 'https://'
+        Url.Path|contains|any:
+            - '//proc/self/environ'
+            - '//var/task/graph_api.py'
+            - '//var/task/graph.zip'
+            - '//app/main.py'
+            - '//app/requirements.txt'
+    selection_query:
+        Url|startswith: 'https://'
+        Url.Query|contains|any:
+            - '//proc/self/environ'
+            - '//var/task/graph_api.py'
+            - '//var/task/graph.zip'
+            - '//app/main.py'
+            - '//app/requirements.txt'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate URLs that coincidentally contain one of the target file paths. Unlikely.
+level: high

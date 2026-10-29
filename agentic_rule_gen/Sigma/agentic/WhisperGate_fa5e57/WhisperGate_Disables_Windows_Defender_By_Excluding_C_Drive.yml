@@ -1,0 +1,26 @@
+title: 'WhisperGate Disables Windows Defender By Excluding C Drive'
+id: c46cd7fa-6b99-4d6d-8b09-e854fa169f46
+status: experimental
+description: >-
+    Detects a PowerShell command used by WhisperGate to add the entire C: drive to the Windows Defender exclusion list, effectively disabling scans.
+references:
+    - https://www.elastic.co/security-labs/threat-command/operation-bleeding-bear
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.t1562.001
+    - attack.defense_evasion
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'Set-MpPreference'
+            - '-ExclusionPath'
+            - 'C:\'
+    condition: selection
+falsepositives:
+    - 'System administrators might perform this for specific troubleshooting, but excluding the entire root drive is highly unusual and suspicious.'
+level: high

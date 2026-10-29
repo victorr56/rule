@@ -1,0 +1,49 @@
+title: QBot Injected Process Network Connection
+id: 8f7e6d5c-1a3b-4c9a-8e2d-7a6b5c4d3e2f
+status: experimental
+description: Detects outbound TCP network connections from processes commonly injected by QBot, such as mobsync.exe and msra.exe. These processes rarely make external network connections in a legitimate context.
+references:
+    - https://www.elastic.co/security-labs/threat-command/qbot-malware-analysis
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - attack.defense_evasion
+    - attack.t1055
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\mobsync.exe'
+            - '\msra.exe'
+        Protocol: 'tcp'
+    filter_private:
+        DestinationIp|startswith:
+            - '10.'
+            - '192.168.'
+            - '172.16.'
+            - '172.17.'
+            - '172.18.'
+            - '172.19.'
+            - '172.20.'
+            - '172.21.'
+            - '172.22.'
+            - '172.23.'
+            - '172.24.'
+            - '172.25.'
+            - '172.26.'
+            - '172.27.'
+            - '172.28.'
+            - '172.29.'
+            - '172.30.'
+            - '172.31.'
+            - '127.'
+            - '::1'
+    condition: selection and not filter_private
+falsepositives:
+    - 'msra.exe (Microsoft Remote Assistance) can make legitimate network connections if used for remote support.'
+    - 'Legitimate use of Sync Center (mobsync.exe) to synchronize with an external server.'
+level: medium

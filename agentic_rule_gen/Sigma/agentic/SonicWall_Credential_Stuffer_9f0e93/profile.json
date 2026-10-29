@@ -1,0 +1,56 @@
+{
+  "malware_family": "SonicWall Credential Stuffer",
+  "threat_actor": "",
+  "platforms": [
+    "network_device"
+  ],
+  "summary": "A broad, opportunistic credential stuffing campaign targets SonicWall VPN and firewall accounts. The attacks, which appear to be automated credential validation, originate from a small set of IP addresses hosted on DigitalOcean.",
+  "mitre_techniques": [
+    "T1110.003"
+  ],
+  "host_artifacts": [],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "157.245.88.153",
+      "context": "Malicious IP (DigitalOcean, LLC) associated with SonicWall brute-force.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "162.243.31.111",
+      "context": "Malicious IP (DigitalOcean, LLC) associated with SonicWall brute-force.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "167.71.150.1",
+      "context": "Malicious IP (DigitalOcean, LLC) associated with SonicWall brute-force.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "209.97.151.148",
+      "context": "Malicious IP (DigitalOcean, LLC) associated with SonicWall brute-force.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "64.227.15.20",
+      "context": "Malicious IP (DigitalOcean, LLC) associated with SonicWall brute-force.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

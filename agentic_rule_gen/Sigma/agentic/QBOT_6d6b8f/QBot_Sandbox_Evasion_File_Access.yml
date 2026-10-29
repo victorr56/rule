@@ -1,0 +1,22 @@
+title: QBot Sandbox Evasion File Access
+id: 1b9c8d7e-5a6b-4c3d-2e1f-0a9b8c7d6e5f
+status: experimental
+description: Detects access to the file path 'C:\INTERNAL\__empty', a known sandbox evasion check performed by QBot.
+references:
+    - https://www.elastic.co/security-labs/threat-command/qbot-malware-analysis
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.defense_evasion
+    - attack.t1497.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename: 'C:\INTERNAL\__empty'
+        Image|contains: '\Users\'
+    condition: selection
+falsepositives:
+    - Legitimate software running from a user directory that also checks for this specific file path, which is highly unlikely.
+level: high

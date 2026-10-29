@@ -1,0 +1,24 @@
+title: Redirection Roulette C2 and Infrastructure IPs
+id: c3428d0b-fc6d-4952-b883-99d9841f3e09
+status: experimental
+description: Detects network connections to IP addresses associated with the Redirection Roulette campaign infrastructure.
+references:
+    - https://www.wiz.io/blog/redirection-roulette
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    product: windows
+    category: network_connection
+detection:
+    selection:
+        DestinationIp:
+            - '172.81.104.64'
+            - '193.109.120.45'
+            - '159.69.123.158'
+    condition: selection
+falsepositives:
+    - These IPs may be reallocated in the future and could be used for legitimate purposes.
+level: high

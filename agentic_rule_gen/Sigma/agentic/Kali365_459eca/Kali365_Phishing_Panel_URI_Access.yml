@@ -1,0 +1,24 @@
+title: Kali365 Phishing Panel URI Access
+id: 7c570bfa-fc21-4f19-a1b7-a37a77df34a7
+status: experimental
+description: Detects network traffic to known URI paths associated with the Kali365 Phishing-as-a-Service panel.
+references:
+    - https://www.huntress.com/blog/kali365-device-code-phishing-kit
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.command_and_control
+    - attack.t1071
+    - detection.threat_hunting
+logsource:
+    category: proxy
+detection:
+    selection:
+        Http.Request.Method: 'GET'
+        Url.Original|endswith:
+            - '/dash/bec/analyze'
+            - '/dash/highvalue'
+    condition: selection
+falsepositives:
+    - Legitimate web applications that use the same URI paths for their dashboards or API endpoints.
+level: medium

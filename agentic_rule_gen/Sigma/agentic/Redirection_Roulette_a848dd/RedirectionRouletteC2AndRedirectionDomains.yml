@@ -1,0 +1,36 @@
+title: Redirection Roulette C2 and Redirection Domains
+id: 59ec1189-dd9f-4de1-8636-e822a106a72e
+status: experimental
+description: Detects DNS queries for domains known to be used in the Redirection Roulette campaign for hosting malicious scripts, redirection, and final destinations.
+references:
+    - https://www.wiz.io/blog/redirection-roulette
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.command_and_control
+    - attack.t1566.002
+logsource:
+    product: windows
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith:
+            - '.metamarket.quest'
+            - '.ibtoc3t7.com'
+            - '22332299.com'
+            - 'a.msstatic.net'
+            - 'alivod1.com'
+            - 'beacon-v2.helpscout.help'
+            - 'cdn-go.net'
+            - 'cdn.jsdelivr.autos'
+            - 'minjs.us'
+            - 'qs70qw11az.com'
+            - 's3a.pstatp.org'
+            - 'stat.51sdk.org'
+            - 'tpc.cdn-linkedin.info'
+            - 'tpc.googlesyndication.wiki'
+            - 'widget-v4.tidiochat.net'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

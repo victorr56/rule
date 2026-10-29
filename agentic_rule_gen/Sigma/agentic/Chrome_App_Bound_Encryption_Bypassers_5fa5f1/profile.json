@@ -1,0 +1,213 @@
+{
+  "malware_family": "Chrome App-Bound Encryption Bypassers",
+  "threat_actor": "Multiple (MaaS Infostealers)",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Multiple infostealer families, including STEALC, METASTEALER, PHEMEDRONE, XENOSTEALER, and LUMMA, have updated their TTPs to bypass Google Chrome's Application-Bound Encryption for cookie theft. Observed techniques include reimplementing the ChromeKatz tool for memory scanning, leveraging a Chrome COM service for decryption key access, and using the remote debugging protocol. These methods are noisy and present new detection opportunities for defenders.",
+  "mitre_techniques": [
+    "T1552.005",
+    "T1055",
+    "T1555.003",
+    "T1082",
+    "T1057",
+    "T1559.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "v20",
+      "context": "Prefix for cookies encrypted with Chrome's Application-Bound Encryption.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "--utility-sub-type=network.mojom.NetworkService",
+      "context": "STEALC/VIDAR looks for this flag to identify Chrome's network service process.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "net::CookieMonster::~CookieMonster",
+      "context": "Function signature targeted by STEALC/LUMMA via pattern scanning to find CookieMonster.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "ChromeKatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "ReadProcessMemory",
+      "context": "Used by STEALC to access CookieMonster structures in Chrome's memory.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "jy::GenerateExfilString",
+      "context": "Internal STEALC function name for formatting exfiltrated cookie data.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Local State",
+      "context": "METASTEALER parses this file for the app_bound_encrypted_key.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "app_bound_encrypted_key",
+      "context": "JSON key for the new encryption key in Chrome's Local State file.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "SOFTWARE\\Classes\\CLSID\\{708860E0-F641-4611-8895-7D867DD3675B}",
+      "context": "CLSID for GoogleChromeElevationService, used by METASTEALER for decryption.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GoogleChromeElevationService",
+      "context": "COM service used by METASTEALER/XENOSTEALER to decrypt the app-bound key.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DecryptData",
+      "context": "Method of GoogleChromeElevationService COM object invoked for decryption.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "elevation_service.exe",
+      "context": "Process associated with the GoogleChromeElevationService COM object.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "window-position=-2400,-2400",
+      "context": "PHEMEDRONE uses this Chrome command line switch to hide the window off-screen.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Network.getAllCookies",
+      "context": "Deprecated Chrome DevTools method used by PHEMEDRONE to get cookies.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SharpInjector",
+      "context": "XENOSTEALER internal helper class for injecting code into Chrome.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "3Rf5Zn7oFA2a????k4fAsdxx????l8xX5vJnm47AUJ8uXUv2bA0s34S6AfFA????kdamAY3?PdE????6G????L8v6D8MJ4uq????k70a?oAj7a3????????K3smA????maSd?3l4",
+      "context": "LUMMA's obfuscated signature pattern used to find the CookieMonster function.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "56 57 48 83 EC 28 89 D7 48 89 CE E8 ?? ?? ?? ?? 85 FF 74 08 48 89 F1 E8 ?? ?? ?? ?? 48 89 F0 48 83 C4 28 5F 5E C3 CC CC CC CC CC CC CC CC CC CC 56 57 48 83 EC 38 48 89 CE 48 8B 05 ?? ?? ?? ?? 48 31 E0 48 89 44 24 ?? 48 8D 79 ?? ?? ?? ?? 28 E8 ?? ?? ?? ?? 48 8B 46 20 48 8B 4E 28 48 8B 96 ?? ?? ?? ?? 4C 8D 44 24 ?? 49 89 10 48 C7 86 ?? ?? ?? ?? ?? ?? ?? ?? 48 89 FA FF 15 ?? ?? ?? ?? 48 8B 4C 24 ?? 48 31 E1",
+      "context": "Deobfuscated YARA pattern from LUMMA for finding CookieMonster destructor.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "9222",
+      "context": "Default TCP port for Chrome remote debugging, used by PHEMEDRONE.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "27e4a3627d7df2b22189dd4bebc559ae1986d49a8f4e35980b428fadb66cf23d",
+      "description": "STEALC sample (num.exe)"
+    },
+    {
+      "sha256": "08d9d4e6489dc5b05a6caa434fc36ad6c1bd8c8eb08888f61cbed094eac6cb37",
+      "description": "PHEMEDRONE sample (HardCoreCrack.exe)"
+    },
+    {
+      "sha256": "43cb70d31daa43d24e5b063f4309281753176698ad2aba9c557d80cf710f9b1d",
+      "description": "METASTEALER sample (Ranginess.exe)"
+    },
+    {
+      "sha256": "84033def9ffa70c7b77ce9a7f6008600c0145c28fe5ea0e56dfafd8474fb8176",
+      "description": "LUMMA sample"
+    },
+    {
+      "sha256": "b74733d68e95220ab0630a68ddf973b0c959fd421628e639c1b91e465ba9299b",
+      "description": "XENOSTEALER sample (XenoStealer.exe)"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

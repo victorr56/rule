@@ -1,0 +1,32 @@
+title: Suspicious Parent Process For Google Chrome Elevation Service
+id: 9e88d070-13f5-451e-961f-63234149c4f7
+status: experimental
+description: Detects the 'elevation_service.exe' process being launched by a parent other than legitimate system or Google processes. This can indicate that an attacker, such as the METASTEALER infostealer, is attempting to abuse the COM service for privilege escalation or data decryption.
+references:
+    - https://www.elastic.co/security-labs/threat-command/katz-and-mouse-game
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.credential_access
+    - attack.t1552.005
+    - attack.t1055
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\elevation_service.exe'
+        Company:
+            - 'Google Inc.'
+            - 'Google LLC'
+    filter:
+        ParentImage|endswith:
+            - '\svchost.exe'
+            - '\services.exe'
+            - '\GoogleUpdate.exe'
+            - '\chrome.exe'
+            - '\msiexec.exe'
+    condition: selection and not filter
+falsepositives:
+    - Legitimate third-party software management or deployment tools could potentially trigger this rule.
+level: high

@@ -1,0 +1,195 @@
+{
+  "malware_family": "Meta Business Phishing",
+  "threat_actor": "Unknown",
+  "platforms": [
+    "web"
+  ],
+  "summary": "An unknown threat actor abused Meta's business partner service to send validated phishing emails containing non-clickable URLs in the business name field. These lures led to phishing pages, some incorporating a chatbot, designed to steal Meta credentials, MFA codes, and ID documents. Stolen data was exfiltrated to a private Telegram channel, with some exfiltration messages containing Vietnamese-language strings.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "Get started [URL] – Your information",
+      "context": "Abused business name text in initial email variant (May).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "We agree to cooperate with your business [URL] . Other URLs",
+      "context": "Abused business name text in later email variant (June).",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "AI Strategic Partner",
+      "context": "Name of the fraudulent Facebook Messenger chatbot.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "We are a dedicated team specializing in interior and exterior painting and drywall finishing.",
+      "context": "Description of the fraudulent Facebook Messenger chatbot account.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "I received a collaboration invitation via email from Meta",
+      "context": "Button text in the chatbot interface.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Get Verification Badge",
+      "context": "Button text in the chatbot interface leading to a phishing page.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Enable Monetization",
+      "context": "Button text in the chatbot interface leading to a phishing page.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "password is incorrect",
+      "context": "Fake error message on phishing page to make user enter credentials twice.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "data1mdobot",
+      "context": "Telegram bot username used for data exfiltration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "@bulondondam",
+      "context": "Telegram bot display name associated with exfiltration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Thần-tài-đến",
+      "context": "Vietnamese string (\"God of Wealth arrives\") in exfiltration message.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "🔐 ĐĂNG NHẬP",
+      "context": "Vietnamese string (\"login\") in exfiltration message.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "📋 THÔNG TIN",
+      "context": "Vietnamese string (\"information\") in exfiltration message.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://sites.google.com/view/profile1012",
+      "context": "Google Sites lure URL embedded into the partner-request email text.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "aussiecleaningservices.com",
+      "context": "Early phishing landing page posing as a Meta Agency Partner Program page.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.goautolink.com",
+      "context": "Earlier exfiltration domain used to receive stolen victim data.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sw.run",
+      "context": "Cloudflare-hosted domain used to frame Netlify phishing pages.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/Verification",
+      "context": "URI path for the 'Meta Verified' phishing page on sw.run.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "businesshelpcenterpageid563252.netlify.app",
+      "context": "Netlify-hosted phishing page for the content-monetization variant.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

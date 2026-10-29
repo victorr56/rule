@@ -1,0 +1,23 @@
+title: GTFire C2 Domain Query
+id: 87a71f02-a8c9-4a00-ab6a-4d3727dd75fa
+status: experimental
+description: Detects DNS queries for domains known to be used as C2 servers by the GTFire threat actor.
+references:
+    - https://www.group-ib.com/blog/gtfire-phishing-scheme/
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'jnhwzs.fyi'
+            - 'gnpnia.lat'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

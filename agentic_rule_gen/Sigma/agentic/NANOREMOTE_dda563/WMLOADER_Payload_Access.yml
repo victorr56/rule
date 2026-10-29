@@ -1,0 +1,23 @@
+title: WMLOADER Accessing NANOREMOTE Payload
+id: 9c34f8a8-a6d1-447a-8f43-b68e91040445
+status: experimental
+description: Detects the WMLOADER process, masquerading as a Bitdefender component, accessing its encrypted payload file 'wmsetup.log'.
+references:
+    - https://www.elastic.co/security-labs/threat-command/nanoremote
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.execution
+    - attack.defense_evasion
+    - attack.t1036.002
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        Image|endswith: '\BDReinit.exe'
+        TargetFilename|endswith: '\wmsetup.log'
+    condition: selection
+falsepositives:
+    - Unlikely, as the combination of this specific executable name and payload filename is unique to this malware family.
+level: high

@@ -1,0 +1,31 @@
+title: Web Server Process Accessing GCP Metadata Service
+id: 0e55b112-6f3f-42e7-9d62-79010ab3dd91
+status: experimental
+description: Detects a web server or application server process making a network connection to the GCP metadata service. This can be indicative of a successful SSRF exploit.
+references:
+    - https://www.wiz.io/blog/red-agent-pov-ssrf
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.credential_access
+    - attack.t1552.005
+    - detection.threat_hunting
+logsource:
+    category: network_connection
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/nginx'
+            - '/apache2'
+            - '/httpd'
+            - '/caddy'
+            - '/gunicorn'
+            - '/uvicorn'
+            - '/uwsgi'
+            - '/php-fpm'
+        DestinationHostname: 'metadata.google.internal'
+    condition: selection
+falsepositives:
+    - Legitimate web applications that are designed to run on GCP and interact with other GCP services via the metadata API. These should be investigated and whitelisted.
+level: medium

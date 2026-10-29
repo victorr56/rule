@@ -1,0 +1,26 @@
+title: NetamLoader Forensic Evasion Via File Deletion
+id: 8c9d1f9a-a43b-4c5c-897b-23f2f84283c8
+status: experimental
+description: Detects the deletion of CLR usage logs and prefetch files related to PatchMyPC-ScriptRunner.exe, a technique used by NetamLoader to cover its tracks. This activity is often performed via cmd.exe.
+references:
+    - https://securelist.com/netamloader/121676/
+author: ioc-yara-daily (agentic)
+date: 2024-05-29
+tags:
+    - attack.defense_evasion
+    - attack.t1070.004
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_clr:
+        Image|endswith: '\cmd.exe'
+        TargetFilename|endswith: '\Microsoft\CLR_v4.0\UsageLogs\PatchMyPC-ScriptRunner.exe.log'
+    selection_prefetch:
+        Image|endswith: '\cmd.exe'
+        TargetFilename|contains: '\Prefetch\PATCHMYPC-SCRIPTRUNNER.EXE-'
+        TargetFilename|endswith: '.pf'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate administrative scripts might perform similar cleanup actions using cmd.exe, although this is uncommon.
+level: medium

@@ -1,0 +1,354 @@
+{
+  "malware_family": "QBOT",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "QBOT, also known as QAKBOT, is a modular banking trojan active since at least 2007. It uses a multi-stage infection process involving regsvr32.exe for initial execution, process injection into legitimate Windows processes, and dynamic persistence via scheduled tasks and registry run keys. The malware communicates with its C2 over HTTP/TLS using a custom JSON protocol to receive commands, including downloading and executing additional modules.",
+  "mitre_techniques": [
+    "T1055",
+    "T1112",
+    "T1027",
+    "T1027.005",
+    "T1218.010",
+    "T1010",
+    "T1083",
+    "T1082",
+    "T1614",
+    "T1518.001",
+    "T1033",
+    "T1071.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\INTERNAL\\__empty",
+      "context": "Sandbox detection; if this directory exists, the malware terminates.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "DllRegisterServer",
+      "context": "Initial execution entry point called by regsvr32.exe.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "regsvr32.exe -> [qbot_dll]",
+      "context": "Initial execution of the QBOT DLL payload.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Import hash calculation: CRC32(exportName) XOR 0x218fe95b",
+      "context": "Algorithm used to resolve API imports from a hash table.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%SystemRoot%\\SysWOW64\\mobsync.exe",
+      "context": "A target process for injection.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%SystemRoot%\\System32\\msra.exe",
+      "context": "A target process for injection.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%SystemRoot%\\System32\\OneDriveSetup.exe",
+      "context": "A target process for injection.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Microsoft\\[Random Folder]",
+      "context": "Persistence subdirectory used to drop the QBOT binary upon shutdown.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "frida-winjector-helper-32.exe",
+      "context": "Process name checked to detect analysis tools.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "frida-winjector-helper-64.exe",
+      "context": "Process name checked to detect analysis tools.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "idaq64.exe",
+      "context": "Process name checked to detect analysis tools.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "joeboxserver.exe",
+      "context": "Process name checked to detect analysis tools.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "proc_analyzer.exe",
+      "context": "Process name checked to detect analysis tools.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "sniff_hit.exe",
+      "context": "Process name checked to detect analysis tools.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "sysAnalyzer.exe",
+      "context": "Process name checked to detect analysis tools.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "x64dbg.exe",
+      "context": "Process name checked to detect analysis tools.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "wireshark.exe",
+      "context": "Process name checked to detect analysis tools.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SOFTWARE\\Microsoft\\Windows Defender\\Exclusions\\Paths",
+      "context": "Registry key where an exclusion path for the persistence folder is added.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKU\\[User SID]\\Software\\Microsoft\\[Random Key]",
+      "context": "Location where randomly named key and value store the configuration blob.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MARE::rpc::handler::UploadAndExecuteBinary",
+      "context": "Internal name for C2 command handler 0x19.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MARE::rpc::handler::ExecuteShellCmd",
+      "context": "Internal name for C2 command handler 0x21.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MARE::rpc::handler::ExecutePowershellCmd",
+      "context": "Internal name for C2 command handler 0x27.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko",
+      "context": "User-Agent used in C2 HTTP POST requests.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Accept: application/x-shockwave-flash, image/gif, image/jpeg, image/pjpeg, */*",
+      "context": "Accept header used in C2 HTTP POST requests.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "181.118.183.98:443",
+      "context": "C2 server address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "1.161.71.109:443",
+      "context": "C2 server address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "1.161.71.109:995",
+      "context": "C2 server address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "100.1.108.246:443",
+      "context": "C2 server address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.87.95.133:2222",
+      "context": "C2 server address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "140.82.49.12:443",
+      "context": "C2 server address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "176.205.119.81:2078",
+      "context": "C2 server address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "196.233.79.3:80",
+      "context": "C2 server address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.63.1.12:443",
+      "context": "C2 server address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "75.99.168.194:61201",
+      "context": "C2 server address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "84.241.8.23:32103",
+      "context": "C2 server address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

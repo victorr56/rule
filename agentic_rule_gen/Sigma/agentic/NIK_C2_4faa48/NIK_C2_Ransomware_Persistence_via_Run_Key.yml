@@ -1,0 +1,22 @@
+title: NIK C2 Ransomware Persistence via Run Key
+id: 5493b860-6dd8-48b0-8c29-373b9e4a8362
+status: experimental
+description: Detects the creation of a registry run key value that points to 'lock_start.bat', a script used by the NIK C2 ransomware module for persistence.
+references:
+    - https://blog.talosintelligence.com/nik-c2-new-ai-enabled-framework/
+author: ioc-yara-daily (agentic)
+date: 2024-07-24
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\CurrentVersion\Run'
+        Details|contains: 'lock_start.bat'
+    condition: selection
+falsepositives:
+    - Unlikely. A legitimate script with this name set to run at startup would be unusual.
+level: high

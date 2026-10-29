@@ -1,0 +1,397 @@
+{
+  "malware_family": "NIK C2",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "NIK C2 is a Go-based implant for Windows that integrates with the OpenAI API for on-host data analysis and generation. It uses a dual-channel C2 architecture with TLS-secured WebSockets and a fallback HTTP polling loop. Capabilities include comprehensive data theft, lateral movement, and a screen-locking ransomware module.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "pdb_path",
+      "value": "/opt/nik_panel/data/build_52b79724a1fc4b8f/main.go",
+      "context": "Embedded build path in implant samples, indicating a Linux build environment.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "52b79724a1fc4b8f",
+      "context": "Embedded eight-byte hex token matching the build identifier.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[NIK] Starting",
+      "context": "Log message upon primary mode execution.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "NIK_BOOTKIT_PREP",
+      "context": "ASCII content of the 16-byte placeholder file 'bootkit.bin'.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "nik-panel",
+      "context": "String embedded in the implant, matching the C2 certificate CN.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "gpt-4",
+      "context": "Default OpenAI model name, decoded from a 5-char string in binary.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "d791dd0ff3228ed29a8d7333d4567be829159c5632ea347780992006f91c5295",
+      "context": "Decoded AES seed from binary data section.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "4887AFC0A574E9419A9695EF083460F58E4EF9A1C40793523CE112251273BDF9",
+      "context": "32-byte AES key derived from hardcoded seed.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "OPENAI_API_KEY",
+      "context": "Environment variable read to get victim's OpenAI API key.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "(?i)(seed|phrase|mnemonic|recovery|backup|wallet).*(\\.txt|\\.md|\\.csv|\\.dat)",
+      "context": "Regex used to scan file system for crypto recovery materials.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "(?i)(private|privkey|secret).*(\\.txt|\\.md|\\.key|\\.pem)",
+      "context": "Regex used to scan file system for private keys.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "=== Discord Tokens ===",
+      "context": "Label for extracted Discord tokens in stolen data report.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "quick_steal_response",
+      "context": "Type field value in the exfiltrated data JSON object.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "watchdog",
+      "context": "Argument to activate supervisory monitoring mode.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "simvol.exe",
+      "context": "One of the names the implant masquerades as.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "browserdata.zip",
+      "context": "Archive name for collected seed phrase candidates.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\\\.\\PhysicalDrive0",
+      "context": "Device path for reading MBR for backup.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%/mbr_backup.bin",
+      "context": "Backup file for the victim's Master Boot Record (MBR).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%/lock_screen.html",
+      "context": "Ransomware lock screen HTML file written to disk.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%/lock_start.bat",
+      "context": "Batch script to launch and re-launch the lock screen.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%/bootkit.bin",
+      "context": "Staging marker file for bootkit deployment.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/AppData/Roaming/Exodus/exodus.wallet",
+      "context": "Targeted Exodus wallet path.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/AppData/Roaming/Ethereum/keystore",
+      "context": "Targeted Ethereum wallet path.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "nkbihfbeogaeaoehlefnkodbefgpgknn",
+      "context": "Chrome/Brave/Edge extension ID for MetaMask wallet.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "hnbohgpbmfldddohgoiefkeifpjficbk",
+      "context": "Extension ID for Coinbase wallet.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\ms-settings\\Shell\\Open\\command",
+      "context": "Registry key used for fodhelper.exe UAC bypass.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "SystemLock",
+      "context": "Name of the Run key for ransomware persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "nik-panel",
+      "context": "Common Name (CN) of the observed C2 server's SSL/TLS certificate.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "7d16381a9de823943b5a0987dbd0f26edf22052b",
+      "context": "Serial number of the observed C2 server's SSL/TLS certificate.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x1D",
+      "context": "Parameter for NtSetInformationProcess (ProcessBreakOnTermination) to cause BSOD.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "total-sitevv.lol",
+      "context": "C2 domain observed in the wild.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "87.120.196.120",
+      "context": "IP address hosting the NIK C2 framework.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ja3",
+      "value": "28d28d28d00000000042d42d0000001f361a1bf80ed39a1e352adeb016a07b",
+      "context": "JARM hash of the C2 server.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://api.openai.com/v1/chat/completions",
+      "context": "OpenAI API endpoint used for AI integration.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/c2/update",
+      "context": "HTTP C2 endpoint for reconnaissance beacons.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/c2/result",
+      "context": "HTTP C2 endpoint for command output exfiltration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/c2/screen",
+      "context": "C2 endpoint for screenshot upload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/c2/file_chunk",
+      "context": "C2 endpoint for file exfiltration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/c2/rproxy_up",
+      "context": "C2 endpoint for reverse proxy upstream data.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/c2/ws",
+      "context": "C2 WebSocket endpoint for actor command channel.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

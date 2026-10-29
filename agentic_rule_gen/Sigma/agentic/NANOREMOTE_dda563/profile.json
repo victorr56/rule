@@ -1,0 +1,338 @@
+{
+  "malware_family": "NANOREMOTE",
+  "threat_actor": "espionage threat actor linked to FINALDRAFT and REF7707",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "NANOREMOTE is a C++ backdoor for Windows, loaded by WMLOADER and likely developed by the threat actor behind FINALDRAFT. It provides command execution, discovery, and file transfer capabilities by abusing the Google Drive API for C2 and data staging. The malware also incorporates open-source tools like libPeConv and Microsoft Detours for its PE loading and process hooking functionalities.",
+  "mitre_techniques": [
+    "T1087",
+    "T1083",
+    "T1567.002",
+    "T1036.002",
+    "T1059.003",
+    "T1082",
+    "T1055"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "BDReinit.exe",
+      "context": "WMLOADER masquerades as a Bitdefender Security program.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wmsetup.log",
+      "context": "File containing encrypted payload, decrypted and loaded by WMLOADER.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "3A5AD78097D944AC",
+      "context": "AES-CBC key used by WMLOADER to decrypt wmsetup.log payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "|*|",
+      "context": "Separator for Google Drive API configuration fields.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "|-|",
+      "context": "Separator for multiple clients in Google Drive API configuration.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "NR_GOOGLE_ACCOUNTS",
+      "context": "Environment variable for Google Drive API configuration fallback.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "Log\\pe_exe_run.log",
+      "context": "Log file created in a 'Log' subdirectory at execution location.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "%d%02d%02d%02d%02d%02d_sv.dmp",
+      "context": "Format string for minidump filename on crash.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "558bec83ec40535657833d7440001c00",
+      "context": "AES-CBC key for encrypting C2 communication.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "WinREVersion",
+      "context": "Queried from registry for OS information.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "ProductName",
+      "context": "Queried from registry for OS information.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "NANOREMOTE -> cmd.exe",
+      "context": "Spawns cmd.exe for command execution (Handler #21).",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "default_func_resolver",
+      "context": "Function used from libPeConv library for PE loading.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "libPeConv",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "hooking_func_resolver",
+      "context": "Function used from libPeConv library for PE loading.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "libPeConv",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "FillImportThunks",
+      "context": "Function used from libPeConv library for PE loading.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "libPeConv",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ApplyRelocCallback",
+      "context": "Function used from libPeConv library for PE loading.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "libPeConv",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "GetStdHandle",
+      "context": "Windows API hooked using Microsoft Detours.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "Microsoft Detours",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "RtlExitUserThread",
+      "context": "Windows API hooked using Microsoft Detours.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "Microsoft Detours",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "RtlExitUserProcess",
+      "context": "Windows API hooked using Microsoft Detours.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "Microsoft Detours",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "ExitProcess",
+      "context": "Windows API hooked using Microsoft Detours.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "Microsoft Detours",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "/drive/v3/files/%s?alt=media",
+      "context": "String format for Google Drive file download.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "08X-%04X-%04x-%02X%02X-%02X%02X%02X%02X%02X%02X",
+      "context": "GUID format string from YARA rule.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[+] pwd output:",
+      "context": "Hardcoded string in get working directory command response.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Download task %s failed: write error (wrote %llu/%zu bytes)",
+      "context": "Error message for failed Google Drive download.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 83 7C 24 28 00 74 ?? 4C 8D 4C 24 20 41 B8 40 00 00 00 BA 00 00 01 00 48 8B 4C 24 28 FF 15 ?? ?? ?? ?? 85 C0 }",
+      "context": "YARA hex pattern for NANOREMOTE.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 8B 44 24 20 FF C0 89 44 24 20 81 7C 24 20 01 30 00 00 }",
+      "context": "YARA hex pattern for WMLOADER.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/api/client",
+      "context": "URI path for all C2 requests.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "NanoRemote/1.0",
+      "context": "User-Agent for C2 communications.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/upload/drive/v3/files",
+      "context": "Google Drive API path used for file uploads.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "Google Drive API"
+    },
+    {
+      "kind": "domain",
+      "value": "www.googleapis.com",
+      "context": "SNI observed during Google Drive API file upload.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "fff31726d253458f2c29233d37ee4caf43c5252f58df76c0dced71c4014d6902",
+      "description": "WMLOADER (BDReinit.exe)"
+    },
+    {
+      "sha256": "999648bd814ea5b1e97918366c6bd0f82b88f5675da1d4133257b9e6f4121475",
+      "description": "WMLOADER (ASDTool.exe)"
+    },
+    {
+      "sha256": "35593a51ecc14e68181b2de8f82dde8c18f27f16fcebedbbdac78371ff4f8d41",
+      "description": "WMLOADER (mitm_install_tool.exe)"
+    },
+    {
+      "sha256": "b26927ca4342a19e9314cf05ee9d9a4bddf7b848def2db941dd281d692eaa73c",
+      "description": "WMLOADER (BDReinit.exe)"
+    },
+    {
+      "sha256": "57e0e560801687a8691c704f79da0c1dbdd0f7d5cc671a6ce07ec0040205d728",
+      "description": "NANOREMOTE payload"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

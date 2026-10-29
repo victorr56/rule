@@ -1,0 +1,24 @@
+title: QBot Adds Windows Defender Exclusion for AppData
+id: 3e1d5b7c-6a9d-4f2e-8b1a-9c7d0f3e8a6b
+status: experimental
+description: Detects the creation of a Windows Defender exclusion registry entry for a path inside the AppData folder, a technique used by QBot.
+references:
+    - https://www.elastic.co/security-labs/threat-command/qbot-malware-analysis
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        TargetObject|contains|all:
+            - '\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths\'
+            - '\AppData\Roaming\Microsoft\'
+    condition: selection
+falsepositives:
+    - Legitimate software installers or system administration scripts may create exclusions for their data folders.
+level: high

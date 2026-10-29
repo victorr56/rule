@@ -1,0 +1,26 @@
+title: NetamLoader Execution Via PatchMyPC-ScriptRunner
+id: a7d08b3c-662f-413e-a7e8-e70a98f45b54
+status: experimental
+description: Detects the execution of the legitimate PatchMyPC-ScriptRunner.exe from an unusual path with parameters used by NetamLoader for AppDomainManager injection.
+references:
+    - https://securelist.com/netamloader/121676/
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.defense_evasion
+    - attack.privilege_escalation
+    - attack.persistence
+    - attack.t1574.013
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\SoftwareDistribution\Download\Install\PatchMyPC-ScriptRunner.exe'
+        CommandLine|contains|all:
+            - '-updatepackage'
+            - '-applicationid='
+    condition: selection
+falsepositives:
+    - Legitimate use of PatchMyPC from this specific path is possible but highly unlikely, especially in combination with the specific arguments.
+level: high

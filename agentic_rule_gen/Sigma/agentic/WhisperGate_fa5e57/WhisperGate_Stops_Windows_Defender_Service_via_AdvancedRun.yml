@@ -1,0 +1,26 @@
+title: WhisperGate Stops Windows Defender Service via AdvancedRun
+id: e47b4d32-d82b-4e08-96ab-6240212001c4
+status: experimental
+description: Detects the use of NirSoft's AdvancedRun utility to stop the Windows Defender (WinDefend) service, as seen in WhisperGate attacks.
+references:
+    - https://www.elastic.co/security-labs/threat-command/operation-bleeding-bear
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.t1562.001
+    - attack.defense_evasion
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\AdvancedRun.exe'
+        CommandLine|contains|all:
+            - '/EXEFilename'
+            - 'sc.exe'
+            - '/CommandLine'
+            - 'stop WinDefend'
+    condition: selection
+falsepositives:
+    - Legitimate use of AdvancedRun by administrators, though this specific combination for stopping the Defender service is highly suspicious.
+level: high

@@ -1,0 +1,21 @@
+title: NetamLoader C2 Domain Query
+id: 1f0a5b8e-e47c-48c9-8d6f-7c42dfac927c
+status: experimental
+description: Detects DNS queries for a domain known to be used by NetamLoader for command and control.
+references:
+    - https://securelist.com/netamloader/121676/
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'openaigpt4v.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

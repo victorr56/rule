@@ -1,0 +1,22 @@
+title: WhisperGate MBR Wiper Activity
+id: 593796c8-500b-426b-85dd-e4483a99e078
+status: experimental
+description: Detects an attempt to open a handle to PhysicalDrive0, a technique used by WhisperGate's first stage to wipe the Master Boot Record (MBR).
+references:
+    - https://www.elastic.co/security-labs/threat-command/operation-bleeding-bear
+author: ioc-yara-daily (agentic)
+date: 2024-01-18
+tags:
+    - attack.impact
+    - attack.t1561.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image: 'C:\PerfLogs\msdsc.exe'
+        TargetFilename: '\\.\PhysicalDrive0'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

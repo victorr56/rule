@@ -1,0 +1,23 @@
+title: GopherWhisper Malware Loading 'whisper.dll' Into Svchost
+id: a770308c-9844-436d-8951-e1f40d8905b6
+status: experimental
+description: Detects the loading of 'whisper.dll', a component of the GopherWhisper malware family, into a svchost.exe process. This is a characteristic injection technique used by the threat actor.
+references:
+    - https://www.welivesecurity.com/en/eset-research/gopherwhisper-burrow-full-malware/
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.defense_evasion
+    - attack.t1055
+    - detection.threat_hunting
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\svchost.exe'
+        ImageLoaded|endswith: '\whisper.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

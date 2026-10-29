@@ -1,0 +1,24 @@
+title: Suspicious Web Traffic Related to Meta Business Phishing Campaign
+id: 871844b2-2e9f-431e-9ca2-ed3226a2dd0c
+status: experimental
+description: Detects web traffic to URLs associated with a phishing campaign targeting Meta Business users.
+references:
+    - https://www.huntress.com/blog/meta-business-manager-phishing
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.initial_access
+    - attack.t1566
+    - attack.t1566.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|contains: '/view/profile1012'
+        Referer|contains|all:
+            - 'sw.run'
+            - '/Verification'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

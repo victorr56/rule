@@ -1,0 +1,24 @@
+title: WhisperGate VBS Execution From Temp Directory
+id: 3c59a3f2-1fbc-4950-9c2b-e104f7c2aa5f
+status: experimental
+description: Detects the execution of a VBScript from the AppData\Local\Temp directory, a TTP used by WhisperGate's stage 3.
+references:
+    - https://www.elastic.co/security-labs/threat-command/operation-bleeding-bear
+author: ioc-yara-daily (agentic)
+date: 2026-10-29
+tags:
+    - attack.t1059.005
+    - attack.execution
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\wscript.exe'
+        CommandLine|contains|all:
+            - '\AppData\Local\Temp\'
+            - '.vbs'
+    condition: selection
+falsepositives:
+    - Some legitimate installers or application updaters might use this pattern to execute temporary scripts.
+level: medium

@@ -1,0 +1,21 @@
+title: All-in-1 Phishing Kit Credential Exfiltration
+id: e35d21b7-b08e-49b0-9ef2-5b9c2b3e8e2d
+status: experimental
+description: Detects potential credential exfiltration to the "All-in-1" PHP phishing kit. This kit has been observed in campaigns like GTFire.
+references:
+    - https://www.group-ib.com/blog/gtfire-phishing-scheme/
+author: ioc-yara-daily (agentic)
+date: 2024-05-22
+tags:
+    - attack.exfiltration
+    - attack.t1041
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|contains: '/myown/All-in-1.php'
+        HttpMethod: 'POST'
+    condition: selection
+falsepositives:
+    - Unlikely as this path is specific to the phishing kit.
+level: high
