@@ -1,0 +1,272 @@
+{
+  "malware_family": "LUNA",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "LUNA is cross-platform ransomware written in Rust for Windows and Linux. The Windows variant attempts to disable hundreds of services and processes before encryption. It encrypts files using an x25519/AES scheme, appends a .Luna extension, and drops a ransom note named readme-Luna.txt.",
+  "mitre_techniques": [
+    "T1070",
+    "T1083",
+    "T1007",
+    "T1486"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": ".Luna",
+      "context": "Extension appended to all encrypted files.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "readme-Luna.txt",
+      "context": "Ransom note file name dropped in encrypted directories.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/ssl\\readme-Luna.txt",
+      "context": "Linux ransom note path showing hardcoded backslash.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"C:\\WINDOWS\\system32\\sc.exe\" config [service] start=disabled",
+      "context": "Windows variant disables services via sc.exe.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"C:\\WINDOWS\\system32\\net.exe\" stop [service] /y",
+      "context": "Windows variant stops services via net.exe.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"C:\\WINDOWS\\system32\\taskkill.exe\" /im [process name] /f",
+      "context": "Windows variant terminates processes via taskkill.exe.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".Luna.ini.exe.dll.lnk",
+      "context": "Hardcoded string of excluded file extensions.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "OpenServerWindowsProgram FilesRecycle.BinProgramDataAppDataAll users",
+      "context": "Hardcoded string of excluded folder names.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Luna",
+      "context": "File marker appended to the end of encrypted files.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "W1dIQVQgSEFQUEVORUQ/XQ0KDQpBbGwgeW91ciBmaWxlcyB3ZXJlIG1vdmVkIHRvIHNlY3VyZSBzdG9yYWdlLg0KTm9ib",
+      "context": "Base64 encoded portion of the ransom note.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Luna\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00",
+      "context": "Hardcoded 16-byte AES-CTR Initialization Vector (IV).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/home/username/",
+      "context": "Embedded string, likely for testing/development.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Error while writing encrypted data to:",
+      "context": "Hardcoded error message string.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Error while writing public key to:",
+      "context": "Hardcoded error message string.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Error while renaming file:",
+      "context": "Hardcoded error message string.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 8D ?? 00 00 48 F4 48 B9 8B 3D 10 B6 9A 5A B4 36 48 F7 E1 48 }",
+      "context": "Byte sequence related to chunk calculation logic from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 C1 EA 12 48 89 D0 48 C1 E0 05 48 29 D0 48 29 D0 48 3D C4 EA 00 00 }",
+      "context": "Byte sequence related to chunk calculation logic from YARA rule.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "WinDefend",
+      "context": "Example service targeted for termination by Windows variant.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "VeeamBackupSvc",
+      "context": "Example service from the hardcoded termination list.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "msmpeng.exe",
+      "context": "Example process from the hardcoded termination list.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "get_all_drives",
+      "context": "Internal function name for drive enumeration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "walk_dir",
+      "context": "Internal function name for directory traversal.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "add_file",
+      "context": "Internal function name for file encryption.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "x25519-dalek",
+      "context": "Open source Rust library used for key exchange.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "x25519-dalek",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [],
+  "samples": [
+    {
+      "sha256": "1cbbf108f44c8f4babde546d26425ca5340dccf878d306b90eb0fbec2f83ab51",
+      "description": "LUNA ransomware Linux ELF binary"
+    },
+    {
+      "sha256": "ad8d568811e05e12cde78f76c3b7cbbde0d20aee5b4e918a3a8d515f5e242bb6",
+      "description": "LUNA ransomware Windows PE executable"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "elf"
+  ]
+}

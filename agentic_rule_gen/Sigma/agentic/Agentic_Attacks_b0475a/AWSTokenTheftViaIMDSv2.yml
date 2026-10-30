@@ -1,0 +1,27 @@
+title: AWS IMDSv2 Token Theft Command
+id: 5693083e-a74a-4a6a-8b89-a5e2f3d6da57
+status: experimental
+description: Detects a command line used to steal an AWS IMDSv2 token for subsequent cloud credential access.
+references:
+    - https://www.wiz.io/blog/the-rise-of-agentic-attacks
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.credential_access
+    - attack.t1552.001
+    - attack.t1528
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/curl'
+        CommandLine|contains|all:
+            - '/latest/api/token'
+            - 'X-aws-ec2-metadata-token-ttl-seconds'
+            - '-X PUT'
+    condition: selection
+falsepositives:
+    - Legitimate tools or scripts that interact with the AWS metadata service. This is a common operation for applications running on EC2.
+level: medium

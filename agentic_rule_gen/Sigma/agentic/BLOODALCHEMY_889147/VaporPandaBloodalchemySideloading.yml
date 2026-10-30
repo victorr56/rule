@@ -1,0 +1,25 @@
+title: VAPOR PANDA BLOODALCHEMY Side-Loading via Masqueraded Svchost
+id: a8d54c86-f8d9-482d-8686-e910052d9a60
+status: experimental
+description: Detects the loading of the BLOODALCHEMY payload 'graphics-hook-filter64.dll' by a masquerading 'svchost.exe', a technique used by VAPOR PANDA.
+references:
+    - https://www.crowdstrike.com/en-us/blog/vapor-panda-uses-artex-to-scale-global-campaign/
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.defense_evasion
+    - attack.t1574.001
+    - attack.t1036.005
+logsource:
+    product: windows
+    category: image_load
+detection:
+    selection:
+        Image|endswith: '\svchost.exe'
+        ImageLoaded|endswith: '\graphics-hook-filter64.dll'
+    filter_legit:
+        Image|startswith: 'C:\Windows\System32\'
+    condition: selection and not filter_legit
+falsepositives:
+    - Unlikely
+level: high

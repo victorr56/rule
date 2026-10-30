@@ -1,0 +1,24 @@
+title: VAPOR PANDA BLOODALCHEMY C2 Domain Query
+id: 569d2543-ec31-4048-b612-4293f066b268
+status: experimental
+description: Detects DNS queries to domains known to be used by VAPOR PANDA for BLOODALCHEMY C2.
+references:
+    - https://www.crowdstrike.com/en-us/blog/vapor-panda-uses-artex-to-scale-global-campaign/
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.command_and_control
+    - attack.t1572
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - '.nginxmysql.com'
+            - '.sqlserver-sqlite.com'
+            - '.ddduuuppp.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

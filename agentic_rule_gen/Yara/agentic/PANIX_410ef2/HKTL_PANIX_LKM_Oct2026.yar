@@ -1,0 +1,36 @@
+/*
+    Self-check
+    [x] Every string has a provenance comment
+    [x] No source-code identifiers / compiled-away names
+    [x] Hash-gated values use the hash constant, not the plaintext
+    [x] No substring redundancy within any "N of" group
+    [x] No generic string can trigger the rule alone
+    [x] Description matches the condition
+    [x] Open-source-tool features are not attributed to the actor
+    [x] Unique build identifiers (typelib GUID, PDB, keys/salts, mutexes) are $x, not downgraded
+    [x] No generic padding is required by the condition
+    [x] No empty meta fields
+*/
+rule HKTL_PANIX_LKM_Oct2026
+{
+    meta:
+        description = "Detects the Loadable Kernel Module (LKM) component of the PANIX Linux persistence research tool. A match on any of the unique strings will trigger the rule."
+        author = "ioc-yara-daily (agentic)"
+        reference = "https://www.elastic.co/security-labs/threat-command/continuation-on-persistence-mechanisms"
+        date = "2026-10-30"
+        malware_family = "PANIX"
+        tlp = "WHITE"
+        status = "untested"
+        test_result = "not tested: the report gives no sample hash for this rule"
+        score = 60
+
+    strings:
+        $x1 = "author=PANIX" ascii // source: figure_or_disassembly
+        $x2 = "description=LKM Backdoor" ascii // source: figure_or_disassembly
+        $x3 = "lkm_backdoor_thread" ascii // source: figure_or_disassembly
+
+    condition:
+        uint32(0) == 0x464c457f and
+        filesize < 1MB and
+        1 of ($x*)
+}

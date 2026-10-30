@@ -1,0 +1,220 @@
+{
+  "malware_family": "BLOODALCHEMY",
+  "threat_actor": "VAPOR PANDA",
+  "platforms": [
+    "windows",
+    "linux",
+    "web",
+    "multi"
+  ],
+  "summary": "VAPOR PANDA utilizes the ARTEX AI framework to automate and scale espionage campaigns against a wide range of global sectors. The actor deploys the BLOODALCHEMY backdoor, which is side-loaded via a renamed legitimate executable, and uses AI agents to discover unprotected endpoints and conduct lateral movement across cloud and on-premise environments.",
+  "mitre_techniques": [
+    "T1588.007",
+    "T1190",
+    "T1078",
+    "T1133",
+    "T1651",
+    "T1505.003",
+    "T1134.001",
+    "T1574.001",
+    "T1036.005",
+    "T1552.005",
+    "T1555",
+    "T1606.002",
+    "T1606",
+    "T1110.003",
+    "T1518.001",
+    "T1114.002",
+    "T1090.003",
+    "T1572"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\artx5v\\",
+      "context": "ARTEX framework marker directory",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "D:\\ProjectX\\Merman_New\\",
+      "context": "Internal project path for the BLOODALCHEMY implant",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "graphics-hook-filter64.dll",
+      "context": "BLOODALCHEMY loader DLL loaded by a renamed GameHook binary",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "graphics-hook_config.bin",
+      "context": "Encrypted BLOODALCHEMY payload file",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "【人类指令】",
+      "context": "Marker for human operator instructions in ARTEX agent transcripts",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "在域里寻找没有装猎鹰的windows机器，从tasklist和文件夹目录判断",
+      "context": "ARTEX operator instruction to find machines without CrowdStrike Falcon",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "猎鹰",
+      "context": "PRC red-team slang for the CrowdStrike Falcon EDR sensor",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "artx",
+      "context": "String found in command-line parameters as an ARTEX marker",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "artex",
+      "context": "String found in command-line parameters as an ARTEX marker",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "art18- administration-command",
+      "context": "Comment string used by the ARTEX framework",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "artx-*",
+      "context": "Prefix for cloud roles created by the ARTEX framework",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "svchost.exe",
+      "context": "Legitimate GameHook binary renamed to masquerade and load BLOODALCHEMY",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "nginxmysql.com",
+      "context": "BLOODALCHEMY C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.153.126.223",
+      "context": "BLOODALCHEMY C2 IP",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sqlserver-sqlite.com",
+      "context": "BLOODALCHEMY C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "89.46.234.50",
+      "context": "BLOODALCHEMY C2 IP",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "www.ddduuuppp.com",
+      "context": "BLOODALCHEMY C2 domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.121.47.20",
+      "context": "BLOODALCHEMY C2 IP",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "49fe70419fd19b81ca8d730a6ef7c1ec71b681d60b390761070d42686c7d2068",
+      "description": "GameHook binary renamed svchost.exe"
+    },
+    {
+      "sha256": "3fb5a9fb3e2cb1d6208966bd4e55d10282d19c7250d827efa560463d60a12ee4",
+      "description": "BLOODALCHEMY loader DLL (graphics-hook-filter64.dll)"
+    },
+    {
+      "sha256": "364251838edfcf5ef1107fa692da3c5bd9a540482449f645992830134bf807ab",
+      "description": "BLOODALCHEMY payload file (graphics-hook_config.bin)"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

@@ -1,0 +1,25 @@
+title: PANIX /etc/passwd Modification For Backdoor Shell
+id: 61ecf2e4-e0e9-44b4-8395-9783777553f1
+status: experimental
+description: Detects the modification of the 'news' user's shell in /etc/passwd to point to a backdoored shell, a technique used by the PANIX persistence tool.
+references:
+    - https://www.elastic.co/security-labs/threat-command/continuation-on-persistence-mechanisms
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.persistence
+    - attack.t1098.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/sed'
+        CommandLine|contains|all:
+            - '-i'
+            - '"/^news:/s|:/usr/sbin/nologin$|:/usr/sbin/nologin |"'
+            - '/etc/passwd'
+    condition: selection
+falsepositives:
+    - Unlikely. This exact sed command is crafted for a specific malicious purpose.
+level: critical

@@ -1,0 +1,29 @@
+title: Suspicious User-Agent with Compromised ConnectWise OAuth App
+id: f4d8e7c6-1b2a-4f9e-8c7b-3a4b5c6d7e8f
+status: experimental
+description: Detects sign-ins using user agents associated with Storm-0940 tooling, specifically when accessing the compromised ConnectWise OAuth applications. This combination is a high-fidelity indicator of actor activity.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/10/21/storm-0940-uses-artex-agentic-ai-connectwise-supply-chain-compromise/
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.credential_access
+    - attack.t1078.004
+    - attack.t1195
+logsource:
+    product: azure
+    service: signinlogs
+detection:
+    selection:
+        AppId:
+            - '506e08f9-6e9a-4da4-942b-a099a03644ae' # ConnectWise Cloud Backup
+            - '24205314-2b89-4e07-a2a4-579e898a5640' # ConnectWise - MS Teams
+            - '0de14c77-b9b0-4137-9360-34878a929827' # ConnectWise - MS Graph
+        UserAgent|startswith:
+            - 'Python-urllib/'
+            - 'python-requests/'
+            - 'azure-toolkit/'
+    condition: selection
+falsepositives:
+    - Legitimate automated scripts or tools interacting with these ConnectWise applications.
+level: high

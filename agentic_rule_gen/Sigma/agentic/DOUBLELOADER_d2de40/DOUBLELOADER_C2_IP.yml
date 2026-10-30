@@ -1,0 +1,22 @@
+title: DOUBLELOADER C2 Communication
+id: 6182c16c-e16e-4861-8cf0-eb6e850b6941
+status: experimental
+description: Detects network connections to a hardcoded IP address used by DOUBLELOADER malware.
+references:
+    - https://www.elastic.co/security-labs/threat-command/deobfuscating-alcatraz
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '185.147.125.81'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

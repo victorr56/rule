@@ -1,0 +1,25 @@
+title: Hidden Python Script Dropped in /dev/shm
+id: f45672ab-46f8-45a9-95a9-f02755ac7a0d
+status: experimental
+description: Detects the creation of a hidden Python script in a hidden directory within /dev/shm, a behavior observed in agentic attacks for persistence or defense evasion.
+references:
+    - https://www.wiz.io/blog/the-rise-of-agentic-attacks
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.persistence
+    - attack.defense_evasion
+    - attack.t1564.001
+logsource:
+    product: linux
+    category: file_event
+detection:
+    selection:
+        Image|endswith:
+            - '/python'
+            - '/python3'
+        TargetFilename: '/dev/shm/.x/c.py'
+    condition: selection
+falsepositives:
+    - Legitimate but unusually named development or testing scripts.
+level: high

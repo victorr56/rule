@@ -1,0 +1,207 @@
+{
+  "malware_family": "Efimer",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Efimer is a Clipbanker malware that steals cryptocurrency by replacing wallet addresses in the clipboard. To evade detection, it specializes in matching the first or last one to three digits of the original address with an attacker-controlled one. The malware exfiltrates clipboard data and screenshots, uses Pyarmor for protection, and communicates with its C2 over TOR.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "default.dat",
+      "context": "Payload filename.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "default.dat.exe",
+      "context": "Payload filename.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "visioncraft_ai.exe",
+      "context": "Payload masquerading as VisionCraft Labs software.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "composer.dat",
+      "context": "Payload masquerading as Composer Dependency Manager for PHP.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "swfe60.exe",
+      "context": "Example of randomly named payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "9je7p2.exe",
+      "context": "Example of randomly named payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Utilizes Pyarmor protection on its code",
+      "context": "Code protection and anti-analysis mechanism.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Pyarmor",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Payload is XOR encrypted",
+      "context": "Payload encryption mechanism.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://tuasesoriadigital.es/default.dat",
+      "context": "Payload download URL for Efimer.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://hasansunnah.xyz/composer.dat",
+      "context": "Payload download URL for Efimer.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://167.233.30.202/files/swfe60.exe",
+      "context": "Payload download URL for Efimer.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://gfoqsewps57xcyxoedle2gd53o6jne6y5nq5eh25muksqwzutzq7b3ad.onion/route.php",
+      "context": "Efimer C2 URL over TOR.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://hek5ensy7wqqls2cafflihs7sdqr4dwxux47vp3k7pgffeasxsfeeyid.onion/recvf.php",
+      "context": "Efimer C2 URL over TOR.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://swjxev2rvxfivi2wvkxre5vaxkjeepxzxva4u4ydm2qbkbakh6wnyead.onion/core/repla.php",
+      "context": "Efimer C2 URL over TOR.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/route.php",
+      "context": "C2 path on TOR network.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/recvf.php",
+      "context": "C2 path for receiving files.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/core/repla.php",
+      "context": "C2 path related to replacement functionality.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "167.233.30.202",
+      "context": "Payload hosting server for Efimer.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "e46f514e456c5e27f60854e4156234e6ae8c4dd5892ddb4d2d557de02fc2cd15",
+      "description": "Efimer PyInstaller sample"
+    },
+    {
+      "sha256": "bb796bb63f6985e75dbb6c1f8eb8640dee859f989f09a4a2fd9102d33918139b",
+      "description": "Efimer PyInstaller sample"
+    },
+    {
+      "sha256": "033dd215975f5dcd61ca5f7685d8618154b674d0b9e3262549140dc66e4701d5",
+      "description": "Efimer Pyarmor DLL"
+    },
+    {
+      "sha256": "1682401b0fad7aa78a23e0b34b56257cc6add40c0d0943d2076833a29feb8e54",
+      "description": "Efimer Pyarmor DLL"
+    },
+    {
+      "sha256": "8f96d7712f17e0bc0153be56fc33ad3fed4948794a9768bc9e6598e9ed27395f",
+      "description": "Efimer Scheduled Task XML"
+    },
+    {
+      "sha256": "5250927806bc7087963d16298a341c301fa0f29f94cd6eb40518827ede3b04d4",
+      "description": "Efimer Javascript Payload"
+    },
+    {
+      "sha256": "c49dc64559ca84df2716113592b84ada7704e783a3e31b3ab42b531cc835e996",
+      "description": "Efimer Javascript Payload"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

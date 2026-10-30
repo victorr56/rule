@@ -1,0 +1,22 @@
+title: 'Flowise Unauthenticated RCE via Custom Function'
+id: a009d18c-3435-430c-ab2f-c57d81229a4a
+status: experimental
+description: >-
+    Detects attempts to exploit an unauthenticated Remote Code Execution vulnerability in Flowise instances by calling the '/api/v1/node-custom-function' endpoint with the 'x-request-from: internal' header, a technique observed in agentic attacks.
+references:
+    - https://www.wiz.io/blog/the-rise-of-agentic-attacks
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.initial_access
+    - attack.t1190
+logsource:
+    category: proxy
+detection:
+    selection:
+        http.uri|endswith: '/api/v1/node-custom-function'
+        http.header|contains: 'x-request-from: internal'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

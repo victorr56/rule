@@ -1,0 +1,22 @@
+title: Mini-Shai-Hulud macOS Persistence Execution
+id: d1e0d37e-6c8a-4b9f-9c0d-03487075b6e1
+status: experimental
+description: Detects the execution of the Mini-Shai-Hulud payload, initiated by its persistence Launch Agent on macOS systems.
+references:
+    - https://www.wiz.io/blog/mini-shai-hulud-teampcp-hits-antv-supply-chain
+author: ioc-yara-daily (agentic)
+date: 2024-05-20
+tags:
+    - attack.persistence
+    - attack.t1543.001
+logsource:
+    category: process_creation
+    product: macos
+detection:
+    selection:
+        ParentImage|endswith: '/sbin/launchd'
+        Image|endswith: '/Users/Shared/kit'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

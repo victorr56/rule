@@ -1,0 +1,22 @@
+title: VAPOR PANDA BLOODALCHEMY Loader DLL Creation
+id: c4602f23-3d0d-45da-96c2-0b29efb0a3f7
+status: experimental
+description: Detects the creation of the BLOODALCHEMY loader DLL 'graphics-hook-filter64.dll' in the ARTEX framework path.
+references:
+    - https://www.crowdstrike.com/en-us/blog/vapor-panda-uses-artex-to-scale-global-campaign/
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.persistence
+    - attack.t1574.001
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        TargetFilename|contains: '\artx5v\'
+        TargetFilename|endswith: '\graphics-hook-filter64.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

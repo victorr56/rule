@@ -1,0 +1,304 @@
+{
+  "malware_family": "BUGHATCH",
+  "threat_actor": "CUBA",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "BUGHATCH is a custom implant used in CUBA ransomware campaigns. It is deployed via a PowerShell dropper and communicates with its C2 over HTTP using a custom protocol with 2-byte XOR encryption. The malware supports various payload execution methods, including reflective loading and shellcode injection, and collects system information for fingerprinting.",
+  "mitre_techniques": [
+    "T1059.003",
+    "T1573.002",
+    "T1573.001",
+    "T1041",
+    "T1119",
+    "T1106"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "SeDebugPrivilege",
+      "context": "Used to elevate permissions to access other processes' memory.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x343FD",
+      "context": "Hardcoded multiplier in 2-byte XOR key generation algorithm.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x269EC3",
+      "context": "Hardcoded addend in 2-byte XOR key generation algorithm.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x80706050",
+      "context": "Tag value to locate the 2-byte XOR encrypted PE file.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c del FILEPATH >> NUL",
+      "context": "Command used to self-delete the implant.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "svchost.exe",
+      "context": "Suspended process for injecting GUI/DLL payloads.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "cmd.exe",
+      "context": "Suspended process for injecting CUI payloads.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "TEMP%u.PS1",
+      "context": "Format string for temporary PowerShell script dropped to disk.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "TEMP%u.CMD",
+      "context": "Format string for temporary CMD script dropped to disk.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "\\TEMP%d.%s",
+      "context": "Format string for temporary file path generation.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "explorer.exe",
+      "context": "Target process for token impersonation.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-windowstyle hidden -executionpolicy bypass -file",
+      "context": "Arguments for PowerShell execution.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\SysWOW64\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "context": "Path to PowerShell executable from YARA rule.",
+      "specificity": "low",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ReflectiveLoader",
+      "context": "Hardcoded string identified in YARA rule.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\\Sysnative\\",
+      "context": "Hardcoded string identified in YARA rule.",
+      "specificity": "medium",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ReflectivelyExecutePERemote",
+      "context": "Internal function name for reflectively loading a PE.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DropPEDiskExecute",
+      "context": "Internal function name for dropping and executing a PE.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SelfShellcodeExecute",
+      "context": "Internal function name for executing shellcode in the current process.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RemoteShellcodeExecute",
+      "context": "Internal function name for executing shellcode in a remote process.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ExecuteCmd",
+      "context": "Internal function name for executing a CMD script/command.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ExecutePowershell",
+      "context": "Internal function name for executing a PowerShell script/command.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ReflectivelyLoadDllRemote",
+      "context": "Internal function name for reflectively loading a DLL in a remote process.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SelfDeleteExitProcess",
+      "context": "Internal function name for self-deletion command.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MigrateC2",
+      "context": "Internal function name for changing C2 configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 69 4D 10 FD 43 03 00 81 C1 C3 9E 26 00 89 4D 10 8B 55 FC 8B 45 F8 0F B7 0C 50 8B 55 10 C1 EA 10 81 E2 FF FF 00 00 33 CA 8B 45 FC 8B 55 F8 66 89 0C 42 }",
+      "context": "YARA pattern $a3, related to 2-byte XOR key generation logic.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "0x389D3AB7",
+      "context": "Static separator value for message chunks in C2 protocol.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/Agent32.bin",
+      "context": "URI to download the 32-bit agent payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/Agent64.bin",
+      "context": "URI to download the 64-bit agent payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "F1325F8A55164E904A4B183186F44F815693A008A9445D2606215A232658C3CF",
+      "description": "BUGHATCH Win32 executable implant."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

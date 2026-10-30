@@ -1,0 +1,23 @@
+title: PANIX Web Shell Access
+id: d17147b4-3a9d-478a-a4e9-974a9b25fde6
+status: experimental
+description: Detects potential POST requests to PANIX web shells 'cmd.php' or 'reverse.py', which could indicate command execution.
+references:
+    - https://www.elastic.co/security-labs/threat-command/continuation-on-persistence-mechanisms
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.persistence
+    - attack.t1505.003
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|endswith:
+            - '/cmd.php'
+            - '/cgi-bin/reverse.py'
+        HttpMethod: 'POST'
+    condition: selection
+falsepositives:
+    - Legitimate web applications that use these file names and receive POST requests.
+level: high

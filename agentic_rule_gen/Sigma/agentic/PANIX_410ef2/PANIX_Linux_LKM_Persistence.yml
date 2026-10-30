@@ -1,0 +1,22 @@
+title: PANIX LKM Persistence Via modules-load.d
+id: e2b60b13-7901-447a-8fce-7f1ef52467d3
+status: experimental
+description: Detects the creation of a configuration file in /etc/modules-load.d to load a malicious kernel module named 'panix' at boot. This is a persistence technique used by the PANIX tool.
+references:
+    - https://www.elastic.co/security-labs/threat-command/continuation-on-persistence-mechanisms
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.persistence
+    - attack.t1547.006
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        TargetFilename: '/etc/modules-load.d/panix.conf'
+        User: 'root'
+    condition: selection
+falsepositives:
+    - Unlikely, 'panix' is not a standard kernel module name.
+level: high

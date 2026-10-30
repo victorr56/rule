@@ -1,0 +1,28 @@
+title: Storm-0940 Sign-in Activity from Associated IP
+id: c3b2a1d0-9e8f-4a7b-8c6d-5e4f3a2b1c0d
+status: experimental
+description: Detects network connections from IP addresses associated with Storm-0940 password spraying and other malicious activities. The rule is scoped to port 443/HTTPS, typical for cloud service sign-ins.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/10/21/storm-0940-uses-artex-agentic-ai-connectwise-supply-chain-compromise/
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.credential_access
+    - attack.t1078.004
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        SourceIp:
+            - '144.172.64.99'
+            - '144.172.64.128'
+            - '144.172.64.60'
+            - '187.15.88.186'
+            - '187.15.90.217'
+            - '187.15.89.186'
+        DestinationPort: 443
+    condition: selection
+falsepositives:
+    - The medium specificity IPs are noted as transient VPNs and may be reallocated, leading to potential false positives over time.
+level: high

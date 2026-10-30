@@ -1,0 +1,62 @@
+{
+  "malware_family": "Anthropic AI Phishing",
+  "threat_actor": "",
+  "platforms": [
+    "web"
+  ],
+  "summary": "A credential phishing campaign uses a lure of an exclusive preview of Anthropic's AI technology to steal Google and Microsoft credentials. The attack leverages abused legitimate services like GoTo Webinar for email delivery and the zpr.io URL shortener, along with multiple CAPTCHA pages, to evade detection and lead victims to fake login portals.",
+  "mitre_techniques": [],
+  "host_artifacts": [],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "Austin from nthropic",
+      "context": "Email sender display name with a misspelling.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "us968web-zoom.us",
+      "context": "Domain hosting the fake Zoom-branded meeting invitation page.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "goo.gle-access-eventregister.icu",
+      "context": "Domain hosting the fake Google credential phishing page.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "office.com-access-sharepoint.com",
+      "context": "Domain hosting the fake Microsoft credential phishing page.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "zpr.io",
+      "context": "Zapier URL shortener service abused to hide the initial phishing URL.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "customercare@gotowebinar.com",
+      "context": "Sender email address used in the phishing campaign, abusing a legitimate service.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

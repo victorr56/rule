@@ -1,0 +1,142 @@
+{
+  "malware_family": "ARTEX",
+  "threat_actor": "Storm-0940",
+  "platforms": [
+    "web"
+  ],
+  "summary": "Storm-0940, a China-state aligned actor, uses the ARTEX AI framework to automate attacks at scale against cloud services. The campaign involved a supply chain compromise of ConnectWise, enabling password spraying and OAuth application abuse to gain privileged access to Microsoft 365 environments.",
+  "mitre_techniques": [
+    "T1595",
+    "T1078.004",
+    "T1195",
+    "T1098.003",
+    "T1098.001",
+    "T1528",
+    "T1087.004",
+    "T1580"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "other",
+      "value": "506e08f9-6e9a-4da4-942b-a099a03644ae",
+      "context": "OAuth App ID for ConnectWise Cloud Backup",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "24205314-2b89-4e07-a2a4-579e898a5640",
+      "context": "OAuth App ID for ConnectWise - MS Teams",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0de14c77-b9b0-4137-9360-34878a929827",
+      "context": "OAuth App ID for ConnectWise - MS Graph",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "144.172.64.99",
+      "context": "Password spraying and sign-in/Graph API activity.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "144.172.64.128",
+      "context": "Sign-ins and Graph API activity in customer environments.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "144.172.64.60",
+      "context": "Sign-ins and Graph API activity in customer environments.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "187.15.88.186",
+      "context": "Accessed Graph API via compromised apps (transient VPN).",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "187.15.90.217",
+      "context": "Accessed Graph API via compromised apps (transient VPN).",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "187.15.89.186",
+      "context": "Accessed Graph API via compromised apps (transient VPN).",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Python-urllib/3.12",
+      "context": "Used for sign-ins and Graph API activity with ConnectWise apps.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "python-requests/2.31.0",
+      "context": "Used for sign-ins and Graph API activity with ConnectWise apps.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "python-requests/2.34.2",
+      "context": "Used for sign-ins and Graph API activity with ConnectWise apps.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "curl/7.88.1",
+      "context": "Used for sign-ins and Graph API activity with ConnectWise apps.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "azure-toolkit/1.0",
+      "context": "Used for sign-ins and Graph API activity with ConnectWise apps.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

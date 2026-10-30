@@ -1,0 +1,22 @@
+title: VAPOR PANDA BLOODALCHEMY Masquerading Svchost Execution
+id: 5938a9d1-c290-449e-8c3b-74d1a0b63b2f
+status: experimental
+description: Detects the execution of 'svchost.exe' from the 'C:\ProgramData\artx5v\' directory, which is a known indicator of the VAPOR PANDA ARTEX framework and BLOODALCHEMY deployment.
+references:
+    - https://www.crowdstrike.com/en-us/blog/vapor-panda-uses-artex-to-scale-global-campaign/
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.defense_evasion
+    - attack.t1036.005
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '\svchost.exe'
+        Image|startswith: 'C:\ProgramData\artx5v\'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

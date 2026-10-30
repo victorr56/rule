@@ -1,0 +1,24 @@
+title: VAPOR PANDA BLOODALCHEMY C2 Connection
+id: 9811c036-ed45-4296-a85b-e9b4d8d17b8f
+status: experimental
+description: Detects network connections to IP addresses known to be used by VAPOR PANDA for BLOODALCHEMY C2.
+references:
+    - https://www.crowdstrike.com/en-us/blog/vapor-panda-uses-artex-to-scale-global-campaign/
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.command_and_control
+    - attack.t1572
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '45.153.126.223'
+            - '89.46.234.50'
+            - '192.121.47.20'
+    condition: selection
+falsepositives:
+    - Connections to these IPs if they are reassigned to benign services.
+level: high

@@ -1,0 +1,23 @@
+title: Possible Agentic Attack via RabbitMQ API Manipulation
+id: c86a5127-b08e-4a49-9f70-d7d8e63a15c3
+status: experimental
+description: Detects suspicious manipulation of RabbitMQ global parameters via the API, using self-labeled parameter names like 'evil@' or 'oracle@', as observed in agentic attacks.
+references:
+    - https://www.wiz.io/blog/the-rise-of-agentic-attacks
+author: ioc-yara-daily (agentic)
+date: 2024-05-01
+tags:
+    - attack.persistence
+    - attack.t1505
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|contains|any:
+            - '/api/global-parameters/evil@'
+            - '/api/global-parameters/oracle@'
+        HttpMethod: 'PUT'
+    condition: selection
+falsepositives:
+    - Unlikely, but custom administrative scripts might use similar naming schemes.
+level: high

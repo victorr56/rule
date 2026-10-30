@@ -1,0 +1,24 @@
+title: LUNA Ransomware Stopping Windows Defender Service
+id: 8d1a1b15-e2f4-4e2b-8a03-7a915f013fde
+status: experimental
+description: Detects the use of net.exe to stop the Windows Defender service (WinDefend), a defense evasion technique used by LUNA ransomware.
+references:
+    - https://www.elastic.co/security-labs/threat-command/luna-ransomware-attack-pattern
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.defense_evasion
+    - attack.t1070
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\net.exe'
+        CommandLine|contains|all:
+            - 'stop'
+            - 'WinDefend'
+    condition: selection
+falsepositives:
+    - Legitimate but rare administrative or troubleshooting activity.
+level: medium

@@ -1,0 +1,28 @@
+title: Efimer Payload Dropped
+id: 97893a05-188e-4a6c-9ec3-9d7a224a9193
+status: experimental
+description: Detects the creation of executable files associated with the Efimer clipbanker malware.
+references:
+    - https://www.reversinglabs.com/blog/threat-researchers-notebook-how-attackers-redirect-crypto-payments
+author: ioc-yara-daily (agentic)
+date: 2023-10-30
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains:
+            - '\AppData\Local\Temp\'
+            - '\Downloads\'
+        TargetFilename|endswith:
+            - '\visioncraft_ai.exe'
+            - '\default.dat.exe'
+            - '\swfe60.exe'
+            - '\9je7p2.exe'
+    condition: selection
+falsepositives:
+    - Legitimate software using these file names in these specific locations (unlikely).
+level: high

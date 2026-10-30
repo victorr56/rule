@@ -1,0 +1,160 @@
+{
+  "malware_family": "DOUBLELOADER",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "DOUBLELOADER is a backdoor observed with RHADAMANTHYS, protected by the open-source ALCATRAZ obfuscator. It uses techniques like control flow flattening and instruction mutation, injects code into explorer.exe, and beacons to a hardcoded C2 IP address.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": ".0Dev",
+      "context": "PE section name, a toolmark from the ALCATRAZ obfuscator.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Alcatraz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "Start",
+      "context": "Export name used as the entrypoint for DOUBLELOADER.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DoubleLo.dll",
+      "context": "Filename for a DOUBLELOADER sample from IOC list.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "explorer.exe",
+      "context": "Target for unbacked code injection by DOUBLELOADER.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "NtOpenProcess",
+      "context": "Syscall used by DOUBLELOADER for process injection.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "NtWriteVirtualMemory",
+      "context": "Syscall used by DOUBLELOADER for process injection.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "NtCreateThreadEx",
+      "context": "Syscall used by DOUBLELOADER for process injection.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "obf",
+      "context": "String appended to filename by ALCATRAZ after obfuscation.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Alcatraz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ EB FF }",
+      "context": "Anti-disassembly pattern (short jump + 0xFF) used by ALCATRAZ.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Alcatraz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bad array new length",
+      "context": "String reference obscured by ALCATRAZ's LEA obfuscation.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "1F4DFCF4F",
+      "context": "Initial value in LEA obfuscation (before subtraction).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Alcatraz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "74D983C7",
+      "context": "Subtrahend in LEA obfuscation to calculate final address.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Alcatraz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Error",
+      "context": "String constant recovered after deobfuscating an LEA instruction.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "185.147.125.81",
+      "context": "Hardcoded C2 IP address for DOUBLELOADER.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "3050c464360ba7004d60f3ea7ebdf85d9a778d931fbf1041fa5867b930e1f7fd",
+      "description": "DOUBLELOADER sample (DoubleLo.dll)"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

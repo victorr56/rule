@@ -1,0 +1,117 @@
+{
+  "malware_family": "Mini-Shai-Hulud",
+  "threat_actor": "TeamPCP",
+  "platforms": [
+    "linux",
+    "macos"
+  ],
+  "summary": "TeamPCP conducted a software supply chain campaign targeting NPM packages, GitHub Actions, and a VSCode extension. The malware, dubbed Mini-Shai-Hulud, establishes persistence via a Python backdoor which polls GitHub for commands. It is designed to harvest credentials and exfiltrate data to attacker-controlled GitHub repositories.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "~/.local/share/kitty/cat.py",
+      "context": "Python backdoor persistence location.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/Library/LaunchAgents/com.user.kitty-monitor.plist",
+      "context": "macOS persistence mechanism.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.config/systemd/user/kitty-monitor.service",
+      "context": "Linux persistence mechanism.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "niagA oG eW ereH :duluH-iahS",
+      "context": "Description of exfiltration repositories created by the malware.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "firedalazer",
+      "context": "Trigger string in GitHub commits polled by the backdoor for C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "nrwl.angular-console",
+      "context": "Compromised VSCode extension name (version 18.95.0).",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "actions-cool/issues-helper",
+      "context": "Compromised GitHub Action.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "http://api.github.com/search/commits?q=firedalazer",
+      "context": "URL polled by backdoor to check for C2 commands.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "m-kosche.com",
+      "context": "Backup Malware C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.95.159.32",
+      "context": "IP address for backup C2 m-kosche.com.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "fb5c97557230a27460fdab01fafcfabeaa49590bafd5b6ef30501aa9e0a51142",
+      "description": "Python backdoor stored at ~/.local/share/kitty/cat.py"
+    }
+  ],
+  "file_types": [
+    "script"
+  ]
+}

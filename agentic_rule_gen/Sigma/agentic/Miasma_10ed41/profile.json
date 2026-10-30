@@ -1,0 +1,146 @@
+{
+  "malware_family": "Miasma",
+  "threat_actor": "TeamPCP",
+  "platforms": [
+    "multi",
+    "linux"
+  ],
+  "summary": "Miasma is a supply chain attack that targets Red Hat-scoped npm packages. Malicious preinstall scripts execute an obfuscated JavaScript payload, derived from the open-source Mini Shai-Hulud malware, to steal cloud identities, developer credentials, and other secrets from CI/CD environments and developer workstations.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "Miasma: The Spreading Blight",
+      "context": "Description in attacker-created repositories.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Miasma - The Spreading Blight",
+      "context": "Modified description in payloads abusing binding.gyp.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "oidc-61fff775",
+      "context": "Malicious orphan commit branch name.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "oidc-4d5900f3",
+      "context": "Malicious orphan commit branch name.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "oidc-af10000d",
+      "context": "Malicious orphan commit branch name.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "oidc-93b9a955",
+      "context": "Malicious orphan commit branch name.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "bun run _index.js",
+      "context": "GitHub Actions workflow step executing the payload.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "_index.js",
+      "context": "Obfuscated payload executed by GitHub Actions workflow.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "spartan",
+      "context": "Cosmetic replacement for original Dune-themed strings.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "id-token: write",
+      "context": "GitHub Actions workflow permission to request OIDC token.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "binding.gyp",
+      "context": "Abused to execute malicious code during package installation.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "index.js",
+      "context": "Malicious entrypoint invoked by preinstall scripts.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "google-api-nodejs-client/7.0.0 gl-node/20.11.0 gccl/7.0.0",
+      "context": "User-agent for querying GCP APIs.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

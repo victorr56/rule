@@ -1,0 +1,23 @@
+title: DOUBLELOADER DLL Module Load
+id: d456ab39-2470-4227-bb47-8a6e4d266e7a
+status: experimental
+description: Detects the loading of the specific DOUBLELOADER DLL "DoubleLo.dll" by rundll32.exe.
+references:
+    - https://www.elastic.co/security-labs/threat-command/deobfuscating-alcatraz
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.execution
+    - attack.defense_evasion
+    - attack.t1129
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        ImageLoaded|endswith: '\DoubleLo.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

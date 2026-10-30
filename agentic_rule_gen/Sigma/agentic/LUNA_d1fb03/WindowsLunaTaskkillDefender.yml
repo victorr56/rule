@@ -1,0 +1,25 @@
+title: LUNA Ransomware Terminating Windows Defender
+id: 9a2f7c0a-0118-4a11-80a5-f86a7e04f1a4
+status: experimental
+description: Detects the use of taskkill.exe to forcefully terminate the Windows Defender process (msmpeng.exe), a defense evasion technique used by LUNA ransomware.
+references:
+    - https://www.elastic.co/security-labs/threat-command/luna-ransomware-attack-pattern
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.defense_evasion
+    - attack.t1070
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\taskkill.exe'
+        CommandLine|contains|all:
+            - '/im'
+            - 'msmpeng.exe'
+            - '/f'
+    condition: selection
+falsepositives:
+    - Legitimate but rare administrative or troubleshooting activity.
+level: medium

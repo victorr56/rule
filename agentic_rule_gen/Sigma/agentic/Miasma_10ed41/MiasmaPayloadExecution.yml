@@ -1,0 +1,24 @@
+title: Miasma - Payload Execution Via Bun
+id: 593b4a20-03fa-43e8-ab73-987820d8869c
+status: experimental
+description: Detects the execution of a suspicious command line 'bun run _index.js', which was observed being used to run the Miasma payload in a compromised CI/CD environment.
+references:
+    - https://www.wiz.io/blog/miasma-supply-chain-attack-targeting-redhat-npm-packages
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.execution
+    - attack.t1059
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/bun'
+        CommandLine|contains|all:
+            - 'run'
+            - '_index.js'
+    condition: selection
+falsepositives:
+    - 'Legitimate use of the bun runtime to execute a script named "_index.js", although this specific combination is uncommon.'
+level: high

@@ -1,0 +1,22 @@
+title: Efimer Payload Download Connection
+id: c7143fd1-073c-48c6-8bb0-019672688005
+status: experimental
+description: Detects network connections to an IP address known to host Efimer malware payloads.
+references:
+    - https://www.reversinglabs.com/blog/threat-researchers-notebook-how-attackers-redirect-crypto-payments
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '167.233.30.202'
+        DestinationPort: 80
+    condition: selection
+falsepositives:
+    - The IP address could be reassigned or host other benign services.
+level: medium

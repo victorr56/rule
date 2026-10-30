@@ -1,0 +1,36 @@
+title: PANIX SSH Key Persistence For System User
+id: 3c7a6e1d-d48e-473d-82d3-2f0ef1f83c18
+status: experimental
+description: Detects the creation of an SSH authorized_keys file for the 'news' system user, a technique used by the PANIX persistence tool to backdoor an account. System users like 'news' should not typically have SSH keys for interactive login.
+references:
+    - https://www.elastic.co/security-labs/threat-command/continuation-on-persistence-mechanisms
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.persistence
+    - attack.t1098.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_redir:
+        Image|endswith:
+            - '/bash'
+            - '/sh'
+            - '/ash'
+            - '/zsh'
+            - '/csh'
+            - '/ksh'
+            - '/tcsh'
+        CommandLine|contains|all:
+            - '>' # Catches both > and >>
+            - '/var/spool/news/.ssh/authorized_keys'
+    selection_util:
+        Image|endswith:
+            - '/tee'
+            - '/dd'
+        CommandLine|contains: '/var/spool/news/.ssh/authorized_keys'
+    condition: 1 of selection_*
+falsepositives:
+    - Highly unusual but not impossible system administration practices.
+level: high

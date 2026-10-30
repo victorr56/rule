@@ -1,0 +1,23 @@
+title: Anthropic AI Phishing Campaign Domains
+id: 5790a192-3c46-4a15-9c87-8f553f140685
+status: experimental
+description: Detects DNS queries for domains associated with a phishing campaign impersonating Anthropic AI to steal Google and Microsoft credentials.
+references:
+    - https://cofense.com/blog/would-your-employees-join-a-fake-anthropic-ai-preview
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.t1566
+    - attack.t1566.002
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith:
+            - 'us968web-zoom.us'
+            - 'goo.gle-access-eventregister.icu'
+            - 'office.com-access-sharepoint.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

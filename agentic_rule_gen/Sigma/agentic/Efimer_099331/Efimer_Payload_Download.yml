@@ -1,0 +1,27 @@
+title: Efimer Payload Download
+id: 2ec693e5-c266-41f2-bc78-ec2e3f5b7410
+status: experimental
+description: Detects network traffic associated with the download of Efimer malware payloads.
+references:
+    - https://www.reversinglabs.com/blog/threat-researchers-notebook-how-attackers-redirect-crypto-payments
+author: ioc-yara-daily (agentic)
+date: 2024-04-18
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection_1:
+        DestinationHostname: 'tuasesoriadigital.es'
+        Url|endswith: '/default.dat'
+    selection_2:
+        DestinationHostname: 'hasansunnah.xyz'
+        Url|endswith: '/composer.dat'
+    selection_3:
+        DestinationHostname: '167.233.30.202'
+        Url|endswith: '/files/swfe60.exe'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

@@ -1,0 +1,24 @@
+title: PANIX Backdoor Shell Creation
+id: a8031599-23fc-46a2-972c-e12b87d97b10
+status: experimental
+description: Detects the creation of a backdoored shell by copying a standard shell to '/usr/sbin/nologin ' (with a trailing space), a technique used by the PANIX persistence tool.
+references:
+    - https://www.elastic.co/security-labs/threat-command/continuation-on-persistence-mechanisms
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.persistence
+    - attack.t1098.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/cp'
+        CommandLine|contains|all:
+            - ' /bin/dash'
+            - '"/usr/sbin/nologin "'
+    condition: selection
+falsepositives:
+    - Unlikely, due to the specific combination of a source shell and the unusual destination path with a trailing space.
+level: critical

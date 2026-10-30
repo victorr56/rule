@@ -1,0 +1,23 @@
+title: LUNA Ransomware Note Creation on Linux
+id: c08a5c31-6415-4428-971c-7b897935cf1f
+status: experimental
+description: Detects the creation of the LUNA ransomware ransom note in a specific, hardcoded path on Linux systems. The use of a backslash in the path is highly anomalous for Linux.
+references:
+    - https://www.elastic.co/security-labs/threat-command/luna-ransomware-attack-pattern
+author: ioc-yara-daily (agentic)
+date: 2022-12-15
+tags:
+    - attack.impact
+    - attack.t1486
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        Image: '/tmp/linux-luna-64'
+        TargetFilename: '/etc/ssl\readme-Luna.txt'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

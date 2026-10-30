@@ -1,0 +1,26 @@
+title: LUNA Ransomware Disabling Veeam Backup Service
+id: 3c9b740e-7d1a-42c2-b5e0-1c02820c78a9
+status: experimental
+description: Detects the attempt to disable the Veeam Backup Service using sc.exe, a common tactic for ransomware like LUNA to prevent recovery.
+references:
+    - https://www.elastic.co/security-labs/threat-command/luna-ransomware-attack-pattern
+author: ioc-yara-daily (agentic)
+date: 2026-10-30
+tags:
+    - attack.impact
+    - attack.t1486
+    - attack.defense_evasion
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\sc.exe'
+        CommandLine|contains|all:
+            - 'config'
+            - 'VeeamBackupSvc'
+            - 'start=disabled'
+    condition: selection
+falsepositives:
+    - Legitimate administrative activity, although disabling this specific service is highly suspicious.
+level: high
