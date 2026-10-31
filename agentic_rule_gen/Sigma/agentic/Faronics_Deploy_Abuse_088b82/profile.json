@@ -1,0 +1,277 @@
+{
+  "malware_family": "Faronics Deploy Abuse",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Threat actors conduct phishing campaigns to trick users into installing a legitimately signed Faronics Deploy agent. The attackers then abuse the Faronics platform to remotely execute PowerShell scripts, download additional malware like ScreenConnect, and establish persistent access on the compromised system.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Faronics\\Logs\\ScriptRunner.log",
+      "context": "Log file that can preserve remote script URLs executed by Faronics.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Faronics\\Logs\\",
+      "context": "Directory containing Faronics log files for review.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ScriptRunner.log",
+      "context": "Faronics log file containing records of remotely executed scripts.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Entered GetScriptNameUsingURL URL=https://raw.githubusercontent.com/askaboutme121/Xusyahfd/refs/heads/main/Jhinstaller.ps1",
+      "context": "Log entry in ScriptRunner.log showing download of malicious PowerShell script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Jhinstaller.ps1",
+      "context": "PowerShell installer script downloaded and executed by Faronics Deploy agent.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "2025FinancialRecords.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AccessDownloadDocument_Manual (2).exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Adobe.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AdobePlugin+V3.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AdobePlugin_Update.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AdobeReader.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AdobeReader_Update.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "adobe_Reader_Installer.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DocuSignView.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "EventHighlight_IvDocPreviews.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "EviteCard.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Invitecard.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Invoice_89940.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Microsoft_Excel_Update.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ProposalRequest.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ReferenceLetterViewer.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "StatementID_578384177.exe",
+      "context": "Observed filename for downloaded Faronics Deploy executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "http://fileportals.gytgtecg.xyz/index.php?verified=1",
+      "context": "URL where victim browser fingerprint is sent.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://raw.githubusercontent.com/askaboutme121/Xusyahfd/refs/heads/main/Jhinstaller.ps1",
+      "context": "URL for second-stage PowerShell script, seen in ScriptRunner.log.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://deploy.faronics.com/api/GetConfigSettings?ck=6D70CDEF-CFF4-48A7-8092-24E5B9C3FA1D&wid={00000000-0000-0000-0000-C45AB1DED776}&cnfid=1",
+      "context": "Example Faronics enrollment/configuration request with attacker 'ck' identifier.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "6D70CDEF-CFF4-48A7-8092-24E5B9C3FA1D",
+      "context": "Faronics deployment identifier (ck parameter) used by attackers.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "denied.html",
+      "context": "Page served to mobile devices to filter them from the attack chain.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

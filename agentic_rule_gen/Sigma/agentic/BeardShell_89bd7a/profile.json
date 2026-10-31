@@ -1,0 +1,230 @@
+{
+  "malware_family": "BeardShell",
+  "threat_actor": "Sednit",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Sednit (APT28) has resurged with a modern toolkit featuring the custom BeardShell backdoor and a heavily modified version of the open-source Covenant framework. These implants are deployed in tandem, using different legitimate cloud services like Icedrive and Filen for resilient C2. The new tools show code lineage to older Sednit malware like Xagent and Xtunnel, indicating continuity in the group's development team.",
+  "mitre_techniques": [
+    "T1583.006",
+    "T1587.001",
+    "T1059.001",
+    "T1129",
+    "T1546.015",
+    "T1027",
+    "T1140",
+    "T1480",
+    "T1564",
+    "T1082",
+    "T1005",
+    "T1056.001",
+    "T1113",
+    "T1115",
+    "T1001",
+    "T1071.001",
+    "T1102",
+    "T1573.002",
+    "T1567"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "eapphost.dll",
+      "context": "Filename for SlimAgent implant.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tcpiphlpsvc.dll",
+      "context": "Filename for BeardShell implant.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "RemoteKeyLogger.dll",
+      "context": "Internal name for 2018 samples of SlimAgent, derived from Xagent.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<font color=blue>",
+      "context": "HTML tag for application name in SlimAgent/Xagent logs.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<font color=red>",
+      "context": "HTML tag for logged keystrokes in SlimAgent/Xagent logs.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "<font color=green>",
+      "context": "HTML tag for window name in SlimAgent/Xagent logs.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x64",
+      "context": "Hex constant (100) used in SlimAgent/Xagent for mouse movement threshold.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "2(x^2 + 1) + 2 = y^2 + 5",
+      "context": "Opaque predicate formula used in BeardShell, variant of one in Xtunnel.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "explorer.exe",
+      "context": "Execution guardrail: SlimAgent is designed to run only within this process.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "taskhost.exe",
+      "context": "Execution guardrail: BeardShell is designed to run only within this process.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "taskhostw.exe",
+      "context": "Execution guardrail: BeardShell is designed to run only within this process.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "dotnet_user_string",
+      "value": "DisplayName",
+      "context": "Attribute used by Sednit's Covenant to find the second stage entrypoint.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "dotnet_user_string",
+      "value": "IMessenger",
+      "context": "Interface implemented in custom Covenant C2 handlers.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "C2Bridge",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "dotnet_user_string",
+      "value": "C2Bridge",
+      "context": "Framework leveraged to add cloud protocols to Covenant.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "C2Bridge",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "dotnet_user_string",
+      "value": "FilenMessenger",
+      "context": "Custom class in Sednit's Covenant for Filen C2 communication.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "dotnet_user_string",
+      "value": "FilenClient",
+      "context": "Custom class in Sednit's Covenant for Filen API interaction.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "other",
+      "value": "Icedrive",
+      "context": "Cloud storage service used as C2 channel for BeardShell.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Filen",
+      "context": "Cloud storage service used as C2 channel for Covenant (since July 2025).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Koofr",
+      "context": "Cloud storage service used as C2 channel for Covenant (2024-2025).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "pCloud",
+      "context": "Cloud storage service used as C2 channel for Covenant (2023).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "dotnet"
+  ]
+}

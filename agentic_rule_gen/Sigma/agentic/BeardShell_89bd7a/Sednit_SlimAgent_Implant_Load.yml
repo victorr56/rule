@@ -1,0 +1,22 @@
+title: Sednit SlimAgent Implant Loading via eapphost.dll
+id: 5c91e466-9ab5-46f3-a3d8-e7a9b9a62aa5
+status: experimental
+description: Detects the loading of 'eapphost.dll', a component of the SlimAgent backdoor, into explorer.exe. This is a known execution guardrail for this Sednit implant. The legitimate eapphost.dll is related to IIS and should not typically be loaded by explorer.exe.
+references:
+    - https://www.welivesecurity.com/en/eset-research/sednit-reloaded-back-trenches/
+author: ioc-yara-daily (agentic)
+date: 2026-10-31
+tags:
+    - attack.defense_evasion
+    - attack.t1129
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\explorer.exe'
+        ImageLoaded|endswith: '\eapphost.dll'
+    condition: selection
+falsepositives:
+    - Legitimate but unusual software configurations that cause explorer.exe to load this DLL.
+level: medium

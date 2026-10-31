@@ -1,0 +1,27 @@
+title: Device Code Phishing Infrastructure IP
+id: c7e1d5a8-444f-4d3e-953a-a1b7e28b8a09
+status: experimental
+description: Detects network connections to IP addresses associated with device code phishing campaigns abusing BL Networks infrastructure.
+references:
+    - https://www.huntress.com/blog/device-code-phishing-evolving-threats
+author: ioc-yara-daily (agentic)
+date: 2026-10-31
+tags:
+    - attack.initial_access
+    - attack.t1566
+    - attack.credential_access
+    - attack.t1528
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '45.61.136.129'
+            - '193.149.176.151'
+            - '193.149.176.238'
+            - '216.203.20.95'
+    condition: selection
+falsepositives:
+    - Legitimate services hosted on the same infrastructure.
+level: high

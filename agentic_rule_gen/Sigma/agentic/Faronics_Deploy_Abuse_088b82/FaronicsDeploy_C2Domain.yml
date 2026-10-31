@@ -1,0 +1,21 @@
+title: Faronics Deploy Abuse C2 Domain
+id: 1a9f33c3-e2e7-4b7b-9993-f7259f635f11
+status: experimental
+description: Detects DNS queries for a domain known to be used in phishing campaigns leading to Faronics Deploy abuse.
+references:
+    - https://www.huntress.com/blog/faronics-deploy-abuse
+author: ioc-yara-daily (agentic)
+date: 2026-10-31
+tags:
+    - attack.command_and_control
+    - attack.t1568.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith: '.gytgtecg.xyz'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

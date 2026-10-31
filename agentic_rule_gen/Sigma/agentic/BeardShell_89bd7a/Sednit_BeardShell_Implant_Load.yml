@@ -1,0 +1,24 @@
+title: Sednit BeardShell Implant Loading via tcpiphlpsvc.dll
+id: 59a16f9f-5309-411a-96e0-b663806f156d
+status: experimental
+description: Detects the loading of 'tcpiphlpsvc.dll', a component of the BeardShell backdoor, into taskhost.exe or taskhostw.exe. This is a known execution guardrail for this Sednit implant, which uses a filename that is a typo of the legitimate 'tcpiphlp.dll'.
+references:
+    - https://www.welivesecurity.com/en/eset-research/sednit-reloaded-back-trenches/
+author: ioc-yara-daily (agentic)
+date: 2026-10-31
+tags:
+    - attack.defense_evasion
+    - attack.t1129
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\taskhost.exe'
+            - '\taskhostw.exe'
+        ImageLoaded|endswith: '\tcpiphlpsvc.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

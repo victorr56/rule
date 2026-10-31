@@ -1,0 +1,32 @@
+title: Execution of Faronics Deploy Lure from Downloads Folder
+id: 05244955-32e6-42d4-a059-e331c03383ab
+status: experimental
+description: Detects the execution of executables with filenames used as lures in Faronics Deploy abuse campaigns, specifically when run from a user's Downloads folder.
+references:
+    - https://www.huntress.com/blog/faronics-deploy-abuse
+author: ioc-yara-daily (agentic)
+date: 2026-10-31
+tags:
+    - attack.initial_access
+    - attack.t1204.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|contains|all:
+            - '\Users\'
+            - '\Downloads\'
+        Image|endswith:
+            - '\2025FinancialRecords.exe'
+            - '\AccessDownloadDocument_Manual (2).exe'
+            - '\AdobePlugin+V3.exe'
+            - '\EventHighlight_IvDocPreviews.exe'
+            - '\Invoice_89940.exe'
+            - '\ProposalRequest.exe'
+            - '\ReferenceLetterViewer.exe'
+            - '\StatementID_578384177.exe'
+    condition: selection
+falsepositives:
+    - Unlikely, but users might legitimately download and execute a file with a similar name.
+level: medium

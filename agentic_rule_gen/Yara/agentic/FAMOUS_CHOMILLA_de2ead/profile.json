@@ -1,0 +1,215 @@
+{
+  "malware_family": "FAMOUS CHOMILLA",
+  "threat_actor": "DPRK",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "DPRK-aligned operatives (FAMOUS CHOMILLA/CHOLLIMA) fraudulently gain remote employment by posing as legitimate workers using stolen or fake identities. They leverage VPNs, proxies, and hardware KVM devices like PiKVM to obscure their location and maintain access. This activity aims to generate revenue for the North Korean regime, exfiltrate data, or deploy malware.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "dlutter",
+      "context": "Typo for 'clutter' on fraudulent State Grid Corporation of China electricity bill.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "hassic",
+      "context": "Typo for 'hassle' on fraudulent State Grid Corporation of China electricity bill.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Songgang Police Station",
+      "context": "Issuing authority listed on two separate fraudulent resident identity cards.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "PiKVM Composite Device",
+      "context": "FriendlyName value for PiKVM in HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USB.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VID_1D6B&PID_0104",
+      "context": "USB Vendor/Product ID for a PiKVM device found in registry.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "PiKVM",
+      "context": "String in device_description field of Windows Security Event ID 6416.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "Guermok USB3 Video",
+      "context": "FriendlyName value for Guermok capture card in HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USB.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "VID_345F&PID_2130",
+      "context": "USB Vendor/Product ID for a Guermok capture card found in registry.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Guermok",
+      "context": "String in device_description field of Windows Security Event ID 6416.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\asset",
+      "context": "Folder created at the drive root to store a downloaded image.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Pickle_Rick",
+      "context": "Residential wireless network name (SSID) the device connected to.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "iPhone 15 Pro Max back triple camera 6.765mm f/1.78",
+      "context": "Camera model in metadata of fraudulent identity document photos.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://vdo.ninja/?push=host<redacted>&password=<redacted>&screenshare&label=host",
+      "context": "VDO Ninja screen sharing URL recovered from Google Chrome cache.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "WorkTitans B.V.",
+      "context": "Bulletproof-hosting operation used by the threat actors.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Toffeeshare",
+      "context": "Encrypted file sharing service used to send fraudulent identity documents.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Codeshare",
+      "context": "Online code sharing service used to post recurring Zoom meeting links.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Astrill VPN",
+      "context": "VPN service used by workers to mask location.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "IPRoyal Proxy",
+      "context": "Commercial proxy service used by workers.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mictests.com",
+      "context": "Online microphone testing website.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ip.me",
+      "context": "Website used to determine public-facing IP address before meetings.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "webcammictest.com",
+      "context": "Online webcam and microphone testing website.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "onlinemictest.com",
+      "context": "Online microphone testing website.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

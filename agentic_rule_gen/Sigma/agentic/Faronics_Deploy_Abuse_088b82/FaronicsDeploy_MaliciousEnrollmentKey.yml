@@ -1,0 +1,23 @@
+title: Abuse of Faronics Deploy via Malicious Enrollment Key
+id: 978913b8-6f6f-4054-9556-3c0f862dd610
+status: experimental
+description: Detects network connections to the Faronics Deploy API using a known malicious campaign enrollment key ('ck' parameter).
+references:
+    - https://www.huntress.com/blog/faronics-deploy-abuse
+author: ioc-yara-daily (agentic)
+date: 2024-07-29
+tags:
+    - attack.command_and_control
+    - attack.t1071
+    - attack.t1102
+logsource:
+    category: proxy
+detection:
+    selection:
+        cs-host: 'deploy.faronics.com'
+        c-uri-path: '/api/GetConfigSettings'
+        c-uri-query|contains: 'ck=6D70CDEF-CFF4-48A7-8092-24E5B9C3FA1D'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

@@ -1,0 +1,54 @@
+{
+  "malware_family": "Device Code Phishing",
+  "threat_actor": "",
+  "platforms": [
+    "web"
+  ],
+  "summary": "Threat actors are conducting device code phishing campaigns to steal Microsoft 365 tokens by abusing infrastructure from VPS reseller BL Networks. This activity follows a similar playbook to an earlier campaign that abused the Railway PaaS, indicating an evolving threat that leverages legitimate-looking infrastructure for token replay attacks.",
+  "mitre_techniques": [],
+  "host_artifacts": [],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "216.203.20.95",
+      "context": "Offending IP address from which Huntress identified 533 events.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "193.149.176.151",
+      "context": "IP from which device code phishing attacks originated.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "193.149.176.238",
+      "context": "IP from which device code phishing attacks originated.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.61.136.129",
+      "context": "IP from which device code phishing attacks originated.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "AS399629",
+      "context": "ASN operated by BL Networks (also known as BitLaunch or BLNWX).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

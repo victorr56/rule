@@ -1,0 +1,22 @@
+title: Faronics Deploy Abuse - Second Stage Script Jhinstaller.ps1 Dropped
+id: 28cf1154-15f1-419b-a083-d2d1ef1087b7
+status: experimental
+description: Detects the creation of the 'Jhinstaller.ps1' PowerShell script in the Public user directory, a known indicator of compromise in Faronics Deploy abuse campaigns.
+references:
+    - https://www.huntress.com/blog/faronics-deploy-abuse
+author: ioc-yara-daily (agentic)
+date: 2026-10-31
+tags:
+    - attack.execution
+    - attack.t1059.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\Users\Public\'
+        TargetFilename|endswith: '\Jhinstaller.ps1'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

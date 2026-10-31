@@ -1,0 +1,24 @@
+title: Sednit Group SlimAgent Component 'RemoteKeyLogger.dll' Execution
+id: 02ab550e-7407-4e6f-a89c-cc81395f87b8
+status: experimental
+description: Detects the execution of 'RemoteKeyLogger.dll' via rundll32.exe. This DLL is an internal name associated with older samples of the Sednit SlimAgent implant.
+references:
+    - https://www.welivesecurity.com/en/eset-research/sednit-reloaded-back-trenches/
+author: ioc-yara-daily (agentic)
+date: 2023-10-27
+tags:
+    - attack.execution
+    - attack.t1218.011
+    - attack.collection
+    - attack.t1056.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|contains: 'RemoteKeyLogger.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

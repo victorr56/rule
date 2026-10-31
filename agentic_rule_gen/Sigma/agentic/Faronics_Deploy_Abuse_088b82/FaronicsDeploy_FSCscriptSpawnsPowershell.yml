@@ -1,0 +1,23 @@
+title: Faronics Deploy Agent Spawning PowerShell
+id: 86b40e90-1c39-4441-996c-b179296587c6
+status: experimental
+description: Detects the Faronics Deploy agent script runner process ('FSCscript.exe') launching PowerShell. This is the mechanism used by attackers to execute arbitrary code.
+references:
+    - https://www.huntress.com/blog/faronics-deploy-abuse
+author: ioc-yara-daily (agentic)
+date: 2026-10-31
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\FSCscript.exe'
+        Image|endswith: '\powershell.exe'
+    condition: selection
+falsepositives:
+    - Legitimate administrative use of Faronics Deploy to run PowerShell scripts.
+level: medium

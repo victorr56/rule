@@ -1,0 +1,25 @@
+title: DPRK FAMOUS CHOMILLA-Related Hardware Device Installation
+id: 18b760a5-f126-407c-9b89-f53835a676c8
+status: experimental
+description: Detects registry modifications indicating the installation of a PiKVM or Guermok USB device. These devices have been used by DPRK-aligned operatives (FAMOUS CHOMILLA) posing as remote workers to obscure their location and maintain access.
+references:
+    - https://www.huntress.com/blog/huntress-dprk-remote-worker-investigation
+author: ioc-yara-daily (agentic)
+date: 2026-10-31
+tags:
+    - attack.persistence
+    - attack.t1200
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection_pikvm:
+        Details: 'PiKVM Composite Device'
+        TargetObject|contains: '\SYSTEM\CurrentControlSet\Enum\USB\'
+    selection_guermok:
+        Details: 'Guermok USB3 Video'
+        TargetObject|contains: '\SYSTEM\CurrentControlSet\Enum\USB\'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate use of these specific devices, which is unlikely in a typical corporate environment.
+level: high

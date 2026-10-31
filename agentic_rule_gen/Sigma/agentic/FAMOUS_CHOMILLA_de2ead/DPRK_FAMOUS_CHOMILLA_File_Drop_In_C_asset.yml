@@ -1,0 +1,27 @@
+title: DPRK FAMOUS CHOMILLA-Related File Drop in C:\asset
+id: 7a8c3d9e-1f2b-4a5c-8d9e-0f1e2d3c4b5a
+status: experimental
+description: Detects files being written by a browser into the 'C:\asset\' directory. This behavior was observed in activity associated with DPRK-aligned operatives (FAMOUS CHOMILLA).
+references:
+    - https://www.huntress.com/blog/huntress-dprk-remote-worker-investigation
+author: ioc-yara-daily (agentic)
+date: 2026-10-31
+tags:
+    - attack.staging
+    - attack.t1074
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\asset\'
+        Image|endswith:
+            - '\msedge.exe'
+            - '\chrome.exe'
+            - '\firefox.exe'
+            - '\iexplore.exe'
+    condition: selection
+falsepositives:
+    - A user could legitimately and manually create this folder and save files from a browser into it.
+level: medium

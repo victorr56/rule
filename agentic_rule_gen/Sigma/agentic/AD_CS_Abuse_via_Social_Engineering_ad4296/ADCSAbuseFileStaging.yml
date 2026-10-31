@@ -1,0 +1,24 @@
+title: File Staged In Suspicious AD CS Abuse Directory
+id: 9a2b7e1f-4d6b-4e8c-843c-3a8f5c6b4d3f
+status: experimental
+description: Detects executable file creation in a suspicious staging directory pattern (`\AppData\Roaming\KB[0-9]+\`) used by actors to stage tools for AD CS abuse. This may detect portable runtimes or renamed tools.
+references:
+    - https://www.microsoft.com/en/us/security/blog/2026/10/30/help-desk-impersonation-ad-cs-abuse-investigating-esc1-esc8-intrusion-paths/
+author: ioc-yara-daily (agentic)
+date: 2026-10-31
+tags:
+    - attack.defense_evasion
+    - attack.t1036
+    - attack.t1036.005
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|re: '\\AppData\\Roaming\\KB[0-9]{5,}\\'
+        TargetFilename|endswith: '.exe'
+    condition: selection
+falsepositives:
+    - Custom software updaters or installers that might use a similar naming convention for temporary folders.
+level: medium

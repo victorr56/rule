@@ -1,0 +1,26 @@
+title: Portable Runtime Execution From AD CS Abuse Staging Directory
+id: 3c5e0e0a-11f8-4a57-897c-9b78e34f826d
+status: experimental
+description: Detects the execution of portable runtimes like bun, java, or python from a suspicious staging directory pattern (`\AppData\Roaming\KB[0-9]+\`) used by actors for AD CS abuse.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2023/11/28/help-desk-impersonation-ad-cs-abuse-investigating-esc1-esc8-intrusion-paths/
+author: ioc-yara-daily (agentic)
+date: 2023-11-29
+tags:
+    - attack.execution
+    - attack.t1059.007
+    - attack.t1059.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\bun.exe'
+            - '\java.exe'
+            - '\python.exe'
+        CommandLine|re: '\\AppData\\Roaming\\KB[0-9]{5,}\\'
+    condition: selection
+falsepositives:
+    - Developers using portable runtimes in custom-named folders that coincidentally match the `KB...` pattern.
+level: high
