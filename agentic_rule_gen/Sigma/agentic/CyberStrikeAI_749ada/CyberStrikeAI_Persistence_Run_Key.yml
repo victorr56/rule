@@ -1,0 +1,22 @@
+title: CyberStrikeAI Persistence via 'SystemUpdate' Run Key
+id: 97f08e7c-897b-402c-b51f-618753239e3f
+status: experimental
+description: Detects the creation of a registry run key value named 'SystemUpdate' that points to an executable path also containing 'SystemUpdate'. This persistence method is associated with CyberStrikeAI.
+references:
+    - https://securelist.com/tr/cyberstrikeai-attacks/121715/
+author: ioc-yara-daily (agentic)
+date: 2026-11-02
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    product: windows
+    category: registry_set
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Microsoft\Windows\CurrentVersion\Run\SystemUpdate'
+        Details|contains: 'SystemUpdate'
+    condition: selection
+falsepositives:
+    - Legitimate updaters might use a similar naming convention for registry values and executables.
+level: medium

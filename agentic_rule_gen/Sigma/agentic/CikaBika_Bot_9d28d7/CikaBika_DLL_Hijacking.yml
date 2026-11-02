@@ -1,0 +1,24 @@
+title: CikaBika Bot DLL Search Order Hijacking via dbghelp.dll
+id: d456209e-716b-4b2a-8c76-f87c53d16853
+status: experimental
+description: Detects the loading of a malicious 'dbghelp.dll' from the Microsoft Edge application directory, a technique used by CikaBika Bot for DLL search-order hijacking.
+references:
+    - https://www.darktrace.com/blog/cikabika-bot-inside-a-discord-rat
+author: ioc-yara-daily (agentic)
+date: 2026-11-02
+tags:
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1574.001
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\msedge.exe'
+        ImageLoaded|endswith: '\Microsoft\Edge\Application\dbghelp.dll'
+    condition: selection
+falsepositives:
+    - Legitimate debugging scenarios or custom Edge installations might place and load a dbghelp.dll from this directory, though this is not standard behavior.
+level: high

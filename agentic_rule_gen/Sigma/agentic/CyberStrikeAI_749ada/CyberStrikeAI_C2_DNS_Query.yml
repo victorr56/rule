@@ -1,0 +1,22 @@
+title: CyberStrikeAI C2 DNS Query
+id: f4568b21-4f11-4475-8162-81e5927c9f87
+status: experimental
+description: Detects DNS queries for domains associated with CyberStrikeAI C2 infrastructure.
+references:
+    - https://securelist.com/tr/cyberstrikeai-attacks/121715/
+author: ioc-yara-daily (agentic)
+date: 2026-11-02
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith:
+            - '.fastcdn.bar'
+            - '.media.fastcdn.bar'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

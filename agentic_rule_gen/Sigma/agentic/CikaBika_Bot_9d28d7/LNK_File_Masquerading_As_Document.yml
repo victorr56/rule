@@ -1,0 +1,39 @@
+title: LNK File Masquerading as Document
+id: b9b9e1e9-158a-4d7a-85d1-13c54d375bb6
+status: experimental
+description: 'Detects the creation of a .lnk file that masquerades as a document file (e.g., .docx, .pdf). This technique was used by CikaBika Bot''s initial lure file "Proposition_Projet_Personnalisable.docx.lnk".'
+references:
+    - https://www.darktrace.com/blog/cikabika-bot-inside-a-discord-rat
+author: ioc-yara-daily (agentic)
+date: 2024-05-23
+tags:
+    - attack.initial_access
+    - attack.t1204.002
+    - attack.t1036.007
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains:
+            - '.docx.lnk'
+            - '.xlsx.lnk'
+            - '.pptx.lnk'
+            - '.pdf.lnk'
+        Image|endswith:
+            # Browsers
+            - '\chrome.exe'
+            - '\msedge.exe'
+            - '\firefox.exe'
+            - '\iexplore.exe'
+            # Mail Clients
+            - '\OUTLOOK.EXE'
+            # Archivers
+            - '\7z.exe'
+            - '\winrar.exe'
+            - '\WinZip64.exe'
+    condition: selection
+falsepositives:
+    - Legitimate files downloaded by users or extracted from archives that happen to match this naming pattern, although this is very uncommon.
+level: medium

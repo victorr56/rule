@@ -1,0 +1,336 @@
+{
+  "malware_family": "CyberStrikeAI",
+  "threat_actor": "Chinese-speaking operator",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "CyberStrikeAI is a Go-based C2 framework used by a likely Chinese-speaking actor to automate post-exploitation on Windows and Linux systems. The framework's server component uses an LLM to orchestrate attacks, including credential dumping via LSASS, lateral movement with WMI and SMB, and establishing persistence using Scheduled Tasks or Run keys. While the decision-making is AI-driven, the on-host techniques are standard and detectable.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "certificate_subject",
+      "value": "CyberStrikeAI",
+      "context": "In self-signed TLS certificate issuer and subject fields.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Path to main package in 'go version -m' build metadata.",
+      "context": "A temporary directory with a build identifier unique to the generator.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "vcs.modified=true",
+      "context": "Flag in Go build info indicating local changes in the working copy.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Comments in Chinese language within scripts.",
+      "context": "Found in various scripts deployed by the attackers.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "SystemUpdate",
+      "context": "Scheduled task created for implant persistence on Windows.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "SystemUpdate",
+      "context": "Value name in HKCU\\...\\Run key for persistence, matches task name.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "svchosts.exe",
+      "context": "Malware disguised as legitimate svchost.exe.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "p1.ps1",
+      "context": "PowerShell reverse shell script used for lateral movement.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\dsn_line.txt",
+      "context": "File containing DSN string for DPAPI secret decryption.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wdiag2.exe",
+      "context": "Renamed Mimikatz utility used for DCSync attacks.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "svcmon32.exe",
+      "context": "CyberStrikeAI Beacon implant file name.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "schtasks /create /s <remote_host> /u <user> /p <password> /ru \"SYSTEM\" /tn \"p1\" /tr \"powershell.exe -ExecutionPolicy bypass -file C:\\ProgramData\\p1.ps1\" /sc once /st 23:59",
+      "context": "Creating a remote scheduled task to execute reverse shell p1.ps1.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "$T = [activator]::CreateInstance([type]::GetTypeFromProgID(\"Schedule.Service\",\"<remote_host>\"));$T.Connect();$F = $T.GetFolder('\\');$D = $T.NewTask(0);$D.RegistrationInfo.Description = 'p1';$D.Settings.Enabled = $True;$D.Settings.StopIfGoingOnBatteries = $False;$A = $D.Actions.Create(0);$A.Path = 'c:\\windows\\system32\\windowspowershell\\v1.0\\powershell.exe';$A.Arguments = '-ExecutionPolicy bypass -file c:\\programdata\\p1.ps1';$I = $D.Principal;$I.UserId = 'SYSTEM';$I.RunLevel = 1;$F.RegisterTaskDefinition('p1',$D,6,'SYSTEM',$null,5);",
+      "context": "Creating remote task via Schedule.Service COM object.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rundll32.exe C:\\windows\\System32\\comsvcs.dll, MiniDump <pid> C:\\Windows\\Temp\\lsass.dmp full",
+      "context": "Dumping lsass.exe memory using comsvcs.dll.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "python wmiexec.py <domain>/<user>:<password>@<ip_address> \"whoami\"",
+      "context": "Lateral movement using Impacket's wmiexec.py.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Impacket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wmic /node:<hostname> /user:<user> /password:<password> process call create \"cmd /c <command>\"",
+      "context": "Remote command execution via WMI for lateral movement.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine = '<command>'} -ComputerName <hostname>",
+      "context": "Remote execution via WMI using PowerShell's Invoke-CimMethod.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "wdiag2.exe -DCSync -d <domain> -u <user>",
+      "context": "DCSync attack using renamed Mimikatz.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "schtasks /create /tn SystemUpdate /tr <path_to_implant> /sc onstart /ru system",
+      "context": "Creating persistence scheduled task to run implant at startup as SYSTEM.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "certutil -decode d3.b64 d3.ps1 && powershell -ep bypass d3.ps1",
+      "context": "Decoding a Base64-encoded file and executing the resulting PS script.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "@reboot <path_to_beacon> &",
+      "context": "Linux persistence via user's crontab.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "(nohup <path_to_beacon> &>/dev/null &)",
+      "context": "Linux persistence via ~/.bashrc file.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "powershell -c \"Get-WmiObject -Class win32_product -ComputerName <hostname> | Select-Object -ExpandProperty Name\"",
+      "context": "Agent checking for installed agent on remote hosts using WMI.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "sqlservr.exe",
+      "context": "Parent process for initial manual command execution.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "select 1",
+      "context": "SQL query used to check database connectivity via PowerShell.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SELECT IS_SRVROLEMEMBER('sysadmin')",
+      "context": "SQL query checking for 'sysadmin' role.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "http_header",
+      "value": "X-Implant-Token",
+      "context": "Custom HTTP header used for authenticating the implant to the C2.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.186.245.144",
+      "context": "C2 for Windows Beacon and reverse shell listener.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "fastcdn.bar",
+      "context": "C2 for Windows Beacon.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "media.fastcdn.bar",
+      "context": "C2 for Linux Beacon.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "104.234.26.163",
+      "context": "C2 for Payload Delivery and Linux Beacon.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dnslog.cn",
+      "context": "Chinese service used for checking internet access and C2 resolution.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Backdoor.CyberStrikeAI.HTTP.C&C",
+      "context": "Kaspersky KATA detection verdict for C2 traffic.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "elf",
+    "script"
+  ]
+}

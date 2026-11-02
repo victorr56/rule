@@ -1,0 +1,25 @@
+title: CyberStrikeAI Persistence via 'SystemUpdate' Scheduled Task
+id: 6e919864-8ab3-4b68-80f0-c515ac1e3e7f
+status: experimental
+description: Detects the creation of a scheduled task named 'SystemUpdate', a persistence method used by CyberStrikeAI.
+references:
+    - https://securelist.com/tr/cyberstrikeai-attacks/121715/
+author: ioc-yara-daily (agentic)
+date: 2026-11-02
+tags:
+    - attack.persistence
+    - attack.t1053.005
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains|all:
+            - '/create'
+            - '/tn'
+            - 'SystemUpdate'
+    condition: selection
+falsepositives:
+    - Legitimate software (e.g., from Google, Adobe) may create scheduled tasks with a similar name. Further investigation of the task's action is recommended.
+level: medium

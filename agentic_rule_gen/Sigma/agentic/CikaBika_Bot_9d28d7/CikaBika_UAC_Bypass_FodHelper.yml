@@ -1,0 +1,23 @@
+title: CikaBika Bot UAC Bypass via FodHelper Registry Modification
+id: 11f84d0b-2da6-4074-9c99-0b13511116c2
+status: experimental
+description: Detects the CikaBika Bot malware modifying the 'HKCU\Software\Classes\ms-settings\shell\open\command' registry key to bypass User Account Control (UAC). This is performed by a process masquerading as 'chrome.exe' in the AppData\Roaming directory.
+references:
+    - https://www.darktrace.com/blog/cikabika-bot-inside-a-discord-rat
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1548.002
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\AppData\Roaming\chrome.exe'
+        TargetObject|endswith: '\Software\Classes\ms-settings\shell\open\command'
+    condition: selection
+falsepositives:
+    - Legitimate software is not expected to run as 'chrome.exe' from the AppData\Roaming folder and modify this specific UAC-related registry key.
+level: high
