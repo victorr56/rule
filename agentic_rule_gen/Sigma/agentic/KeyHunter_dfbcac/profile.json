@@ -1,0 +1,424 @@
+{
+  "malware_family": "KeyHunter",
+  "threat_actor": "leepsmarts",
+  "platforms": [
+    "linux",
+    "multi"
+  ],
+  "summary": "The leepsmarts actor conducts the KeyHunter operation, a multi-faceted campaign stealing LLM API keys and other credentials from misconfigured web services. The actor also runs an academic fraud scheme against universities and financial fraud operations using a cryptocurrency drainer and stolen credit card data. The campaign is heavily automated using AI agent frameworks like Hermes and OpenClaw, managed via Telegram.",
+  "mitre_techniques": [
+    "T1595",
+    "T1596",
+    "T1589.002",
+    "T1583",
+    "T1585",
+    "T1587",
+    "T1190",
+    "T1078",
+    "T1059",
+    "T1098.004",
+    "T1090",
+    "T1036",
+    "T1656",
+    "T1552",
+    "T1110",
+    "T1046",
+    "T1496",
+    "T1657"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "sysadmin@internal",
+      "context": "Comment in Ed25519 SSH key in cpanel_persist file for persistence.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "root:x\\nsuccessful_internal_auth_with_timestamp=9999999999\\nuser=root\\ntfa_verified=1\\nhasroot=1",
+      "context": "Decoded Base64 payload for CVE-2026-41940 CRLF injection.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "sk-ant-oat01",
+      "context": "Prefix for an Anthropic OAuth token observed in the actor's chat.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "进度195",
+      "context": "Chinese text ('progress 195') used as a progress marker.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "卷王二手CVV",
+      "context": "Name of the Chinese underground Telegram market for CVV data.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "error 820001",
+      "context": "FOFA API error code indicating body field extraction is blocked.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "gateway-user-key",
+      "context": "Category of LLM gateway exposure recorded in cve_hits.jsonl.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "CUA Driver v0.22.2",
+      "context": "Driver version found on the Hermes Agent node.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Hermes Agent",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "cpanel_check.py",
+      "context": "Custom Python script implementing the CVE-2026-41940 exploit.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "calstate_playwright.js",
+      "context": "Custom script for CalState registration with reCAPTCHA Enterprise bypass.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "stripe_card_checker.py",
+      "context": "Script to validate stolen credit cards using Stripe API keys.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "creeper-soul-2026-05-18.tar.gz",
+      "context": "Backup filename found on the actor's primary server.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "fadidevv-keyhunter/",
+      "context": "Directory with local copy of a public KeyHunter tool.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "fadidevv/keyhunter",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "mscanner-fofa.service",
+      "context": "Systemd service to discover endpoints using the FOFA API.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "mscanner-shodan.service",
+      "context": "Systemd service to discover endpoints using the Shodan API.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "AI_radar",
+      "context": "Cron job for AI-driven intelligence monitoring, runs every 240 minutes.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/.netlify/functions-serve/env",
+      "context": "Netlify-specific path scanned by env_hunter for credentials.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/.streamlit/secrets.toml",
+      "context": "Streamlit-specific path scanned by env_hunter for credentials.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/.vercel/output/config.json",
+      "context": "Vercel-specific path scanned by env_hunter for credentials.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "git clone –depth 1 https://github.com/leepsmarts/aipocket.git",
+      "context": "Command from .bash_history on main server to deploy tooling.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "PentAGI CA",
+      "context": "Self-signed TLS certificate used to link actor infrastructure nodes.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "@lsmarts_openclaw_bot",
+      "context": "Telegram bot handle for controlling the OpenClaw AI agent.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "OpenClaw",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "@creeper_hermes_bot",
+      "context": "Telegram bot handle for controlling the Hermes AI agent.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Hermes Agent",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "@harmony0bot",
+      "context": "Telegram bot handle for the Harmony ONE crypto drainer.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "harmony-one/HarmonyOneBot",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "github.com/leepsmarts",
+      "context": "Actor's GitHub account, used to host aipocket tool.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "209.112.91.74",
+      "context": "Primary C2 and work server with open directory.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "173.231.39.244",
+      "context": "Hermes Agent node.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "123.60.2.245",
+      "context": "PentAGI and Xingrin ASM node.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "14.47.118.194",
+      "context": "Open WebUI and Wazuh SIEM node.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "senhai.store",
+      "context": "Primary actor domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "astrdark.cyou",
+      "context": "Actor domain hosting custom Tavily proxy.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sajuai.xyz",
+      "context": "C2 domain registered in July 2026.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "web.712019.xyz",
+      "context": "C2 and web frontend domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "vvbin.me",
+      "context": "Disposable email domain used for fake .edu personas.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "pentagi.senhai.store",
+      "context": "Subdomain linked to PentAGI certificate subject.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "tavily.astrdark.cyou",
+      "context": "Custom Tavily search proxy for Hermes agent.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://209.112.91.74:9997",
+      "context": "Unified dashboard for managing harvested keys and proxies.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/findings/export?status=valid",
+      "context": "Dashboard API endpoint to export valid harvested keys.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/login/?login_only=1",
+      "context": "First stage URI for CVE-2026-41940 cPanel exploit.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/scripts2/listaccts",
+      "context": "Third stage URI path for CVE-2026-41940 (preceded by session token).",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/json-api/listaccts?api.version=1",
+      "context": "Fourth stage URI for CVE-2026-41940 to enumerate cPanel accounts.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/v1/client/subscribe?token",
+      "context": "URI path searched to find exposed V2Ray/Clash subscription panels.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script",
+    "elf"
+  ]
+}

@@ -1,0 +1,333 @@
+{
+  "malware_family": "OfferLoader",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "A financially-motivated campaign distributes trojanized Inno Setup installers disguised as cracked software or games. These installers use a distinct C2 callback pattern with parameters 'd=inno' and 'r=offer_execution' to deliver multiple monetization payloads. Confirmed payloads include WorldProxyPool proxyware, CharityEngine/BOINC for resource hijacking, and adware, with persistence established via scheduled tasks.",
+  "mitre_techniques": [
+    "T1204.002",
+    "T1053.005",
+    "T1036",
+    "T1564.003",
+    "T1071.001",
+    "T1105",
+    "T1496"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\is-*.tmp\\",
+      "context": "Inno Setup-style temporary runner staging path.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\is-*.tmp\\eld*.exe",
+      "context": "Recurring staged payload naming and path pattern.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "(?i)^(eld[0-9]+|set_[0-9]+|FirstFast(?:\\[1\\])?|SecondRunner(?:\\[1\\])?)\\.exe$",
+      "context": "Regex for staged payloads executed from Inno temporary directories.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/SL5=",
+      "context": "Argument for Inno temporary runner.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/SPAWNWND=",
+      "context": "Argument for Inno child process window handoff.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "operation did not complete because the file contained a virus or potentially unwanted software",
+      "context": "Error message included in offer_execution_fail C2 callbacks.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "WorldProxyPoolAgent",
+      "context": "SYSTEM-level persistence task for proxy agent startup.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "WorldProxyPoolWatchdog",
+      "context": "SYSTEM-level persistence task running watchdog script every five minutes.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "WorldProxyPoolUpdater",
+      "context": "SYSTEM-level persistence task for hourly updates.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Program Files\\WorldProxyPool\\sdk-agent.exe",
+      "context": "WorldProxyPool proxyware main component.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "sdk-agent.updater.exe",
+      "context": "WorldProxyPool updater executable.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "watchdog.ps1",
+      "context": "WorldProxyPool watchdog script.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "boinc.exe",
+      "context": "Compute-resource monetization component.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "BOINC",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "charityengine.exe",
+      "context": "Compute-resource monetization component.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "CharityEngine",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "AdvancedWindowsManager.exe",
+      "context": "Adware-style utility monetization payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Windows Manager – Postback Johan.msi",
+      "context": "Adware-style utility installer.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\AW Manager\\Windows Manager 1.0.0\\",
+      "context": "Installation path for AW Manager adware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "d=inno",
+      "context": "URL parameter identifying the delivery family in C2 callbacks.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "r=offer_execution",
+      "context": "URL parameter reporting a successful offer execution.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "r=offer_execution_fail",
+      "context": "URL parameter reporting a failed offer execution.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "o=1727",
+      "context": "Offer ID associated with WorldProxyPool proxyware monetization.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "dn=564",
+      "context": "Download-network ID associated with WorldProxyPool proxyware monetization.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "o=1720",
+      "context": "Offer ID for CharityEngine/BOINC distributed-compute monetization.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "beliefdesk.xyz",
+      "context": "Offer-execution callback infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "companyharbor.xyz",
+      "context": "Offer-execution callback infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "signalpane.cfd",
+      "context": "Offer-execution callback infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "inkact.xyz",
+      "context": "Offer-execution callback infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "wishgrove.cfd",
+      "context": "Offer-execution callback infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "orbittrack.cfd",
+      "context": "Observed campaign callback infrastructure from hunting query.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "prairielink.cfd",
+      "context": "Observed campaign callback infrastructure from hunting query.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "willowbox.xyz",
+      "context": "Observed campaign callback infrastructure from hunting query.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "006510ce1da2b7410376f0788c19e55616eb4bcc30072d25b7d0871dc32aa11c",
+      "description": "Inno second-stage runner"
+    },
+    {
+      "sha256": "ab2c2dd37fdcfe1e7620a57f98c80bd063258bea145adc0cc6a0f8b1e24c6a8f",
+      "description": "Inno eld0 / first-stage payload"
+    },
+    {
+      "sha256": "452a210bba4c8d08f7cb7733a816d7220a7fa570a469aea0a997cfc8b594b6a0",
+      "description": "Inno eld0 / eld1 first-stage payload"
+    },
+    {
+      "sha256": "55cd3d36fdcc58016a64398357b2c9724a060da9f0d09266e537a61ec9552e4f",
+      "description": "Later Inno eld2-eld5 payload"
+    },
+    {
+      "sha256": "21306fc5716f95e252388f920314b42f1c8bcc7df67cb4d39da30217b96f4044",
+      "description": "Earlier Inno loader"
+    },
+    {
+      "sha256": "72750d32b440e9f2b6d05ff3d218a561a75d3d75fb976b461fa59897674a7f70",
+      "description": "Earlier Inno second-stage runner"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

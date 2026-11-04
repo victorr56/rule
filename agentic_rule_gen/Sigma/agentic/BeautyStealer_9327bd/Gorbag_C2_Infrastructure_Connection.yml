@@ -1,0 +1,23 @@
+title: Gorbag C2 Infrastructure Connection
+id: 5698b3f2-8951-4191-831e-450f37c44c5c
+status: experimental
+description: Detects network connections to C2 servers associated with the Gorbag threat actor's malware, including BeautyStealer and Prime ReverseShell.
+references:
+    - https://www.welivesecurity.com/en/eset-research/gorbag-orcs-border-harvesting-intelligence-ukraine/
+author: ioc-yara-daily (agentic)
+date: 2026-11-04
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '89.44.9.186'
+            - '142.111.194.73'
+    condition: selection
+falsepositives:
+    - This IP address may be reassigned to a benign owner in the future.
+level: critical

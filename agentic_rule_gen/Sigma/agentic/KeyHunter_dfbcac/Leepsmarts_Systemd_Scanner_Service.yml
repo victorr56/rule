@@ -1,0 +1,26 @@
+title: Leepsmarts Systemd Scanner Service
+id: 5b9f71c2-c9d3-4a18-97de-22c608f5d08f
+status: experimental
+description: Detects the creation or starting of systemd services used by the leepsmarts actor to scan for endpoints using FOFA and Shodan.
+references:
+    - https://socradar.io/blog/keyhunter-operation-harvard-alumni-stanford-llm-key-data/
+author: ioc-yara-daily (agentic)
+date: 2026-11-04
+tags:
+    - attack.persistence
+    - attack.t1543.002
+    - attack.reconnaissance
+    - attack.t1595
+detection:
+    selection:
+        Image|endswith: '/systemctl'
+        CommandLine|contains|any:
+            - 'mscanner-fofa.service'
+            - 'mscanner-shodan.service'
+    condition: selection
+logsource:
+    category: process_creation
+    product: linux
+falsepositives:
+    - Unlikely
+level: high

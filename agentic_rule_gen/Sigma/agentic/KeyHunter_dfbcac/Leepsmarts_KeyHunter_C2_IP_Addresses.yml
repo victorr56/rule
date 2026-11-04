@@ -1,0 +1,25 @@
+title: Leepsmarts KeyHunter C2 IP Addresses
+id: 9a78e5f5-f11a-42b7-87ac-4458f334a123
+status: experimental
+description: Detects network connections to IP addresses associated with the leepsmarts actor's KeyHunter C2 infrastructure.
+references:
+    - https://socradar.io/blog/keyhunter-operation-harvard-alumni-stanford-llm-key-data/
+author: ioc-yara-daily (agentic)
+date: 2026-11-04
+tags:
+    - attack.command_and_control
+    - attack.t1071
+detection:
+    selection:
+        DestinationIp:
+            - '209.112.91.74'
+            - '173.231.39.244'
+            - '123.60.2.245'
+            - '14.47.118.194'
+    condition: selection
+logsource:
+    category: network_connection
+    product: windows
+falsepositives:
+    - Unlikely
+level: high

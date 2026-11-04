@@ -1,0 +1,25 @@
+title: Leepsmarts Tooling Deployment Via Git Clone
+id: a8c6a2e4-e53b-4171-8846-991bb2640242
+status: experimental
+description: Detects the cloning of the "aipocket" repository from the leepsmarts actor's GitHub account, used to deploy their tooling.
+references:
+    - https://socradar.io/blog/keyhunter-operation-harvard-alumni-stanford-llm-key-data/
+author: ioc-yara-daily (agentic)
+date: 2026-11-04
+tags:
+    - attack.execution
+    - attack.t1059
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\git.exe'
+        CommandLine|contains|all:
+            - 'clone'
+            - 'leepsmarts/aipocket.git'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

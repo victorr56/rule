@@ -1,0 +1,20 @@
+title: Node2Shell Payload C2 IP Connection
+id: 4a6c825a-69f8-4b71-9c60-a29d5b76fc34
+status: experimental
+description: Detects network connections to an IP address known to be used for hosting Node2Shell/HTTP2Shell payloads.
+references:
+    - https://socprime.com/blog/node2shell-http2shell-detection/
+author: ioc-yara-daily (agentic)
+date: 2026-11-04
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: network_connection
+detection:
+    selection:
+        DestinationIp: '198.51.100.23'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

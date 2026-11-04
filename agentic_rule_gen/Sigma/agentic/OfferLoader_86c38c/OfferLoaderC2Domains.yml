@@ -1,0 +1,29 @@
+title: OfferLoader C2 Domains
+id: 11bbcc59-7ef8-466d-9784-2a6c1e57c664
+status: experimental
+description: Detects DNS queries for domains known to be used by the OfferLoader campaign for C2 communications.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/11/03/fake-download-campaign-uses-trojanized-installers-deliver-monetization-payloads/
+author: ioc-yara-daily (agentic)
+date: 2026-11-04
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    product: windows
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith:
+            - '.beliefdesk.xyz'
+            - '.companyharbor.xyz'
+            - '.inkact.xyz'
+            - '.orbittrack.cfd'
+            - '.prairielink.cfd'
+            - '.signalpane.cfd'
+            - '.willowbox.xyz'
+            - '.wishgrove.cfd'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

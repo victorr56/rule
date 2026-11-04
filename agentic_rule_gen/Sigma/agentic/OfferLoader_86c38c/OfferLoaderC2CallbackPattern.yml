@@ -1,0 +1,31 @@
+title: OfferLoader C2 Callback Pattern
+id: c46c050e-5401-443b-8219-450f68d6015b
+status: experimental
+description: |
+    Detects HTTP requests containing URI parameters 'd=inno' and 'r=offer_execution'
+    or 'r=offer_execution_fail', which are specific to the OfferLoader C2 protocol
+    for delivering monetization payloads.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/11/03/fake-download-campaign-uses-trojanized-installers-deliver-monetization-payloads/
+author: ioc-yara-daily (agentic)
+date: 2026-11-04
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection_exec:
+        Url|contains|all:
+            - 'd=inno'
+            - 'r=offer_execution'
+        Http.Request.Method: 'GET'
+    selection_fail:
+        Url|contains|all:
+            - 'd=inno'
+            - 'r=offer_execution_fail'
+        Http.Request.Method: 'GET'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: high

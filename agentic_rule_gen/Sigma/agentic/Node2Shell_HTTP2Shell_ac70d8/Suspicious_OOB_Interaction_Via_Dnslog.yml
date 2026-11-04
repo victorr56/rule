@@ -1,0 +1,23 @@
+title: Out-of-Band Interaction via Dnslog
+id: 1152a832-728b-4c28-989f-24ec9d9f52f3
+status: experimental
+description: Detects DNS queries to 'dnslog.cn', a public Out-of-Band Application Security Testing (OAST) service. While it can be used for legitimate security testing, it is also frequently used by attackers to confirm command injection or SSRF vulnerabilities.
+references:
+    - https://socprime.com/blog/node2shell-http2shell-detection/
+author: ioc-yara-daily (agentic)
+date: 2026-11-04
+tags:
+    - attack.command_and_control
+    - attack.t1071
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith: '.dnslog.cn'
+    condition: selection
+falsepositives:
+    - Penetration testing or other authorized security assessments.
+    - Automated vulnerability scanners.
+level: medium

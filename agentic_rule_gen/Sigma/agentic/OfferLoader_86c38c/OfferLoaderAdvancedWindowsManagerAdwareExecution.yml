@@ -1,0 +1,27 @@
+title: OfferLoader Payload Execution - AdvancedWindowsManager Adware
+id: 5e63dfc8-edb4-4e2e-836e-d2861c8d506e
+status: experimental
+description: |
+    Detects the execution of 'AdvancedWindowsManager.exe' from its specific installation
+    path in the user's AppData directory. This is an adware payload delivered by
+    the OfferLoader campaign.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/11/03/fake-download-campaign-uses-trojanized-installers-deliver-monetization-payloads/
+author: ioc-yara-daily (agentic)
+date: 2026-11-04
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|contains|all:
+            - '\AppData\Roaming\AW Manager\'
+            - '\Windows Manager 1.0.0\'
+        Image|endswith: '\AdvancedWindowsManager.exe'
+    condition: selection
+falsepositives:
+    - Legitimate installations of AdvancedWindowsManager, which is considered a Potentially Unwanted Application (PUA).
+level: high

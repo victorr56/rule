@@ -1,0 +1,26 @@
+title: Leepsmarts KeyHunter C2 Domains
+id: b349d10e-c2f3-4a0b-93ca-a3939674066a
+status: experimental
+description: Detects DNS queries to domains associated with the leepsmarts actor's KeyHunter C2 infrastructure.
+references:
+    - https://socradar.io/blog/keyhunter-operation-harvard-alumni-stanford-llm-key-data/
+author: ioc-yara-daily (agentic)
+date: 2026-11-04
+tags:
+    - attack.command_and_control
+    - attack.t1071
+detection:
+    selection:
+        QueryName|endswith:
+            - 'senhai.store'
+            - 'astrdark.cyou'
+            - 'sajuai.xyz'
+            - 'web.712019.xyz'
+            - 'vvbin.me'
+    condition: selection
+logsource:
+    category: dns_query
+    product: windows
+falsepositives:
+    - Unlikely
+level: high
