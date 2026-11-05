@@ -1,0 +1,22 @@
+title: SlippyNunchucks Hijacking Domain DNS Query
+id: 9a0f443b-741c-4389-bc84-90cd66a877df
+status: experimental
+description: Detects DNS queries for sogou-cdn.com, a domain used by SlippyNunchucks to hijack update requests from the Sogou Input Method software.
+references:
+    - https://www.welivesecurity.com/en/eset-research/slippynunchucks-hijacks-sogou-input-methods-brand-promotion-mechanism-to-distribute-malware/
+author: ioc-yara-daily (agentic)
+date: 2026-11-05
+tags:
+    - attack.t1557
+    - attack.t1071.001
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'sogou-cdn.com'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

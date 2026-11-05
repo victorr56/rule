@@ -1,0 +1,22 @@
+title: SlippyNunchucks DarkVigil DLL Drop
+id: d76c61f2-10f6-491b-b79e-711e3b8a1c8f
+status: experimental
+description: Detects the creation of the DarkVigil malware DLL (libcef.dll) by the legitimate Sogou process SgBizLoader.exe. This is indicative of a DLL side-loading attack used by the SlippyNunchucks threat actor.
+references:
+    - https://www.welivesecurity.com/en/eset-research/slippynunchucks-hijacks-sogou-input-methods-brand-promotion-mechanism-to-distribute-malware/
+author: ioc-yara-daily (agentic)
+date: 2024-11-05
+tags:
+    - attack.t1574.001
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\SgBizLoader.exe'
+        TargetFilename|endswith: '\SogouPY\Components\biz_center\libcef.dll'
+    condition: selection
+falsepositives:
+    - Legitimate updates to the Sogou Input Method might create this file, but the use of libcef.dll in this specific component path (biz_center) is not expected standard behavior.
+level: high

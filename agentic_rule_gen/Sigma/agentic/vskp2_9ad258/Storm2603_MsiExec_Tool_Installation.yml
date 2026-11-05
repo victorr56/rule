@@ -1,0 +1,26 @@
+title: Storm-2603 Tool Installation via MsiExec
+id: 53c7c293-8f0a-4428-bfa7-3e811c0edb21
+status: experimental
+description: Detects msiexec.exe command lines used by Storm-2603 to download and install malicious MSI packages, including abused versions of Velociraptor and Zoho Assist.
+references:
+    - https://securelist.com/storm-2603-fileless-toolshell-attack/121467/
+author: ioc-yara-daily (agentic)
+date: 2026-11-05
+tags:
+    - attack.execution
+    - attack.t1218.007
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\msiexec.exe'
+        CommandLine|contains:
+            - 'vdfccjpnedujhrzscjtq.supabase.co/storage/v1/object/public/image/v4.msi'
+            - 'files.catbox.moe/8f7vex.msi'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

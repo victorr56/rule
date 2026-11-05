@@ -1,0 +1,22 @@
+title: SlippyNunchucks Plugin Storage in Registry
+id: f487ab67-17ae-4f27-94a2-71c19b3528b1
+status: experimental
+description: Detects the creation or modification of a registry key used by SlippyNunchucks to store compressed plugin binaries for the DarkVigil malware.
+references:
+    - https://www.welivesecurity.com/en/eset-research/slippynunchucks-hijacks-sogou-input-methods-brand-promotion-mechanism-to-distribute-malware/
+author: ioc-yara-daily (agentic)
+date: 2024-11-05
+tags:
+    - attack.t1112
+    - detection.threat_hunting
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\SogouExplorer.exe'
+        TargetObject|re: 'HKEY_CURRENT_USER\\Software\\Microsoft\\IME\\[^\\\\]+\\pluginHash$'
+    condition: selection
+falsepositives:
+    - 'Legitimate use of Sogou Explorer is not expected to modify this registry path. A detection may indicate a compromised instance of the browser.'
+level: high

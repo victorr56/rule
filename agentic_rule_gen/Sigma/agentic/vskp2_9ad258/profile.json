@@ -1,0 +1,350 @@
+{
+  "malware_family": "vskp2",
+  "threat_actor": "Storm-2603",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Storm-2603 exploited SharePoint vulnerabilities to deploy a fileless .NET webshell, tracked as vskp2, directly into the w3wp.exe memory space. The webshell uses a custom VirtualPathProvider for runtime persistence and acts as a proxy to pivot into the internal network. Post-exploitation activity involved abusing legitimate tools like Velociraptor, Zoho Assist, and Cloudflare Tunnel for access and command execution, with the ultimate goal of deploying Warlock ransomware.",
+  "mitre_techniques": [
+    "T1553"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "parent_child",
+      "value": "w3wp.exe:msiexec.exe",
+      "context": "Infected worker process spawned msiexec.exe to install a remote MSI.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\programdata\\rsndispot.sys",
+      "context": "Vulnerable driver used to terminate EDR solutions.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "G.cs",
+      "context": "Main webshell component for pipeline control, C2, and session management.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Prog.cs",
+      "context": "Execution entry point and task dispatcher module.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "uk/London.cs",
+      "context": "Orchestrator module for command parsing and privilege escalation.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "User.cs",
+      "context": "Module for creating administrative accounts using native SAM RPC subsystem.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "EfsrTiny",
+      "context": "Class name for a minimal EfsPotato implementation for privilege escalation.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "EfsPotato",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "assembly_name",
+      "value": "App_Web_toolpane.aspx*",
+      "context": "Dynamically compiled assembly indicating ToolPane deserialization.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "assembly_name",
+      "value": "Microsoft.GeneratedCode",
+      "context": "Helper assembly produced by XmlSerializer during deserialization exploit.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "vskp2",
+      "context": "Name for the webshell implant.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "suo5",
+      "context": "Command that triggers the G.cs module to hook the ASP.NET runtime.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ObjectDataProvider",
+      "context": "String identifying a gadget used in a deserialization exploit chain.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ExpandedWrapper",
+      "context": "String identifying a gadget used in a deserialization exploit chain.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "LosFormatter",
+      "context": "Formatter used in the vulnerable page, indicating unsafe deserialization.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Warlock",
+      "context": "Ransomware payload the actor attempted to deploy.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Zoho Assist-Unattended Support",
+      "context": "Commercial tool abused for unauthorized remote access.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Zoho Assist",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Cloudflare Tunnel",
+      "context": "Tunneling mechanism deployed for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "cloudflared",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "RegisterVirtualPassProviderInternal",
+      "context": "Non-public ASP.NET method used to register the webshell's VirtualPathProvider.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "GetCacheKey()",
+      "context": "Function used as an interception point for C2 communications.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "SAMRPCNative",
+      "context": "Custom namespace for a P/Invoke wrapper for samlib.dll.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "samlib.dll",
+      "context": "Native Windows library used for stealthy user account creation.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "EfsRpcEncryptFileSrv",
+      "context": "EFSRPC function called to coerce LSASS.exe authentication for privilege escalation.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "EfsPotato",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "HostingEnvironment.RegisterVirtualPathProvider",
+      "context": "API used to register a new virtual-path provider for the implant.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Microsoft-Windows-IIS-Configuration",
+      "context": "ETW provider that can be used to detect VPP-based implants.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Velociraptor",
+      "context": "Open-source DFIR tool abused for post-compromise command execution.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Velociraptor",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "45.91.94.204",
+      "context": "Safing Privacy Network (SPN) node used for exploitation.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://vdfccjpnedujhrzscjtq.supabase.co/storage/v1/object/public/image/v4.msi",
+      "context": "URL hosting a vulnerable Velociraptor MSI package.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "vdfccjpnedujhrzscjtq.supabase.co",
+      "context": "Domain hosting a vulnerable Velociraptor MSI package.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://auth.qgtxtebl.workers.dev/",
+      "context": "Velociraptor server URL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "auth.qgtxtebl.workers.dev",
+      "context": "Velociraptor server domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "199.232.210.172",
+      "context": "C2 traffic relay IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "91.224.92.121",
+      "context": "Bulletproof-hosted C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "49.51.132.100",
+      "context": "Safing Privacy Network (SPN) node.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://files.catbox.moe/8f7vex.msi",
+      "context": "Download URL for abused Zoho Assist Unattended Agent.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "204.76.203.219",
+      "context": "Bulletproof-hosted C2 server IP address.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "dotnet"
+  ]
+}

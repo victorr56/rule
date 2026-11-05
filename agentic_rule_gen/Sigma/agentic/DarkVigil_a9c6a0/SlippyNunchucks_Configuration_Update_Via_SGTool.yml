@@ -1,0 +1,24 @@
+title: SlippyNunchucks Configuration Update Via SGTool
+id: 790a169b-968b-4977-8c3b-552631770258
+status: experimental
+description: Detects the command used by SlippyNunchucks to force the Sogou Input Method to download a malicious configuration file from an attacker-controlled server.
+references:
+    - https://www.welivesecurity.com/en/eset-research/slippynunchucks-hijacks-sogou-input-methods-brand-promotion-mechanism-to-distribute-malware/
+author: ioc-yara-daily (agentic)
+date: 2026-11-05
+tags:
+    - attack.t1105
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\SGTool.exe'
+        CommandLine|contains|all:
+            - '--appid=scdreg'
+            - '-update'
+    condition: selection
+falsepositives:
+    - Unlikely, as this command-line combination is specific to the attack chain.
+level: high

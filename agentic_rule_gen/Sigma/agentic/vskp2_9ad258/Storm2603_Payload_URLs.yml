@@ -1,0 +1,24 @@
+title: Storm-2603 Payload URL Access
+id: d76c96b7-a36c-482a-a92c-63234d70b793
+status: experimental
+description: Detects proxy requests for URLs known to host malicious payloads used by Storm-2603.
+references:
+    - https://securelist.com/storm-2603-fileless-toolshell-attack/121467/
+author: ioc-yara-daily (agentic)
+date: 2024-06-21
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: proxy
+detection:
+    selection_supabase:
+        DestinationHostname: 'vdfccjpnedujhrzscjtq.supabase.co'
+        Url|endswith: '/storage/v1/object/public/image/v4.msi'
+    selection_catbox:
+        DestinationHostname: 'files.catbox.moe'
+        Url|endswith: '/8f7vex.msi'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: critical

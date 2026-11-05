@@ -1,0 +1,29 @@
+title: TraderTraitor Linux Persistence via Systemd Service
+id: 3e0c1f5b-5b5c-4d4e-b5c4-8395e54c7b8d
+status: experimental
+description: Detects the creation or enabling of a systemd service named 'snap-imagent', used for persistence by TraderTraitor's FLATROOF backdoor on Linux.
+references:
+    - https://www.reversinglabs.com/blog/binance-heist-what-we-know-and-what-rl-sees-in-tradertraitors-toolkit
+author: ioc-yara-daily (agentic)
+date: 2026-11-05
+tags:
+    - attack.persistence
+    - attack.t1543.002
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_enable:
+        Image|endswith: '/systemctl'
+        CommandLine|contains|all:
+            - 'enable'
+            - 'snap-imagent'
+    selection_start:
+        Image|endswith: '/systemctl'
+        CommandLine|contains|all:
+            - 'start'
+            - 'snap-imagent'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely, as "snap-imagent" is not a standard service name.
+level: high

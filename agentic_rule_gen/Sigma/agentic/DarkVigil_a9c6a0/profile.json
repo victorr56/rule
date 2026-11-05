@@ -1,0 +1,368 @@
+{
+  "malware_family": "DarkVigil",
+  "threat_actor": "SlippyNunchucks",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "SlippyNunchucks deploys the DarkVigil malware by hijacking DNS requests from the Sogou Input Method to serve a malicious configuration. This configuration causes a legitimate, signed Adobe binary to be downloaded and used to side-load the DarkVigil DLL implant. The .NET-based implant uses the Duplex Message Transport Protocol (DMTP) for C2 communications and plugin orchestration.",
+  "mitre_techniques": [
+    "T1659",
+    "T1574.001",
+    "T1036.005",
+    "T1112",
+    "T1557",
+    "T1071.001",
+    "T1105",
+    "T1573",
+    "T1041"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "pdb_path",
+      "value": "C:\\Users\\PT\\Desktop\\VigilPro\\Client\\Dotnet\\Client.Core\\",
+      "context": "PDB path for the DarkVigil core client",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "C:\\Users\\PT\\Desktop\\VigilⅢ\\Client\\Dotnet\\Plugins\\",
+      "context": "PDB path for DarkVigil plugins",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Vigil.Frame",
+      "context": ".NET namespace reference found in implants",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Vigil.Core",
+      "context": ".NET namespace reference found in implants",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "HandshakePlugin",
+      "context": "Client-side DMTP plugin class for C2 handshake",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "TouchSocket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ClientInfo",
+      "context": "Server-side RPC method to process victim profile",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "InvokeOption.WaitInvoke",
+      "context": "DMTP flag for client to wait for server response",
+      "specificity": "medium",
+      "evidence": "source_identifier",
+      "origin_tool": "TouchSocket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DmtpRpcActor",
+      "context": "Class that handles the reverse RPC mechanism",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "TouchSocket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RpcStore",
+      "context": "RPC library where DarkVigil services are registered",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "TouchSocket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PluginService",
+      "context": "RPC service implemented by DarkVigil to manage plugins",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "OptionService",
+      "context": "RPC service implemented by DarkVigil for client control",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RegistryPlugin",
+      "context": "RPC method to store a plugin in the registry",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RunPlugin",
+      "context": "RPC method to execute a plugin from the registry",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Pillager",
+      "context": "Example name for a DarkVigil plugin",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SendPluginMsg",
+      "context": "Method used by plugins to relay messages through the client",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "TouchSocket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKCU\\Software\\Microsoft\\IME\\%\\pluginHash",
+      "context": "Registry key used to store compressed plugin binaries",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "SGTool.exe --appid=scdreg -update",
+      "context": "Triggers download of malicious config from hijacked server",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "SogouComMgr.exe -invoke BizCenterComBundle BizCenterCom",
+      "context": "Used to execute the side-loading host from the biz_center directory",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\Components\\SogouComMgr.exe",
+      "context": "Path where biz_helper.exe is dropped, masquerading as Sogou component",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "\\Components\\libcef.dll",
+      "context": "Path where DarkVigil DLL is dropped for side-loading",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "biz_helper.exe",
+      "context": "Legitimate Adobe binary renamed and used for side-loading",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "libcef.dll",
+      "context": "Filename for the DarkVigil implant DLL",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Microsoft.VisualStudio.HostingProcess.Utilities.Sync.dll",
+      "context": "Filename for a DarkVigil implant",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 64 6d }",
+      "context": "Magic bytes header for a DMTP message ('dm')",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "TouchSocket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Dmtp",
+      "context": "Default authentication token for DMTP handshake",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "TouchSocket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "TcpDmtp",
+      "context": "ProtocolType value used in generated PluginID",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "TouchSocket",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/api/brandScd/getBrandScd.php",
+      "context": "Legitimate Sogou API path hijacked to deliver malicious config",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sogou-cdn.com",
+      "context": "Hijacking domain and staging server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "dev.soft-png-cdn.com",
+      "context": "Hijacking domain and staging server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "blog.wangmengfun.top",
+      "context": "DarkVigil bootstrap domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "update.mssproxy.net",
+      "context": "DarkVigil bootstrap server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "img.fusfun.top",
+      "context": "DarkVigil bootstrap server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.239.250.102",
+      "context": "Staging server IP resolving sogou-cdn.com",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.237.122.175",
+      "context": "Staging server IP resolving sogou-cdn.com",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.236.254.159",
+      "context": "Staging server IP resolving dev.soft-png-cdn.com",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "47.86.15.162",
+      "context": "DarkVigil bootstrap server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "dotnet"
+  ]
+}

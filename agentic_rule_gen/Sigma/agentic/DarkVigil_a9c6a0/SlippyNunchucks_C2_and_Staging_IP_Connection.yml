@@ -1,0 +1,25 @@
+title: SlippyNunchucks C2 and Staging IP Connection
+id: 11e582e0-2e06-444a-85b2-320d36184a44
+status: experimental
+description: Detects network connections to IP addresses known to be used by the SlippyNunchucks threat actor for C2 and malware staging.
+references:
+    - https://www.welivesecurity.com/en/eset-research/slippynunchucks-hijacks-sogou-input-methods-brand-promotion-mechanism-to-distribute-malware/
+author: ioc-yara-daily (agentic)
+date: 2026-11-05
+tags:
+    - attack.t1071.001
+    - detection.threat_hunting
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '47.239.250.102'
+            - '47.237.122.175'
+            - '47.236.254.159'
+            - '47.86.15.162'
+    condition: selection
+falsepositives:
+    - These IPs could be reassigned to benign services in the future.
+level: high

@@ -1,0 +1,25 @@
+title: TraderTraitor FLATROOF Persistence via Run Key
+id: 0d7a049d-647d-4530-9b43-41a4a49c25f3
+status: experimental
+description: Detects the creation of a registry run key to execute wsmprovhost.exe for persistence, a mechanism used by the TraderTraitor FLATROOF backdoor on Windows.
+references:
+    - https://www.reversinglabs.com/blog/binance-heist-what-we-know-and-what-rl-sees-in-tradertraitors-toolkit
+    - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-075a
+author: ioc-yara-daily (agentic)
+date: 2023-03-16
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\Software\Microsoft\Windows\CurrentVersion\Run\powershell-config-service'
+        Details|contains|all:
+            - 'wsmprovhost.exe'
+            - '-Embedding'
+    condition: selection
+falsepositives:
+    - Legitimate software using WSMProvHost for persistence with a similar naming convention.
+level: high

@@ -1,0 +1,22 @@
+title: TraderTraitor Trojanized Terraform Provider Execution
+id: a2a033f2-8c9a-4c22-b5e1-857c5a0833b9
+status: experimental
+description: Detects the execution of a trojanized Terraform provider named 'terraform-provider-awsbeta_v1.0.0', associated with the TraderTraitor campaign.
+references:
+    - https://www.reversinglabs.com/blog/binance-heist-what-we-know-and-what-rl-sees-in-tradertraitors-toolkit
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.execution
+    - attack.t1195.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\terraform.exe'
+        Image|endswith: '\terraform-provider-awsbeta_v1.0.0'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

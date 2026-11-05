@@ -1,0 +1,27 @@
+title: TraderTraitor C2 and Download DNS Queries
+id: c5d8e7b1-5e8c-4a39-9e8c-f0a1c6a2d1d4
+status: experimental
+description: Detects DNS queries for domains associated with TraderTraitor C2 and payload download infrastructure.
+references:
+    - https://www.reversinglabs.com/blog/binance-heist-what-we-know-and-what-rl-sees-in-tradertraitors-toolkit
+author: ioc-yara-daily (agentic)
+date: 2026-11-05
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 'diagnose.hashicorp-terraform.io'
+            - 'registry.hashicorp-terraform.io'
+            - 'hashicorp-aws.com'
+            - 'arusupport-region1-webhook.online'
+            - 'delay.servehttp.com'
+            - 'supportaru.serveftp.com'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

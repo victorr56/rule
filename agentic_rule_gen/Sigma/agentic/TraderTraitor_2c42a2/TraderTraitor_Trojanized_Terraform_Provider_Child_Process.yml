@@ -1,0 +1,26 @@
+title: TraderTraitor Trojanized Terraform Provider Spawns Shell
+id: 1c5f87b3-228d-4f1e-8e4a-9c2b9a7c3d2e
+status: experimental
+description: Detects a trojanized Terraform provider process spawning shell or utility processes, a behavior observed in the TraderTraitor campaign.
+references:
+    - https://www.reversinglabs.com/blog/binance-heist-what-we-know-and-what-rl-sees-in-tradertraitors-toolkit
+author: ioc-yara-daily (agentic)
+date: 2024-05-24
+tags:
+    - attack.execution
+    - attack.t1059.004
+    - detection.threat_hunting
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        ParentImage|contains: 'terraform-provider-'
+        Image|endswith:
+            - '/openssl'
+            - '/xattr'
+            - '/codesign'
+    condition: selection
+falsepositives:
+    - Legitimate Terraform providers that have a genuine need to spawn these utilities. This may occur in complex, custom-built providers.
+level: medium

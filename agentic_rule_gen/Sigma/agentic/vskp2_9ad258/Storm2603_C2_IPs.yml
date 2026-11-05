@@ -1,0 +1,26 @@
+title: Storm-2603 C2 and Relay IP Connection
+id: 9d19a4e7-9d7a-40a0-8a8b-c9a89fdc2ff0
+status: experimental
+description: Detects network connections to IP addresses known to be used by Storm-2603 for C2 communication, exploitation, and relaying traffic.
+references:
+    - https://securelist.com/storm-2603-fileless-toolshell-attack/121467/
+author: ioc-yara-daily (agentic)
+date: 2026-11-05
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '45.91.94.204'
+            - '49.51.132.100'
+            - '91.224.92.121'
+            - '199.232.210.172'
+            - '204.76.203.219'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

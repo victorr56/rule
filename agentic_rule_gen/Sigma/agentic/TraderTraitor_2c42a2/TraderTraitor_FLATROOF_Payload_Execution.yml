@@ -1,0 +1,28 @@
+title: TraderTraitor FLATROOF Payload Execution
+id: f98d9e2a-19c2-4876-8051-78923a1a337c
+status: experimental
+description: Detects the execution of the FLATROOF backdoor from its specific drop path, masquerading as a browser renderer process.
+references:
+    - https://www.reversinglabs.com/blog/binance-heist-what-we-know-and-what-rl-sees-in-tradertraitors-toolkit
+author: ioc-yara-daily (agentic)
+date: 2026-11-05
+tags:
+    - attack.defense_evasion
+    - attack.t1027
+    - attack.execution
+logsource:
+    category: process_creation
+detection:
+    selection_win:
+        Image|endswith: '\AppData\Local\Microsoft\Edge\service.exe'
+        CommandLine|contains: ' --type=renderer'
+    selection_lin:
+        Image|endswith: '/.config/git/update'
+        CommandLine|contains: ' --type=renderer'
+    selection_mac:
+        Image|endswith: '/Library/com.apple.iTunesCloud/SystemUpdate'
+        CommandLine|contains: ' --type=renderer'
+    condition: 1 of selection_*
+falsepositives:
+    - Legitimate browser processes using the '--type=renderer' flag, if they are spawned from paths that happen to match the end of the specified image paths (highly unlikely).
+level: high

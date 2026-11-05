@@ -1,0 +1,343 @@
+{
+  "malware_family": "TraderTraitor",
+  "threat_actor": "TraderTraitor",
+  "platforms": [
+    "macos",
+    "linux",
+    "windows"
+  ],
+  "summary": "TraderTraitor deploys a trojanized Terraform provider that downloads a shell script loader. This script extracts a Rust-based backdoor named FLATROOF from a fake font file, which then steals credentials and deploys a second backdoor, ROOFDECK, for command and control.",
+  "mitre_techniques": [
+    "T1195.001",
+    "T1059.004",
+    "T1574.10",
+    "T1547.001",
+    "T1546.016",
+    "T1071.001",
+    "T1102.002",
+    "T1102.001",
+    "T1027",
+    "T1562.001",
+    "T1555",
+    "T1552.004",
+    "T1005",
+    "T1070.004",
+    "T1548.001",
+    "T1548.003"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "@@ENDFONT@@",
+      "context": "Marker separating decoy WOFF data from the encrypted payload in font containers.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "PTa3WZPQZAjj55t@",
+      "context": "Hardcoded passphrase to decrypt the AES-256-CBC FLATROOF payload.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "Image|endswith: '/sh', '/bash', '/zsh', '/curl', '/openssl', '/xattr', '/codesign'",
+      "context": "ParentImage|contains: '/terraform-provider-'",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/Library/com.apple.iTunesCloud/SystemUpdate",
+      "context": "macOS drop path for the decrypted FLATROOF payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/.config/git/update",
+      "context": "Linux drop path for the decrypted FLATROOF payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "$HOME/AppData/Local/Microsoft/Edge/service.exe",
+      "context": "Windows drop path for the decrypted FLATROOF payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "/Users/dev/.cargo/",
+      "context": "Rust crate paths found in the decrypted FLATROOF payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "--type=renderer",
+      "context": "Argument used to launch the FLATROOF payload to masquerade as a browser process.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "safari_updater",
+      "context": "Name of the shell script loader downloaded by the trojanized Terraform provider.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "session.lock",
+      "context": "Run-once marker created by the trojanized Terraform provider.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "powershell-config-service",
+      "context": "FLATROOF persistence via HKCU Run key on Windows.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "snap-imagent",
+      "context": "FLATROOF persistence service on Linux.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.zlogout",
+      "context": "FLATROOF persistence hook on macOS.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "xattr -d com.apple.quarantine",
+      "context": "The loader script strips the quarantine attribute on macOS.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "codesign -s -",
+      "context": "The loader script ad-hoc signs the payload on macOS.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "U2FsdGVkX1",
+      "context": "Base64 encoding of 'Salted__', the start of OpenSSL encrypted data.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "~/.zlogout created by script",
+      "context": "Marker string associated with FLATROOF's persistence mechanism.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "terraform-provider-awsbeta_v1.0.0",
+      "context": "File name of the trojanized Terraform provider.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "imagent",
+      "context": "File name for the macOS ROOFDECK backdoor.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "update.exe",
+      "context": "File name for the Windows ROOFDECK backdoor.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://https://supportaru.serveftp.com/statics/cache/v11",
+      "context": "Primary (but malformed) payload download URL in the loader script.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://raw.githubusercontent.com/bluearuhost/hospitalrun-frontend/refs/heads/main/public/fonts/version1/",
+      "context": "Fallback payload download URL in the loader script.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://stage-fashion365.vercel.app/static/tinymce4.7.5/plugins/fonts/v1104",
+      "context": "Tertiary payload download URL in the loader script.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "diagnose.hashicorp-terraform.io",
+      "context": "Domain used to download the safari_updater script.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "registry.hashicorp-terraform.io",
+      "context": "Malicious registry domain pointed to by weaponized .terraform.lock.hcl files.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "hashicorp-aws.com",
+      "context": "Malicious domain for hunting in .terraform.lock.hcl files.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://arusupport-region1-webhook.online/",
+      "context": "FLATROOF C2 URL.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "delay.servehttp.com",
+      "context": "ROOFDECK C2 domain, resolved via Nostr/Pastebin.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x15104a9ce0f08a8f0075a0869ae80e795fe0feb7",
+      "context": "Ethereum address that received proceeds from both Binance and Bitget thefts.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "e3b8f2c384214475479039091873108480396423a2335b221085002b55a02ed9",
+      "description": "Trojanized Terraform provider 'terraform-provider-awsbeta_v1.0.0' (MacOS.Trojan.Multiverze)"
+    },
+    {
+      "sha256": "451b586ec9d3c997b319986a1177829653e8ae641c953c05ede6a38616f2da97",
+      "description": "Loader script 'safari_updater' (MacOS.Trojan.Generic)"
+    },
+    {
+      "sha256": "62e988e9affcd000657bef4db47eb2e85c9a4cc42f4832780a02e19624e36e38",
+      "description": "FLATROOF font container 'HiraginoSans-Regular.woff' (MacOS.Trojan.Flatroof)"
+    },
+    {
+      "sha256": "3c254614de8c1a2f07297e201b138656819448f7d433b5c11adef3d24c08470a",
+      "description": "Decrypted FLATROOF payload (MacOS.Trojan.Gaslight)"
+    },
+    {
+      "sha256": "6420b9e15998f46045585b410427b3b3a3258c707835b3769c0d9a6c2306d88f",
+      "description": "macOS ROOFDECK backdoor 'imagent' (MacOS.Backdoor.GetShell)"
+    },
+    {
+      "sha256": "d2d6c141d6b0521e847c22997d953931ed80b6b2302384f686d1a29f8f4a1811",
+      "description": "Windows ROOFDECK backdoor 'update.exe' (Win64.Trojan.ReverseShell)"
+    },
+    {
+      "sha256": "a6da7ed7a340707746522c174092b7c6999a2245b991b8d23e2003c20c025061",
+      "description": "Earlier macOS ROOFDECK sibling (MacOS.Exploit.ReverseShell), first seen July 13, 2026"
+    },
+    {
+      "sha256": "3e4f6a1523c9135a510c4f2bb34d0b1d3d81b83d8e0fc6f2e24564c76b1f24d4",
+      "description": "Earlier macOS ROOFDECK sibling (MacOS.Exploit.ReverseShell), first seen May 22, 2026"
+    }
+  ],
+  "file_types": [
+    "macho",
+    "pe",
+    "script"
+  ]
+}

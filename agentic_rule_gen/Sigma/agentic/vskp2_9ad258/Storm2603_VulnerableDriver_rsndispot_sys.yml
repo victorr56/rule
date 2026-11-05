@@ -1,0 +1,26 @@
+title: Storm-2603 Vulnerable Driver 'rsndispot.sys' Service Registration
+id: 59a9ef1d-a080-45eb-9276-857e324022a1
+status: experimental
+description: Detects the service creation for the vulnerable driver `rsndispot.sys` used by Storm-2603 to terminate EDR solutions.
+references:
+    - https://securelist.com/storm-2603-fileless-toolshell-attack/121467/
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+    - attack.persistence
+    - attack.t1543.003
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains|all:
+            - '\SYSTEM\CurrentControlSet\Services\'
+            - '\ImagePath'
+        Details|endswith: '\rsndispot.sys'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical
