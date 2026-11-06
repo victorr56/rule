@@ -1,0 +1,73 @@
+{
+  "malware_family": "Rootevidence Scanner",
+  "threat_actor": "Rootevidence",
+  "platforms": [
+    "network_device"
+  ],
+  "summary": "A vulnerability scanner operated by Rootevidence targets a Cisco IOS vulnerability (suspected CVE-2023-20198). The scanner is identifiable by its unique User-Agent 'RootEvidence/1.0', custom 'Opt-Out-*' HTTP headers, and a URL-encoded request path '/%77ebui_wsma_https'.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "uname -a",
+      "context": "Command executed via suspected CVE-2023-20198 exploit.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/%77ebui_wsma_https",
+      "context": "URL-encoded path for suspected Cisco IOS exploit.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "RootEvidence/1.0",
+      "context": "User-Agent for Rootevidence vulnerability scanner.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Opt-Out-Email: re-abuse@rootevidence.com",
+      "context": "Custom header in Rootevidence vulnerability scan.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Opt-Out-Url: https://www.rootevidence.com/scanners",
+      "context": "Custom header in Rootevidence vulnerability scan.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "urn:cisco:wsma-exec",
+      "context": "XML namespace in SOAP request body for exploit.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "correlator=\"exec1\"",
+      "context": "Attribute in SOAP request body for exploit.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": []
+}

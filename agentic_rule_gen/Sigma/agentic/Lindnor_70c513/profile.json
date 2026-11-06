@@ -1,0 +1,271 @@
+{
+  "malware_family": "Lindnor",
+  "threat_actor": "Hawkmoth",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "The Hawkmoth threat actor deployed a new custom backdoor, Lindnor, in an attack leading to Anubis ransomware. Lindnor masquerades as legitimate software, collects system information, and communicates with C2 servers over port 443. The attackers also used numerous security-disabling tools, favoring a Bring Your Own Vulnerable Driver (BYOVD) approach and configuring AnyDesk to run in Safe Mode for persistent access.",
+  "mitre_techniques": [
+    "T1574.006",
+    "T1562.009",
+    "T1219",
+    "T1543.003",
+    "T1136.001",
+    "T1562.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "healthcontroller64.exe",
+      "context": "Backdoor.Lindnor masquerading as a Chrome component.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "svchelper.exe",
+      "context": "Backdoor.Lindnor masquerading as a VMware file.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "gbbsym.exe",
+      "context": "Security killer tool masquerading as Symantec software.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "symgooq.exe",
+      "context": "Security killer tool masquerading as Symantec software.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-l",
+      "context": "Command-line switch for security killer to list kernel callbacks.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-d",
+      "context": "Command-line switch for security killer to list and remove kernel callbacks.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "safemode.exe",
+      "context": "Tool to configure AnyDesk for persistence in Safe Mode.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "\"CSIDL_SYSTEM\\reg.exe\" add HKLM\\SYSTEM\\CurrentControlSet\\Control\\SafeBoot\\Network\\AnyDesk /ve /t REG_SZ /d Service /f",
+      "context": "Registers AnyDesk service to run in Safe Mode with Networking.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\SafeBoot\\Network\\AnyDesk",
+      "context": "Registry key to permit a service in Safe Mode with Networking.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "anydesk.exe",
+      "context": "Legitimate remote access tool.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "AnyDesk",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "iservice.exe",
+      "context": "Anubis ransomware payload.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".anubis",
+      "context": "File extension appended to encrypted files by Anubis ransomware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "restore files.txt",
+      "context": "Anubis ransomware ransom note.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "restore files.html",
+      "context": "Anubis ransomware ransom note.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "powerhost.exe",
+      "context": "Backdoor.Lindnor sample.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "eventwatcher.exe",
+      "context": "Backdoor.Lindnor sample.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "volumeproxy.exe",
+      "context": "Backdoor.Lindnor sample.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "havoc.sys",
+      "context": "Vulnerable driver used in BYOVD attack.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "xhunter1.sys",
+      "context": "Vulnerable driver used in BYOVD attack.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "msrcontrib.com",
+      "context": "Backdoor.Lindnor C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cfgsync-relay.eastus.cloudapp.azure.com",
+      "context": "Backdoor.Lindnor C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "fc200686175559f4544a5de826905f09a68476d889690a3be40ac32356790cb8",
+      "description": "Backdoor.Lindnor sample (healthcontroller64.exe, svchelper.exe)"
+    },
+    {
+      "sha256": "5d2dd9caf2ae4a5083dbec16e688040456cdbc31eaeecbab78188e322ed0415b",
+      "description": "Backdoor.Lindnor sample (powerhost.exe, eventwatcher.exe)"
+    },
+    {
+      "sha256": "ad9575a9ef2dcc9d2fd2a24376c418549d4b3db5564c22b20081d33cf7629e43",
+      "description": "Backdoor.Lindnor sample (volumeproxy.exe)"
+    },
+    {
+      "sha256": "e69b882218fa2a19fd351741874bfcd10a6ae91076e6a8483795e0e357f8d026",
+      "description": "Anubis ransomware payload (iservice.exe)"
+    },
+    {
+      "sha256": "47a864736764112d7897c76e56d51111ce75b3e46fdbac6933df8a5b29507d17",
+      "description": "AnyDesk Safe Mode configuration tool (safemode.exe)"
+    },
+    {
+      "sha256": "aa779d811e00a30dfb56b994bdd63424cbf97617af737a218b6aff9f7c3a50f5",
+      "description": "Security killer tool (gbbsym.exe)"
+    },
+    {
+      "sha256": "854c3e76beb200243ccf6af260e9a2089c2fc545f8f1b34d34c6fe86f2d056c3",
+      "description": "Security killer tool (symgooq.exe)"
+    },
+    {
+      "sha256": "5abe477517f51d81061d2e69a9adebdcda80d36667d0afabe103fda4802d33db",
+      "description": "Vulnerable driver (havoc.sys)"
+    },
+    {
+      "sha256": "e727d0753d2cd0b2f6eeba4cea53aa10b3ff3ed2afeb78f545fcf6d840f85c3e",
+      "description": "Vulnerable driver (xhunter1.sys)"
+    },
+    {
+      "sha256": "467d1395b61d4b886329571b564fb21db01639acd2799439646c85b9aeaec175",
+      "description": "AnyDesk legitimate remote access tool"
+    }
+  ],
+  "file_types": [
+    "pe"
+  ]
+}

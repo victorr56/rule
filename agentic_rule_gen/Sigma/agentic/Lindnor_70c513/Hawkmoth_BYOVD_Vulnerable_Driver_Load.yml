@@ -1,0 +1,27 @@
+title: Hawkmoth BYOVD Vulnerable Driver Service Creation
+id: 56930263-df6a-4932-a5e1-55cc0b48f6c4
+status: experimental
+description: Detects the creation of a Windows service configured to load known vulnerable drivers 'havoc.sys' or 'xhunter1.sys', a technique used by the Hawkmoth actor group for Bring Your Own Vulnerable Driver (BYOVD) attacks to impair defenses and escalate privileges.
+references:
+  - https://www.security.com/threat-intelligence/lindnor-new-backdoor-anubis-ransomware
+author: ioc-yara-daily (agentic)
+date: 2026-11-06
+tags:
+  - attack.privilege_escalation
+  - attack.t1562.001
+  - attack.persistence
+  - attack.t1543.003
+logsource:
+  category: registry_set
+  product: windows
+detection:
+  selection:
+    TargetObject|contains: '\SYSTEM\CurrentControlSet\Services\'
+    TargetObject|endswith: '\ImagePath'
+    Details|endswith:
+      - '\havoc.sys'
+      - '\xhunter1.sys'
+  condition: selection
+falsepositives:
+  - Legitimate software that uses these specific driver names is highly unlikely.
+level: high

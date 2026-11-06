@@ -1,0 +1,23 @@
+title: Hawkmoth Lindnor Backdoor C2 DNS Query
+id: 26f9661d-3176-430c-ab9a-2e65c9b68c5b
+status: experimental
+description: Detects DNS queries for domains known to be used as C2 servers for the Lindnor backdoor.
+references:
+  - https://www.security.com/threat-intelligence/lindnor-new-backdoor-anubis-ransomware
+author: ioc-yara-daily (agentic)
+date: 2026-11-06
+tags:
+  - attack.command_and_control
+  - attack.t1071
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    QueryName:
+      - 'msrcontrib.com'
+      - 'cfgsync-relay.eastus.cloudapp.azure.com'
+  condition: selection
+falsepositives:
+  - 'Unlikely.'
+level: high

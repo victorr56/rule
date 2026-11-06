@@ -1,0 +1,26 @@
+title: Hawkmoth AnyDesk Safe Mode Persistence via Reg.exe
+id: 11f59223-93d3-4537-8e6d-74d3d2eb1d12
+status: experimental
+description: Detects the use of reg.exe to configure the AnyDesk service to run in Safe Mode with Networking. This technique was used by the Hawkmoth threat actor.
+references:
+  - https://www.security.com/threat-intelligence/lindnor-new-backdoor-anubis-ransomware
+author: ioc-yara-daily (agentic)
+date: 2026-11-06
+tags:
+  - attack.persistence
+  - attack.t1562.009
+  - attack.t1219
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\reg.exe'
+    CommandLine|contains|all:
+      - 'add'
+      - 'SYSTEM\CurrentControlSet\Control\SafeBoot\Network\AnyDesk'
+      - '/d Service'
+  condition: selection
+falsepositives:
+  - 'This command could be run by a system administrator for remote recovery scenarios, but it is an uncommon configuration.'
+level: high

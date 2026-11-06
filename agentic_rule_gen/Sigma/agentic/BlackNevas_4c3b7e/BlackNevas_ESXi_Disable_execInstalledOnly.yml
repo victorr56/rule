@@ -1,0 +1,25 @@
+title: BlackNevas Disables ESXi execInstalledOnly Security Setting
+id: ed9b8b3b-31ca-4395-ad78-9e583c8f2b7a
+status: experimental
+description: Detects the command used by BlackNevas ransomware operators to disable the 'execInstalledOnly' security setting on an ESXi host. This allows the execution of non-VIB-installed binaries, a key prerequisite for running the ransomware payload.
+references:
+    - https://securelist.com/virtualization-security-esxi-and-proxmox-ransomware-cases/121819/
+author: ioc-yara-daily (agentic)
+date: 2026-11-06
+tags:
+    - attack.impair_defenses
+    - attack.t1562
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/esxcli'
+        CommandLine|contains|all:
+            - 'system settings advanced set'
+            - '-o /User/execInstalledOnly'
+            - '-i 0'
+    condition: selection
+falsepositives:
+    - 'Legitimate administrative activity, although disabling this security feature is highly unusual and warrants investigation.'
+level: high

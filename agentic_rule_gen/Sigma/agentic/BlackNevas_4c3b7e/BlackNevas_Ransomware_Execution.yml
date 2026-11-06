@@ -1,0 +1,25 @@
+title: BlackNevas Ransomware Execution on ESXi
+id: 5b4c194b-14d2-4303-b552-32a132959639
+status: experimental
+description: Detects the execution of the BlackNevas ransomware binary, typically named 'esx', on a VMWare ESXi host using its specific command-line arguments.
+references:
+    - https://securelist.com/virtualization-security-esxi-and-proxmox-ransomware-cases/121819/
+author: ioc-yara-daily (agentic)
+date: 2026-11-06
+tags:
+    - attack.data_encrypted_for_impact
+    - attack.t1486
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_encrypt:
+        Image|endswith: '/esx'
+        CommandLine|contains: ' /p /vmfs/'
+    selection_selftest:
+        Image|endswith: '/esx'
+        CommandLine|contains: ' /selftest'
+    condition: 1 of selection_*
+falsepositives:
+    - Unlikely
+level: critical

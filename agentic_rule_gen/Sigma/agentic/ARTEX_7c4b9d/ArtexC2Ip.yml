@@ -1,0 +1,24 @@
+title: ARTEX C2 Communication
+id: c7d9a3b1-b922-4a0e-953e-001c90c74902
+status: experimental
+description: Detects network connections to command and control servers associated with the ARTEX malware.
+references:
+    - https://research.checkpoint.com/2026/hacking-on-autopilot-inside-artex-cybercrime-campaigns/
+author: ioc-yara-daily (agentic)
+date: 2026-11-06
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: zeek
+detection:
+    selection:
+        DestinationIp:
+            - '38.11.173.1'
+            - '103.122.245.194'
+            - '192.236.172.197'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

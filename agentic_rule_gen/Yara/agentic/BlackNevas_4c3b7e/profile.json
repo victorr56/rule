@@ -1,0 +1,107 @@
+{
+  "malware_family": "BlackNevas",
+  "threat_actor": "",
+  "platforms": [
+    "linux",
+    "windows"
+  ],
+  "summary": "BlackNevas ransomware targets ESXi environments by gaining access via reused root credentials over SSH. Attackers use the native `esxcli` tool to disable the `execInstalledOnly` security control, then execute the ransomware binary from the command line with arguments for path, self-testing, and log wiping.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "esx",
+      "context": "Ransomware binary uploaded to the ESXi host.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "GMER",
+      "context": "Execution recorded by UserAssist artifacts.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "esxcli system settings advanced set -o /User/execInstalledOnly -i 0",
+      "context": "Used by root user via SSH to disable execution restriction policy.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "./esx /log",
+      "context": "Initial (failed) execution attempt of the ransomware binary.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "./esx /selftest",
+      "context": "Ransomware execution command with selftest argument.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "nohup ./esx /p /vmfs/ /depth 5 /log /wipe",
+      "context": "Ransomware execution to encrypt files and wipe logs.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "./esx /depth 5 /log /wipe",
+      "context": "Variant of the ransomware execution command.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "/User/execInstalledOnly",
+      "context": "ESXi advanced setting path disabled by the attacker.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/api2/json/nodes/******/vncwebsocket",
+      "context": "Proxmox API used to activate VNC web socket (from Case 2).",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "elf",
+    "pe"
+  ]
+}

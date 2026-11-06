@@ -1,0 +1,276 @@
+{
+  "malware_family": "ARTEX",
+  "threat_actor": "ARTEX operators",
+  "platforms": [
+    "web",
+    "linux",
+    "ios",
+    "android"
+  ],
+  "summary": "ARTEX is an AI-powered penetration testing platform used by cybercriminals for autonomous, opportunistic attacks. It leverages LLMs like Deepseek to exploit web vulnerabilities for financial gain, such as stealing code-signing certificates, cryptocurrency, or gaming accounts. The platform is notable for its scale of deployment and the minimal operator interaction required for its attacks.",
+  "mitre_techniques": [
+    "T1190",
+    "T1078",
+    "T1068",
+    "T1195.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "证书库",
+      "context": "String agent searches for to find certificate database ('cert library').",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "get a p12 certificate + password",
+      "context": "The task goal set by the operator for the certificate heist campaign.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "现在的进度是什么",
+      "context": "Common operator prompt asking for current progress.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "能否把全部的注入提示，focus on企业证书而非个人",
+      "context": "Operator prompt to make prompts focus on enterprise certificates.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "打 USDT 出来",
+      "context": "Part of initial task goal for crypto draining: 'Withdraw USDT'.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "埋雷",
+      "context": "Part of initial task goal for crypto draining: 'Plant a backdoor'.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "这类系统必然在后端存真实私钥做自动打款, 是最值钱目标。",
+      "context": "Attacker's rationale for targeting gambling/crypto sites.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "supply-chain IPA replacement",
+      "context": "Agent's description of a supply chain attack vector.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "数据号",
+      "context": "Grey market term for hacked game accounts ('data accounts').",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "上号器",
+      "context": "Grey market term for a tool to log into hacked accounts.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "重大发现",
+      "context": "Agent's prefix for reporting a major finding.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "全部数据凭证",
+      "context": "Agent's description of the 'all data credentials' objective.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "已实证有效",
+      "context": "Agent's report prefix for validated accounts ('Proven effective').",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "*.p12",
+      "context": "Target file type for iOS code-signing certificate theft campaign.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "*.mobileprovision",
+      "context": "Target iOS provisioning profile file type needed for signing.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "manifest.plist",
+      "context": "iOS app manifest file poisoned in a supply chain attack.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "dev",
+      "context": "Default ARTEX version tag.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "sco-fix2",
+      "context": "ARTEX version tag used by an operator cluster.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "dev-db-resilience-20261031",
+      "context": "ARTEX version tag used by an operator cluster.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0.3.15-pro.*",
+      "context": "Rolling ARTEX version tag pattern used by an operator cluster.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "38.11.173.1",
+      "context": "ARTEX C&C server from 'sco-fix2' cluster.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.122.245.194",
+      "context": "ARTEX C&C server from 'dev-db-resilience' cluster.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "192.236.172.197",
+      "context": "ARTEX C&C server from '0.3.15-pro.*' cluster.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "AS54600",
+      "context": "ASN for 'sco-fix2' operator cluster (PEG TECH INC).",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "AS152918",
+      "context": "ASN for 'dev-db-resilience' operator cluster (Liberally Network LLC).",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "AS36352",
+      "context": "ASN for '0.3.15-pro.*' operator cluster (HostPapa).",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script",
+    "archive",
+    "document",
+    "apk"
+  ]
+}

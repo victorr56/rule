@@ -1,0 +1,21 @@
+title: Rootevidence Vulnerability Scanner Activity
+id: 6a3502c4-f655-4422-9214-5f121d5303c7
+status: experimental
+description: Detects network activity from the Rootevidence vulnerability scanner, which is known to scan for Cisco IOS XE vulnerabilities (suspected CVE-2023-20198).
+references:
+    - https://isc.sans.edu/diary/rss/33492
+author: ioc-yara-daily (agentic)
+date: 2026-11-06
+tags:
+    - attack.reconnaissance
+    - attack.t1595.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        UserAgent: 'RootEvidence/1.0'
+        UrlOriginal|contains: '/%77ebui_wsma_https'  # URL-encoded '/webui_wsma_https'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

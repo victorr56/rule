@@ -1,0 +1,23 @@
+title: Hawkmoth AnyDesk Safe Mode Persistence
+id: 54316410-b492-4f36-ae9d-0d67f70b2014
+status: experimental
+description: Detects the modification of the registry to allow the AnyDesk service to run in Safe Mode with Networking. This technique was used by the Hawkmoth threat actor.
+references:
+  - https://www.security.com/threat-intelligence/lindnor-new-backdoor-anubis-ransomware
+author: ioc-yara-daily (agentic)
+date: 2026-11-06
+tags:
+  - attack.persistence
+  - attack.t1562.009
+  - attack.t1219
+logsource:
+  category: registry_set
+  product: windows
+detection:
+  selection:
+    TargetObject|endswith: '\SYSTEM\CurrentControlSet\Control\SafeBoot\Network\AnyDesk'
+    Details: 'Service'
+  condition: selection
+falsepositives:
+  - 'This modification could be performed by a system administrator for remote recovery scenarios, but it is an uncommon configuration.'
+level: high

@@ -1,0 +1,38 @@
+title: Hawkmoth Lindnor Component Process Chaining
+id: c4e3500d-52ec-411a-8e99-f418d184067a
+status: experimental
+description: Detects process execution chains involving components of the Hawkmoth threat actor's Lindnor backdoor and associated tooling. This behavior is indicative of one malicious component launching another.
+references:
+  - https://www.security.com/threat-intelligence/lindnor-new-backdoor-anubis-ransomware
+author: ioc-yara-daily (agentic)
+date: 2026-11-06
+tags:
+  - attack.execution
+  - attack.t1562.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    ParentImage|endswith:
+      - '\healthcontroller64.exe'
+      - '\svchelper.exe'
+      - '\gbbsym.exe'
+      - '\symgooq.exe'
+      - '\powerhost.exe'
+      - '\eventwatcher.exe'
+      - '\volumeproxy.exe'
+      - '\iservice.exe'
+    Image|endswith:
+      - '\healthcontroller64.exe'
+      - '\svchelper.exe'
+      - '\gbbsym.exe'
+      - '\symgooq.exe'
+      - '\powerhost.exe'
+      - '\eventwatcher.exe'
+      - '\volumeproxy.exe'
+      - '\iservice.exe'
+  condition: selection
+falsepositives:
+  - 'Unlikely. Requires one suspicious executable to launch another from the same set.'
+level: high
