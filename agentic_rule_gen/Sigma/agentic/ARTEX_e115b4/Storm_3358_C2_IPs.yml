@@ -1,0 +1,30 @@
+title: Storm-3358/ARTEX C2 IP Communication
+id: f9846c4f-a496-419a-9e1e-289d06b9868e
+status: experimental
+description: Detects network connections to IP addresses known to be C2 or infrastructure servers for the threat actor Storm-3358 and the ARTEX framework.
+references:
+    - https://www.microsoft.com/en/us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/
+author: ioc-yara-daily (agentic)
+date: 2026-11-07
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '199.19.95.66'
+            - '199.19.95.67'
+            - '199.19.95.68'
+            - '91.92.240.238'
+            - '85.11.168.45'
+            - '85.11.167.52'
+            - '178.16.54.129'
+            - '178.15.54.129'
+            - '31.77.229.35'
+    condition: selection
+falsepositives:
+    - These IP addresses could be reassigned to legitimate services in the future.
+level: critical

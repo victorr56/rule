@@ -1,0 +1,185 @@
+{
+  "malware_family": "ARTEX",
+  "threat_actor": "Storm-3358",
+  "platforms": [
+    "multi"
+  ],
+  "summary": "The financially motivated actor Storm-3358 uses the agentic AI offensive framework ARTEX to target the financial sector. The framework automates scanning, exploitation of web vulnerabilities, and deployment of open-source remote access trojans (RATs) such as WISP, vshell, and AdaptixC2. ARTEX leverages common penetration testing tools like Nmap, curl, and Playwright to move at machine speed through victim networks.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "process_name",
+      "value": "WISP",
+      "context": "A remote access trojan (RAT) installed by Storm-3358.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "vshell",
+      "context": "A remote access trojan (RAT) installed by Storm-3358.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "AdaptixC2",
+      "context": "A remote access trojan (RAT) installed by Storm-3358.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "netcat",
+      "context": "Used by ARTEX agents to download RATs to compromised systems.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "curl",
+      "context": "Used by ARTEX agents to download RATs to compromised systems.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "curl",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "wget",
+      "context": "ARTEX uses this tool by default for its operations.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "wget",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "Nmap",
+      "context": "ARTEX uses this tool by default for its operations.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "Nmap",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "chromium",
+      "context": "ARTEX uses headless Chromium through Playwright.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "Playwright",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "Norma SDK WebFetch",
+      "context": "A default user agent used by the ARTEX framework.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "Norma SDK"
+    },
+    {
+      "kind": "user_agent",
+      "value": "Playwright",
+      "context": "ARTEX uses headless Chromium through Playwright, which may have default user agents.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Playwright"
+    },
+    {
+      "kind": "ip",
+      "value": "199.19.95.66",
+      "context": "WISP C2 node",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "199.19.95.67",
+      "context": "WISP C2 node",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "199.19.95.68",
+      "context": "WISP C2 node",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "91.92.240.238",
+      "context": "ARTEX server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "85.11.168.45",
+      "context": "ARTEX server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "85.11.167.52",
+      "context": "C2 server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "178.16.54.129",
+      "context": "ARTEX server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "178.15.54.129",
+      "context": "ARTEX related IP address from Sentinel hunting query.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "31.77.229.35",
+      "context": "ARTEX server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

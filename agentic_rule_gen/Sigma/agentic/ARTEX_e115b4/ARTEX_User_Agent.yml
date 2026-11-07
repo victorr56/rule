@@ -1,0 +1,23 @@
+title: ARTEX Framework User-Agent 'Norma SDK WebFetch'
+id: 541c48f4-2f22-494b-a25e-e478546baf06
+status: experimental
+description: Detects network requests containing the 'Norma SDK WebFetch' User-Agent string, which is a default value used by the ARTEX offensive framework.
+references:
+    - https://www.microsoft.com/en/us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/
+author: ioc-yara-daily (agentic)
+date: 2024-05-20
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: proxy
+detection:
+    selection:
+        UserAgent|contains: 'Norma SDK WebFetch'
+        HttpMethod:
+            - 'GET'
+            - 'POST'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: high

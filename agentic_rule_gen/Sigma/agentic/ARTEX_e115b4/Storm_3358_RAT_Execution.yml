@@ -1,0 +1,28 @@
+title: Storm-3358 RAT Process Creation
+id: c3822166-512c-47bb-a980-60a6a249c6e3
+status: experimental
+description: Detects the execution of remote access trojans (RATs) such as WISP, vshell, and AdaptixC2, which are known to be deployed by the threat actor Storm-3358 via the ARTEX framework. This rule focuses on Windows-based process creation events.
+references:
+    - https://www.microsoft.com/en/us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/
+author: ioc-yara-daily (agentic)
+date: 2026-11-07
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith:
+            - '\WISP.exe'
+            - '\vshell.exe'
+            - '\AdaptixC2.exe'
+        OriginalFileName:
+            - 'WISP.exe'
+            - 'vshell.exe'
+            - 'AdaptixC2.exe'
+    condition: selection
+falsepositives:
+    - Legitimate software that may use the same process names, although this is considered unlikely.
+level: high
