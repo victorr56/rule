@@ -1,0 +1,163 @@
+{
+  "malware_family": "Qubole Trust Abuse",
+  "threat_actor": "Unknown",
+  "platforms": [
+    "web",
+    "linux",
+    "windows"
+  ],
+  "summary": "An unknown threat actor leveraged compromised IAM credentials from Qubole's AWS account to assume roles in customer environments. The actor performed broad discovery, harvested credentials, and exfiltrated S3 data opportunistically. A related bootable Linux ISO, sso_agent.iso, was also discovered, designed to establish C2 on victim machines.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "sso_agent.iso",
+      "context": "Bootable linux image hosted on actor infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "quiam-*",
+      "context": "Role session name pattern used by the threat actor.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "AIDA3W7DIFLYOLTK63SFS",
+      "context": "IAM Principal ID observed only in threat actor activity.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "AIDAJYRRH5Y3A7AAJM2HW",
+      "context": "IAM Principal ID used by actor and legitimate Qubole traffic.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "805246085872",
+      "context": "Qubole AWS Account ID used as source for all role assumptions.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "57.129.54.120",
+      "context": "Primary C2 for role assumption, enumeration, and credential harvesting.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "2001:41d0:70d:7800::",
+      "context": "IPv6 address used for credential enumeration and verification.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.83.220.211",
+      "context": "Mullvad VPN IP used to assume roles within customer accounts.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.209.199.73",
+      "context": "Mullvad VPN IP used to assume roles within customer accounts.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "89.37.63.175",
+      "context": "Mullvad VPN IP used to assume roles within customer accounts.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "23458",
+      "context": "TCP C2 polling port for sso_agent.iso.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Boto3/1.37.9 md/Botocore#1.37.9 ua/2.1 os/linux#6.12.111+deb13-amd64 md/arch#x86_64 lang/python#3.13.5",
+      "context": "Most common user agent for role assumption, enumeration, harvesting.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "aws-cli/2.37.12 md/awscrt#0.37.0 ua/2.1 os/linux#6.12.111+deb13-amd64 md/arch#x86_64 lang/python#3.14.6",
+      "context": "Common AWS CLI user agent also used by the actor.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Boto3/1.43.108 md/Botocore#1.43.108 ua/2.1 os/linux#6.1.0-53-arm64 md/arch#aarch64 lang/python#3.11.2",
+      "context": "User agent used in role assumption sweep across multiple environments.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Boto3/1.43.113 md/Botocore#1.43.113 ua/2.1 os/linux#7.0.0-38-generic md/arch#x86_64 lang/python#3.12.3",
+      "context": "User agent used for role assumptions.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "TruffleHog",
+      "context": "Used to validate credentials via AWS GetCallerIdentity and Entra ID.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "TruffleHog"
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "65f061281c9a712e9502793dc4c5035cae490b84da05f7d4223cefa65ad396e4",
+      "description": "sso_agent.iso, a bootable linux image for remote booting and C2."
+    }
+  ],
+  "file_types": [
+    "archive",
+    "script"
+  ]
+}

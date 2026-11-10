@@ -1,0 +1,24 @@
+title: Qubole Trust Abuse C2 Network Connection
+id: 69e96f1b-c73e-4860-8438-e605d392da2b
+status: experimental
+description: Detects network connections to IP addresses and a port known to be used as C2 infrastructure in the Qubole trust abuse campaign.
+references:
+    - https://www.wiz.io/blog/qubole-cross-account-access-abused-in-the-wild
+author: ioc-yara-daily (agentic)
+date: 2026-11-10
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '57.129.54.120'
+            - '2001:41d0:70d:7800::'
+        DestinationPort: 23458
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical
