@@ -1,0 +1,347 @@
+{
+  "malware_family": "Sn00py",
+  "threat_actor": "Citrus",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Citrus is a threat group deploying Sn00py ransomware for impact. They gain initial access via compromised contractor accounts, use tools like Impacket and Xray for lateral movement and C2, and leverage LLMs to generate scripts for enumeration and GPO deployment.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "We`re going to do something special today :). Made with RaaS platform Sn00py.",
+      "context": "String output to console by Sn00py ransomware during execution.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "*.citrus",
+      "context": "Extension appended to files encrypted by Sn00py ransomware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "CITRUS_README.txt",
+      "context": "Ransom note file dropped by Sn00py ransomware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bcedit",
+      "context": "Typo for 'bcdedit' in a command attempted by the ransomware.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "A7+eV3M+EDIh5kId+vf46QkKpAOKxUxv97PDFj66ox+uE0GV9UQhrSmBAoGAcyNI\n+z7noIwrFYnHi6wtj8gLEOT0hE/cNDp0VLoUnAzi551kZA7J3Q575jwqrJcDrZSO\nJLkZX7pxLLSd9iQdxMxDrLYZGRtiht8ToD5OGZri36oPvnW56ijJZ/NMzlFtVr7V\niSZJr5Qkz2cxShcSuhDLLXmzleclBd7HQtWTuZUCgYEAqN8WFAZxkV2e1p4v3U98\nVOu4XxEfqAc2Gs2Ccs/kkWoX/1fxvuSRcF6/hMdfVwUP0z+/fnhbFMNfysBeWo1W\nZfmpBF/HbnRSg2ZDLWIwXEXEsNNSRmlvwyHWSEZgyG1xjgjSZKWuxo92WVmPxb5i\nS6NLrZkHPHwqaBy8CnD6ft8=",
+      "context": "Sn00py ransomware public key from the 'pubkey' configuration parameter.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "host_blacklist",
+      "context": "Parameter in Sn00py config listing systems to not encrypt.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "# Creating background tasks for each computer with a thread limit",
+      "context": "Comment in LLM-generated PowerShell script for user session enumeration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Links to Toy Ghouls",
+      "context": "Comment in an LLM-edited PowerShell script for GPO deployment.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "GHOSTAUFTAFGS",
+      "context": "AD machine account name created during Certighost exploit attempt.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "cdc:91.210.109.118",
+      "context": "Attribute in certificate request for Certighost exploit.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Имя узла",
+      "context": "Value for PowerShell's HostName field for a persistence executable.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "MSFConsole",
+      "context": "PowerShell HostApplication value, indicating Metasploit usage.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Metasploit",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Oracle\\Java\\jhost.exe",
+      "context": "Path for modified peeping-tom keylogger executable.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "peeping-tom",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\*\\AppData\\Roaming\\Microsoft\\CLR\\ErrorLog.txt",
+      "context": "Log file path for peeping-tom keylogger.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "net group \"Администраторы домена\" /domain",
+      "context": "Discovery command to find domain admin group members (Russian).",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\steal_tgs.ps1",
+      "context": "PowerShell script to collect Telegram data.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "<system_name>_<date>_<username>_tdata.zip",
+      "context": "Archive name pattern for exfiltrated Telegram data.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "sIErKswD",
+      "context": "Runs cmd.exe for lateral movement via atexec.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "KasperskyAgentInstallTask",
+      "context": "Runs the self-extracting ransomware archive.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "Sysvc",
+      "context": "Runs the self-extracting ransomware archive.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "Java rpchost agent",
+      "context": "Persistence for keylogger.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\*\\Desktop\\KasperskyGPO_Deploy_64.exe",
+      "context": "Masqueraded self-extracting archive with ransomware deployment tools.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\*\\AppData\\Local\\Temp\\7ZipSfx.000\\Deploy-KasperskyGPO.ps1",
+      "context": "Script to create malicious GPO, extracted from SFX archive.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\*\\AppData\\Local\\Temp\\Kaspersky_GPO_Deployment.log",
+      "context": "Log file from the GPO deployment script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\xray.exe",
+      "context": "Xray tunneler executable for C2.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Xray",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\SharpHound.exe",
+      "context": "BloodHound data collector executable.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "SharpHound",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Snaffler.exe",
+      "context": "Tool for finding credentials on network shares.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Snaffler",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\x64\\mimikatz.exe",
+      "context": "Mimikatz executable path.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "91.210.109.118",
+      "context": "C2 for keylogger and used in Certighost exploit.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "91.210.108.180",
+      "context": "C2 address listed in IOCs.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "mirror.yandex.ru",
+      "context": "Legitimate site used for traffic disguise in Xray REALITY protocol.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "yastatic.net",
+      "context": "Legitimate site used for traffic disguise.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "2ip.io",
+      "context": "Used with curl to determine external IP address.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://account.proton.me/mail/signup?plan=free",
+      "context": "URL in ransom note for victim to register contact email.",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script",
+    "archive"
+  ]
+}

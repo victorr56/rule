@@ -1,0 +1,28 @@
+title: CopperDragon DarkWire Sideloading via VLC
+id: 59a117d9-c1dd-4d7a-8f7a-826d9c63d59e
+status: experimental
+description: Detects a DLL side-loading technique used by DarkWire operators where a malicious 'libvlccore.dll' is loaded by a 'vlc.exe' process running from a non-standard location.
+references:
+    - https://research.checkpoint.com/2026/not-all-that-glitters-is-gold-tracking-copperdragons-sparrow-framework-around-the-globe/
+author: ioc-yara-daily (agentic)
+date: 2026-11-11
+tags:
+    - attack.defense_evasion
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\vlc.exe'
+        ImageLoaded|endswith: '\libvlccore.dll'
+    filter_legit:
+        Image|startswith:
+            - 'C:\Program Files\'
+            - 'C:\Program Files (x86)\'
+    condition: selection and not filter_legit
+falsepositives:
+    - Portable versions of VLC Player.
+level: high

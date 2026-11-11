@@ -1,0 +1,30 @@
+title: CopperDragon Creates Hidden Admin User
+id: ca00f7d5-d145-4207-9b92-b8bbd36c2e36
+status: experimental
+description: Detects the command line used by the CopperAdu tool to create a hidden local administrator account with a hardcoded password.
+references:
+    - https://research.checkpoint.com/2026/not-all-that-glitters-is-gold-tracking-copperdragons-sparrow-framework-around-the-globe/
+author: ioc-yara-daily (agentic)
+date: 2026-11-11
+tags:
+    - attack.persistence
+    - attack.t1136.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\net.exe'
+            - '\net1.exe'
+        CommandLine|contains|all:
+            - ' user '
+            - 'admin$ '
+            - '/add'
+            - '"Admin@123456"'
+            - '/expires:never'
+            - '/passwordchg:no'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

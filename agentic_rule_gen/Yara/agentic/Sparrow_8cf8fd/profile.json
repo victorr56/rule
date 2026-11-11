@@ -1,0 +1,411 @@
+{
+  "malware_family": "Sparrow",
+  "threat_actor": "CopperDragon",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "CopperDragon is a potential digital quartermaster supplying the Sparrow framework to multiple China-nexus threat actors. The cross-platform framework, with Windows (SparrowDoor) and Linux (SparrowShell) variants, is used in distinct campaigns utilizing different backdoors like SquadC and CopperDoor. Tactics include watering-hole attacks, DLL sideloading, and kernel-level components for espionage.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "SquadC",
+      "context": "Internal reference name for the SquadC backdoor.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "WindowsUpdateAssist",
+      "context": "SquadC persistence registry key.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Strategi_AS_Referensi_April2026.rar",
+      "context": "Phishing archive name used to distribute SquadC.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "760be920fad07881b8ce9d94e074a35b4f806717",
+      "context": "SHA-1 fingerprint of a TLS certificate reused across SilentDelivery and OceanGate C2s.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "annobinagent",
+      "context": "Internal name for the AnnobinDoor Go-based backdoor.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x11223344",
+      "context": "Magic value used by SparrowShell and passive SparrowDoor to validate C2 connections.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/%x",
+      "context": "Path where SparrowShell saves downloaded plugin modules before loading.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "xmain",
+      "context": "Exported function name executed by SparrowShell from a loaded plugin.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "net user admin$ \"Admin@123456\" /add /expires:never /passwordchg:no",
+      "context": "CopperAdu command to create a hidden admin user with a hardcoded password.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "netsh advfirewall firewall add rule name=\"RasiUwpApp\" dir=in action=allow protocol=TCP localport=445 profile=any",
+      "context": "CopperAdu command to create a firewall rule allowing SMB.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "kbl",
+      "context": "Hidden window class name registered by the CopperLogger keylogger.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x0e0e0e0e",
+      "context": "Custom ioctl interface ID for communication with SparrowShell's kernel rootkit.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Reptile",
+      "context": "Open-source rootkit modified and used by SparrowShell.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "Reptile",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "( (inbound and tcp.DstPort == %d and ip.SrcAddr == %s) or (outbound and tcp.SrcPort == %d) )",
+      "context": "WinDivert filter string used by passive SparrowDoor for packet interception.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "WinDivert",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "O=Internet Widgits Pty Ltd",
+      "context": "Certificate organization shared by Melofee and SparrowShell infrastructure.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SparroWocky",
+      "context": "Alternate name for the CopperDoor backdoor, as identified by ESET.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ss1",
+      "context": "Firewall rule name created by the CopperProxy tool.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "slave.dll",
+      "context": "CopperLsass component loaded into LSASS to perform memory dump.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "vlc.exe sideloads libvlccore.dll",
+      "context": "DLL sideloading technique observed in DarkWire operations.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "parent_child",
+      "value": "zCrashReport64.exe sideloads zCrashReport64.dll",
+      "context": "DLL sideloading technique observed in DarkWire operations.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\USOShared",
+      "context": "Uncommon staging directory used in DarkWire operations.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "ee4a8b81fe3864582efc27a77f806990e2602dcc36447ddda4b3a230a473d575",
+      "context": "SHA256 of a distinctive TLS certificate reused across CopperDNS C2 nodes.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "CN=8.8.8.8",
+      "context": "Self-signed certificate common name used by CopperDNS C2 infrastructure.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/image-check",
+      "context": "SilentDelivery C2 URI for initial victim fingerprinting.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/report-url",
+      "context": "SilentDelivery C2 URI for reporting a click on the fake certificate button.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/register-ip",
+      "context": "SilentDelivery C2 URI for registering a successful infection.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "MX query tunneling",
+      "context": "CopperDNS uses DNS MX queries for C2 communication.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "microsfot.vip",
+      "context": "SilentDelivery C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "astorialaza.com",
+      "context": "SilentDelivery C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "109.205.195.131",
+      "context": "SilentDelivery C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "windowsdefender.it.com",
+      "context": "OceanGate C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "microupdate.me",
+      "context": "OceanGate C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.215.216.117",
+      "context": "OceanGate C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.54.71.107",
+      "context": "OceanGate C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "amelicen.com",
+      "context": "C2 domain linked to both SparrowDoor and CopperDNS infrastructure.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "seosnskorea.com",
+      "context": "DarkWire C2 domain.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "38.54.57.12",
+      "context": "DarkWire C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "216.238.110.120",
+      "context": "DarkWire C2 IP address.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "715c206629f59ff5b0134a33362162ce7a40a9b25aa17f0543dc9648d51a67cf",
+      "description": "SquadC Installer (CertFixer.msi)"
+    },
+    {
+      "sha256": "8bbc395a7a0faff074c6e31c7da37bf1540a4e7ec3d80870f8d6bd1f5d4cecbb",
+      "description": "SquadC Loader (MSVCR110.dll)"
+    },
+    {
+      "sha256": "1cd0c608418cca80149ef3077e54969f24cd7ef3f22707cb280fa4b378ffa76b",
+      "description": "CopperList reconnaissance tool (filst2.exe)"
+    },
+    {
+      "sha256": "40880b6fce6f83df4e902cd29d7abb303ffa3f37c429c382f2aaeea34f7be074",
+      "description": "CopperAdu post-exploitation tool (adu.exe)"
+    },
+    {
+      "sha256": "dbdaa8a52246b1e3f9285820db2f976b8ab513926ed972c968fae1c8aeb77056",
+      "description": "SparrowDoor variant (in-memory payload)"
+    },
+    {
+      "sha256": "46407cc35c48d19c6b1990a03ebdd19321005ce08d5a98acd168fda55a92d946",
+      "description": "AnnobinDoor backdoor (containerd-demo)"
+    },
+    {
+      "sha256": "2ea96ea398e9254706ff2761b86302372c149ef090536ad76231e51d7c810a2a",
+      "description": "SparrowShell Linux backdoor (xfs_rudp)"
+    },
+    {
+      "sha256": "4cafda69af3179ceb4a1f5ed864c501279796254709c86ca236be1cf74a8643f",
+      "description": "CopperLoader (ncpmif32.dll)"
+    },
+    {
+      "sha256": "d4e4a3f55b875673cfdb6d0687cc3f8890585210806b03082d11fb4fa40b57de",
+      "description": "CopperLoader (libvlccore.dll)"
+    },
+    {
+      "sha256": "de6a3140797f7c00a48b2068127965c3994f92867466259e69c861880e6ec2d8",
+      "description": "CopperDoor backdoor (in-memory payload)"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "elf",
+    "script"
+  ]
+}

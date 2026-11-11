@@ -1,0 +1,277 @@
+{
+  "malware_family": "wp2shell",
+  "threat_actor": "CyberXero",
+  "platforms": [
+    "windows",
+    "linux",
+    "web"
+  ],
+  "summary": "CyberXero is a Russian-speaking Initial Access Broker conducting both opportunistic mass-exploitation and targeted attacks against critical infrastructure, particularly in Ukraine. The actor uses custom tooling like the wp2shell WordPress exploiter, alongside pirated Cobalt Strike, and notably augments operations with a large number of AI agents. Detections can be based on rogue WordPress user and plugin patterns, a custom persistence service name, and specific C2 infrastructure.",
+  "mitre_techniques": [
+    "T1595.002",
+    "T1590.002",
+    "T1591",
+    "T1583.003",
+    "T1588.002",
+    "T1588.005",
+    "T1190",
+    "T1078.003",
+    "T1110.003",
+    "T1059.001",
+    "T1059.004",
+    "T1047",
+    "T1072",
+    "T1505.003",
+    "T1543.003",
+    "T1098.004",
+    "T1136.001",
+    "T1027",
+    "T1036.005",
+    "T1003.001",
+    "T1003.002",
+    "T1056.003",
+    "T1539",
+    "T1046",
+    "T1082",
+    "T1016",
+    "T1550.002",
+    "T1021.002",
+    "T1005",
+    "T1213",
+    "T1530",
+    "T1071.001",
+    "T1102.002",
+    "T1090.003",
+    "T1041",
+    "T1567.002",
+    "T1565.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "wp2_[a-f0-9]{8}",
+      "context": "Rogue WordPress administrator username pattern",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wp2shell_[a-f0-9]{8}",
+      "context": "Webshell plugin directory name pattern in WordPress",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "UpdSvc",
+      "context": "Windows service for persistence",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "authorized pentest on own infrastructure",
+      "context": "Verbatim string for bypassing AI model safety filters",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "abuse_monitor.py",
+      "context": "Script to file abuse reports against competitors",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "certificate_subject",
+      "value": "Major Cobalt Strike",
+      "context": "TLS certificate from pirated Cobalt Strike build",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "Cobalt Strike",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "c2-operator",
+      "context": "Name of a specialized Claude Code agent role",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "exploit-chainer",
+      "context": "Name of a specialized Claude Code agent role",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "scada-attacker",
+      "context": "Name of a specialized Claude Code agent role",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "data-exfiltrator",
+      "context": "Name of a specialized Claude Code agent role",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "scope-guard",
+      "context": "Name of a specialized Claude Code agent role",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "sc.py",
+      "context": "Companion script to wp2shell for Telegram reporting",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "app/etc/env.php",
+      "context": "Exposed Magento configuration file targeted",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/wp-json/batch/v1",
+      "context": "WordPress REST API endpoint abused for SQLi",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "42.193.227.214",
+      "context": "Cobalt Strike C2 server (1002/https, 8044/http, 8033/ps)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Cobalt Strike"
+    },
+    {
+      "kind": "ip",
+      "value": "46.21.250.135",
+      "context": "Primary workstation, open directory seed node",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.88.106.2",
+      "context": "Provisioning server (port 1500)",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "212.193.31.189",
+      "context": "Cryptocurrency payment gateway",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "91.208.184.148",
+      "context": "Secondary workstation",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "45.88.106.78",
+      "context": "Mass scanning server",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "49.234.12.182",
+      "context": "Staging server for Chinese cluster compromise",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "42.193.100.94",
+      "context": "Redis exploitation node and PentAGI agents",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "92a789444708fa1cb4cc5a89e0aa6cc7a279b62a7b8a4d2857255a18197d0090",
+      "description": "stager32.bin, Cobalt Strike x86 stager (4.9.1 pirated build)"
+    },
+    {
+      "sha256": "a5ae0aab352871bc0b038b3aa43b03eb223425628c884af7b9fc592cd34eb86c",
+      "description": "Obfuscated WSO webshell"
+    },
+    {
+      "sha256": "71e21094c1ac1cf0275c91ed377965e248bca1c12711f6dd20e2682681fc1192",
+      "description": "1.bin, Chinese cluster staging payload"
+    },
+    {
+      "sha256": "59c535f47ab4d35f6d9fc8b8aec4a72438ea0b89e5a4dcea74b05d2d32cfa483",
+      "description": "config.bin, Chinese cluster staging payload"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script"
+  ]
+}

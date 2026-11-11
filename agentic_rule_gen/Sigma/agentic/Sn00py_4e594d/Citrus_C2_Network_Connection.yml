@@ -1,0 +1,23 @@
+title: Citrus Group C2 Network Connection
+id: 9a70f3f2-1b12-4017-90fa-4034ef85e252
+status: experimental
+description: Detects network connections to IP addresses known to be used as C2 infrastructure by the Citrus group.
+references:
+    - https://securelist.com/citrus-ransomware/121879/
+author: ioc-yara-daily (agentic)
+date: 2026-11-11
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '91.210.109.118'
+            - '91.210.108.180'
+    condition: selection
+falsepositives:
+    - These IPs could be reassigned in the future and may cause false positives.
+level: high

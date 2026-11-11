@@ -1,0 +1,92 @@
+{
+  "malware_family": "Cereal",
+  "threat_actor": "Turla",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "Turla's Cereal is a modular .NET toolset designed for long-term espionage against Microsoft Exchange servers. It uses the compromised server as its C&C infrastructure, listening on paths that blend with legitimate traffic. The malware employs advanced techniques like native code execution from .NET assemblies and in-memory hooking of Exchange transport agents to evade detection.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "ncobjapi.dll",
+      "context": "CerealLoader dropped in wbem folder to impersonate legitimate DLL.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "wbemcomn.dll",
+      "context": "CerealLoader dropped in wbem folder to impersonate legitimate DLL.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\wbem\\",
+      "context": "Location for CerealLoader DLL hijacking files.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "Microsoft.Exchange.Search.Mdb.ni.dll",
+      "context": "Malicious CerealLoader placed in the .NET native image cache.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "EdgeTransport.exe",
+      "context": "Target process for CerealBox in-memory injection and transport agent hijacking.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/owa/sdds/",
+      "context": "CerealNeuron passive C2 listener path on compromised Exchange server.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/AUTODISCOVER/PROXYSERVICE/",
+      "context": "CerealNeuron passive C2 listener path on compromised Exchange server.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/MICROSOFT-SERVER-ACTIVESYNC/INTEGRATED/API/",
+      "context": "CerealNeuron passive C2 listener path on compromised Exchange server.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "dotnet"
+  ]
+}

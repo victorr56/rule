@@ -1,0 +1,25 @@
+title: Citrus Group Domain Admin Discovery Command
+id: 38b091f0-4664-4e94-811c-197e84a27453
+status: experimental
+description: Detects the execution of "net group" with the Russian name for "Domain Admins", a TTP used by the Citrus group for discovery.
+references:
+    - https://securelist.com/citrus-ransomware/121879/
+author: ioc-yara-daily (agentic)
+date: 2026-11-11
+tags:
+    - attack.discovery
+    - attack.t1069.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\net.exe'
+        CommandLine|contains|all:
+            - 'group'
+            - 'Администраторы домена'
+            - '/domain'
+    condition: selection
+falsepositives:
+    - Legitimate use by Russian-speaking administrators, but highly unusual in other environments.
+level: high

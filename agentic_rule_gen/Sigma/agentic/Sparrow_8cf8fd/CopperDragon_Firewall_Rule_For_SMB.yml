@@ -1,0 +1,30 @@
+title: CopperDragon Adds Firewall Rule For SMB
+id: 0e89069d-7f41-4543-98ba-d53f6500418c
+status: experimental
+description: Detects the creation of a specific firewall rule named "RasiUwpApp" to allow inbound SMB traffic, as executed by the CopperAdu tool.
+references:
+    - https://research.checkpoint.com/2026/not-all-that-glitters-is-gold-tracking-copperdragons-sparrow-framework-around-the-globe/
+author: ioc-yara-daily (agentic)
+date: 2026-11-11
+tags:
+    - attack.defense_evasion
+    - attack.t1562.004
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\netsh.exe'
+        CommandLine|contains|all:
+            - 'advfirewall'
+            - 'firewall'
+            - 'add rule'
+            - 'name="RasiUwpApp"'
+            - 'dir=in'
+            - 'action=allow'
+            - 'protocol=TCP'
+            - 'localport=445'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

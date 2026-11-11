@@ -1,0 +1,25 @@
+title: Turla CerealLoader Masquerading as wbemcomn.dll
+id: f1b2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c5d
+status: experimental
+description: Detects wmic.exe loading wbemcomn.dll. This is unusual and is a technique used by Turla's CerealLoader to execute its payload by masquerading as a legitimate WMI component.
+references:
+    - https://www.welivesecurity.com/en/eset-research/exchange-for-breakfast-turlas-cereal-tricks-are-not-for-kids/
+author: ioc-yara-daily (agentic)
+date: 2026-11-11
+tags:
+    - attack.persistence
+    - attack.defense_evasion
+    - attack.execution
+    - attack.t1574.001
+    - attack.t1047
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\wmic.exe'
+        ImageLoaded|endswith: '\wbem\wbemcomn.dll'
+    condition: selection
+falsepositives:
+    - Legitimate use of wmic.exe loading this specific DLL is unlikely, but may occur in complex diagnostic or repair scenarios.
+level: high

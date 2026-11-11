@@ -1,0 +1,23 @@
+title: Sn00py Ransomware Note Creation
+id: 54b42337-a50d-400e-8519-75f850b5da7e
+status: experimental
+description: Detects the creation of the Sn00py ransom note "CITRUS_README.txt" as observed in Citrus group attacks.
+references:
+    - https://securelist.com/citrus-ransomware/121879/
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.impact
+    - attack.t1486
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\citrus.exe'
+        TargetFilename|endswith: '\CITRUS_README.txt'
+    condition: selection
+falsepositives:
+    - Legitimate files named 'CITRUS_README.txt' created by a process named 'citrus.exe'.
+    - The ransomware executable may be renamed by the attacker.
+level: high

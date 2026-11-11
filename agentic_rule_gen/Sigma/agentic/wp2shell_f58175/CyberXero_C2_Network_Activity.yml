@@ -1,0 +1,28 @@
+title: CyberXero C2 and Infrastructure Network Activity
+id: c1495c02-e2a2-4a0b-99d9-1c97a5b3a4a6
+status: experimental
+description: Detects network connections to IP addresses associated with CyberXero C2, staging, and operational infrastructure.
+references:
+    - https://socradar.io/blog/dark-web-profile-cyberxero/
+author: ioc-yara-daily (agentic)
+date: 2026-11-11
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+detection:
+    selection:
+        DestinationIp:
+            - '42.193.227.214'
+            - '46.21.250.135'
+            - '45.88.106.2'
+            - '212.193.31.189'
+            - '91.208.184.148'
+            - '45.88.106.78'
+            - '49.234.12.182'
+            - '42.193.100.94'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

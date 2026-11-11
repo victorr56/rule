@@ -1,0 +1,24 @@
+title: CopperDragon SquadC Persistence via 'WindowsUpdateAssist' Run Key
+id: a1a224a1-8742-4f33-87f5-2a2651ed93eb
+status: experimental
+description: Detects the creation of a registry value named 'WindowsUpdateAssist' in a Run key pointing to a malicious 'svchost.exe' in the ProgramData folder, a persistence method used by the SquadC backdoor.
+references:
+    - https://research.checkpoint.com/2026/not-all-that-glitters-is-gold-tracking-copperdragons-sparrow-framework-around-the-globe/
+author: ioc-yara-daily (agentic)
+date: 2026-11-11
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains|all:
+            - '\CurrentVersion\Run'
+            - 'WindowsUpdateAssist'
+        Details|contains: '\ProgramData\svchost.exe'
+    condition: selection
+falsepositives:
+    - Legitimate software using this specific combination of registry value name and payload path is highly unlikely.
+level: high
