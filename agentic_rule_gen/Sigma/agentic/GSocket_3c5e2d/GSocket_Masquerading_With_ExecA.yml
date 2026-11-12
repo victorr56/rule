@@ -1,0 +1,31 @@
+title: GSocket Masquerading With 'exec -a'
+id: f1a60e0a-a82f-488b-821f-824df9277d33
+status: experimental
+description: >-
+  Detects the use of 'exec -a' by a shell to execute the GSocket payload with a
+  masqueraded process name '[kaluad]'.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2026/11/11/global-socket-how-threat-actors-weaponizing-gsocket-stealthy-c2/
+author: ioc-yara-daily (agentic)
+date: 2026-11-12
+tags:
+  - attack.defense_evasion
+  - attack.t1036
+  - attack.execution
+  - attack.t1059.004
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  selection:
+    Image|endswith:
+      - '/bash'
+      - '/sh'
+    CommandLine|contains|all:
+      - 'exec -a'
+      - '[kaluad]'
+      - '/usr/bin/defunct'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high

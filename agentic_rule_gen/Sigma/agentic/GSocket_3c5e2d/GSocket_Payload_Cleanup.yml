@@ -1,0 +1,26 @@
+title: GSocket Payload Cleanup
+id: e4b2c1f0-4d33-47a8-8b9a-7c98e11e3b6a
+status: experimental
+description: >-
+  Detects the cleanup command used to remove the GSocket payload from its
+  staging directory in '/dev/shm'.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2026/11/11/global-socket-how-threat-actors-weaponizing-gsocket-stealthy-c2/
+author: ioc-yara-daily (agentic)
+date: 2026-11-12
+tags:
+  - attack.defense_evasion
+  - attack.t1070.004
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  selection:
+    Image|endswith: '/rm'
+    CommandLine|contains|all:
+      - '/dev/shm/.gs-'
+      - 'gs-netcat'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: medium

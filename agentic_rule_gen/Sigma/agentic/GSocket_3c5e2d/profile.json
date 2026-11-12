@@ -1,0 +1,323 @@
+{
+  "malware_family": "GSocket",
+  "threat_actor": "multiple",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "Threat actors deploy the open-source GSocket tool on compromised Linux web servers for persistent command and control. The tool uses a public relay network for stealthy, outbound-only C2, and actors employ process masquerading, various persistence methods like cron and systemd services, and file hiding to evade detection.",
+  "mitre_techniques": [
+    "T1190",
+    "T1059.004",
+    "T1053.003",
+    "T1543.002",
+    "T1036",
+    "T1564.001",
+    "T1222.002",
+    "T1070.006",
+    "T1070.004",
+    "T1105",
+    "T1090.002"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/dev/shm/.gs-0/gs-netcat_mini-linux-x86_64",
+      "context": "Staging path for x86_64 GSocket payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/dev/shm/.gs-0/gs-netcat_mini-linux-aarch64",
+      "context": "Staging path for AArch64 GSocket payload.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/systemd-remount-d",
+      "context": "Masqueraded GSocket payload path.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/bin/systemd-remount-d",
+      "context": "Masqueraded GSocket payload path.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.gsn_ora",
+      "context": "Hidden GSocket payload path.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/bin/defunct",
+      "context": "Renamed payload used for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/dev/shm/.gs-",
+      "context": "Prefix for hidden staging directories from hunting query.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "gs-netcat",
+      "context": "GSocket tool filename.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "GSocket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "gsocket",
+      "context": "GSocket tool filename.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "GSocket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "systemd-remount-d",
+      "context": "Filename used for masquerading GSocket payload.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".gsn_ora",
+      "context": "Hidden filename for GSocket payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "defunct",
+      "context": "Filename used for masquerading and persistence.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "defunct.service",
+      "context": "Systemd unit filename for persistence.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "systemd-remount-d",
+      "context": "Masquerading process name for GsNetcat binary.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "[kaluad]",
+      "context": "Masquerading process name set via 'exec -a'.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "exec -a [kaluad] /usr/bin/defunct",
+      "context": "Bash command to masquerade the process name of the payload.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "chmod 700 /usr/bin/defunct",
+      "context": "Modifying permissions on the renamed payload.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rm /dev/shm/.gs-0/gs-netcat",
+      "context": "Command to remove the staged payload file.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "rmdir /dev/shm/.gs-0",
+      "context": "Command to remove the staging directory.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "defunct.service",
+      "context": "Systemd service created for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GS_TG_TOKEN",
+      "context": "Environment variable for Telegram notification token.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "GSocket",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "GS_TG_CHATID",
+      "context": "Environment variable for Telegram notification chat ID.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "GSocket",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "gsocket.io",
+      "context": "Domain for script retrieval and relay network.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "GSocket"
+    },
+    {
+      "kind": "domain",
+      "value": "cdn.gsocket.io",
+      "context": "Client binary distribution CDN.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "GSocket"
+    },
+    {
+      "kind": "domain",
+      "value": "gsgg.b-cdn.net",
+      "context": "Client binary distribution CDN.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "GSocket"
+    },
+    {
+      "kind": "url",
+      "value": "https://gsocket.io/y",
+      "context": "URL for script retrieval in download-execute commands.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gsocket.io/install.sh",
+      "context": "URL for installer retrieval.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://gsgg.b-cdn.net/bin/gs-netcat_mini-linux-x86_64",
+      "context": "Download URL for x86-64 GSocket client.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://cdn.gsocket.io/bin/gs-netcat_mini-linux-aarch64",
+      "context": "Download URL for AArch64 GSocket client.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "d94f75a70b5cabaf786ac57177ed841732e62bdcc9a29e06e5b41d9be567bcfa",
+      "description": "gs-netcat_mini-linux-x86_64 payload"
+    },
+    {
+      "sha256": "f95c4d029e6784e3849b4d1e2e2ae1a661187236ef7c5d487c71158a290a03b5",
+      "description": "gs-netcat_mini-linux-aarch64 payload"
+    },
+    {
+      "sha256": "55d141bb2f62c527c3fea3413b8429fed7d52633d0b123b5e611bfa42165229f",
+      "description": "systemd-remount-d payload"
+    },
+    {
+      "sha256": "12450bafc7a4398040e1ad3a16dbf4dbc79b6a8f83ef306c4f0f73f59886f06c",
+      "description": ".gsn_ora payload"
+    }
+  ],
+  "file_types": [
+    "elf",
+    "script"
+  ]
+}

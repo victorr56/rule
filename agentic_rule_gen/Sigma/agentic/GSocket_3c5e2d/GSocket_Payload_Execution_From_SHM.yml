@@ -1,0 +1,26 @@
+title: GSocket Payload Execution From SHM
+id: 9a78e76f-2b3b-4686-9a2c-f604cc86337d
+status: experimental
+description: >-
+  Detects the execution of the GSocket payload from a hidden staging directory
+  within '/dev/shm'.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2026/11/11/global-socket-how-threat-actors-weaponizing-gsocket-stealthy-c2/
+author: ioc-yara-daily (agentic)
+date: 2026-11-12
+tags:
+  - attack.execution
+  - attack.t1059.004
+  - attack.defense_evasion
+  - attack.t1564.001
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  selection:
+    Image|startswith: '/dev/shm/.gs-'
+    Image|contains: 'gs-netcat_mini-linux'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high

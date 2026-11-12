@@ -1,0 +1,26 @@
+title: Suspicious GSocket Tool Network Activity
+id: 8c4f0b0d-9941-4797-b8a9-338c9c0b1f2e
+status: experimental
+description: >-
+  Detects DNS queries for domains associated with the GSocket tool, which can be
+  used for C2 communications.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2026/11/11/global-socket-how-threat-actors-weaponizing-gsocket-stealthy-c2/
+author: ioc-yara-daily (agentic)
+date: 2026-11-12
+tags:
+  - attack.command_and_control
+  - attack.t1090.002
+  - attack.t1105
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    QueryName|endswith:
+      - '.gsocket.io'
+      - '.gsgg.b-cdn.net'
+  condition: selection
+falsepositives:
+  - Legitimate, albeit niche, use of the GSocket open-source tool.
+level: medium

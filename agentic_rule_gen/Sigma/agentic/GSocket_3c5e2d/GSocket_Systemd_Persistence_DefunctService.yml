@@ -1,0 +1,24 @@
+title: GSocket Systemd Persistence 'defunct.service'
+id: 5e6a3d1c-b5f7-4188-b21a-e58f01b3e9a9
+status: experimental
+description: >-
+  Detects the creation of a systemd service file named 'defunct.service', used
+  by GSocket for persistence.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2026/11/11/global-socket-how-threat-actors-weaponizing-gsocket-stealthy-c2/
+author: ioc-yara-daily (agentic)
+date: 2026-11-12
+tags:
+  - attack.persistence
+  - attack.t1543.002
+logsource:
+  category: file_event
+  product: linux
+detection:
+  selection:
+    TargetFilename|endswith: '/defunct.service'
+    TargetFilename|contains: '/systemd/system/'
+  condition: selection
+falsepositives:
+  - Unlikely
+level: high
