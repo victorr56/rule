@@ -1,0 +1,30 @@
+title: Agent-Framework PyPI Stealer File Creation
+id: 59a11756-17b2-4d2a-89a1-09cd98bf8b2a
+status: experimental
+description: Detects the creation of malicious files associated with compromised versions of the 'agent-framework' PyPI package. These include Python `.pth` and `.py` files with specific names.
+references:
+    - https://www.elastic.co/security-labs/threat-command/we-caught-the-agent-framework-pypi-compromise-six-minutes-after-it-published
+author: ioc-yara-daily (agentic)
+date: 2024-05-21
+tags:
+    - attack.execution
+    - attack.t1059.006
+    - attack.credential_access
+    - attack.t1552
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\python.exe'
+            - '\python3.exe'
+        TargetFilename|endswith:
+            - '\agent_framework_meta.pth'
+            - '\af_runtime_diag.pth'
+            - '\_telemetry.py'
+            - '\af_runtime_diag.py'
+    condition: selection
+falsepositives:
+    - Legitimate Python packages creating files with the same names, although unlikely.
+level: high

@@ -1,0 +1,22 @@
+title: CoffeeLoader Hides Autorun Entry from Task Manager
+id: 111c1e59-c299-4c1d-847e-a9ff33b1e967
+status: experimental
+description: Detects CoffeeLoader attempting to hide its persistence from the Task Manager's Startup tab by creating a specific value in the 'StartupApproved' registry key.
+references:
+    - https://securelist.com/retadup-delivers-coffeeloader/121908/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|re: '\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StartupApproved\\Run\\[a-f0-9]{8}\.dll$'
+        Details: '080000000000000000000000'
+    condition: selection
+falsepositives:
+    - Legitimate software that programmatically enables its own startup entry, although the value name pattern is suspicious.
+level: medium

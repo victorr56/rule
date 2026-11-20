@@ -1,0 +1,24 @@
+title: K404 Ransomware Execution
+id: 97ac72c3-9892-411a-85d0-9a250bb7f9c2
+status: experimental
+description: Detects the execution of a Python-based locker associated with the .k404 ransomware campaign from a specific path.
+references:
+    - https://blog.virustotal.com/2026/11/catching-ransomware-introducing.html
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.impact
+    - attack.t1486
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\python.exe'
+            - '\pythonw.exe'
+        CommandLine|contains: '\WindowsSystemUpdate\system_update.pyw'
+    condition: selection
+falsepositives:
+    - Legitimate Python scripts that use the same file name and path, which is highly unlikely.
+level: high

@@ -1,0 +1,26 @@
+title: GraphDoor Plugin File Creation in ProgramData
+id: 611623ef-4f17-47b2-8485-f5b2b2b1a1dd
+status: experimental
+description: Detects the creation of specific plugin files in 'C:\ProgramData\Intel_Log\' used by the GraphDoor backdoor. These plugins facilitate various malicious activities like command execution, screen capture, and data theft.
+references:
+    - https://securelist.com/operation-shadowcloud-graphdoor/122005/
+author: ioc-yara-daily (agentic)
+date: 2024-06-18
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\ProgramData\Intel_Log\'
+        TargetFilename|endswith:
+            - '\PluginPlus.dll'
+            - '\FileFinder.dll'
+            - '\ScreenShot.dll'
+            - '\Shell.dll'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

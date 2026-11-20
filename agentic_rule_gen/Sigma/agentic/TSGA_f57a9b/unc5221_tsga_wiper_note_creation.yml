@@ -1,0 +1,22 @@
+title: UNC5221 TSGA Wiper Note Creation
+id: 878e0fbe-0ef1-424a-85ef-c16f1c4e1ab8
+status: experimental
+description: Detects the creation of the DREAM_ANNEXATION.txt file, a note left by the destroy_v6 wiper associated with UNC5221, when the wiper is executed from the /tmp directory.
+references:
+    - https://research.checkpoint.com/2024/from-php-to-shell-exploitation-on-check-point-gateway/
+author: ioc-yara-daily (agentic)
+date: 2024-02-29
+tags:
+    - attack.impact
+    - attack.t1485
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        Image|startswith: '/tmp/'
+        TargetFilename|endswith: '/DREAM_ANNEXATION.txt'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

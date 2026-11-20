@@ -1,0 +1,302 @@
+{
+  "malware_family": "OpsAgent",
+  "threat_actor": "AuditTeam",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "AuditTeam is a threat group deploying the OpsAgent framework, which transitioned from C++ to Rust. The malware uses a public GitHub repository for C2 discovery and features modules for disabling security products and encrypting files, framing their extortion as a paid 'Audit & Consulting fee'.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "c2-framework-psk-salt-v1",
+      "context": "HMAC-SHA256 secret key for OpsAgent-rs C2 config decryption.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "c2-encryption-key\\x01",
+      "context": "Salt for second HMAC in OpsAgent-rs C2 config decryption.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "f4bb8c7e15d8b98d535eb20b09176b3d",
+      "context": "String whose SHA-256 hash is used as AES-CBC key for C2 config.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "604902af7b70b271",
+      "context": "XOR key for shellcode sent via named pipe for background jobs.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "GetConfig",
+      "context": "Start marker for encrypted C2 configuration blob in GitHub repo.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "config_marker",
+      "value": "EndConfig",
+      "context": "End marker for encrypted C2 configuration blob in GitHub repo.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "\\KvCorePortX0",
+      "context": "Filter port used to communicate with the abused Jiangmin AV driver.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\System32\\drivers\\kvcore.sys",
+      "context": "Maliciously installed legitimate AV driver for terminating security products.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\kv_dbg.log",
+      "context": "Log file path associated with the abused AV driver module.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "kvcore.sys",
+      "context": "Legitimate Jiangmin Antivirus driver abused to terminate processes.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "syscache.dat",
+      "context": "Payload file name dropped in various locations.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DApc",
+      "context": "String found in the .NET loader variant.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DProtect",
+      "context": "String found in the .NET loader variant.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "DResume",
+      "context": "String found in the .NET loader variant.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "mimikatz_spawn",
+      "context": "Command to launch Mimikatz via a named pipe.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "execute_assembly",
+      "context": "Command to run .NET shellcode via an injected loader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "pth_spawn",
+      "context": "Command to run shellcode with a pass-the-hash technique.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "worker_restart",
+      "context": "Command to restart a stuck worker thread.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "pivot_auto",
+      "context": "OpsAgent C++ command to set auto parameter for pivoting.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x1D",
+      "context": "Command sent to abused driver to terminate a process.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "msiexec.exe",
+      "context": "Default host process for jobs and injection target for loaders.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "FileTimeToSystemTime",
+      "context": "API used for hardware breakpoint in DbgInjector mode.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://github.com/RonaldCMalcolm1983/staticPage",
+      "context": "Public GitHub repository used to store encrypted C2 addresses.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "d19v1tntmz2i98.cloudfront.net",
+      "context": "CloudFront C2 domain used by OpsAgent.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "d35htktbyt7nxc.cloudfront.net",
+      "context": "CloudFront C2 domain used by OpsAgent.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "157.20.104.111",
+      "context": "IP associated with a C2 domain on a specific date.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x10",
+      "context": "WebSocket frame type for 'Process command'.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x30",
+      "context": "WebSocket frame type for 'Start file upload'.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x40",
+      "context": "WebSocket frame type for 'Establish SOCKS connection'.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x52",
+      "context": "WebSocket frame type for 'Forward frame to child agent'.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "dotnet"
+  ]
+}

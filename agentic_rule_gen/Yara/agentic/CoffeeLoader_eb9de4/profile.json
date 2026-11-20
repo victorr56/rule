@@ -1,0 +1,271 @@
+{
+  "malware_family": "CoffeeLoader",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "CoffeeLoader is a downloader delivered by the revived Retadup USB worm. Its new variant uses a custom packer, Armoury, which leverages OpenGL for decryption. It achieves persistence via Run registry keys and injects into various system processes to download and execute further payloads.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "7z.dll",
+      "context": "Patched library dropped by NSIS installer.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\b79faace\\b79faace.dll",
+      "context": "Persistence location; name is generated from system volume information.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "'b79faace.dll' = 'rundll32.exe \"C:\\ProgramData\\b79faace\\b79faace.dll\",SetCodecs'",
+      "context": "Autorun value under Software\\Microsoft\\Windows\\CurrentVersion\\Run.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "SetCodecs",
+      "context": "Export name used in rundll32 persistence mechanism.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_key",
+      "value": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StartupApproved\\Run",
+      "context": "Registry key used to prevent disabling autorun via Task Manager.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "'b79faace.dll' = [080000000000000000000000]",
+      "context": "Value under StartupApproved\\Run to hide from Task Manager.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "__kernel void f(__global char* a,__global char* b,__global char* c,int d)",
+      "context": "Function signature from old Armoury packer's OpenCL decryption kernel.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "layout(local_size_x = 256) in;",
+      "context": "GLSL shader header in new Armoury packer's OpenGL decryption compute shader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "gl_GlobalInvocationID.x",
+      "context": "GLSL built-in variable used in the new Armoury decryption shader.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "RUNTMSAAAAC2gVlbqvpsSutLE0/4ogdQ20Uw4qQyQQCw7448NvjMOaYWr+mlrvWiDCg79jWIhjiIuGuqxTb9VMsuceH4WyA5",
+      "context": "Embedded public key for C2 response signature verification.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "A21251838432306F2CD2540593656B9E",
+      "context": "Key used to encrypt requests to the C2 server.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "2026F751079659CF71C7BA64B345C12A",
+      "context": "Key used to decrypt responses from the C2 server.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0xD1D57871",
+      "context": "New magic constant in CoffeeLoader's binary communication protocol.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0xC0FFEE42",
+      "context": "Old magic constant in CoffeeLoader's binary communication protocol.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "internet-speed-check.com",
+      "context": "CoffeeLoader C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/payload?md5=00000000000000000000000000000000",
+      "context": "CoffeeLoader initial payload download request.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0",
+      "context": "CoffeeLoader C2 communication User-Agent.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "x-content-md5",
+      "context": "CoffeeLoader C2 response header containing MD5 of decrypted payload.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "x-signature",
+      "context": "CoffeeLoader C2 response header containing payload signature.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "noobminer.newblackage.com",
+      "context": "Retadup C2 server observed in traffic example.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 6.1; WOW64) WinHttp/1.6.4.0 (WinHTTP/5.1) like Gecko",
+      "context": "Retadup worm C2 communication User-Agent.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/FD0C7EE872277F33E3335530299B836A/1/4/1/0/empty",
+      "context": "Retadup C2 check-in URI structure.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "::[a-f0-9]+::",
+      "context": "Retadup C2 response envelope for hex-encoded commands.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "ok|||| download-http://rurjfvn.rs/update.exe:!:update.exe-download",
+      "context": "Decoded Retadup C2 command to download and run payload.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "ok||||sleep-600000-sleep",
+      "context": "Decoded Retadup C2 sleep command.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "alphanoob.com",
+      "context": "Retadup C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "newblackage.com",
+      "context": "Retadup C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "http://rurjfvn.rs/update.exe",
+      "context": "URL for payload download, as seen in IOC list and C2 command.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "script",
+    "archive"
+  ]
+}

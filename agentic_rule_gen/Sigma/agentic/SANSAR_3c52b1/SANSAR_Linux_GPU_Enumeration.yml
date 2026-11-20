@@ -1,0 +1,26 @@
+title: SANSAR Linux GPU Enumeration
+id: bc6e1b72-747d-44aa-9d32-dfc00ac06260
+status: experimental
+description: Detects the specific GPU enumeration command executed by the SANSAR malware to identify GPU hardware for mining.
+references:
+    - https://www.elastic.co/security-labs/threat-command/sansar-linux-cryptomining-malware
+author: ioc-yara-daily (agentic)
+date: 2023-11-20
+tags:
+    - attack.discovery
+    - attack.t1082
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        ParentImage|endswith: '/sansar'
+        Image|endswith: '/nvidia-smi'
+        CommandLine|contains|all:
+            - '--query-gpu=name'
+            - '--format=csv,noheader'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

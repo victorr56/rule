@@ -1,0 +1,24 @@
+title: GraphDoor C2 Network Connections
+id: 11956557-b05b-43d9-9524-a74421b8b80e
+status: experimental
+description: Detects network connections to IP addresses associated with GraphDoor C2 infrastructure.
+references:
+    - https://securelist.com/operation-shadowcloud-graphdoor/122005/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '103.106.230.33'
+            - '123.58.205.105'
+            - '103.227.224.189'
+    condition: selection
+falsepositives:
+    - These IPs could be reassigned in the future and could cause false positives.
+level: high

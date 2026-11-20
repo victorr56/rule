@@ -1,0 +1,267 @@
+{
+  "malware_family": "agent-framework stealer",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "summary": "Malicious versions (1.26.1, 1.26.2) of the 'agent-framework' PyPI package act as a credential stealer. The malware uses a .pth file to execute on Python interpreter startup, harvesting environment variables, configuration files, and cloud credentials from Azure and GitHub. Collected data is Base64 encoded, zlib compressed, and exfiltrated via a POST request to a hardcoded webhook.site URL.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": "agent_framework_meta.pth",
+      "context": "Startup hook for v1.26.1.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "_telemetry.py",
+      "context": "Stealer module for v1.26.1.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "af_runtime_diag.pth",
+      "context": "Startup hook for v1.26.2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "af_runtime_diag.py",
+      "context": "Stealer module for v1.26.2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "import agent_framework_meta",
+      "context": "Content of agent_framework_meta.pth trigger file.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "import af_runtime_diag",
+      "context": "Content of af_runtime_diag.pth trigger file.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "_AF_TEL",
+      "context": "Environment variable name used for run-once guard.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "aHR0cHM6Ly93ZWJob29rLnNpdGUvZDM4MWZkODAtZWM2Mi00MmFkLThmNWMtZDFiMTUxMDNjOWJi",
+      "context": "Base64 encoded C2 URL stored in variable _ENC.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "api://AzureADTokenExchange",
+      "context": "Scope for Azure DevOps OIDC token request.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SYSTEM_ACCESSTOKEN",
+      "context": "String searched in environment variables from /proc.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "IDENTITY_HEADER",
+      "context": "String searched in environment variables from /proc.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ACTIONS_ID_TOKEN_REQUEST_URL",
+      "context": "Environment variable for GitHub OIDC request URL.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ACTIONS_ID_TOKEN_REQUEST_TOKEN",
+      "context": "Environment variable for GitHub OIDC request token.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ACTIONS_RUNTIME_TOKEN",
+      "context": "Environment variable for GitHub OIDC runtime token.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "499b84ac-1321-427f-aa17-267ca6975798",
+      "context": "Azure DevOps resource GUID for IMDS token request.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/proc/[0-9]*/environ",
+      "context": "Path glob to read process environment variables on Linux.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.azure",
+      "context": "Targeted Azure CLI token cache path.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".credentials",
+      "context": "Targeted Azure Pipelines agent credential file.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "https://webhook.site/d381fd80-ec62-42ad-8f5c-d1b15103c9bb?t=telemetry",
+      "context": "Exfil Endpoint",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "af-runtime-diagnostics/1",
+      "context": "Exfil User-Agent for version 1.26.1.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "runtime-diagnostics/1",
+      "context": "Exfil User-Agent for version 1.26.2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "webhook.site",
+      "context": "Exfiltration C2 domain.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "169.254.169.254",
+      "context": "Azure Instance Metadata Service (IMDS) for token theft.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "d27fa34414e6201d5e03e559ef634f020057554d7b3f4898dd5d7cd3e989e110",
+      "description": "agent_framework-1.26.1-py3-none-any.whl"
+    },
+    {
+      "sha256": "3d20a8bc91351a9a16b6db243b848ceca0206b7a8623b02d2af553a9c9f7e0a9",
+      "description": "agent_framework-1.26.2-py3-none-any.whl"
+    },
+    {
+      "sha256": "39fa329f2a93f734b0bb8f5adb203ea3331d1ae479832a5015a54cb17aabd663",
+      "description": "_telemetry.py"
+    },
+    {
+      "sha256": "c275ccbe520ef3c0f02dc6a35389e427f9f1b4e0b12e140cd7bf7179ce143f02",
+      "description": "agent_framework_meta/__init__.py"
+    },
+    {
+      "sha256": "21f28e8517a10ffe431f8d68f5875c85eca4001ae6d118322b0a41873998eb5e",
+      "description": "agent_framework_meta.pth"
+    },
+    {
+      "sha256": "54d885b7d7161c9ed96489c66364c4bfbf635929166843bba10d97d46b5a2e1f",
+      "description": "af_runtime_diag.py"
+    },
+    {
+      "sha256": "325e7e9f0ec94e41ad1a1b7a3f18a6b8b5bffece2e2b97b8d3369eb967452f93",
+      "description": "af_runtime_diag.pth"
+    }
+  ],
+  "file_types": [
+    "script"
+  ]
+}

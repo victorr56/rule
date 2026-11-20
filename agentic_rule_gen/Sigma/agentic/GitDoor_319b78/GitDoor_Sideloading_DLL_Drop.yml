@@ -1,0 +1,24 @@
+title: GitDoor Sideloading DLL 'sbiedll.dll' Dropped in System32
+id: 61e06a3e-67a6-4074-a02a-9e115049386d
+status: experimental
+description: Detects the creation of 'sbiedll.dll' in the System32 directory by svchost.exe. This is a persistence and privilege escalation technique used by GitDoor, where a malicious module injected into svchost.exe drops the DLL to be sideloaded by WsmSvc.exe.
+references:
+    - https://securelist.com/operation-shadowcloud-gitdoor/122004/
+author: ioc-yara-daily (agentic)
+date: 2024-07-25
+tags:
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.t1574.002
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        Image|endswith: '\svchost.exe'
+        TargetFilename|endswith: '\Windows\System32\sbiedll.dll'
+    condition: selection
+falsepositives:
+    - Legitimate installation or update of Sandboxie software, though this is unlikely to be performed by svchost.exe.
+level: high

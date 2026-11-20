@@ -1,0 +1,21 @@
+title: AuditTeam/OpsAgent C2 Connection
+id: 791a9950-c8ed-4b47-b769-1c97a55c26aa
+status: experimental
+description: Detects network connections to an IP address known to be used by AuditTeam's OpsAgent malware for command and control.
+references:
+    - https://securelist.com/auditteam-opsagent-forced-audit/122031/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.command_and_control
+    - attack.t1071
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp: '157.20.104.111'
+    condition: selection
+falsepositives:
+    - This IP address may be reassigned to a benign service in the future.
+level: high

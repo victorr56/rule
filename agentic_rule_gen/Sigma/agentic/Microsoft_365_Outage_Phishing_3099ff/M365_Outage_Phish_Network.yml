@@ -1,0 +1,21 @@
+title: M365 Outage Phishing Campaign Tracking Server Connection
+id: 8d1f23ec-4467-4228-98e9-d754b23267bd
+status: experimental
+description: Detects network connections to an IP address used for resource tracking in a Microsoft 365 outage-themed credential phishing campaign.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/11/16/high-volume-phishing-campaign-uses-microsoft-365-outage-lures-target-multiple-industry-sectors-2/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.t1566.002
+    - attack.t1204.001
+logsource:
+    category: network_connection
+detection:
+    selection:
+        DestinationIp: '162.120.17.69'
+        DestinationPort: 8080
+    condition: selection
+falsepositives:
+    - The IP address may be reassigned to a benign service in the future.
+level: medium

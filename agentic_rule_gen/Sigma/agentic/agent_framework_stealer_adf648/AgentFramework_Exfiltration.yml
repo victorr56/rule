@@ -1,0 +1,23 @@
+title: Agent-Framework PyPI Stealer Exfiltration
+id: ed66fa19-a2e6-4ff7-b124-b1eb21c3b53a
+status: experimental
+description: Detects HTTP/S exfiltration traffic from the Agent-Framework PyPI stealer. The malware exfiltrates stolen credentials to a hardcoded webhook.site URL and uses specific User-Agent strings.
+references:
+    - https://www.elastic.co/security-labs/threat-command/we-caught-the-agent-framework-pypi-compromise-six-minutes-after-it-published
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.exfiltration
+    - attack.t1041
+logsource:
+    category: proxy
+detection:
+    selection:
+        Url|contains: 'd381fd80-ec62-42ad-8f5c-d1b15103c9bb'
+        UserAgent:
+            - 'af-runtime-diagnostics/1'
+            - 'runtime-diagnostics/1'
+    condition: selection
+falsepositives:
+    - Unlikely.
+level: critical

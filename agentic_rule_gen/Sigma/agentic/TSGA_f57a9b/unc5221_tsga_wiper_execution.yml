@@ -1,0 +1,22 @@
+title: UNC5221 TSGA Wiper Execution (destroy_v6)
+id: 569dd778-d1a1-4357-bb03-b09b0b4bce03
+status: experimental
+description: Detects the execution of the destroy_v6 wiper, a component associated with the UNC5221 TSGA malware campaign.
+references:
+    - https://research.checkpoint.com/2024/php2shell-exploitation-on-check-point-gateway/
+author: ioc-yara-daily (agentic)
+date: 2024-02-28
+tags:
+    - attack.impact
+    - attack.t1485
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/destroy_v6'
+        User: 'root'
+    condition: selection
+falsepositives:
+    - 'Legitimate scripts that happen to be named "destroy_v6" and are executed by the root user.'
+level: high

@@ -1,0 +1,21 @@
+title: GitDoor Ably C2 HTTP Authorization Header
+id: 569dd76f-0b3c-4b5a-93f9-7171e2205510
+status: experimental
+description: Detects the hardcoded Basic Authentication token used by GitDoor to communicate with its Ably C2 channel.
+references:
+    - https://securelist.com/operation-shadowcloud-gitdoor/122004/
+author: ioc-yara-daily (agentic)
+date: 2023-11-20
+tags:
+    - attack.command_and_control
+    - attack.t1102.002
+logsource:
+    category: proxy
+detection:
+    selection:
+        DestinationHostname: 'realtime.ably.io'
+        Details|contains: 'Authorization: Basic VHVGY3FnLjlId1ZxQTpIVmJEdnUwb1JidG1YQThybE1TVzM1QUJNUjZoOFMxLVMtZnpMVkFYY0dr'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

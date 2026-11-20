@@ -1,0 +1,223 @@
+{
+  "malware_family": "Microsoft 365 Outage Phishing",
+  "threat_actor": "Unattributed",
+  "platforms": [
+    "multi"
+  ],
+  "summary": "A high-volume credential phishing campaign uses lures impersonating Microsoft 365 service health notifications. The emails use sender domains like moments-notice.com and subjects such as 'Outage - <random>' to create urgency, luring users to click links leading to credential harvesting sites.",
+  "mitre_techniques": [
+    "T1566.002",
+    "T1036",
+    "T1204.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "(?i)^(?:\n[external]\n\\s*|\\*external\\*\\s*)?outage\\s*-\\s*[a-z0-9]{6}$",
+      "context": "Kusto regex for matching email subject",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "moments-notice.com",
+      "context": "Observed sender domain cluster",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "em4493.moments-notice.com",
+      "context": "Observed mail-from or bounce subdomain",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "planetmaison.com",
+      "context": "Observed sender domain cluster",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "newbooker.com",
+      "context": "Observed sender domain cluster",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "em.newbooker.com",
+      "context": "Observed mail-from or bounce subdomain",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "url.newbooker.com",
+      "context": "Observed click/open tracking host",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "url7489.newbooker.com",
+      "context": "Observed click/open tracking host",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "u113727626.ct.sendgrid.net",
+      "context": "Observed click/open tracking host",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "u118254266.ct.sendgrid.net",
+      "context": "Observed click/open tracking host",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "u118250677.ct.sendgrid.net",
+      "context": "Observed click/open tracking host",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "reallifeaccounting.com",
+      "context": "Principal downstream destination domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "outagefixed.sbs",
+      "context": "Downstream destination domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "outagerestored.sbs",
+      "context": "Downstream destination domain",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://reallifeaccounting.com/themelist0.html",
+      "context": "Observed destination URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://outagerestored.sbs/topics_pxyk/themelist0.html",
+      "context": "Observed destination URL",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/themelist0.html",
+      "context": "Phishing landing page path",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/ls/click",
+      "context": "Click tracking URL path",
+      "specificity": "low",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/t/v3.",
+      "context": "Tracking pixel URL prefix",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "162.120.17.69:8080",
+      "context": "Host for individualized tracking resources",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Outage - <random>",
+      "context": "Email subject pattern",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Strengthen – Security <random>",
+      "context": "Email subject pattern",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "Restore — 4 messages <random>",
+      "context": "Email subject pattern",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "MSF Outage Notification",
+      "context": "Example email display name",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "AMZ Service Health",
+      "context": "Example email display name",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "unknown"
+  ]
+}

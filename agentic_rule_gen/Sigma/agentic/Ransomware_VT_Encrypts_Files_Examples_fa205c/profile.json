@@ -1,0 +1,263 @@
+{
+  "malware_family": "Ransomware (VT Encrypts-Files Examples)",
+  "threat_actor": "",
+  "platforms": [
+    "windows",
+    "macos"
+  ],
+  "summary": "This report introduces a new VirusTotal tag, `encrypts-files`, for high-confidence identification of ransomware behavior based on verified user file encryption. It uses examples from various families, including the .k404 campaign, INC Ransom, BlackWizardLock, and Heartbreaker, to illustrate the detection methodology. Artifacts include specific encrypted file extensions, ransom note names, and persistence mechanisms observed in sandbox environments.",
+  "mitre_techniques": [
+    "T1486"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_name",
+      "value": ".k404",
+      "context": "File extension appended after encryption by K404 ransomware.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".lkd",
+      "context": "File extension appended after encryption by lkd.exe ransomware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".INC",
+      "context": "File extension appended after encryption by INC Ransom.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".BLWZ",
+      "context": "File extension appended after encryption by BlackWizardLock.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".heartbreaker",
+      "context": "File extension appended after encryption by Heartbreaker macOS ransomware.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".[A08D7447][Recovafiles@gmail.com].yuw",
+      "context": "File extension appended after encryption by Medusa ransomware.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".aes",
+      "context": "File extension appended after encryption by HotCrypt.exe.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "k404t.txt",
+      "context": "Ransom note dropped by K404T ransomware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "read_me_restore.txt",
+      "context": "Ransom note dropped by lkd.exe ransomware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "INC-README.txt",
+      "context": "Ransom note dropped by INC Ransom.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "7danYRSZp.README.txt",
+      "context": "Ransom note dropped by LockBit 3.0.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "README.txt",
+      "context": "Ransom note dropped by Heartbreaker on macOS Desktop.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".~BLWZ.tmp",
+      "context": "Temporary file staged by BlackWizardLock before encryption.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "system_update.pyw",
+      "context": "Python locker associated with the .k404 campaign.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "AppData\\Roaming\\WindowsSystemUpdate\\",
+      "context": "Execution path for system_update.pyw (.k404 campaign).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/Users/admin/Library/LaunchAgents/com.network.startup.plist",
+      "context": "Persistence LaunchAgent plist file for Heartbreaker macOS ransomware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "@seedware",
+      "context": "Telegram contact in BlackWizardLock's extortion screen.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "-pass <key>",
+      "context": "Required command-line argument to run some LockBit 3.0 affiliate builds.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "tag:encrypts-files",
+      "context": "VirusTotal file-level search tag for verified encryption.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "vt.BehaviourTrait.ENCRYPTS_FILES",
+      "context": "YARA-X module identifier for verified encryption in Livehunt.",
+      "specificity": "high",
+      "evidence": "source_identifier",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [],
+  "samples": [
+    {
+      "sha256": "fb0982bb9f5d5700685dcf4e99ff695f4593fbc3e3d0359d4c2baf23c545f354",
+      "description": "Python locker (system_update.pyw) for the .k404 campaign."
+    },
+    {
+      "sha256": "c920140b725f44c223f33d13fd1f8646a9155d34b4b56a8a2bcd7e762a56c80c",
+      "description": "HotCrypt.exe PE encrypting to .aes extension."
+    },
+    {
+      "sha256": "a8c2402ef3ae115300f5428712ccb0b5461f4a2f14b5bfdfbe08d5ad86bd3087",
+      "description": "lkd.exe PE encrypting to .lkd extension."
+    },
+    {
+      "sha256": "e38acc358eb0a8e44a5dfc8050f010ebcae1f00be11e7ab6ff82e159453fdbcb",
+      "description": "Archive (K404T-Release.zip) containing .k404 ransomware."
+    },
+    {
+      "sha256": "3dd45ab8e2f9c1af773a75221d792fb78870764419170e9c9c5941160364c700",
+      "description": "K404T_Fidye.exe PE encrypting to .k404 extension."
+    },
+    {
+      "sha256": "cea1fb6c7f0c2a047e9a8e11c51bc29d43f16668df025da471b0aa0bc2428364",
+      "description": "Medusa ransomware PE."
+    },
+    {
+      "sha256": "d243031985f7fa82a741e5677a227c65b2e2f1b07e0e10f00fe575dcc0eb4645",
+      "description": "INC Ransom PE using IOCP and encrypting to .INC extension."
+    },
+    {
+      "sha256": "98110dedcca5803bc211f2d8dd640de79a2ba2a69d1def2f4970fa7799313f3e",
+      "description": "BlackWizardLock PE encrypting to .BLWZ extension."
+    },
+    {
+      "sha256": "6bdf42a575d2daee3de2530161cb5b1fef6ca78b4abfa74f329d6b6c72890d18",
+      "description": "Heartbreaker native ARM64 macOS ransomware encrypting to .heartbreaker."
+    },
+    {
+      "sha256": "94b93a47e3e9e47e6daf5beee9007e90f9aaffb67598c3d18605620b284be08f",
+      "description": "LockBit 3.0 ransomware DLL executed via DllMain."
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script",
+    "archive",
+    "macho"
+  ]
+}

@@ -1,0 +1,27 @@
+title: PHP2Shell Toolkit Systemd Persistence
+id: c6f5e9c0-6d45-4202-b2d9-e93dd002dd2d
+status: experimental
+description: Detects the creation of specific systemd service files used by the PHP2Shell toolkit for persistence on compromised Linux systems.
+references:
+    - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.persistence
+    - attack.t1543.002
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        TargetFilename|startswith:
+            - '/etc/systemd/system/'
+            - '/usr/lib/systemd/system/'
+        TargetFilename|endswith:
+            - '/c2-watchdog.service'
+            - '/maq-router.service'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

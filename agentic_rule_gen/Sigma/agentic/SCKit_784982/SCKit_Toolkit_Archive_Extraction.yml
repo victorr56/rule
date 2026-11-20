@@ -1,0 +1,25 @@
+title: SCKit Toolkit Archive Extraction
+id: eeb0c40e-0d19-48be-a664-d596ab2472d8
+status: experimental
+description: Detects the extraction of the SCKit toolkit archive, which creates files in a directory containing 'SCKitBundle'. This is often performed by common archive utilities or the shell.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/11/13/sckit-abuses-screenconnect-deploy-remote-access-target-technician-sessions/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.staging
+    - attack.t1074.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|contains: '\SCKitBundle\'
+        Image|endswith:
+            - '\explorer.exe'
+            - '\7z.exe'
+            - '\WinRAR.exe'
+    condition: selection
+falsepositives:
+    - Legitimate software that happens to use a folder named 'SCKitBundle'.
+level: high

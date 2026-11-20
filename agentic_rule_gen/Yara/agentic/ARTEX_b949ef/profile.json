@@ -1,0 +1,331 @@
+{
+  "malware_family": "ARTEX",
+  "threat_actor": "financially motivated criminals and China-nexus actors",
+  "platforms": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "summary": "ARTEX is an open-source Agentic Offensive Framework (AOF) that uses an LLM orchestrator to automate intrusions by chaining known vulnerabilities at machine speed. Its forks share a common Go-based engine, and detection should focus on behavioral fingerprints and infrastructure patterns rather than static signatures. Key indicators include unique User-Agent strings, specific LLM gateway abuse patterns, and a distinctive embedded favicon hash.",
+  "mitre_techniques": [
+    "T1046",
+    "T1595.001",
+    "T1590.002",
+    "T1021.004",
+    "T1036",
+    "T1656"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "github.com/Autumn-27/norma",
+      "context": "Core Go import path for the norma orchestrator engine.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "favicon.1uboyqwm7-s27",
+      "context": "Next.js build asset path for embedded favicon.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "-576220750",
+      "context": "MurmurHash3 of the embedded raw BMP favicon.ico.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "-1356779733",
+      "context": "MurmurHash3 of an AntiFox fork's embedded PNG icon.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "-397770841",
+      "context": "MurmurHash3 of an AntiFox fork's embedded PNG icon.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "%ARTEX_PROBE_UNSET%",
+      "context": "Placeholder string found with ARTEX User-Agent.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "projectdiscovery/blackrock",
+      "context": "Go import path for network service discovery module.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "blackrock",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "dnsx",
+      "context": "Go import path for DNS reconnaissance module.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "dnsx",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "cdncheck",
+      "context": "Go import path for CDN reconnaissance module.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "cdncheck",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Sign in - Google Accounts",
+      "context": "Masquerading evasive control panel title string.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.claude",
+      "context": "AI assistant credential directory.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "~/.codex",
+      "context": "AI assistant credential directory.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "golang.org/x/crypto/ssh",
+      "context": "Go import path for SSH remote access.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "X-Forwarded-For",
+      "context": "HTTP header token string found in binaries.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "X-Real-IP",
+      "context": "HTTP header token string found in binaries.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (ARTEX)",
+      "context": "High-specificity User-Agent string.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (spa-api-recon spider)",
+      "context": "High-specificity User-Agent string from AntiFox fork.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (spa-api-recon)",
+      "context": "High-specificity User-Agent string from AntiFox fork.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "8b567c0244f2dbee787165aea9c4ddabaaafb0fdb3b29899ac898c60a589856b",
+      "context": "SHA256 hash of the default ARTEX console favicon.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "68e261808e123d7f33675acac8ca66132fcbc4e4c70a11c5b76487736b221c68",
+      "context": "SHA256 hash of the AntiFox 256 favicon.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "3e8f0d584403e3ce6793f8e6041f8b1ebf8c987663ff83aa189d883c6e475cc6",
+      "context": "SHA256 hash of the AntiFox 512 favicon.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "-576220750",
+      "context": "MurmurHash3 of the ARTEX console favicon.ico for network scanning.",
+      "specificity": "high",
+      "evidence": "runtime_only",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+      "context": "Default shared probe User-Agent string.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/api/v1/auth/login",
+      "context": "LLM gateway brute-force target path (POST).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/models",
+      "context": "Unauthenticated LLM gateway model enumeration path (GET).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v0/management/config",
+      "context": "Unauthenticated LLM gateway configuration enumeration path (GET).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1/responses",
+      "context": "LLM gateway path (POST).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Go-http-client/1.1",
+      "context": "Default Go library User-Agent.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Go-http-client/2.0",
+      "context": "Default Go library User-Agent.",
+      "specificity": "low",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "001eb437c20805fb94e8e7014c019318f0f3186bc0cd2ea3508245aafbf0c248",
+      "description": "ARTEX or fork operator binary"
+    },
+    {
+      "sha256": "014154af33662f55901a20902b9deae23a63fe3817fad44a2718f6e30e7a9cb1",
+      "description": "ARTEX or fork operator binary"
+    },
+    {
+      "sha256": "01edf9d0f41a7f527c935bb95974402cf1667635e32111b063eecf8b19f0e322",
+      "description": "ARTEX or fork operator binary"
+    },
+    {
+      "sha256": "047da1e769cc583b2f697e9d6c5043b8aa004a7bff4870718850900cd64836b5",
+      "description": "ARTEX or fork operator binary"
+    },
+    {
+      "sha256": "04f1f1c54918c16db83d82362a8bd14a2ad9441b5654627889d96a8b7a2d33dd",
+      "description": "ARTEX or fork operator binary"
+    },
+    {
+      "sha256": "0640d39ec254fffea1c2aefe3d44659ba31dc9dd62db75d0b0ab480592ddd619",
+      "description": "ARTEX or fork operator binary"
+    },
+    {
+      "sha256": "080a0c302f4ed5499ad9cbedfd8dfd1e10d813351774b35884d8c088ba705410",
+      "description": "ARTEX or fork operator binary"
+    },
+    {
+      "sha256": "0a43907be0bec39e8e17da86eeb681eaee68e4d3d2dc527e58f4d7590833ecfd",
+      "description": "ARTEX or fork operator binary"
+    },
+    {
+      "sha256": "0c7f958f59af463d81a158400e254a87a68855ba8c30d9939d299dfb82ec59b2",
+      "description": "ARTEX or fork operator binary"
+    },
+    {
+      "sha256": "0c84527c81534d06f31acd35a498e7f7df71110034dae34b3171f57b169780ce",
+      "description": "ARTEX or fork operator binary"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "elf",
+    "macho"
+  ]
+}

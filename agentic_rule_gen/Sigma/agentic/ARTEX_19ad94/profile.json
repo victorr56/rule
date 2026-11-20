@@ -1,0 +1,131 @@
+{
+  "malware_family": "ARTEX",
+  "threat_actor": "Storm-0940",
+  "platforms": [
+    "multi"
+  ],
+  "summary": "ARTEX is an agentic offensive framework used by Storm-0940 that leverages a Large Language Model (LLM) to automate attacks in rapid bursts. It uses common offensive tools in parallel, has been observed performing Kerberoasting and SQL injection, and uses distinctive User-Agents like 'artex-enrich/1.0'. The report also details indicators for similar frameworks like CyberStrikeAI, PentAGI, and HexStrike.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "echo :OSPROBE_%OS%:END",
+      "context": "CyberStrikeAI webshell OS probe command, run by a web server process.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "scheduled_task",
+      "value": "SystemUpdate",
+      "context": "CyberStrikeAI persistence mechanism name (Windows Scheduled Task).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "SystemUpdate",
+      "context": "CyberStrikeAI persistence mechanism name (in Run key).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "com.apple.systemupdate",
+      "context": "CyberStrikeAI LaunchAgent persistence name (macOS).",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "# cs",
+      "context": "CyberStrikeAI persistence marker at the end of a .bashrc line.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "user_agent",
+      "value": "artex-enrich/1.0",
+      "context": "User-Agent sent by ARTEX for requests.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "norma/0.4",
+      "context": "User-Agent sent by ARTEX's web fetch tool.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (compatible; CyberStrikeAI-WebShell/1.0)",
+      "context": "User-Agent sent by the CyberStrikeAI webshell.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "update.pentagi.com",
+      "context": "PentAGI installation update check-in domain.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "28000-29999/tcp",
+      "context": "PentAGI C2 port range for compromised hosts.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "HexStrike-HTTP-Framework/1.0",
+      "context": "User-Agent for the HexStrike framework.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "HexStrike-BrowserAgent/1.0",
+      "context": "User-Agent for the HexStrike browser agent.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "<hexstrikeXSSTest123>",
+      "context": "HexStrike browser agent cross-site scripting test marker.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "script"
+  ]
+}

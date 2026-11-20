@@ -1,0 +1,470 @@
+{
+  "malware_family": "GraphDoor",
+  "threat_actor": "Chinese-speaking groups (suspected)",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "GraphDoor is a modular backdoor that uses the Microsoft Graph API for command and control, blending its traffic with legitimate enterprise activity. It downloads various plugins for functions like keylogging, taking screenshots, and process listing from SharePoint. The malware also features proxy capabilities, including custom variants based on Erfrp and tunneling over the Ably real-time messaging service.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "named_pipe",
+      "value": "\\\\.\\pipe\\p%lu",
+      "context": "Main pipe for C2 and inter-plugin communication, based on own PID.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\Intel_Log",
+      "context": "Base directory created by the backdoor for its operations.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "client_version\":\"1.2.7",
+      "context": "Embedded configuration parameter, decrypted at runtime.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "commit from INSOMNIA",
+      "context": "Hardcoded message string in the body of the initial C2 check-in.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "main.%victim-unique-code%.js.map",
+      "context": "Masquerade filename for initial victim data upload to SharePoint.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "scr.ts",
+      "context": "Filename for the screenshot capturing plugin on SharePoint.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "pr.ts",
+      "context": "Filename for the process listing plugin on SharePoint.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "kl.ts",
+      "context": "Filename for the keylogger plugin on SharePoint.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\analyst\\AppData\\Roaming\\log.lock",
+      "context": "File presence is checked before downloading the keylogger plugin.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "cmd.exe /C <command_string>",
+      "context": "Execution pattern for the 'shell' command.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "adsmload",
+      "context": "Command to load shellcode from an ASCII MAC address-encoded string.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "import_name",
+      "value": "RtlEthernetStringToAddressA",
+      "context": "API used to decode ASCII MAC address-formatted payloads.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "Local\\sm<%current_process_id%>",
+      "context": "Shared memory segment name for payload arguments.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 1C 3F E6 E9 }",
+      "context": "Marker byte sequence indicating the start of a COFF payload in a plugin.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "export_name",
+      "value": "go",
+      "context": "Entry-point function name called within COFF plugins.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Microsoft\\SystemCertificates\\Cache\\logs.dat",
+      "context": "Keylogger log file path.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ DE DD 8C AC 75 45 93 38 34 B3 17 5B BF C5 37 5D DD 09 52 F7 A7 9F F3 47 1D 55 A6 14 0E BA 05 E5 }",
+      "context": "Hardcoded 32-byte key used to mask the keylogger's session XOR key.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 53 4D C2 A1 3F 95 26 B7 2C 54 86 9A 02 87 A9 08 70 4B 5D B9 75 DD 8B 03 4B 0A 2B 89 25 CC E7 B1 }",
+      "context": "Fixed 32-byte marker written to the keylogger log file.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bof-keylogger###keyLog start success, mouseLog start success",
+      "context": "Keylogger success message written to console.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "keylogger###Global\\OneDriveStandaloneUpdater{%X-%X}",
+      "context": "Named object used to signal the keylogger to stop.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bof-process###%d###%d###%s###%s###%d###%s\\%s###",
+      "context": "Format string for process listing plugin output.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "bof-screenshot###",
+      "context": "Prefix for Base64-encoded screenshot data.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "mutex",
+      "value": "Global\\ExitEvent",
+      "context": "Event name used by moveDir plugin to coordinate process exit.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "C:/Users/user/Desktop/pythonrat/proxytest/Erfrp-0.1/frpc.go",
+      "context": "PDB path found in the Erfrp-based proxy plugin.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Erfrp",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "Local\\pc<current-process-ID>",
+      "context": "Shared memory segment for Erfrp proxy config.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Erfrp",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "C:/Users/user/Desktop/armon/server.go",
+      "context": "PDB path found in the Ably channel plugin.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "Local\\pcs<%PID%>",
+      "context": "Shared memory segment for Ably channel plugin config.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Ably",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "File proxy server started…",
+      "context": "Silent log message from Ably channel plugin.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Ably",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "###!!###",
+      "context": "Delimiter used in Ably channel plugin message parsing.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Ably",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "iotrh^%4CFGTj",
+      "context": "RC4 key used by FamousSparrow, found on a shared victim system.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "uri_path",
+      "value": "/8f50c589-a4d6-4df4-95bb-2fb7f5983fe5/oauth2/v2.0/token",
+      "context": "Microsoft Graph API OAuth2 token endpoint with specific tenant ID.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.96 Safari/537.36",
+      "context": "Preset User-Agent string decrypted and used in C2 communications.",
+      "specificity": "low",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://graph.microsoft.com/.default",
+      "context": "Scope parameter for Graph API access token request.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1.0/sites/buildersemp.sharepoint.com,bbd13fe9-7971-4091-85b4-19e19a02f0d3,615825b3-4c44-473a-8e85-07a9e27900ab/drives/b!6T_Ru3F5kUCFtBnhmgLw07MlWGFETDpHjoUHqeJ5AKv5tFfD8L_sSp8lOvFe6wi_/root:/main.%victim_unique_code%.js.map:/content",
+      "context": "Graph API PUT request path to upload victim data.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/v1.0/sites/buildersemp.sharepoint.com,bbd13fe9-7971-4091-85b4-19e19a02f0d3,615825b3-4c44-473a-8e85-07a9e27900ab/lists/dd27e665-bef6-4de1-b28f-280c0af4593f/items",
+      "context": "Graph API GET request path to download plugins from a specific list.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "$filter=startswith(fields/Title,'kl.ts')",
+      "context": "Graph API query filter to find the keylogger plugin.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "8c219ab1-58bf-4752-ba7b-a8e7b73bdbb8",
+      "context": "SharePoint list GUID used for C2 commands.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "wss://main.pusher.ably.net/app/<APP_KEY>?protocol=7&client=cpp-socks5",
+      "context": "Ably2 Channel C2 endpoint using Pusher-compatible WebSockets.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Ably"
+    },
+    {
+      "kind": "other",
+      "value": "private-socks5-<instance_id>-request",
+      "context": "Channel name pattern for Ably2 SOCKS5 proxy requests.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Ably"
+    },
+    {
+      "kind": "other",
+      "value": "private-socks5-<instance_id>-response",
+      "context": "Channel name pattern for Ably2 SOCKS5 proxy responses.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "Ably"
+    },
+    {
+      "kind": "other",
+      "value": "socks5:connect",
+      "context": "Message name in Ably2 SOCKS5 proxy to initiate a connection.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "buildersemp.sharepoint.com",
+      "context": "SharePoint site used for C2 via Microsoft Graph API.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cskautogo.sharepoint.com",
+      "context": "SharePoint site used for C2 via Microsoft Graph API.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ms.twnic.top",
+      "context": "Resolves to proxy C2 IP 103.106.230.33.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "ekmt.tw",
+      "context": "Resolves to proxy C2 IP 123.58.205.105. Also used as Cobalt Strike C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "twnic.top",
+      "context": "Domain used for Cobalt Strike C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.106.230.33",
+      "context": "Proxy C2 server. User: google, Pass: 1qaz2wsx-pl.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "123.58.205.105",
+      "context": "Proxy C2 server. User: google, Pass: 1qaz2wsx-pl.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "103.227.224.189",
+      "context": "Proxy C2 server. User: whatfuck, Pass: BQdTQYer123123.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe",
+    "unknown"
+  ]
+}

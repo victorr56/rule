@@ -1,0 +1,24 @@
+title: Unnamed IAB C2/Operator IP Connection
+id: 114532b2-65a5-4886-b489-0ac98c0b5de3
+status: experimental
+description: Detects network connections to IP addresses identified as C2, payload, or operator infrastructure for an Unnamed IAB group.
+references:
+    - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: linux
+detection:
+    selection:
+        DestinationIp:
+            - '206.245.153.56'
+            - '157.180.96.7'
+            - '185.65.134.250'
+    condition: selection
+falsepositives:
+    - Unlikely, these are dedicated IPs.
+level: critical

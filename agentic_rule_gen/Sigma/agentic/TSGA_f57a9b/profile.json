@@ -1,0 +1,265 @@
+{
+  "malware_family": "TSGA",
+  "threat_actor": "UNC5221",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "An attacker exploited PHP2Shell (CVE-2026-109618, CVE-2026-109619) and a privilege escalation vulnerability (CVE-2026-123039) on Check Point Security Gateways. They deployed the TSGA backdoor and TSProxy components, modified versions of the PhiliKit malware, for persistence and C2. In some cases, the attacker moved laterally to ESXi hosts to deploy the destroy_v6 wiper.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "unique_string",
+      "value": "upload_progress_pwn",
+      "context": "Marker found in PHP session files during exploitation.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/opt/CPcvpn-R81.20/tmp/",
+      "context": "Directory where PHP session artifacts were created during exploitation.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "printf <base64 Webshell> | base64 -d > <templates>/zz<random>.tpl",
+      "context": "Command used to decode and write a webshell to the templates directory.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "zz*.tpl",
+      "context": "File name pattern for webshells placed in the portal's templates directory.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "zz2026",
+      "context": "Hardcoded key required to access the expanded PHP webshell.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.up.tpl",
+      "context": "Fixed path where the webshell saves uploaded files.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "challenge_render.tpl",
+      "context": "Name of the more capable webshell, copied from /tmp/.up.tpl.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "nohup /tmp/CPconfigdaemon >/tmp/.bd.log 2>&1 & printf started",
+      "context": "Command to launch the TSGA backdoor and redirect its output.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/CPconfigdaemon",
+      "context": "Initial stage path for the TSGA backdoor before relocation.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.bd.log",
+      "context": "Hidden temporary log file for the TSGA backdoor.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "slot_CPconfigdaemon",
+      "context": "Name of the TSGA malware after it relocates itself for persistence.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/lib/libcpfwcommon.so",
+      "context": "Path where the embedded TSProxy shared library is written.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "gogo",
+      "context": "Scanner deployed on the gateway to discover internal assets.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "destroy_v6",
+      "context": "Linux ELF wiper deployed on a VMware ESXi host.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "DREAM_ANNEXATION.txt",
+      "context": "Note left in directories processed by the wiper.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.p_sock",
+      "context": "Unix socket used for C2 by both TSGA and PhiliKit.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "PhiliKit",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "libdssafe.so",
+      "context": "Networking component embedded in the PhiliKit package.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "philistine",
+      "context": "Internal name for the PhiliKit malware.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "vpxuser",
+      "context": "Service account used to authenticate to VMware ESXi host via SSH.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "ip",
+      "value": "130.94.19.204",
+      "context": "Source of scanning and exploitation activity.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "130.94.19.168",
+      "context": "Attacker infrastructure IP.",
+      "specificity": "low",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "11072/tcp",
+      "context": "C2 port used for encrypted communications by TSGA and PhiliKit.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "PhiliKit"
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "edb3e92eb7bda7413a09edcc4b1ba3cbed4bcdf42808a8abce63b6e4c3fda2b3",
+      "description": "tpl webshell"
+    },
+    {
+      "sha256": "4171b521fa6441382aa2fa014a08e18ff9a6e0ab6096c9144072bf46b37a2ec8",
+      "description": "slot_CPconfigdaemon"
+    },
+    {
+      "sha256": "d7549671c7189979f0624ec52dad9ea6a707d23146e3585ab8f8c4720eca0c63",
+      "description": "CPconfigdaemon"
+    },
+    {
+      "sha256": "3b51080a909023f7d484e2443740b572307ce0054eb9e32d98f0a06bfcd2db90",
+      "description": "gogo"
+    },
+    {
+      "sha256": "c7d9477309fac6c638a1128442056a242de086996add8cb49cd6496c36003237",
+      "description": "destory_v6"
+    },
+    {
+      "sha256": "0522937c0c0337be54fe25493539e5f5f8ceb9742c980aaff1cfc9515f3a96f7",
+      "description": "DREAM_ANNEXATION.txt"
+    },
+    {
+      "sha256": "ee16e1695711b9d60c62925fcfb2fe1a29c18ae26565bc05410a14e16d2a39d7",
+      "description": "philistine"
+    },
+    {
+      "sha256": "fb1a6235eb6bce8c9ec8cd8bb85f17c9c2bde8ecb45b7a243a30ceadf26654da",
+      "description": "libdssafe.so"
+    }
+  ],
+  "file_types": [
+    "elf",
+    "script"
+  ]
+}

@@ -1,0 +1,27 @@
+title: PHP2Shell Toolkit Webshell Creation
+id: 5418b769-e705-4f32-8408-c8d4512530c8
+status: experimental
+description: Detects the creation of a webshell with a specific path and naming convention associated with the PHP2Shell toolkit.
+references:
+    - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+author: ioc-yara-daily (agentic)
+date: 2024-11-20
+tags:
+    - attack.persistence
+    - attack.t1505.003
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/httpd'
+            - '/apache2'
+            - '/php-fpm'
+            - '/nginx'
+        TargetFilename|re: '/doc/thumb-[a-f0-9]{8}\.php$'
+    condition: selection
+falsepositives:
+    - Unlikely, given the specific path and file name pattern.
+level: high

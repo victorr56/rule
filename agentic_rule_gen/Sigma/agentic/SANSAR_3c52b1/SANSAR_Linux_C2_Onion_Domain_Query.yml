@@ -1,0 +1,22 @@
+title: SANSAR Linux C2 Onion Domain Query
+id: 5797f14b-2f63-47a3-b4e6-d183f0f7f329
+status: experimental
+description: Detects DNS queries for the hardcoded SANSAR C2 onion address.
+references:
+    - https://www.elastic.co/security-labs/threat-command/sansar-linux-cryptomining-malware
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.command_and_control
+    - attack.t1090.003
+    - detection.threat_hunting
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName: 'efxisnqldelyr5ra25oqfrsut54b34g26e7zrsiuupsoekjof2gho2id.onion'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

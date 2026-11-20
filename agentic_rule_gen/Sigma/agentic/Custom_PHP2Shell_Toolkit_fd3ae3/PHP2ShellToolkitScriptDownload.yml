@@ -1,0 +1,28 @@
+title: PHP2Shell Toolkit Script Download
+id: 3c727d2c-c89b-4355-ad6c-9418e2ddb7c2
+status: experimental
+description: Detects the download of specific scripts associated with the PHP2Shell toolkit using common command-line utilities.
+references:
+    - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.ingress_tool_transfer
+    - attack.t1105
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/curl'
+            - '/wget'
+        CommandLine|contains:
+            # Examples: http://206.245.153.56:8088/tools/collect.sh, http://206.245.153.56:8088/tools/deep-loot.sh
+            - '/collect.sh'
+            - '/deep-loot.sh'
+    condition: selection
+falsepositives:
+    - Custom scripts with the same name.
+level: medium

@@ -1,0 +1,22 @@
+title: CoffeeLoader Execution via Rundll32
+id: fb420d4f-3701-419b-ab0d-4fa0fa82eb28
+status: experimental
+description: Detects the execution of CoffeeLoader via rundll32.exe, loading a randomly named DLL from a randomly named subdirectory in ProgramData and calling the 'SetCodecs' export.
+references:
+    - https://securelist.com/retadup-delivers-coffeeloader/121908/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.execution
+    - attack.t1218.011
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        CommandLine|re: '(?i)C:\\ProgramData\\[a-f0-9]{8}\\[a-f0-9]{8}\.dll",?SetCodecs'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

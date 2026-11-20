@@ -1,0 +1,25 @@
+title: UNC5221 TSGA Backdoor Execution
+id: 59372337-b64d-4581-9b6f-6f977c05b822
+status: experimental
+description: Detects the execution of the TSGA backdoor with a specific command line used by UNC5221 after exploiting Check Point gateways.
+references:
+    - https://research.checkpoint.com/2026/php2shell-exploitation-on-check-point-gateway/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.execution
+    - attack.t1059.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/tmp/CPconfigdaemon'
+        CommandLine|contains|all:
+            - 'nohup '
+            - '>/tmp/.bd.log'
+            - '2>&1'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

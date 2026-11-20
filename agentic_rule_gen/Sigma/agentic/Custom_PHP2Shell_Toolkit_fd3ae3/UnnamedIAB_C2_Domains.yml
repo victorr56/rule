@@ -1,0 +1,23 @@
+title: Unnamed IAB C2/Operator Domain Query
+id: 59a1170e-11f8-410a-9d90-a7d188383c50
+status: experimental
+description: Detects DNS queries for domains identified as C2 or operator infrastructure for an Unnamed IAB group.
+references:
+    - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName:
+            - 's3.buckets.ninja'
+            - 'fedora-42.servers.guru'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

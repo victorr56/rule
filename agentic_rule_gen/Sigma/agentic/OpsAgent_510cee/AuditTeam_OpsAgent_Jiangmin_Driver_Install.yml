@@ -1,0 +1,22 @@
+title: AuditTeam/OpsAgent Maliciously Installs Jiangmin AV Driver
+id: f4f15d9a-1c39-44d4-9b57-6184517b6ca4
+status: experimental
+description: Detects the creation of the legitimate Jiangmin Antivirus driver 'kvcore.sys' in the System32 drivers directory by the OpsAgent malware. The AuditTeam group is known to maliciously install this driver to terminate security products.
+references:
+    - https://securelist.com/auditteam-opsagent-forced-audit/122031/
+author: ioc-yara-daily (agentic)
+date: 2024-06-25
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\OpsAgent.exe'
+        TargetFilename|endswith: '\Windows\System32\drivers\kvcore.sys'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

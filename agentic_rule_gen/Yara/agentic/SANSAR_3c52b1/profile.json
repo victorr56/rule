@@ -1,0 +1,401 @@
+{
+  "malware_family": "SANSAR",
+  "threat_actor": "REF3364",
+  "platforms": [
+    "linux"
+  ],
+  "summary": "SANSAR is a Rust-based cryptomining orchestrator that manages CPU (XMRig) and GPU (SRBMiner-MULTI) miners over a Tor C2 channel. It is deployed with a kernel rootkit (acpi_thermal_mgr) to hide processes and files, and an NVML wrapper to falsify GPU utilization. A separate backdoor, netns, uses an Ethereum smart contract to resolve its C2 address.",
+  "mitre_techniques": [
+    "T1190",
+    "T1059.006",
+    "T1059.004",
+    "T1611",
+    "T1136.001",
+    "T1098.004",
+    "T1543.002",
+    "T1547.006",
+    "T1078.003",
+    "T1021.004",
+    "T1014",
+    "T1622",
+    "T1027",
+    "T1140",
+    "T1685.006",
+    "T1690",
+    "T1082",
+    "T1016",
+    "T1090.003",
+    "T1102.001",
+    "T1095",
+    "T1105",
+    "T1496.001",
+    "T1498.001"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "/opt/vadi_/",
+      "context": "Toolkit staging directory.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "sansar",
+      "context": "Main Rust client and orchestrator.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "kurt",
+      "context": "XMRig miner binary.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "XMRig",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "tilki",
+      "context": "SRBMiner-MULTI binary.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "SRBMiner-MULTI",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "netns",
+      "context": "Ethereum-assisted backdoor.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "acpi_thermal_mgr.ko",
+      "context": "Kernel ftrace rootkit module.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "acpi_thermal_mgr.c",
+      "context": "Rootkit source file.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/src/acpi_thermal_mgr-1.0/",
+      "context": "Rootkit source code directory.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "libnvidia-ml.so.1",
+      "context": "Modified NVML wrapper to falsify GPU telemetry.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "/usr/lib/.libnvidia-ml.so.1.backup",
+      "context": "Backup of original NVML library created by hook installer.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "arti_data/state",
+      "context": "Relative path used by SANSAR for Tor state.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Arti",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "arti_data/cache",
+      "context": "Relative path used by SANSAR for Tor cache.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "Arti",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": ".client_id",
+      "context": "File containing client identifier for C2 authentication.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "sansar-client v0.1.3",
+      "context": "Version string reported to C2.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Restart initiated",
+      "context": "SANSAR's reply to a restart command.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Tüm gizli isimleri kontrol et",
+      "context": "Turkish comment in rootkit source code.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "Sansar (ana süreç) kendi çocuk süreçlerini yönetebilmeli.\\n* Çağıran sürecin comm'u hide_name (sansar) ise kill'e izin ver.",
+      "context": "Turkish comment in rootkit kill hook logic.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "kurt",
+      "context": "Default hidden process name compiled into the rootkit.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "process_name",
+      "value": "lyrebird",
+      "context": "Default hidden process name compiled into the rootkit.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "nvidia-smi --query-gpu=name --format=csv,noheader",
+      "context": "Executed by SANSAR to enumerate GPU hardware.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "/bin/bash --norc --noprofile",
+      "context": "Executed by SANSAR's ShellOpen C2 command.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "service_name",
+      "value": "netns",
+      "context": "Systemd service name for the backdoor.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "HISTFILE=/dev/null",
+      "context": "Environment variable set for spawned bash shell to prevent history.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "TracerPid",
+      "context": "Field read from /proc/self/status for anti-debugging.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 8A 0A 88 4C 24 ?? 44 8A 5C 24 ?? 8D 48 01 44 89 DB D2 EB 34 07 89 C1 41 D2 E3 41 08 DB 89 F0 83 E0 1F 46 32 1C 10 44 88 1C 37 48 FF C6 48 FF C2 }",
+      "context": "YARA rule hex string for Linux.Trojan.Sansar.",
+      "specificity": "high",
+      "evidence": "strings_listing",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "domain",
+      "value": "efxisnqldelyr5ra25oqfrsut54b34g26e7zrsiuupsoekjof2gho2id.onion",
+      "context": "SANSAR C2 onion address, decoded from the binary.",
+      "specificity": "high",
+      "evidence": "encrypted_config",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "9051",
+      "context": "Hardcoded C2 port for the SANSAR onion service.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x43eb291f56688c63c93e8a93c4591fc997cf6349",
+      "context": "Ethereum smart contract address used by 'netns' backdoor to resolve C2.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "0x6ded96e7",
+      "context": "Function selector used in eth_call to the C2 smart contract.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "8080",
+      "context": "TCP port used by 'netns' to connect to its C2.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "SHELL <host> <port>",
+      "context": "Command format for the 'netns' backdoor.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "api.ipify.org",
+      "context": "External service queried by SANSAR to discover public IP.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "ifconfig.me/ip",
+      "context": "External service queried by SANSAR to discover public IP.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "icanhazip.com",
+      "context": "External service queried by SANSAR to discover public IP.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "domain",
+      "value": "checkip.amazonaws.com",
+      "context": "External service queried by SANSAR to discover public IP.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [
+    {
+      "sha256": "00c9ac44291f83c72d54302e99d155a3e26d02225a3e516764d5833a99657c9e",
+      "description": "sansar Miner orchestrator"
+    },
+    {
+      "sha256": "96fc528ca5e7d1c2b3add5e31b8797cb126f704976c8fbeaecdbf0aa4309ad46",
+      "description": "kurt Xmrig 6.25.0"
+    },
+    {
+      "sha256": "acc706afc9322a3eae1ef49049749e0a7c9f1a123895ac56dc8a289beb2fb5b7",
+      "description": "tilki SRBMiner-MULTI"
+    },
+    {
+      "sha256": "cc1ad7f14777a098ccc91fd4e8f6143da14418c2b6fdf23b7f8f6b3d1b0b7f1d",
+      "description": "lyrebird Tor Project transport helper 0.8.1"
+    },
+    {
+      "sha256": "675c24728f87f7aa0fa07527027c95c24c246049c65eaef89270ab04ea50a180",
+      "description": "libnvidia-ml.so.1 wrapper"
+    },
+    {
+      "sha256": "6ba1aa275e0e2826e8b48b36473539ca56cbdc41f429e539a45f8532b084d7a4",
+      "description": "acpi_thermal_mgr.ko Kernel module"
+    },
+    {
+      "sha256": "df8ab6fd699e6ae90e63e9696bae8f01342708bafc2ed88af414337e4f237194",
+      "description": "netns backdoor"
+    }
+  ],
+  "file_types": [
+    "elf"
+  ]
+}

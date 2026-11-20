@@ -1,0 +1,22 @@
+title: OpsAgent Abused AV Driver Named Pipe
+id: 3c62646c-c6b9-4809-ac96-1c496c0245a4
+status: experimental
+description: Detects the creation of the named pipe '\\KvCorePortX0', which is used by OpsAgent to communicate with the maliciously installed Jiangmin AV driver to terminate processes.
+references:
+    - https://securelist.com/auditteam-opsagent-forced-audit/122031/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image: 'System'
+        TargetFilename: '\\.\pipe\KvCorePortX0'
+    condition: selection
+falsepositives:
+    - Legitimate installations of Jiangmin Antivirus.
+level: high

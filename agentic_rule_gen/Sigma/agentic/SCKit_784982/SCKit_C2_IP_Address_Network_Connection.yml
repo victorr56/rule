@@ -1,0 +1,23 @@
+title: SCKit C2 IP Address Network Connection
+id: 48d9bb07-d3f3-4e44-b040-39cc7351659a
+status: experimental
+description: Detects network connections to IP addresses known to be used by the SCKit toolkit's unauthorized ScreenConnect servers and panels.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/11/13/sckit-abuses-screenconnect-deploy-remote-access-target-technician-sessions/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationIp:
+            - '185.99.255.28'
+            - '155.94.150.39'
+    condition: selection
+falsepositives:
+    - Unlikely, unless the IP addresses are reallocated to benign services.
+level: critical

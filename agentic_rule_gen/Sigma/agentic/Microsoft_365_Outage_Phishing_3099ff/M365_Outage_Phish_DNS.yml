@@ -1,0 +1,23 @@
+title: M365 Outage Phishing Campaign Credential Harvesting Domain
+id: a53239e2-5f65-4f36-96b1-0ac61b5c4656
+status: experimental
+description: Detects DNS queries for domains known to be used in a Microsoft 365 outage-themed credential phishing campaign.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/11/16/high-volume-phishing-campaign-uses-microsoft-365-outage-lures-target-multiple-industry-sectors-2/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.t1566.002
+    - attack.t1204.001
+logsource:
+    category: dns_query
+detection:
+    selection:
+        QueryName|endswith:
+            - 'reallifeaccounting.com'
+            - 'outagefixed.sbs'
+            - 'outagerestored.sbs'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

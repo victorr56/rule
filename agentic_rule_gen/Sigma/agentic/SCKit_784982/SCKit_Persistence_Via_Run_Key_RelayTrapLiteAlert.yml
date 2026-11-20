@@ -1,0 +1,22 @@
+title: SCKit Persistence via Run Key 'RelayTrapLiteAlert'
+id: 59a16f5c-065d-4537-88d0-08709e992b45
+status: experimental
+description: Detects the creation of the 'RelayTrapLiteAlert' registry value in the 'CurrentVersion\Run' key, used by the SCKit toolkit to persist a malicious 'svchost.exe' loader.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2024/11/13/sckit-a-new-toolkit-for-abusing-screenconnect-and-deploying-remote-access/
+author: ioc-yara-daily (agentic)
+date: 2024-11-20
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|endswith: '\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\RelayTrapLiteAlert'
+        Details|contains: '\Microsoft\Windows\svchost.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

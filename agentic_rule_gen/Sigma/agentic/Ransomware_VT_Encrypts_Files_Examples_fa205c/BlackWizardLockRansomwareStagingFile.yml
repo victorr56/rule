@@ -1,0 +1,22 @@
+title: BlackWizardLock Ransomware Staging File Creation
+id: 5b6d91f8-0099-444f-8898-25f03d5084bd
+status: experimental
+description: Detects the creation of a temporary file with the '.~BLWZ.tmp' suffix by an executable, a precursor to encryption by BlackWizardLock ransomware.
+references:
+    - https://blog.virustotal.com/2026/11/catching-ransomware-introducing.html
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.impact
+    - attack.t1486
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '.exe'
+        TargetFilename|endswith: '.~BLWZ.tmp'
+    condition: selection
+falsepositives:
+    - Legitimate software that coincidentally uses this specific file naming convention for temporary files.
+level: high

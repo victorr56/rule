@@ -1,0 +1,26 @@
+title: SCKit C2 Domain DNS Query
+id: 3c57700c-b250-48be-81f1-c67d8f36c4b2
+status: experimental
+description: Detects DNS queries for domains known to be used by the SCKit toolkit for C2 communication, component retrieval, and relay services.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/11/13/sckit-abuses-screenconnect-deploy-remote-access-target-technician-sessions/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'ns.mo7sen.dev'
+            - 'sc.payproofkit.com'
+            - 'cdn007-digitaldownloads.com'
+            - 'newnewnew.gotdns.org'
+            - 'soxnewwork.homedns.org'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

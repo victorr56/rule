@@ -1,0 +1,23 @@
+title: GraphDoor C2 DNS Queries
+id: 5e6a992e-3367-43a9-ae01-44755a9e3778
+status: experimental
+description: Detects DNS queries for domains associated with GraphDoor C2 infrastructure.
+references:
+    - https://securelist.com/operation-shadowcloud-graphdoor/122005/
+author: ioc-yara-daily (agentic)
+date: 2024-05-15
+tags:
+    - attack.command_and_control
+    - attack.t1568.002
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection:
+        QueryName|endswith:
+            - 'ms.twnic.top'
+            - 'ekmt.tw'
+    condition: selection
+falsepositives:
+    - Unlikely, these are known actor-controlled domains.
+level: high

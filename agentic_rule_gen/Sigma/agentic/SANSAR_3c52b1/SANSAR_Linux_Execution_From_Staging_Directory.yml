@@ -1,0 +1,28 @@
+title: SANSAR Linux Malware Execution From Staging Directory
+id: 593ca4e8-8cc4-4a25-9fa5-f2d1134015f7
+status: experimental
+description: Detects the execution of SANSAR malware components from the specific staging directory "/opt/vadi_/".
+references:
+    - https://www.elastic.co/security-labs/threat-command/sansar-linux-cryptomining-malware
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.execution
+    - attack.t1059
+    - attack.resource_development
+    - attack.t1587
+    - detection.threat_hunting
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|startswith: '/opt/vadi_/'
+        Image|endswith:
+            - '/sansar'
+            - '/tilki'
+            - '/netns'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: critical

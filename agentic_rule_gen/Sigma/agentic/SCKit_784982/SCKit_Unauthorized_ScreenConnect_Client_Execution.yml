@@ -1,0 +1,24 @@
+title: SCKit Unauthorized ScreenConnect Client Execution
+id: 1a9f9c7e-b69a-4f51-a201-945ecac1c9f0
+status: experimental
+description: Detects the execution of the ScreenConnect client with specific session IDs known to be used by the SCKit toolkit for unauthorized remote access.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2026/11/13/sckit-abuses-screenconnect-deploy-remote-access-target-technician-sessions/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.command_and_control
+    - attack.t1219
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\ScreenConnect.Client.exe'
+        CommandLine|contains:
+            - 's=2588ef5c15954b10'
+            - 's=ed630cc2c873b091'
+    condition: selection
+falsepositives:
+    - Legitimate ScreenConnect sessions if these session IDs are ever reused, which is highly improbable.
+level: critical

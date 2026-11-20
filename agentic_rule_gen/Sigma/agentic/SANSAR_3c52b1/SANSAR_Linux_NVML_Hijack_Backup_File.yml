@@ -1,0 +1,23 @@
+title: SANSAR Linux NVML Hijack Backup File
+id: 173f40f0-c831-4ec4-9dfc-2ec647f1cfd7
+status: experimental
+description: Detects the creation of a backup file for the NVIDIA Management Library (NVML), a behavior associated with the SANSAR malware's GPU telemetry falsification routine. The combination of a dot-prefixed file in /usr/lib, a library name, and a .backup extension is highly anomalous.
+references:
+    - https://www.elastic.co/security-labs/threat-command/sansar-linux-cryptomining-malware
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+    - detection.threat_hunting
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        TargetFilename: '/usr/lib/.libnvidia-ml.so.1.backup'
+        Image|endswith: '/mv'
+    condition: selection
+falsepositives:
+    - Legitimate but unusual system administration scripts that back up this specific library using this naming convention.
+level: high

@@ -1,0 +1,379 @@
+{
+  "malware_family": "GitDoor",
+  "threat_actor": "",
+  "platforms": [
+    "windows"
+  ],
+  "summary": "GitDoor is a modular backdoor that uses the GitHub and Ably cloud services for command and control. Deployed via DLL sideloading, it decrypts its payload in memory and downloads additional shellcode plugins to perform keylogging, credential dumping with Mimikatz, and establish reverse shells using WinPTY.",
+  "mitre_techniques": [
+    "T1574.002",
+    "T1102.002",
+    "T1027",
+    "T1620",
+    "T1055.002",
+    "T1055.004",
+    "T1003.001",
+    "T1003.002",
+    "T1056.001",
+    "T1053.005",
+    "T1543.003",
+    "T1557.001",
+    "T1059.003"
+  ],
+  "host_artifacts": [
+    {
+      "kind": "file_path",
+      "value": "C:\\windows\\system32\\sbiedll.dll",
+      "context": "Malicious loader used for DLL sideloading.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\windows\\system32\\config.ini",
+      "context": "Encrypted backdoor payload file.",
+      "specificity": "low",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\log.lock",
+      "context": "File used as a flag to enable keylogging on startup.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_path",
+      "value": "%APPDATA%\\Microsoft\\SystemCertificates\\Cache\\logs.dat",
+      "context": "Keylogger output file path.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "pdb_path",
+      "value": "C:\\src\\Dll1\\WhatsAppCS\\x64\\Release\\WhatKeyCPP.pdb",
+      "context": "PDB path for WhatsApp key extraction module.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "ABCDEFGHIJ01234ZYXWVUTSRQPONMLKzyxwvutsrqponmlkjihgfedcba98765/+",
+      "context": "Custom Base64 character set used by Type 1 loader.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 11 AF CE DC A6 12 05 }",
+      "context": "7-byte XOR key for decrypting API and library names.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "0x974C9EB",
+      "context": "FNV-1 hash constant compared against DLL export names.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "file_name",
+      "value": "SbieDll_st.dll",
+      "context": "Internal name of the Type 2 loader.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 48 83 C4 68 C3 }",
+      "context": "Byte pattern searched in KERNEL32.DLL for anti-debugging.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\"client_version\":\"1.1.6\"",
+      "context": "Hardcoded string in initial beacon.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "\"commit from INSOMNIA\"",
+      "context": "Commit message used when creating files on GitHub.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "12345678901234567890123456789012",
+      "context": "Hardcoded AES-256-ECB key for plugin decryption.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "hex_pattern",
+      "value": "{ 65 3c 40 16 3d 38 20 a4 47 14 54 b4 37 5a 3b 38 }",
+      "context": "Static initialization key for proprietary XOR plugin decryption.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "Local\\sm%lu",
+      "context": "File-mapping object name used by loader and `smload` command.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "Local\\pc%d",
+      "context": "Shared memory segment name pattern for proxy config.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "named_pipe",
+      "value": "\\\\.\\pipe\\MyInputPipe",
+      "context": "Named pipe used by the WinPTY reverse shell module.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "hklnwqxaa123",
+      "context": "Exit command string for the WinPTY reverse shell.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "unique_string",
+      "value": "imzimzgo 2.2.0 x64",
+      "context": "Internal name for the embedded Mimikatz tool.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "sekurlsa::logonpasswords full",
+      "context": "Argument for embedded Mimikatz to dump credentials.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "command_line",
+      "value": "lsadump::sam",
+      "context": "Argument for embedded Mimikatz to dump SAM hashes.",
+      "specificity": "medium",
+      "evidence": "explicit_literal",
+      "origin_tool": "Mimikatz",
+      "hash_algo": "",
+      "hash_value": ""
+    },
+    {
+      "kind": "other",
+      "value": "df1941c5-fe89-4e79-bf10-463657acf44d",
+      "context": "UUID for EFSRPC interface used in PetitPotam attack.",
+      "specificity": "medium",
+      "evidence": "prose",
+      "origin_tool": "",
+      "hash_algo": "",
+      "hash_value": ""
+    }
+  ],
+  "network_artifacts": [
+    {
+      "kind": "url",
+      "value": "wss://27.102.66.162:443/agent.ashx",
+      "context": "Hardcoded C2 for initial MeshAgent.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "ip",
+      "value": "27.102.66.162",
+      "context": "MeshAgent C2 server.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/repos/LatonyCharnleyaW/Havo",
+      "context": "GitHub repository for downloading command payloads and plugins.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/repos/LatonyCharnleyaW/Trix",
+      "context": "GitHub repository for uploading victim info and command results.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "VHVGY3FnLjlId1ZxQTpIVmJEdnUwb1JidG1YQThybE1TVzM1QUJNUjZoOFMxLVMtZnpMVkFYY0dr",
+      "context": "Hardcoded Basic Authorization token for Ably C2.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "other",
+      "value": "data:main.%victim_unique_code%.js.map",
+      "context": "Ably channel name pattern for exfiltration.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/channels/comm/messages?limit=50",
+      "context": "Ably channel used for status checks.",
+      "specificity": "high",
+      "evidence": "explicit_literal",
+      "origin_tool": ""
+    },
+    {
+      "kind": "http_header",
+      "value": "Accept: application/vnd.github.raw+json",
+      "context": "HTTP header used to fetch raw file content from GitHub.",
+      "specificity": "medium",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "uri_path",
+      "value": "/repos/LatonyCharnleyaW/Trix/issues/<issue_number>/labels",
+      "context": "GitHub API path to add a 'bug' label to an issue.",
+      "specificity": "high",
+      "evidence": "figure_or_disassembly",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "main.*.js.kmap",
+      "context": "File naming pattern for keylogger data on GitHub.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "main.*.js.pmap",
+      "context": "File naming pattern for proxy data on GitHub.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "dns_pattern",
+      "value": "main.*.js",
+      "context": "File naming pattern for shellcode commands on GitHub.",
+      "specificity": "high",
+      "evidence": "prose",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/LatonyCharnleyaW",
+      "context": "GitHub user profile used for C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/StevenDFournier",
+      "context": "GitHub user profile used for C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://github.com/JeneLeo",
+      "context": "GitHub user profile used for C2.",
+      "specificity": "high",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    },
+    {
+      "kind": "url",
+      "value": "https://upload.gofile.io",
+      "context": "Legitimate cloud storage used for file uploads by a shellcode module.",
+      "specificity": "medium",
+      "evidence": "ioc_list",
+      "origin_tool": ""
+    }
+  ],
+  "samples": [],
+  "file_types": [
+    "pe"
+  ]
+}

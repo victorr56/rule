@@ -1,0 +1,22 @@
+title: CoffeeLoader Persistence via Run Key
+id: 5971168f-ac8c-4a30-80ea-3752c00ccac0
+status: experimental
+description: Detects the creation of a registry Run key for CoffeeLoader persistence. The malware sets up rundll32.exe to load its DLL from a subdirectory in ProgramData and call the 'SetCodecs' export.
+references:
+    - https://securelist.com/retadup-delivers-coffeeloader/121908/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: '\SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
+        Details|re: '(?i)rundll32\.exe "C:\\ProgramData\\[a-f0-9]{8}\\[a-f0-9]{8}\.dll",?SetCodecs'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

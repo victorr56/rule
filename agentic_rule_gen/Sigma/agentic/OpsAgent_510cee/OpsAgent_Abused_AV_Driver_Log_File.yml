@@ -1,0 +1,22 @@
+title: OpsAgent Abused AV Driver Log File
+id: 11eb31a5-8a8b-4b13-a442-990e1f705776
+status: experimental
+description: Detects the OpsAgent process 'OfficeSvc.exe' creating the 'kv_dbg.log' file. This file is a log artifact from an abused Jiangmin AV driver utilized by the malware.
+references:
+    - https://securelist.com/auditteam-opsagent-forced-audit/122031/
+author: ioc-yara-daily (agentic)
+date: 2026-11-20
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image: 'C:\Program Files\Microsoft Office\OfficeSvc.exe'
+        TargetFilename|endswith: '\Users\Public\kv_dbg.log'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

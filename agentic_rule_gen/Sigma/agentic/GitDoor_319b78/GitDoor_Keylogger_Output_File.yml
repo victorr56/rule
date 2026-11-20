@@ -1,0 +1,22 @@
+title: GitDoor Keylogger Output File Creation
+id: 388c34f2-f8ab-40a1-943e-a7f4575971e4
+status: experimental
+description: Detects the GitDoor keylogger component writing to its output file.
+references:
+    - https://securelist.com/operation-shadowcloud-gitdoor/122004/
+author: ioc-yara-daily (agentic)
+date: 2023-11-20
+tags:
+    - attack.collection
+    - attack.t1056.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\Microsoft\SystemCertificates\Cache\NlsCache.dat'
+        TargetFilename|endswith: '\Microsoft\SystemCertificates\Cache\logs.dat'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high
